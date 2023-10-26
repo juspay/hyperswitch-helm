@@ -1,0 +1,41 @@
+apiVersion: v1
+data:
+  production.toml: |
+    [server]
+    port = 8080
+    host = "0.0.0.0"
+    request_body_limit = 16_384 # Post request body is limited to 16k
+
+    [master_database]
+    username = "app_rw"
+    pool_size = "20"
+    host = "postgres.com"
+    port = 5432
+    dbname = "hyperswitch"
+
+    [replica_database]
+    username = "app_rw"
+    pool_size = "20"
+    host = "postgres.com"
+    port = 5432
+    dbname = "hyperswitch"
+
+    [redis]
+    host = "redis.com"
+    port = 6379
+
+    [logs]
+    #log_directory = "logs"
+    #log_file_name = "debug.log"
+    #enable_async = true
+
+    [log.console]
+    enabled = true
+    level = "DEBUG"
+    log_format = "json"
+    [log.telemetry]
+    enabled = false
+kind: ConfigMap
+metadata:
+  name: hyperswitch-config
+  namespace: {{ .Release.Namespace }}

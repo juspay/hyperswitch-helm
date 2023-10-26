@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  hyperswitch-helm:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-10-24T23:54:16.872428+05:30"
+    description: A Helm chart for Kubernetes to deploy hyperswitch application
+    digest: 9a5a5d34d798135a87b1e1ab8bab689219865e4a22cfe2f8ec7ed8aea732f43a
+    name: hyperswitch-helm
+    type: application
+    urls:
+    - 
+    version: 0.1.0
+generated: "2023-10-24T23:54:16.869677+05:30"
