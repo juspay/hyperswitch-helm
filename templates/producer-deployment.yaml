@@ -178,7 +178,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: redis
+          value: {{ .Values.redis.host }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__KMS__KEY_ID
