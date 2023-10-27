@@ -25,7 +25,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
     # Annotations that are to be added the the deployments
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -80,7 +80,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -130,7 +130,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -171,7 +171,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
