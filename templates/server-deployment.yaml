@@ -49,18 +49,10 @@ spec:
           value: "8"
         - name: ROUTER__SERVER__HOST
           value: "0.0.0.0"
-        - name: ROUTER__PROXY__HTTPS_URL
-          value: 
-        - name: ROUTER_HTTPS_PROXY
-          value: 
         - name: ROUTER__MASTER_DATABASE__POOL_SIZE
           value: "15"
         - name: ROUTER__PAYOUTS__PAYOUT_ELIGIBILITY
           value: "true"
-        - name: ROUTER__PROXY__HTTP_URL
-          value: 
-        - name: ROUTER__PROXY__HTTP
-          value: 
         - name: ROUTER__FOREX_API__CALL_DELAY
           value: "21600"
         - name: ROUTER__FOREX_API__API_KEY
@@ -84,15 +76,13 @@ spec:
         - name: ROUTER__APPLEPAY_MERCHANT_CONFIGS__APPLEPAY_ENDPOINT
           value: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
         - name: ROUTER__LOCKER__HOST
-          value: 
+          value: {{ .Values.application.server.locker.host }}
         - name: ROUTER__LOCKER__MOCK_LOCKER
           value: "false"
         - name: ROUTER__LOG__TELEMETRY__TRACES_ENABLED
           value: "true"
         - name: ROUTER__LOG__TELEMETRY__METRICS_ENABLED
           value: "true"
-        - name: ROUTER__LOG__CONSOLE__LEVEL
-          value: DEBUG
         - name: ROUTER__LOG__FILE__LEVEL
           value: DEBUG
         - name: ROUTER__CONNECTORS__ACI__BASE_URL
@@ -188,9 +178,9 @@ spec:
         - name: ROUTER__LOCKER__LOCKER_SIGNING_KEY_ID
           value: "1"
         - name: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
-          value: "asd"
+          value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__API_KEYS__HASH_KEY
-          value: "asd"
+          value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__SERVER__BASE_URL
           value: https://sandbox.hyperswitch.io
         - name: ROUTER__REDIS__CLUSTER_ENABLED
@@ -236,7 +226,7 @@ spec:
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           value: 
         - name: ROUTER__LOCKER__BASILISK_HOST
-          value: 
+          value: {{ .Values.application.server.basilisk.host }}
         - name: ROUTER__CONNECTORS__SUPPORTED__WALLETS
           value: klarna,braintree,applepay
         - name: ROUTER__CONNECTORS__WISE__BASE_URL
@@ -716,7 +706,7 @@ spec:
         - name: ROUTER__BANK_CONFIG__ONLINE_BANKING_POLAND__ADYEN__BANKS
           value: blik_psp,place_zipko,m_bank,pay_with_ing,santander_przelew24,bank_pekaosa,bank_millennium,pay_with_alior_bank,banki_spoldzielcze,pay_with_inteligo,bnp_paribas_poland,bank_nowy_sa,credit_agricole,pay_with_bos,pay_with_citi_handlowy,pay_with_plus_bank,toyota_bank,velo_bank,e_transfer_pocztowy24
         - name: ROUTER__REPLICA_DATABASE__HOST
-          value: 
+          value: {{ .Values.db.host }}
         - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
           value: "7"
         - name: ROUTER__KAFKA__ENABLED
@@ -732,13 +722,13 @@ spec:
         - name: ROUTER__KAFKA__REFUND_ANALYTICS_TOPIC
           value: hyperswitch-refund-events
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
-          value: 
+          value: {{ .Values.application.server.secrets.kms_admin_api_key }}
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
-          value: 
+          value: {{ .Values.application.server.secrets.kms_jwt_secret }}
         - name: ROUTER__SECRETS__ADMIN_API_KEY
-          value: 
+          value: {{ .Values.application.server.secrets.admin_api_key }}
         - name: ROUTER__SECRETS__JWT_SECRET
-          value: 
+          value: {{ .Values.application.server.secrets.jwt_secret }}
         - name: RUN_ENV
           value: sandbox
         - name: RUST_MIN_STACK
@@ -864,7 +854,7 @@ spec:
         - name: ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT
           value: http://otel-collector.router.svc.cluster.local:4317
         - name: ROUTER__SECRETS__MASTER_ENC_KEY
-          value: 
+          value: {{ .Values.application.server.master_enc_key }}
         - name: ROUTER__CONNECTOR_REQUEST_REFERENCE_ID_CONFIG__MERCHANT_IDS_SEND_PAYMENT_ID_AS_CONNECTOR_REQUEST_ID
           value: 
         - name: ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP
@@ -910,7 +900,7 @@ spec:
         - name: ROUTER__CONNECTORS__OPAYO__BASE_URL
           value: https://pi-test.sagepay.com/
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_RECON_ADMIN_API_KEY
-          value: 
+          value: {{ .Values.application.server.secrets.recon_admin_api_key }}
         - name: ROUTER__CONNECTORS__BRAINTREE__SECONDARY_BASE_URL
           value: https://payments.sandbox.braintree-api.com/graphql
         - name: ROUTER__TOKENIZATION__BRAINTREE__LONG_LIVED_TOKEN
@@ -946,13 +936,13 @@ spec:
         - name: ROUTER__MASTER_DATABASE__HOST
           value: {{ .Values.db.host }}
         - name: ROUTER__MASTER_DATABASE__DBNAME
-          value: hyperswitch_db
+          value: {{ .Values.db.name }}
         - name: ROUTER__MASTER_DATABASE__PORT
           value: "5432"
         - name: ROUTER__MASTER_DATABASE__USERNAME
-          value: db_user
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__MASTER_DATABASE__PASSWORD
-          value: db_pass
+          value: {{ .Values.db.password }}
         - name: ROUTER__REPLICA_DATABASE__DBNAME
           value: hyperswitch_db
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
@@ -963,6 +953,12 @@ spec:
           value: "5432"
         - name: ROUTER__REPLICA_DATABASE__USERNAME
           value: db_user
+        - name: ROUTER__LOG__CONSOLE__ENABLED
+          value: "true"
+        - name: ROUTER__LOG__CONSOLE__LEVEL
+          value: "DEBUG"
+        - name: ROUTER__LOG__CONSOLE__LOG_FORMAT
+          value: "json"
         - name: ROUTER__LOG__TELEMETRY__USE_XRAY_GENERATOR
           value: "true"
         - name: ROUTER__LOG__TELEMETRY__SAMPLING_RATE
