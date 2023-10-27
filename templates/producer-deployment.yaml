@@ -65,12 +65,18 @@ spec:
           value: debug
         - name: ROUTER__KEYS__SERVICE_MOCK_UP
           value: "false"
-        - name: ROUTER__PROXY__HTTPS_URL
-          value: 
-        - name: ROUTER_HTTPS_PROXY
-          value: 
+        - name: ROUTER__MASTER_DATABASE__HOST
+          value: {{ .Values.db.host }}
         - name: ROUTER__MASTER_DATABASE__POOL_SIZE
           value: "30"
+        - name: ROUTER__MASTER_DATABASE__DBNAME
+          value: {{ .Values.db.name }}
+        - name: ROUTER__MASTER_DATABASE__PORT
+          value: "5432"
+        - name: ROUTER__MASTER_DATABASE__USERNAME
+          value: {{ .Values.db.user_name }}
+        - name: ROUTER__MASTER_DATABASE__PASSWORD
+          value: {{ .Values.db.password }}
         - name: ROUTER__LOCKER__MOCK_LOCKER
           value: "false"
         - name: ROUTER__LOCKER__LOCKER_SETUP
@@ -172,7 +178,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: redis
+          value: {{ .Values.redis.host }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__KMS__KEY_ID

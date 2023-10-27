@@ -93,6 +93,17 @@ application:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: router
+    secrets:
+      kms_admin_api_key: test_admin
+      kms_jwt_secret: test_admin
+      admin_api_key: test_admin
+      jwt_secret: test_admin
+      recon_admin_api_key: test_admin
+    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+    locker:
+      host: locker-host
+    basilisk:
+      host: basilisk-host
   consumer:
     # Image to be used by the deployment to create the pod
     image: juspaydotin/hyperswitch-consumer:beta
@@ -196,14 +207,17 @@ services:
 #     alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
 
 redis:
-  host: "asdas"
+  host: "redis"
   replicaCount: 1
 
 loadBalancer: 
-  targetSecurityGroup: 
+  targetSecurityGroup: loadBalancer-sg
 
 db: 
-  host: "asdsad"
+  name: hyperswitch
+  host: db_host
+  user_name: db_user
+  password: db_pass
 
 loki:
   auth_enabled: false

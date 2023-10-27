@@ -74,9 +74,9 @@ spec:
         - name: ROUTER__ANALYTICS__SQLX__USERNAME
           value: app_rw
         - name: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
-          value: "asd"
+          value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__API_KEYS__HASH_KEY
-          value: "asd"
+          value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__BANK_CONFIG__EPS__ADYEN__BANKS
           value: bank_austria,bawag_psk_ag,dolomitenbank,easybank_ag,erste_bank_und_sparkassen,hypo_tirol_bank_ag,posojilnica_bank_e_gen,raiffeisen_bankengruppe_osterreich,schoellerbank_ag,sparda_bank_wien,volksbank_gruppe,volkskreditbank_ag
         - name: ROUTER__BANK_CONFIG__EPS__STRIPE__BANKS
@@ -390,18 +390,20 @@ spec:
           value: stripe,adyen
         - name: ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__PAYPAL__CONNECTOR_LIST
           value: adyen
+        - name: ROUTER__MASTER_DATABASE__HOST
+          value: {{ .Values.db.host }}
         - name: ROUTER__MASTER_DATABASE__POOL_SIZE
           value: "30"
         - name: ROUTER__MASTER_DATABASE__DBNAME
-          value: hyperswitch_db
+          value: {{ .Values.db.name }}
         - name: ROUTER__MASTER_DATABASE__PORT
           value: "5432"
         - name: ROUTER__MASTER_DATABASE__USERNAME
-          value: 
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__MASTER_DATABASE__PASSWORD
-          value: 
+          value: {{ .Values.db.password }}
         - name: ROUTER__REPLICA_DATABASE__DBNAME
-          value: 
+          value: {{ .Values.db.name }}
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
           value: 
         - name: ROUTER__REPLICA_DATABASE__POOL_SIZE
@@ -855,7 +857,6 @@ spec:
         - name: ROUTER__CRM__TOKEN
           value: 
         - name: ROUTER__CRM__URL
-        - name: ROUTER__PROXY__HTTPS_URL
           value: 
         - name: ROUTER__REDIS__CLUSTER_ENABLED
           value: "false"
@@ -874,7 +875,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: redis
+          value: {{ .Values.redis.host }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
@@ -987,8 +988,6 @@ spec:
           value: SCHEDULER_GROUP
         - name: ROUTER__SCHEDULER__CONSUMER__DISABLED
           value: "false"
-        - name: ROUTER_HTTPS_PROXY
-          value: 
         image: {{ .Values.application.consumer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
