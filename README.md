@@ -1,4 +1,4 @@
-# Loki-Stack Helm Chart
+# Hyperswitch Helm Chart
 This `hyperswitch-helm` Helm chart is a community maintained chart.
 
 ## Prerequisites
