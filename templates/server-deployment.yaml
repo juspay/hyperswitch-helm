@@ -182,7 +182,7 @@ spec:
         - name: ROUTER__API_KEYS__HASH_KEY
           value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__SERVER__BASE_URL
-          value: https://sandbox.hyperswitch.io
+          value: {{ .Values.application.server.server_base_url }}
         - name: ROUTER__REDIS__CLUSTER_ENABLED
           value: "false"
         - name: ROUTER__REDIS__USE_LEGACY_VERSION
