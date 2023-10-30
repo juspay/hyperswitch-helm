@@ -104,6 +104,7 @@ application:
       host: locker-host
     basilisk:
       host: basilisk-host
+    server_base_url: https://sandbox.hyperswitch.io
   consumer:
     # Image to be used by the deployment to create the pod
     image: juspaydotin/hyperswitch-consumer:beta
