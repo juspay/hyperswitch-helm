@@ -15,7 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/healthy-threshold-count: "5"
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-alb-ingress-lb
+    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
     alb.ingress.kubernetes.io/tags: stack=hyperswitch
