@@ -402,16 +402,18 @@ spec:
           value: {{ .Values.db.user_name }}
         - name: ROUTER__MASTER_DATABASE__PASSWORD
           value: {{ .Values.db.password }}
+        - name: ROUTER__REPLICA_DATABASE__HOST
+          value: {{ .Values.db.host }}
         - name: ROUTER__REPLICA_DATABASE__DBNAME
           value: {{ .Values.db.name }}
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
-          value: 
+          value: {{ .Values.db.password }}
         - name: ROUTER__REPLICA_DATABASE__POOL_SIZE
           value: "5"
         - name: ROUTER__REPLICA_DATABASE__PORT
           value: "5432"
         - name: ROUTER__REPLICA_DATABASE__USERNAME
-          value: db_user
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__PAYOUTS__PAYOUT_ELIGIBILITY
           value: "true"
         - name: ROUTER__PM_FILTERS__ADYEN__ACH__COUNTRY
