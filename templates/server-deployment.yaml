@@ -944,15 +944,15 @@ spec:
         - name: ROUTER__MASTER_DATABASE__PASSWORD
           value: {{ .Values.db.password }}
         - name: ROUTER__REPLICA_DATABASE__DBNAME
-          value: hyperswitch_db
+          value: {{ .Values.db.name }}
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
-          value: db_pass
+          value: {{ .Values.db.password }}
         - name: ROUTER__REPLICA_DATABASE__POOL_SIZE
           value: "20"
         - name: ROUTER__REPLICA_DATABASE__PORT
           value: "5432"
         - name: ROUTER__REPLICA_DATABASE__USERNAME
-          value: db_user
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__LOG__CONSOLE__ENABLED
           value: "true"
         - name: ROUTER__LOG__CONSOLE__LEVEL
