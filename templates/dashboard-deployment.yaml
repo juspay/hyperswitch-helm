@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations: 
+  {{- with (default .Values.application.global.annotations .Values.application.dashboard.annotations) }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  generation: 1
+  name: hyperswitch-control-center-0f746cb72517
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.dashboard.progressDeadlineSeconds}}
+  replicas: {{ default .Values.application.global.replicas .Values.application.dashboard.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Values.application.dashboard.labels.app }}
+      version: 0f746cb72517
+  strategy:
+  {{- with (default .Values.application.global.strategy .Values.application.dashboard.strategy) }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.application.dashboard.labels.app }}
+        version: 0f746cb72517
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.dashboard.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      containers:
+      - env:
+        - name: apiBaseUrl
+          value: {{ .Values.application.dashboard.env.apiBaseUrl }}
+        - name: sdkBaseUrl
+          value: {{ .Values.application.dashboard.env.sdkBaseUrl }}
+        image: {{ .Values.application.dashboard.image }}
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - pkill -15 node
+        name: hyperswitch-control-center
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /local/config/production.toml
+          name: hyperswitch-config
+          subPath: production.toml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: hyperswitch-router-role
+      serviceAccountName: hyperswitch-router-role
+      terminationGracePeriodSeconds: {{ .Values.application.dashboard.terminationGracePeriodSeconds}}
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: hyperswitch-config
+        name: hyperswitch-config
