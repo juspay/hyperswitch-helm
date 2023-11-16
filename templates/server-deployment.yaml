@@ -734,15 +734,15 @@ spec:
         - name: RUST_MIN_STACK
           value: "4194304"
         - name: ROUTER__ANALYTICS__SOURCE
-          value: clickhouse
+          value: sqlx
         - name: ROUTER__ANALYTICS__CLICKHOUSE__USERNAME
-          value: 
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
-          value: 
+          value: {{ .Values.db.password }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: hyperswitch
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
-          value: 
+          value: {{ .Values.db.host }}
         - name: ROUTER__CONNECTORS__ZEN__BASE_URL
           value: https://api.zen-test.com/
         - name: ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL
