@@ -56,7 +56,7 @@ application:
   server:
 
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-router:beta
+    image: juspaydotin/hyperswitch-router:v1.78.0-standalone
     # Number of replicas to be used for the application
     replicas: 3
     # Wait time allowed for the deployment before the deployment is marked as failed
