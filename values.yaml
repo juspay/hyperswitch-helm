@@ -211,10 +211,14 @@ redis:
   host: "redis"
   replicaCount: 1
 
-loadBalancer: 
+loadBalancer:
+  hyperswitchLogs:
+    arn: arn:aws:elasticloadbalancing:ap-south-1:123456789012:loadbalancer/app/hyperswitch-logs/1234567890123456
+  hyperswitchServer:
+    arn: arn:aws:elasticloadbalancing:ap-south-1:123456789012:loadbalancer/app/hyperswitch/1234567890123456
   targetSecurityGroup: loadBalancer-sg
 
-db: 
+db:
   name: hyperswitch
   host: db_host
   user_name: db_user
