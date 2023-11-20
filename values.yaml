@@ -228,6 +228,51 @@ application:
       apiBaseUrl: http://localhost:8080
       sdkBaseUrl: http://localhost:8080/v1/HyperLoader.js
 
+  sdk:
+    # Image to be used by the deployment to create the pod
+    image: juspaydotnet/hyperswitch-web:v1.0.0
+    # Number of replicas to be used for the application
+    replicas: 1
+    # Wait time allowed for the deployment before the deployment is marked as failed
+    progressDeadlineSeconds: 600
+    # The strategy that can be used to replace the old pods by new ones
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    # Specify affinity for nodes to which the pods should start on
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                  - generic-compute
+    # The time kubernetes will wait after sending the termination signal to the pods
+    terminationGracePeriodSeconds: 30
+    # Annotations that are to be added to the pods (extends global configuration)
+    podAnnotations:
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+    # Annotations that are to be added the the deployments (extends global configuration)
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    # Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+    labels:
+      app: hyperswitch-sdk
+    # service account annotations to be used
+    serviceAccountAnnotations:
+      eks.amazonaws.com/role-arn: 
+    # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+    env:
+      binary: sdk
+      hyperswitchPublishableKey: pub_key
+      hyperswitchSecretKey: secret_key
+      hyperswitchServerUrl: server_url
+      hyperSwitchClientUrl: client_url
+      selfServerUrl: ENTER_YOUR_SERVER_APPLICATION_URL
+
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   # labels to be used bht the service
