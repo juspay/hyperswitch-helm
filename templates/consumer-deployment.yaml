@@ -5,12 +5,9 @@ metadata:
   {{- with (default .Values.application.global.annotations .Values.application.consumer.annotations) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  creationTimestamp: "2023-10-04T10:12:37Z"
   generation: 1
   name: hyperswitch-consumer-consumer-v1o47o0ohotfixo3
   namespace: {{ .Release.Namespace }}
-  resourceVersion: "121599689"
-  uid: d8891b07-29ca-49b4-900e-0642bf39216d
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.consumer.progressDeadlineSeconds }}
   replicas: {{ default .Values.application.global.replicas .Values.application.consumer.replicas }}
