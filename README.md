@@ -1,14 +1,14 @@
 
 # Hyperswitch Helm Chart
 
-This Helm chart is designed to facilitate the deployment of Hyperswitch services, including the AppServer, Control Center, Scheduler services, and the Demo app.
+This Helm chart is designed to facilitate the deployment of Hyperswitch services, including the AppServer, Control Center, Scheduler services, and the Demo web application.
 
-## Configuration
+## Installation Steps
 
-### Build Hyperloader JS
-Please follow the steps below to build your custom HyperloaderJS:
+### Build HyperLoader.js (WEB SDK)
+Follow the steps below to build your custom HyperLoader.js:
 
-1. Before running the command, please check `envSdkUrl` and `envBackendUrl`:
+1. Before running the command, please update the following envs with respective values `envSdkUrl` and `envBackendUrl`:
 
 ```bash
 export envSdkUrl=https://hyperswitch-sdk/
@@ -26,9 +26,12 @@ npm install
 npm run re:build
 envSdkUrl=$envSdkUrl envBackendUrl=$envBackendUrl npm run build:integ
 ```
-After running the above commands, a /dist folder will be created. This folder will contain Hyperloader.js.
+After running the above commands, a /dist folder will be created. This folder will contain HyperLoader.js.
 
-4. Host all the contents of the /dist folder. Ensure that you can reach `https://your_host/0.5.6/v0/Hyperloader.js`. For eg: You can copy all the contents of dist into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://your_s3_host/0.5.6/v0/Hyperloader.js`. 
+4. Host all the contents of the /dist folder. Ensure that you can reach `https://{{your_host}}/0.5.6/v0/HyperLoader.js`. 
+```
+For eg: You can copy all the contents of /dist into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
+ ```
 
 
 ### Update Configuration
@@ -38,12 +41,21 @@ To deploy the Helm chart, you need to update following values for each service i
 |----------------|-------------------------------|-----------------------------|
 |App Server|`application.server.server_base_url` |Set to the hostname of your Hyperswitch backend for redirection scenarios.|
 |          |`application.server.secrets.admin_api_key`            |Used for all admin operations. Replace `"admin_api_key"` with your actual admin API key.            |
-| Control Center| `application.dashboard.env.apiBaseUrl` | Set to the hostname of your Hyperswitch backend to access the Hyperswitch backend. |
-| | `application.dashboard.env.sdkBaseUrl` | Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK. |
+|          |`redis.host`            |Hostname of your redis service. it should run in default port 6379            |
+|          |`db.name`            |Postgres Database name.            |
+|          |`db.host`            |Database Host name            |
+|          |`db.user_name`            |Database username            |
+|          |`db.password`            |Database password            |
+| Control Center| `application.dashboard.env.apiBaseUrl` | Set to the hostname of your Hyperswitch backend, so that Control center can access the Hyperswitch backend. |
+| | `application.dashboard.env.sdkBaseUrl` | Set to the URL of your hosted Hyperloader, so that you can test Hyperswitch Web SDK  in the Control Center. <br/> Eg: https://{{your_host}}/0.5.6/v0/HyperLoader.js |
 | Hyperswitch Demo Store | `application.sdkDemo.env.hyperswitchServerUrl` | Set to the hostname of your Hyperswitch backend to access the Hyperswitch backend. |
-| | `application.sdkDemo.env.hyperSwitchClientUrl` | Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK. |
+| | `application.sdkDemo.env.hyperSwitchClientUrl` | Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK. <br/> Eg: https://{{your_host}}/0.5.6/v0 |
 
 ## Installation
+### Prerequisite
+- [ ] Postgres database created and schema migration completed
+- [ ] Active redis service
+
 Use below command to install hyperswitch services with above configs
 ```bash
 helm install hyperswitch-v1 . -n hyperswitch
