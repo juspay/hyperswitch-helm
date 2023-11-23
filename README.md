@@ -11,8 +11,8 @@ Please follow the steps below to build your custom HyperloaderJS:
 1. Before running the command, please check `envSdkUrl` and `envBackendUrl`:
 
 ```bash
-export envSdkUrl=https://hyperswitch-sdk.dev.hub.flowbird.cloud/
-export envBackendUrl=https://hyperswitch.dev.hub.flowbird.cloud/
+export envSdkUrl=https://hyperswitch-sdk/
+export envBackendUrl=https://hyperswitch/
 ```
 2. Clone the Hyperswitch web repository and checkout to version v0.5.6:
 ```bash
