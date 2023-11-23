@@ -32,7 +32,8 @@ After running the above commands, a /dist folder will be created. This folder wi
 ```
 For eg: You can copy all the contents of /dist into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
  ```
-
+### Card Vault installation
+If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation)
 
 ### Update Configuration
 To deploy the Helm chart, you need to update following values for each service in `values.yaml`
@@ -41,6 +42,7 @@ To deploy the Helm chart, you need to update following values for each service i
 |----------------|-------------------------------|-----------------------------|
 |App Server|`application.server.server_base_url` |Set to the hostname of your Hyperswitch backend for redirection scenarios.|
 |          |`application.server.secrets.admin_api_key`            |Used for all admin operations. Replace `"admin_api_key"` with your actual admin API key.            |
+|          |`application.server.locker.host`            |[Card Vault](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation) Hostname            |
 |          |`redis.host`            |Hostname of your redis service. it should run in default port 6379            |
 |          |`db.name`            |Postgres Database name.            |
 |          |`db.host`            |Database Host name            |
@@ -54,6 +56,10 @@ To deploy the Helm chart, you need to update following values for each service i
 ## Installation
 ### Prerequisite
 - [ ] Postgres database created and schema migration completed
+```bash
+git clone https://github.com/juspay/hyperswitch.git
+diesel migration --database-url postgres://{{user}}:{{password}}@localhost:5432/hyperswitch run 
+```
 - [ ] Active redis service
 
 Use below command to install hyperswitch services with above configs
