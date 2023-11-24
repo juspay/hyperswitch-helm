@@ -26,11 +26,11 @@ npm install
 npm run re:build
 envSdkUrl=$envSdkUrl envBackendUrl=$envBackendUrl npm run build:integ
 ```
-After running the above commands, a /dist folder will be created. This folder will contain HyperLoader.js.
+After running the above commands, a /dist/integ folder will be created. This folder will contain HyperLoader.js.
 
-4. Host all the contents of the /dist folder. Ensure that you can reach `https://{{your_host}}/0.5.6/v0/HyperLoader.js`. 
+4. Host all the contents of the /dist/integ folder. Ensure that you can reach `https://{{your_host}}/0.5.6/v0/HyperLoader.js`. 
 ```
-For eg: You can copy all the contents of /dist into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
+For eg: You can copy all the contents of /dist/integ into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
  ```
 ### Card Vault installation
 If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation)
