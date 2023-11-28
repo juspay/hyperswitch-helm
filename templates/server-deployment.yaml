@@ -224,9 +224,11 @@ spec:
         - name: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2
           value: 
         - name: ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY
-          value: {{ .Values.application.server.locker.locker_public_key }}
+          value: |
+            {{- .Values.application.server.locker.locker_public_key | toYaml | indent 14 }}
         - name: ROUTER__JWEKEY__VAULT_PRIVATE_KEY
-          value: {{ .Values.application.server.locker.hyperswitch_private_key }}
+          value: |
+            {{- .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 14 }}
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           value: 
         - name: ROUTER__LOCKER__BASILISK_HOST
