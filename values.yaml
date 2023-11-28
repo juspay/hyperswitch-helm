@@ -102,6 +102,8 @@ application:
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: locker-host
+      locker_public_key: "public"
+      hyperswitch_private_key: "private"
     basilisk:
       host: basilisk-host
     server_base_url: https://sandbox.hyperswitch.io
