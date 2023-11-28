@@ -232,7 +232,7 @@ application:
 
   sdk:
     # Image to be used by the deployment to create the pod
-    image: juspaydotnet/hyperswitch-web:v1.0.0
+    image: juspaydotin/hyperswitch-web:v1.0.0
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
