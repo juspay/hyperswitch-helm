@@ -225,10 +225,10 @@ spec:
           value: 
         - name: ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY
           value: |
-            {{- .Values.application.server.locker.locker_public_key | toYaml | indent 14 }}
+            {{ .Values.application.server.locker.locker_public_key | nindent 12 }}
         - name: ROUTER__JWEKEY__VAULT_PRIVATE_KEY
           value: |
-            {{- .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 14 }}
+            {{ .Values.application.server.locker.hyperswitch_private_key | nindent 12 }}
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           value: 
         - name: ROUTER__LOCKER__BASILISK_HOST
