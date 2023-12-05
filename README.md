@@ -90,11 +90,11 @@ By following these steps, you can ensure that your Hyperswitch services are corr
 | Hyperswitch Demo Store | `application.sdkDemo.env.hyperswitchPublishableKey` | This should be set to your merchant publishable key. You will get this once you create a merchant. |
 | | `application.sdkDemo.env.hyperswitchSecretKey` | This should be set to your merchant secret key. You can create this from the control center or via the REST API. |
 
-Run helm upgrade to restart pods with updated config
+<b> Run helm upgrade to restart pods with updated config </b>
 ```bash
-helm upgrade --install hyperswitch-v1 . -n hyperswitch
+helm upgrade --install hyperswitch-v1 . -n hyperswitch -f values.yaml
 ```
-Now open the Demo APP and make a payment with test card.
+Now open the Demo APP and [make a payment with test card](https://opensource.hyperswitch.io/hyperswitch-open-source/test-a-payment).
 
 Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyperswitch/folder/25176183-0103918c-6611-459b-9faf-354dee8e4437) to try out REST APIs
 
