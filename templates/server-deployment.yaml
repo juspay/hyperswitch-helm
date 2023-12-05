@@ -959,7 +959,7 @@ spec:
           value: "180"
         - name: ROUTER__LOCK_SETTINGS__DELAY_BETWEEN_RETRIES_IN_MILLISECONDS
           value: "500"
-        - name: ROUTER__FRM__IS_FRM_ENABLED
+        - name: ROUTER__FRM__ENABLED
           value: "true"
         - name: ROUTER__CONNECTORS__VOLT__BASE_URL
           value: https://api.sandbox.volt.io/
@@ -1007,6 +1007,8 @@ spec:
           value: "true"
         - name: ROUTER__OSS_DECISION_MANAGER__OSS_3DS_DECISION_ENABLED
           value: "true"
+        - name: ROUTER__CONNECTORS__SIGNIFYD__BASE_URL
+          value: https://api.signifyd.com/
         image: {{ .Values.application.server.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

@@ -1026,6 +1026,10 @@ spec:
           value: "true"
         - name: ROUTER__OSS_DECISION_MANAGER__OSS_3DS_DECISION_ENABLED
           value: "true"
+        - name: ROUTER__FRM__ENABLED
+          value: "true"
+        - name: ROUTER__CONNECTORS__SIGNIFYD__BASE_URL
+          value: https://api.signifyd.com/
         image: {{ .Values.application.consumer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
