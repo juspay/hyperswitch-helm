@@ -11,8 +11,8 @@ Follow the steps below to build your custom HyperLoader.js:
 1. Before running the command, please update the following envs with respective values `envSdkUrl` and `envBackendUrl`:
 
 ```bash
-export envSdkUrl=https://hyperswitch-sdk/
-export envBackendUrl=https://hyperswitch/
+export envSdkUrl=https://hyperswitch-sdk #do not add / at the end
+export envBackendUrl=https://hyperswitch #do not add / at the end
 ```
 2. Clone the Hyperswitch web repository and checkout to version v0.5.6:
 ```bash
@@ -33,7 +33,7 @@ After running the above commands, a /dist/integ folder will be created. This fol
 For eg: You can copy all the contents of /dist/integ into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
  ```
 ### Card Vault installation
-If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation)
+If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation) or use [this doc to deploy card vault in aws](https://opensource.hyperswitch.io/hyperswitch-open-source/deploy-hyperswitch-on-aws/deploy-card-vault)
 
 ### Update Configuration
 To deploy the Helm chart, you need to update following values for each service in `values.yaml`
@@ -90,11 +90,11 @@ By following these steps, you can ensure that your Hyperswitch services are corr
 | Hyperswitch Demo Store | `application.sdkDemo.env.hyperswitchPublishableKey` | This should be set to your merchant publishable key. You will get this once you create a merchant. |
 | | `application.sdkDemo.env.hyperswitchSecretKey` | This should be set to your merchant secret key. You can create this from the control center or via the REST API. |
 
-Run helm upgrade to restart pods with updated config
+<b> Run helm upgrade to restart pods with updated config </b>
 ```bash
-helm upgrade --install hyperswitch-v1 . -n hyperswitch
+helm upgrade --install hyperswitch-v1 . -n hyperswitch -f values.yaml
 ```
-Now open the Demo APP and make a payment with test card.
+Now open the Demo APP and [make a payment with test card](https://opensource.hyperswitch.io/hyperswitch-open-source/test-a-payment).
 
 Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyperswitch/folder/25176183-0103918c-6611-459b-9faf-354dee8e4437) to try out REST APIs
 

@@ -6,7 +6,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: hyperswitch-consumer-consumer-v1o47o0ohotfixo3
+  name: hyperswitch-consumer-v1o47o0ohotfixo3
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.consumer.progressDeadlineSeconds }}
@@ -44,32 +44,29 @@ spec:
               {{- toYaml . | nindent 14 }}
             {{- end }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
-          value: hyperswitch
+          value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
-          value: 
+          value: {{ .Values.db.host }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
-          value: 
+          value: {{ .Values.db.password }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__USERNAME
-          value: 
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__SOURCE
-          value: 
+          value: sqlx
         - name: ROUTER__ANALYTICS__SQLX__CONNECTION_TIMEOUT
           value: "10"
         - name: ROUTER__ANALYTICS__SQLX__DBNAME
-          value: hyperswitch
+          value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__SQLX__HOST
-          value: 
+          value: {{ .Values.db.host }}
         - name: ROUTER__ANALYTICS__SQLX__PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
-              name: hyperswitch-secrets
+          value: {{ .Values.db.password }}
         - name: ROUTER__ANALYTICS__SQLX__POOL_SIZE
           value: "20"
         - name: ROUTER__ANALYTICS__SQLX__PORT
           value: "5432"
         - name: ROUTER__ANALYTICS__SQLX__USERNAME
-          value: app_rw
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
           value: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         - name: ROUTER__API_KEYS__HASH_KEY
@@ -207,9 +204,9 @@ spec:
         - name: ROUTER__CONNECTORS__WORLDPAY__BASE_URL
           value: https://try.access.worldpay.com/
         - name: ROUTER__CONNECTORS__ZEN__BASE_URL
-          value: https://api.zen.com/
+          value: https://api.zen-test.com/
         - name: ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL
-          value: https://secure.zen.com/
+          value: https://secure.zen-test.com/
         - name: ROUTER__CONNECTOR_CUSTOMER__CONNECTOR_LIST
           value: stax,stripe,gocardless
         - name: ROUTER__CONNECTOR_CUSTOMER__PAYOUT_CONNECTOR_LIST
@@ -948,7 +945,7 @@ spec:
         - name: ROUTER__CONNECTORS__CASHTOCODE__BASE_URL
           value: https://cluster14.api.cashtocode.com
         - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
-          value: "7"
+          value: "0"
         - name: ROUTER__CONNECTORS__BRAINTREE__SECONDARY_BASE_URL
           value: https://payments.braintree-api.com/graphql
         - name: ROUTER__TOKENIZATION__BRAINTREE__LONG_LIVED_TOKEN
@@ -987,6 +984,48 @@ spec:
           value: SCHEDULER_GROUP
         - name: ROUTER__SCHEDULER__CONSUMER__DISABLED
           value: "false"
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED
+          value: "true"
+        - name: ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY
+          value: "Fifo"
+        - name: ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY
+          value: 
+        - name: ROUTER__PAYMENT_METHOD_AUTH__REDIS_EXPIRY
+          value: "900"
+        - name: ROUTER__EMAIL__SENDER_EMAIL
+          value: 
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__REFUND_FUNCTION
+          value: "weekly_refund_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__DISPUTE_FUNCTION
+          value: "weekly_dispute_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__PAYMENT_FUNCTION
+          value: "weekly_payment_report_generator_step_1"
+        - name: ROUTER__EMAIL__ACTIVE_EMAIL_CLIENT
+          value: "SES"
+        - name: ROUTER__EVENTS__SOURCE
+          value: "logs"
+        - name: ROUTER__EVENTS__KAFKA__BROKERS
+          value: "hyper-c1-kafka-brokers.kafka-cluster.svc.cluster.local:9092"
+        - name: ROUTER__EVENTS__KAFKA__ATTEMPT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-attempt-events
+        - name: ROUTER__EVENTS__KAFKA__API_LOGS_TOPIC
+          value: hyperswitch-api-log-events
+        - name: ROUTER__EVENTS__KAFKA__INTENT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-intent-events
+        - name: ROUTER__EVENTS__KAFKA__REFUND_ANALYTICS_TOPIC
+          value: hyperswitch-refund-events
+        - name: ROUTER__EVENTS__KAFKA__CONNECTOR_EVENTS_TOPIC
+          value: hyperswitch-connector-api-events
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_SURCHARGE_DECISION_ENABLED
+          value: "true"
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_3DS_DECISION_ENABLED
+          value: "true"
         image: {{ .Values.application.consumer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

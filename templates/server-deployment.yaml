@@ -226,7 +226,7 @@ spec:
         - name: ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY
           value: {{ .Values.application.server.locker.locker_public_key | toYaml | indent 12 }}
         - name: ROUTER__JWEKEY__VAULT_PRIVATE_KEY
-          value:{{ .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 12 }}
+          value: {{ .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 12 }}
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           value: 
         - name: ROUTER__LOCKER__BASILISK_HOST
@@ -711,20 +711,6 @@ spec:
           value: blik_psp,place_zipko,m_bank,pay_with_ing,santander_przelew24,bank_pekaosa,bank_millennium,pay_with_alior_bank,banki_spoldzielcze,pay_with_inteligo,bnp_paribas_poland,bank_nowy_sa,credit_agricole,pay_with_bos,pay_with_citi_handlowy,pay_with_plus_bank,toyota_bank,velo_bank,e_transfer_pocztowy24
         - name: ROUTER__REPLICA_DATABASE__HOST
           value: {{ .Values.db.host }}
-        - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
-          value: "7"
-        - name: ROUTER__KAFKA__ENABLED
-          value: "true"
-        - name: ROUTER__KAFKA__BROKERS
-          value: 
-        - name: ROUTER__KAFKA__ATTEMPT_ANALYTICS_TOPIC
-          value: hyperswitch-payment-attempt-events
-        - name: ROUTER__KAFKA__API_LOGS_TOPIC
-          value: hyperswitch-api-log-events
-        - name: ROUTER__KAFKA__INTENT_ANALYTICS_TOPIC
-          value: hyperswitch-payment-intent-events
-        - name: ROUTER__KAFKA__REFUND_ANALYTICS_TOPIC
-          value: hyperswitch-refund-events
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
           value: {{ .Values.application.server.secrets.kms_admin_api_key }}
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
@@ -932,7 +918,7 @@ spec:
         - name: ROUTER__TEMP_LOCKER_ENABLE_CONFIG__BLUESNAP__PAYMENT_METHOD
           value: card
         - name: ROUTER__REPORT_DOWNLOAD_CONFIG__FUNCTION_NAME
-          value: psql_replica_reports_step_1
+          value: weekly_payment_report_generator_step_1
         - name: ROUTER__REPORT_DOWNLOAD_CONFIG__REGION
           value: eu-central-1
         - name: ROUTER__TOKENIZATION__GOCARDLESS__LONG_LIVED_TOKEN
@@ -977,6 +963,50 @@ spec:
           value: "true"
         - name: ROUTER__CONNECTORS__VOLT__BASE_URL
           value: https://api.sandbox.volt.io/
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED
+          value: "true"
+        - name: ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY
+          value: "Fifo"
+        - name: ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY
+          value: 
+        - name: ROUTER__PAYMENT_METHOD_AUTH__REDIS_EXPIRY
+          value: "900"
+        - name: ROUTER__EMAIL__SENDER_EMAIL
+          value: 
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__REFUND_FUNCTION
+          value: "weekly_refund_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__DISPUTE_FUNCTION
+          value: "weekly_dispute_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__PAYMENT_FUNCTION
+          value: "weekly_payment_report_generator_step_1"
+        - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
+          value: "0"
+        - name: ROUTER__EMAIL__ACTIVE_EMAIL_CLIENT
+          value: "SES"
+        - name: ROUTER__EVENTS__SOURCE
+          value: "logs"
+        - name: ROUTER__EVENTS__KAFKA__BROKERS
+          value: "hyper-c1-kafka-brokers.kafka-cluster.svc.cluster.local:9092"
+        - name: ROUTER__EVENTS__KAFKA__ATTEMPT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-attempt-events
+        - name: ROUTER__EVENTS__KAFKA__API_LOGS_TOPIC
+          value: hyperswitch-api-log-events
+        - name: ROUTER__EVENTS__KAFKA__INTENT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-intent-events
+        - name: ROUTER__EVENTS__KAFKA__REFUND_ANALYTICS_TOPIC
+          value: hyperswitch-refund-events
+        - name: ROUTER__EVENTS__KAFKA__CONNECTOR_EVENTS_TOPIC
+          value: hyperswitch-connector-api-events
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_SURCHARGE_DECISION_ENABLED
+          value: "true"
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_3DS_DECISION_ENABLED
+          value: "true"
         image: {{ .Values.application.server.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

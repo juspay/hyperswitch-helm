@@ -146,9 +146,9 @@ spec:
         - name: ROUTER__CONNECTORS__TRUSTPAY__BASE_URL_BANK_REDIRECTS
           value: https://aapi.trustpay.eu/
         - name: ROUTER__CONNECTORS__ZEN__BASE_URL
-          value: https://api.zen.com/
+          value: https://api.zen-test.com/
         - name: ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL
-          value: https://secure.zen.com/
+          value: https://secure.zen-test.com/
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
           valueFrom:
             secretKeyRef:
@@ -436,18 +436,18 @@ spec:
         - name: ROUTER__DUMMY_CONNECTOR__SLACK_INVITE_URL
           value: 
         - name: ROUTER__ANALYTICS__SQLX__USERNAME
-          value: app_rw
+          value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
           valueFrom:
             secretKeyRef:
               key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
               name: hyperswitch-secrets
         - name: ROUTER__ANALYTICS__SQLX__HOST
-          value:
+          value: {{ .Values.db.host }}
         - name: ROUTER__ANALYTICS__SQLX__PORT
           value: "5432"
         - name: ROUTER__ANALYTICS__SQLX__DBNAME
-          value: hyperswitch
+          value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__SQLX__POOL_SIZE
           value: "20"
         - name: ROUTER__ANALYTICS__SQLX__CONNECTION_TIMEOUT
@@ -463,6 +463,66 @@ spec:
             secretKeyRef:
               key: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
               name: hyperswitch-secrets
+        - name: ROUTER__ANALYTICS__CLICKHOUSE__USERNAME
+          value: {{ .Values.db.user_name }}
+        - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
+          value: {{ .Values.db.password }}
+        - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
+          value: {{ .Values.db.name }}
+        - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
+          value: {{ .Values.db.host }}
+        - name: ROUTER__CONNECTORS__SQUARE__BASE_URL
+          value: https://connect.squareupsandbox.com/
+        - name: ROUTER__CONNECTORS__SQUARE__SECONDARY_BASE_URL
+          value: https://pci-connect.squareupsandbox.com/
+        - name: ROUTER__ANALYTICS__SQLX__PASSWORD
+          value: {{ .Values.db.password }}
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+          value:
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED
+          value: "true"
+        - name: ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY
+          value: "Fifo"
+        - name: ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY
+          value: 
+        - name: ROUTER__PAYMENT_METHOD_AUTH__REDIS_EXPIRY
+          value: "900"
+        - name: ROUTER__EMAIL__SENDER_EMAIL
+          value: 
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__REFUND_FUNCTION
+          value: "weekly_refund_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__DISPUTE_FUNCTION
+          value: "weekly_dispute_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__PAYMENT_FUNCTION
+          value: "weekly_payment_report_generator_step_1"
+        - name: ROUTER__REPORT_DOWNLOAD_CONFIG__REGION
+          value: "eu-central-1"
+        - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
+          value: "0"
+        - name: ROUTER__EMAIL__ACTIVE_EMAIL_CLIENT
+          value: "SES"
+        - name: ROUTER__EVENTS__SOURCE
+          value: "logs"
+        - name: ROUTER__EVENTS__KAFKA__BROKERS
+          value: "hyper-c1-kafka-brokers.kafka-cluster.svc.cluster.local:9092"
+        - name: ROUTER__EVENTS__KAFKA__ATTEMPT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-attempt-events
+        - name: ROUTER__EVENTS__KAFKA__API_LOGS_TOPIC
+          value: hyperswitch-api-log-events
+        - name: ROUTER__EVENTS__KAFKA__INTENT_ANALYTICS_TOPIC
+          value: hyperswitch-payment-intent-events
+        - name: ROUTER__EVENTS__KAFKA__REFUND_ANALYTICS_TOPIC
+          value: hyperswitch-refund-events
+        - name: ROUTER__EVENTS__KAFKA__CONNECTOR_EVENTS_TOPIC
+          value: hyperswitch-connector-api-events
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_SURCHARGE_DECISION_ENABLED
+          value: "true"
+        - name: ROUTER__OSS_DECISION_MANAGER__OSS_3DS_DECISION_ENABLED
+          value: "true"
         image: {{ .Values.application.producer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
