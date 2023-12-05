@@ -111,7 +111,7 @@ application:
     server_base_url: https://sandbox.hyperswitch.io
   consumer:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-consumer:beta
+    image: juspaydotin/hyperswitch-consumer:v1.95.0-standalone
     # Number of replicas to be used for the application
     replicas: 3
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -152,7 +152,7 @@ application:
 
   producer:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-producer:beta
+    image: juspaydotin/hyperswitch-producer:v1.95.0-standalone
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -192,7 +192,7 @@ application:
   
   dashboard:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-control-center:v1.0.0
+    image: juspaydotin/hyperswitch-control-center:v1.1.0
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -234,7 +234,7 @@ application:
 
   sdk:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-web:v1.0.0
+    image: juspaydotin/hyperswitch-web:v1.0.4
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed

@@ -11,8 +11,8 @@ Follow the steps below to build your custom HyperLoader.js:
 1. Before running the command, please update the following envs with respective values `envSdkUrl` and `envBackendUrl`:
 
 ```bash
-export envSdkUrl=https://hyperswitch-sdk/
-export envBackendUrl=https://hyperswitch/
+export envSdkUrl=https://hyperswitch-sdk #do not add / at the end
+export envBackendUrl=https://hyperswitch #do not add / at the end
 ```
 2. Clone the Hyperswitch web repository and checkout to version v0.5.6:
 ```bash
@@ -33,7 +33,7 @@ After running the above commands, a /dist/integ folder will be created. This fol
 For eg: You can copy all the contents of /dist/integ into an AWS s3 bucket under the folder `0.5.6/v0` and make the bucket public. You will able to access `https://{{your_s3_host}}/0.5.6/v0/HyperLoader.js`.
  ```
 ### Card Vault installation
-If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation)
+If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation) or use [this doc to deploy card vault in aws](https://opensource.hyperswitch.io/hyperswitch-open-source/deploy-hyperswitch-on-aws/deploy-card-vault)
 
 ### Update Configuration
 To deploy the Helm chart, you need to update following values for each service in `values.yaml`
