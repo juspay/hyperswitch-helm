@@ -443,7 +443,7 @@ spec:
               key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
               name: hyperswitch-secrets
         - name: ROUTER__ANALYTICS__SQLX__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__ANALYTICS__SQLX__PORT
           value: "5432"
         - name: ROUTER__ANALYTICS__SQLX__DBNAME
@@ -470,7 +470,7 @@ spec:
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__CONNECTORS__SQUARE__BASE_URL
           value: https://connect.squareupsandbox.com/
         - name: ROUTER__CONNECTORS__SQUARE__SECONDARY_BASE_URL
