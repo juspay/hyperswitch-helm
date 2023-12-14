@@ -308,6 +308,7 @@ loadBalancer:
 db: 
   name: hyperswitch
   host: db_host
+  replica_host: replica_db_host
   user_name: db_user
   password: db_pass
 

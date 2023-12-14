@@ -46,6 +46,7 @@ To deploy the Helm chart, you need to update following values for each service i
 |          |`redis.host`            |Hostname of your redis service. it should run in default port 6379            |
 |          |`db.name`            |Postgres Database name.            |
 |          |`db.host`            |Database Host name            |
+|          |`db.replica_host`    |Database Read Replica Host name      |
 |          |`db.user_name`            |Database username            |
 |          |`db.password`            |Database password            |
 | Control Center| `application.dashboard.env.apiBaseUrl` | Set to the hostname of your Hyperswitch backend, so that Control center can access the Hyperswitch backend. |
