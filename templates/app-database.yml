@@ -1,0 +1,85 @@
+{{- if .Values.db.internal }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hyperswitch-db-sfs
+spec:
+  serviceName: "hyperswitch-db-sfs"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperswitch-db-sfs
+  template:
+    metadata:
+      labels:
+        app: hyperswitch-db-sfs
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "PGPASSWORD=$POSTGRES_PASSWORD psql -U $POSTGRES_USER -d $POSTGRES_DB -c 'SELECT 1'"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "PGPASSWORD=$POSTGRES_PASSWORD psql -U $POSTGRES_USER -d $POSTGRES_DB -c 'SELECT 1'"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 4Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  postgresql.conf: |
+    # Add your PostgreSQL configuration here
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperswitch-db
+  labels:
+    app: hyperswitch-db
+spec:
+  type: ClusterIP
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: postgres
+  clusterIP: None
+  selector:
+    app: hyperswitch-db-sfs
+{{- end }}

@@ -49,6 +49,10 @@ spec:
               - -c
               - pkill -15 node
         name: hyperswitch-control-center
+        ports:
+        - containerPort: 9000
+          name: http
+          protocol: TCP
         resources:
           requests:
             cpu: 100m
@@ -73,3 +77,62 @@ spec:
           defaultMode: 420
           name: hyperswitch-config
         name: hyperswitch-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperswitch-control-center
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 9000
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: hyperswitch-control-center
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hyperswitch-control-center-alb-ingress
+  namespace:  {{ .Release.Namespace }}
+  annotations:
+    # alb.ingress.kubernetes.io/backend-protocol: HTTP
+    # alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+    # alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
+    # alb.ingress.kubernetes.io/ip-address-type: ipv4
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    # alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
+    # alb.ingress.kubernetes.io/scheme: internet-facing
+    # alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
+    # alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+    # alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hyperswitch-control-center
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hyperswitch-control-center-role
+  namespace: {{ .Release.Namespace }}

@@ -76,7 +76,10 @@ spec:
         - name: ROUTER__MASTER_DATABASE__USERNAME
           value: {{ .Values.db.user_name }}
         - name: ROUTER__MASTER_DATABASE__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__LOCKER__MOCK_LOCKER
           value: "false"
         - name: ROUTER__LOCKER__LOCKER_SETUP
@@ -466,7 +469,10 @@ spec:
         - name: ROUTER__ANALYTICS__CLICKHOUSE__USERNAME
           value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
@@ -476,7 +482,10 @@ spec:
         - name: ROUTER__CONNECTORS__SQUARE__SECONDARY_BASE_URL
           value: https://pci-connect.squareupsandbox.com/
         - name: ROUTER__ANALYTICS__SQLX__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
           value:
         - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
@@ -527,6 +536,22 @@ spec:
           value: "true"
         - name: ROUTER__CONNECTORS__SIGNIFYD__BASE_URL
           value: https://api.signifyd.com/
+        - name: ROUTER__CONNECTORS__PLACETOPAY__BASE_URL
+          value: "https://test.placetopay.com/rest/gateway"
+        - name: ROUTER__CONNECTORS__RISKIFIED__BASE_URL
+          value: "https://sandbox.riskified.com/api"
+        - name: ROUTER__PM_FILTERS__HELCIM__CREDIT__CURRENCY
+          value: "USD"
+        - name: ROUTER__PM_FILTERS__HELCIM__DEBIT__CURRENCY
+          value: "USD"
+        - name: ROUTER__EVENTS__KAFKA__CONNECTOR_LOGS_TOPIC
+          value: "hyperswitch-connector-log-events"
+        - name: ROUTER__EMAIL__AWS_SES__STS_ROLE_SESSION_NAME
+          value: 
+        - name: ROUTER__EMAIL__AWS_SES__EMAIL_ROLE_ARN
+          value: 
+        - name: ROUTER__MASTER_DATABASE__MIN_IDLE
+          value: "5"
         image: {{ .Values.application.producer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

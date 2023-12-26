@@ -56,7 +56,8 @@ application:
   server:
 
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-router:v1.96.0-standalone
+    image: juspaydotin/hyperswitch-router:v1.105.0-standalone
+    version: v1.105.0
     # Number of replicas to be used for the application
     replicas: 3
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -93,6 +94,7 @@ application:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: router
+      host: hyperswitch
     secrets:
       kms_admin_api_key: test_admin
       kms_jwt_secret: test_admin
@@ -111,9 +113,9 @@ application:
     server_base_url: https://sandbox.hyperswitch.io
   consumer:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-consumer:v1.96.0-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.105.0-standalone
     # Number of replicas to be used for the application
-    replicas: 3
+    replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
     progressDeadlineSeconds: 600
     # The strategy that can be used to replace the old pods by new ones
@@ -152,7 +154,7 @@ application:
 
   producer:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-producer:v1.96.0-standalone
+    image: juspaydotin/hyperswitch-producer:v1.105.0-standalone
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -192,7 +194,7 @@ application:
   
   dashboard:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-control-center:v1.1.0
+    image: juspaydotin/hyperswitch-control-center:v1.15.1
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -229,12 +231,14 @@ application:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: dashboard
+      host: hyperswitch-control-center
       apiBaseUrl: http://localhost:8080
-      sdkBaseUrl: http://localhost:8080/v1/HyperLoader.js
+      sdkBaseUrl: http://localhost:9090/0.16.5/v0/HyperLoader.js
 
   sdk:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-web:v1.0.4
+    image: juspaydotin/hyperswitch-web:v1.0.10
+    version: 0.16.5
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -264,18 +268,20 @@ application:
       deployment.kubernetes.io/revision: "1"
     # Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
     labels:
-      app: hyperswitch-sdk
+      app: hyperswitch-sdk-demo
     # service account annotations to be used
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn: 
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
+      host: hyperswitch-sdk-demo
       binary: sdk
+      hyperSwitchClientUrl: http://localhost:9090/0.16.5/v0/HyperLoader.js
       hyperswitchPublishableKey: pub_key
       hyperswitchSecretKey: secret_key
-      hyperswitchServerUrl: server_url
-      hyperSwitchClientUrl: client_url
+      hyperswitchServerUrl: http://localhost:8080
       selfServerUrl: ENTER_YOUR_SERVER_APPLICATION_URL
+      s3BucketName: #If left empty, the sdk will be served from nginx server otherwise published to s3
 
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
@@ -299,6 +305,7 @@ services:
 #     alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
 
 redis:
+  internal: true #denotes if the redis has to be created as a part of the deployment
   host: "redis"
   replicaCount: 1
 
@@ -306,13 +313,12 @@ loadBalancer:
   targetSecurityGroup: loadBalancer-sg
 
 db: 
+  internal: true #denotes if the db has to be created as a part of the deployment
   name: hyperswitch
-  host: db_host
+  host: hyperswitch-db.hyperswitch.svc.cluster.local
   user_name: db_user
-  password: db_pass
-
-loki:
-  auth_enabled: false
+  password: "ZGJwYXNzd29yZDEx"
+  #psql -h hyperswitch-db.hyperswitch.svc.cluster.local -U db_user -d hyperswitch
 
 autoscaling:
   enabled: true

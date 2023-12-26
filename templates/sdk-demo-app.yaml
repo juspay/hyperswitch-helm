@@ -6,7 +6,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: hyperswitch-sdk-0f746cb72517
+  name: {{ .Values.application.sdk.labels.app }}-0f746cb72517
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.sdk.progressDeadlineSeconds}}
@@ -54,7 +54,7 @@ spec:
               - /bin/bash
               - -c
               - pkill -15 node
-        name: hyperswitch-sdk
+        name: {{ .Values.application.sdk.labels.app }}
         resources:
           requests:
             cpu: 100m
@@ -79,3 +79,56 @@ spec:
           defaultMode: 420
           name: hyperswitch-config
         name: hyperswitch-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.application.sdk.labels.app }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 5252
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 5252
+  selector:
+    app: {{ .Values.application.sdk.labels.app }}
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.application.sdk.labels.app }}-alb-ingress
+  namespace: hyperswitch
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+    alb.ingress.kubernetes.io/group.name: {{ .Values.application.sdk.labels.app }}-alb-ingress-group
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/load-balancer-name: {{ .Values.application.sdk.labels.app }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
+    alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.application.sdk.labels.app }}
+                port:
+                  number: 80

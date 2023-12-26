@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-hyperswitch-db-{{ $.Values.application.server.version }}
+  annotations:
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      containers:
+      - name: create-hyperswitch-db
+        image: postgres:16
+        command: ['sh', '-c']
+        args:
+        - |
+          until PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U postgres \
+          -c "create user $POSTGRES_USER with PASSWORD '$POSTGRES_PASSWORD';" \
+          -c "create database hyperswitch;" \
+          -c "grant all privileges on database $DBNAME to $POSTGRES_USER;" \
+          -c "\c hyperswitch postgres" \
+          -c "grant all on schema public to $POSTGRES_USER;"; do sleep 10; done
+          echo "Completed creating hyperswitch database"
+        env:
+        - name: POSTGRES_HOST
+          value: {{ .Values.db.host }}
+        - name: DBNAME
+          value: {{ .Values.db.name }}
+        - name: POSTGRES_USER
+          value: {{ .Values.db.user_name }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
+      - name: run-hyperswitch-db-migration
+        image: christophwurst/diesel-cli
+        command: ['sh', '-c']
+        args:
+        - |
+          apt update
+          apt install -y git
+          git clone --branch $ROUTER_VERSION https://github.com/juspay/hyperswitch.git
+          cd hyperswitch
+          diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
+          echo "Completed hyperswitch database migration"
+        env:
+        - name: ROUTER_VERSION
+          value: {{ .Values.application.server.version }}
+        - name: POSTGRES_HOST
+          value: {{ .Values.db.host }}
+        - name: DBNAME
+          value: {{ .Values.db.name }}
+        - name: POSTGRES_USER
+          value: {{ .Values.db.user_name }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
+      restartPolicy: Never
