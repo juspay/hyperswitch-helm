@@ -2,22 +2,34 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- deployment/statefulset replicas
 replicaCount: 1
 
 autoBuild:
+  # -- enable npm auto build
   enable: true
+  # -- force rebuild assets even these files exist
   forceBuild: false
+  # -- docker image to use for the build
   buildImage: node:18
   gitCloneParam:
+    # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
+    # -- hyperswitch-web repository tag
     gitVersion: 0.15.8
   buildParam:
-    envSdkUrl: https://hyperswitch-sdk.your-host.com
-    envBackendUrl: https://hyperswitch.you-host.com
+    # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
+    envSdkUrl: https://hyperswitch-sdk.<your host>
+    # -- node build parameter, hyperswitch server host
+    envBackendUrl: https://hyperswitch.<your host>
+    # -- node build parameter, environment
     buildEnv: integ
   nginxConfig:
+    # -- nginx static server extra path ( like https://<host>/0.15.8/v0 )
     extraPath: v0
+    # -- nginx static server image
     image: nginx
+    # -- nginx static server tag
     tag: 1.25.3
 
 
