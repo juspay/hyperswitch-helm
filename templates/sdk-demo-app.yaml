@@ -46,6 +46,8 @@ spec:
         - name: SELF_SERVER_URL
           value: {{ .Values.application.sdk.env.selfServerUrl }}
         image: {{ .Values.application.sdk.image }}
+        ports:
+        - containerPort: 5252
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -107,12 +109,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.application.sdk.labels.app }}-alb-ingress
+  name: "{{ .Values.application.sdk.labels.app }}-ingress"
   namespace: hyperswitch
   annotations:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-    alb.ingress.kubernetes.io/group.name: {{ .Values.application.sdk.labels.app }}-alb-ingress-group
+    alb.ingress.kubernetes.io/group.name: "{{ .Values.application.sdk.labels.app }}-alb-ingress-group"
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/load-balancer-name: {{ .Values.application.sdk.labels.app }}

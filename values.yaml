@@ -194,7 +194,7 @@ application:
   
   dashboard:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-control-center:v1.15.1
+    image: juspaydotin/hyperswitch-control-center:v1.17.0
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -233,12 +233,12 @@ application:
       binary: dashboard
       host: hyperswitch-control-center
       apiBaseUrl: http://localhost:8080
-      sdkBaseUrl: http://localhost:9090/0.16.5/v0/HyperLoader.js
+      sdkBaseUrl: http://localhost:9090/0.16.7/v0/HyperLoader.js
 
   sdk:
     # Image to be used by the deployment to create the pod
     image: juspaydotin/hyperswitch-web:v1.0.10
-    version: 0.16.5
+    version: 0.16.7
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -276,7 +276,7 @@ application:
     env:
       host: hyperswitch-sdk-demo
       binary: sdk
-      hyperSwitchClientUrl: http://localhost:9090/0.16.5/v0/HyperLoader.js
+      hyperSwitchClientUrl: http://localhost:9090/0.16.7/v0
       hyperswitchPublishableKey: pub_key
       hyperswitchSecretKey: secret_key
       hyperswitchServerUrl: http://localhost:8080
