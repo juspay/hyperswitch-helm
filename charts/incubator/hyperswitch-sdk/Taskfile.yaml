@@ -1,0 +1,21 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  template:
+    cmds:
+      - helm template test  . -f values.yaml > render.yaml
+    aliases:
+      - t
+
+  install:
+    cmds:
+      - helm upgrade --install sdk-test  . -f values.yaml -n hyperswitch-global-dev --debug
+    aliases:
+      - i

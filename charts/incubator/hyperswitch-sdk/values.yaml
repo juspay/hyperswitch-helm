@@ -4,11 +4,28 @@
 
 replicaCount: 1
 
+autoBuild:
+  enable: true
+  forceBuild: false
+  buildImage: node:18
+  gitCloneParam:
+    gitRepo: https://github.com/juspay/hyperswitch-web
+    gitVersion: 0.15.8
+  buildParam:
+    envSdkUrl: https://hyperswitch-sdk.your-host.com
+    envBackendUrl: https://hyperswitch.you-host.com
+    buildEnv: integ
+  nginxConfig:
+    extraPath: v0
+    image: nginx
+    tag: 1.25.3
+
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: 1.25.3
 
 imagePullSecrets: []
 nameOverride: ""
@@ -76,7 +93,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
 volumes: []
