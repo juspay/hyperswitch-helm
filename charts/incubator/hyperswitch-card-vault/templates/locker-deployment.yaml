@@ -1,0 +1,172 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperswitch-vault
+  namespace: { { .Release.Namespace } }
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: hyperswitch-card-vault
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hyperswitch-vault-role
+  namespace: { { .Release.Namespace } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    # data
+  name: hyperswitch-card-vault
+  namespace: { { .Release.Namespace } }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperswitch-card-vault
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      # annotations:
+      #   -
+      creationTimestamp: null
+      labels:
+        app: hyperswitch-card-vault
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpression:
+                  - key: spot-instance
+                    operator: NotIn
+                    values:
+                      - "true"
+                  - key: inner # <label for the node>
+                    operator: In
+                    values:
+                      - vla # <Value for the label>
+      containers:
+        - env:
+            - name: LOCKER__LOG__CONSOLE__ENABLED
+              value: true
+            - name: LOCKER__LOG__CONSOLE__LEVEL
+              value: DEBUG
+            - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
+              value: default
+            - name: LOCKER__DATABASE__USERNAME
+              value: # 
+            - name: LOCKER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets
+                  key: LOCKER__DATABASE__PASSWORD
+            - name: LOCKER__DATABASE__HOST
+              value: #
+            - name: LOCKER__DATABASE__PORT
+              value: #
+            - name: LOCKER__DATABASE__DBNAME
+              value: #
+            - name: LOCKER__LIMIT__REQUEST_COUNT
+              value: 100
+            - name: LOCKER__LIMIT__DURATION
+              value: 60
+            - name: LOCKER__SECRETS__TENANT
+              value: hyperswitch
+            - name: LOCKER__SECRETS__MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets
+                  key: LOCKER__SECRETS__MASTER_KEY
+            - name: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets
+                  key: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
+            - name: LOCKER__SECRETS__TENANT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets
+                  key: LOCKER__SECRETS__TENANT_PUBLIC_KEY
+            - name: LOCKER__CACHE__MAX_CAPACITY
+              value: 5000
+            - name: LOCKER__CACHE__TTI
+              value: 7200
+          image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - pkill -15 node
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: tartarus
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 400m
+              memory: 500Mi
+
+          securityContext:
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /local/config/development.toml
+              name: hyperswitch-vault-config
+              subPath: development.toml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: hyperswitch-router-role
+      serviceAccountName: hyperswitch-router-role
+      terminationGracePeriodSeconds: 120
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: hyperswitch-vault-config
+          name: hyperswitch-vault-config

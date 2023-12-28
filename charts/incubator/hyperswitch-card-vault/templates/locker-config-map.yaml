@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  development.toml: |
+    [server]
+    host = "0.0.0.0"
+    port = 8080
+
+    [secrets]
+    tenant = "hyperswitch"
+    master_key = "<MASTER_KEY>"
+
+    tenant_public_key = """
+    <PUBLIC KEY>
+    """
+    locker_private_key = """
+    <PRIVATE_KEY>
+    """
+kind: ConfigMap
+metadata:
+  name: hyperswitch-vault-config
+  namespace: { { .Release.Namespace } }
