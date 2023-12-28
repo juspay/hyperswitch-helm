@@ -1,4 +1,5 @@
-{{- if .Values.application.sdk.env.s3BucketName }}
+{{- $isS3 := contains ".s3." .Values.services.sdkDemo.host }}
+{{- if $isS3 }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -35,7 +36,7 @@ spec:
           mountPath: /data
         env:
         - name: S3_LOCATION_PATH
-          value: "{{.Values.application.sdk.version}}/v0"
+          value: "{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}"
         - name: S3_BUCKET_NAME
           value: "{{.Values.application.sdk.env.s3BucketName}}"
 {{- end}}

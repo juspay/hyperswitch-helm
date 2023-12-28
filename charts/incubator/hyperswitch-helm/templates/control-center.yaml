@@ -2,44 +2,44 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations: 
-  {{- with (default .Values.application.global.annotations .Values.application.dashboard.annotations) }}
+  {{- with (default .Values.application.global.annotations .Values.application.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
   name: hyperswitch-control-center-0f746cb72517
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.dashboard.progressDeadlineSeconds}}
-  replicas: {{ default .Values.application.global.replicas .Values.application.dashboard.replicas }}
+  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.controlCenter.progressDeadlineSeconds}}
+  replicas: {{ default .Values.application.global.replicas .Values.application.controlCenter.replicas }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.application.dashboard.labels.app }}
+      app: {{ .Values.application.controlCenter.labels.app }}
       version: 0f746cb72517
   strategy:
-  {{- with (default .Values.application.global.strategy .Values.application.dashboard.strategy) }}
+  {{- with (default .Values.application.global.strategy .Values.application.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.application.dashboard.labels.app }}
+        app: {{ .Values.application.controlCenter.labels.app }}
         version: 0f746cb72517
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.dashboard.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.controlCenter.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
       containers:
       - env:
         - name: apiBaseUrl
-          value: {{ .Values.application.dashboard.env.apiBaseUrl }}
+          value: {{ .Values.services.router.host }}
         - name: sdkBaseUrl
-          value: {{ .Values.application.dashboard.env.sdkBaseUrl }}
-        image: {{ .Values.application.dashboard.image }}
+          value: "{{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}/HyperLoader.js"
+        image: {{ .Values.services.controlCenter.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -71,7 +71,7 @@ spec:
       securityContext: {}
       serviceAccount: hyperswitch-router-role
       serviceAccountName: hyperswitch-router-role
-      terminationGracePeriodSeconds: {{ .Values.application.dashboard.terminationGracePeriodSeconds}}
+      terminationGracePeriodSeconds: {{ .Values.application.controlCenter.terminationGracePeriodSeconds}}
       volumes:
       - configMap:
           defaultMode: 420

@@ -740,7 +740,7 @@ spec:
         - name: ROUTER__BANK_CONFIG__ONLINE_BANKING_POLAND__ADYEN__BANKS
           value: blik_psp,place_zipko,m_bank,pay_with_ing,santander_przelew24,bank_pekaosa,bank_millennium,pay_with_alior_bank,banki_spoldzielcze,pay_with_inteligo,bnp_paribas_poland,bank_nowy_sa,credit_agricole,pay_with_bos,pay_with_citi_handlowy,pay_with_plus_bank,toyota_bank,velo_bank,e_transfer_pocztowy24
         - name: ROUTER__REPLICA_DATABASE__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
           value: {{ .Values.application.server.secrets.kms_admin_api_key }}
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
@@ -765,7 +765,7 @@ spec:
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__CONNECTORS__ZEN__BASE_URL
           value: https://api.zen-test.com/
         - name: ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL
@@ -784,7 +784,7 @@ spec:
               name: hyperswitch-secrets
               key: DB_PASS
         - name: ROUTER__ANALYTICS__SQLX__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__ANALYTICS__SQLX__PORT
           value: "5432"
         - name: ROUTER__ANALYTICS__SQLX__DBNAME
@@ -1067,7 +1067,7 @@ spec:
           value: 
         - name: ROUTER__MASTER_DATABASE__MIN_IDLE
           value: "5"
-        image: {{ .Values.application.server.image }}
+        image: {{ .Values.services.router.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:

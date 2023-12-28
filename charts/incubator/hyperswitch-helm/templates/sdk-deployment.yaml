@@ -36,16 +36,14 @@ spec:
       containers:
       - env:
         - name: HYPERSWITCH_PUBLISHABLE_KEY
-          value: {{ .Values.application.sdk.env.hyperswitchPublishableKey }}
+          value: {{ .Values.services.sdkDemo.hyperswitchPublishableKey }}
         - name: HYPERSWITCH_SECRET_KEY
-          value: {{ .Values.application.sdk.env.hyperswitchSecretKey }}
+          value: {{ .Values.services.sdkDemo.hyperswitchSecretKey }}
         - name: HYPERSWITCH_SERVER_URL
-          value: {{ .Values.application.sdk.env.hyperswitchServerUrl }}
+          value: {{ .Values.services.router.host }}
         - name: HYPERSWITCH_CLIENT_URL
-          value: {{ .Values.application.sdk.env.hyperSwitchClientUrl }}
-        - name: SELF_SERVER_URL
-          value: {{ .Values.application.sdk.env.selfServerUrl }}
-        image: {{ .Values.application.sdk.image }}
+          value: "{{ .Values.services.sdkDemo.host }}/{{.Values.services.sdkDemo.version}}/{{.Values.services.sdkDemo.subversion}}"
+        image: {{ .Values.services.sdkDemo.image }}
         ports:
         - containerPort: 5252
         imagePullPolicy: IfNotPresent

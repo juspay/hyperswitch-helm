@@ -46,7 +46,7 @@ spec:
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
           valueFrom:
             secretKeyRef:
@@ -61,7 +61,7 @@ spec:
         - name: ROUTER__ANALYTICS__SQLX__DBNAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__SQLX__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__ANALYTICS__SQLX__PASSWORD
           valueFrom:
             secretKeyRef:
@@ -406,7 +406,7 @@ spec:
               name: hyperswitch-secrets
               key: DB_PASS
         - name: ROUTER__REPLICA_DATABASE__HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.replica_host }}
         - name: ROUTER__REPLICA_DATABASE__DBNAME
           value: {{ .Values.db.name }}
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
@@ -1058,7 +1058,7 @@ spec:
           value: 
         - name: ROUTER__MASTER_DATABASE__MIN_IDLE
           value: "5"
-        image: {{ .Values.application.consumer.image }}
+        image: {{ .Values.services.consumer.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:

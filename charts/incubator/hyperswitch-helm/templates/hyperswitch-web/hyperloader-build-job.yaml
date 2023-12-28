@@ -46,9 +46,9 @@ spec:
           echo "Installing hyperswitch"
           apt-get update
           apt-get install -y build-essential
-          export envBackendUrl={{ .Values.application.sdk.env.hyperswitchServerUrl }}
-          export hyperSwitchClientUrl={{ .Values.application.sdk.env.hyperSwitchClientUrl }}
-          export version={{ .Values.application.sdk.version }}
+          export envBackendUrl={{ .Values.services.router.host }}
+          export hyperSwitchClientUrl={{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}
+          export version={{ .Values.services.sdkDemo.version }}
           git clone --branch v$version https://github.com/juspay/hyperswitch-web
           cd hyperswitch-web
           npm -v
@@ -72,4 +72,4 @@ spec:
         volumeMounts:
         - name: hyperloader-static
           mountPath: /data
-      restartPolicy: Never
+      restartPolicy: OnFailure

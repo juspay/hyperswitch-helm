@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-hyperswitch-db-{{ $.Values.application.server.version }}
+  name: create-hyperswitch-db-{{ $.Values.services.router.version }}
   annotations:
 spec:
   ttlSecondsAfterFinished: 10
@@ -19,7 +19,7 @@ spec:
           fi
           DB_EXISTS=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DBNAME)
           if [ -z "$DB_EXISTS" ]; then
-            until PGPASSWORD=postgres psql -h $POSTGRES_HOST -U postgres \
+            until PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U postgres \
             -c "create user $POSTGRES_USER with PASSWORD '$POSTGRES_PASSWORD';" \
             -c "create database hyperswitch;" \
             -c "grant all privileges on database $DBNAME to $POSTGRES_USER;" \
@@ -54,7 +54,7 @@ spec:
           echo "Completed hyperswitch database migration"
         env:
         - name: ROUTER_VERSION
-          value: {{ .Values.application.server.version }}
+          value: {{ .Values.services.router.version }}
         - name: POSTGRES_HOST
           value: {{ .Values.db.host }}
         - name: DBNAME
