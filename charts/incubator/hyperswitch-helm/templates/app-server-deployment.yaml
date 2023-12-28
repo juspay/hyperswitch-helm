@@ -1,3 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperswitch-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: hyperswitch-server
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hyperswitch-router-role
+  namespace: {{ .Release.Namespace }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -728,7 +758,10 @@ spec:
         - name: ROUTER__ANALYTICS__CLICKHOUSE__USERNAME
           value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME
           value: {{ .Values.db.name }}
         - name: ROUTER__ANALYTICS__CLICKHOUSE__HOST
@@ -746,7 +779,10 @@ spec:
         - name: ROUTER__ANALYTICS__SQLX__USERNAME
           value: {{ .Values.db.user_name }}
         - name: ROUTER__ANALYTICS__SQLX__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__ANALYTICS__SQLX__HOST
           value: {{ .Values.db.replica_host }}
         - name: ROUTER__ANALYTICS__SQLX__PORT
@@ -884,9 +920,9 @@ spec:
         - name: ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__APPLE_PAY__CONNECTOR_LIST
           value: stripe,adyen
         - name: ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__CARD__CREDIT__CONNECTOR_LIST
-          value: stripe,adyen,authorizedotnet,globalpay,worldpay,multisafepay,nmi,nexinets,noon
+          value: stripe,adyen,authorizedotnet,cybersource,globalpay,worldpay,multisafepay,nmi,nexinets,noon
         - name: ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__CARD__DEBIT__CONNECTOR_LIST
-          value: stripe,adyen,authorizedotnet,globalpay,worldpay,multisafepay,nmi,nexinets,noon
+          value: stripe,adyen,authorizedotnet,cybersource,globalpay,worldpay,multisafepay,nmi,nexinets,noon
         - name: ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__PAYPAL__CONNECTOR_LIST
           value: adyen
         - name: ROUTER__CONNECTORS__OPAYO__BASE_URL
@@ -934,11 +970,17 @@ spec:
         - name: ROUTER__MASTER_DATABASE__USERNAME
           value: {{ .Values.db.user_name }}
         - name: ROUTER__MASTER_DATABASE__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__REPLICA_DATABASE__DBNAME
           value: {{ .Values.db.name }}
         - name: ROUTER__REPLICA_DATABASE__PASSWORD
-          value: {{ .Values.db.password }}
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
         - name: ROUTER__REPLICA_DATABASE__POOL_SIZE
           value: "20"
         - name: ROUTER__REPLICA_DATABASE__PORT
@@ -1009,7 +1051,23 @@ spec:
           value: "true"
         - name: ROUTER__CONNECTORS__SIGNIFYD__BASE_URL
           value: https://api.signifyd.com/
-        image: {{ .Values.application.server.image }}
+        - name: ROUTER__CONNECTORS__PLACETOPAY__BASE_URL
+          value: "https://test.placetopay.com/rest/gateway"
+        - name: ROUTER__CONNECTORS__RISKIFIED__BASE_URL
+          value: "https://sandbox.riskified.com/api"
+        - name: ROUTER__PM_FILTERS__HELCIM__CREDIT__CURRENCY
+          value: "USD"
+        - name: ROUTER__PM_FILTERS__HELCIM__DEBIT__CURRENCY
+          value: "USD"
+        - name: ROUTER__EVENTS__KAFKA__CONNECTOR_LOGS_TOPIC
+          value: "hyperswitch-connector-log-events"
+        - name: ROUTER__EMAIL__AWS_SES__STS_ROLE_SESSION_NAME
+          value: 
+        - name: ROUTER__EMAIL__AWS_SES__EMAIL_ROLE_ARN
+          value: 
+        - name: ROUTER__MASTER_DATABASE__MIN_IDLE
+          value: "5"
+        image: {{ .Values.services.router.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:

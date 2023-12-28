@@ -2,50 +2,44 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations: 
-  {{- with (default .Values.application.global.annotations .Values.application.sdk.annotations) }}
+  {{- with (default .Values.application.global.annotations .Values.application.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: {{ .Values.application.sdk.labels.app }}-0f746cb72517
+  name: hyperswitch-control-center-0f746cb72517
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.sdk.progressDeadlineSeconds}}
-  replicas: {{ default .Values.application.global.replicas .Values.application.sdk.replicas }}
+  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.controlCenter.progressDeadlineSeconds}}
+  replicas: {{ default .Values.application.global.replicas .Values.application.controlCenter.replicas }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.application.sdk.labels.app }}
+      app: {{ .Values.application.controlCenter.labels.app }}
       version: 0f746cb72517
   strategy:
-  {{- with (default .Values.application.global.strategy .Values.application.sdk.strategy) }}
+  {{- with (default .Values.application.global.strategy .Values.application.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.application.sdk.labels.app }}
+        app: {{ .Values.application.controlCenter.labels.app }}
         version: 0f746cb72517
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.sdk.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.controlCenter.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
       containers:
       - env:
-        - name: HYPERSWITCH_PUBLISHABLE_KEY
-          value: {{ .Values.services.sdkDemo.hyperswitchPublishableKey }}
-        - name: HYPERSWITCH_SECRET_KEY
-          value: {{ .Values.services.sdkDemo.hyperswitchSecretKey }}
-        - name: HYPERSWITCH_SERVER_URL
+        - name: apiBaseUrl
           value: {{ .Values.services.router.host }}
-        - name: HYPERSWITCH_CLIENT_URL
-          value: "{{ .Values.services.sdkDemo.host }}/{{.Values.services.sdkDemo.version}}/{{.Values.services.sdkDemo.subversion}}"
-        image: {{ .Values.services.sdkDemo.image }}
-        ports:
-        - containerPort: 5252
+        - name: sdkBaseUrl
+          value: "{{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}/HyperLoader.js"
+        image: {{ .Values.services.controlCenter.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -54,7 +48,11 @@ spec:
               - /bin/bash
               - -c
               - pkill -15 node
-        name: {{ .Values.application.sdk.labels.app }}
+        name: hyperswitch-control-center
+        ports:
+        - containerPort: 9000
+          name: http
+          protocol: TCP
         resources:
           requests:
             cpu: 100m
@@ -73,7 +71,7 @@ spec:
       securityContext: {}
       serviceAccount: hyperswitch-router-role
       serviceAccountName: hyperswitch-router-role
-      terminationGracePeriodSeconds: {{ .Values.application.sdk.terminationGracePeriodSeconds}}
+      terminationGracePeriodSeconds: {{ .Values.application.controlCenter.terminationGracePeriodSeconds}}
       volumes:
       - configMap:
           defaultMode: 420
@@ -83,7 +81,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.application.sdk.labels.app }}
+  name: hyperswitch-control-center
   namespace: {{ .Release.Namespace }}
 spec:
   internalTrafficPolicy: Cluster
@@ -94,12 +92,18 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 5252
+    targetPort: 9000
   - name: https
     port: 443
     protocol: TCP
-    targetPort: 5252
+    targetPort: 9000
   selector:
-    app: {{ .Values.application.sdk.labels.app }}
+    app: hyperswitch-control-center
   sessionAffinity: None
   type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hyperswitch-control-center-role
+  namespace: {{ .Release.Namespace }}

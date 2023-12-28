@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-hyperswitch-db-{{ $.Values.services.router.version }}
+  annotations:
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: create-hyperswitch-db
+        image: postgres:16
+        command: ['sh', '-c']
+        args:
+        - |
+          if [ -z "$POSTGRES_HOST" ]; then
+            echo "POSTGRES_HOST not set"
+            exit 1
+          fi
+          DB_EXISTS=$(PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $DBNAME)
+          if [ -z "$DB_EXISTS" ]; then
+            until PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U postgres \
+            -c "create user $POSTGRES_USER with PASSWORD '$POSTGRES_PASSWORD';" \
+            -c "create database hyperswitch;" \
+            -c "grant all privileges on database $DBNAME to $POSTGRES_USER;" \
+            -c "\c hyperswitch postgres" \
+            -c "grant all on schema public to $POSTGRES_USER;"; do sleep 10; done
+            echo "Completed creating hyperswitch database"
+          else
+            echo "Database $DBNAME already exists"
+          fi
+        env:
+        - name: POSTGRES_HOST
+          value: {{ .Values.db.host }}
+        - name: DBNAME
+          value: {{ .Values.db.name }}
+        - name: POSTGRES_USER
+          value: {{ .Values.db.user_name }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
+      - name: run-hyperswitch-db-migration
+        image: christophwurst/diesel-cli
+        command: ['sh', '-c']
+        args:
+        - |
+          apt update
+          apt install -y git
+          git clone --branch $ROUTER_VERSION https://github.com/juspay/hyperswitch.git
+          cd hyperswitch
+          diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
+          echo "Completed hyperswitch database migration"
+        env:
+        - name: ROUTER_VERSION
+          value: {{ .Values.services.router.version }}
+        - name: POSTGRES_HOST
+          value: {{ .Values.db.host }}
+        - name: DBNAME
+          value: {{ .Values.db.name }}
+        - name: POSTGRES_USER
+          value: {{ .Values.db.user_name }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: hyperswitch-secrets
+              key: DB_PASS
+      restartPolicy: Never

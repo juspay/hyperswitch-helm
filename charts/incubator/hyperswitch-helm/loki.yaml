@@ -1,0 +1,13 @@
+promtail:
+  enabled: true
+  config:
+    snippets:
+      extraRelabelConfigs:
+        - action: "keep"
+          regex: "hyperswitch-.*"
+          source_labels: ["__meta_kubernetes_pod_label_app"]
+grafana:
+  enabled: true
+  adminPassword: "admin"
+  image: 
+    tag: 10.0.1
