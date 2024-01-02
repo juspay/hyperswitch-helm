@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hyperloader-static
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 64Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hyperloader-static-claim
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hyperloader-build-job-{{ $.Values.application.sdk.env | quote | sha1sum }}
+spec:
+  ttlSecondsAfterFinished: 0
+  template:
+    spec:
+      volumes:
+      - name: hyperloader-static
+        persistentVolumeClaim:
+          claimName: hyperloader-static-claim
+      containers:
+      - name: hyperloader-build-container
+        image: node:14.21
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Installing hyperswitch"
+          apt-get update
+          apt-get install -y build-essential
+          export envBackendUrl={{ .Values.services.router.host }}
+          export hyperSwitchClientUrl={{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}
+          export version={{ .Values.services.sdkDemo.version }}
+          git clone --branch v$version https://github.com/juspay/hyperswitch-web
+          cd hyperswitch-web
+          npm -v
+          node --version
+          npm install
+          npm run re:build
+          protocol=$(echo $hyperSwitchClientUrl | awk -F/ '{print $1}')
+          domain=$(echo $hyperSwitchClientUrl | awk -F/ '{print $3}')
+          envSdkUrl=$protocol//$domain envBackendUrl=$envBackendUrl npm run build:integ
+          cp -r dist/integ/* /data
+          cd ..
+          rm -rf hyperswitch-web
+          echo "Completed installing hyperswitch-web"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "125m"
+          limits:
+            memory: "4Gi"
+            cpu: "4000m"
+        volumeMounts:
+        - name: hyperloader-static
+          mountPath: /data
+      restartPolicy: OnFailure
