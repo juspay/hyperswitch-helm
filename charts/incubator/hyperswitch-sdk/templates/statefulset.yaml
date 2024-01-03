@@ -1,4 +1,4 @@
-{{- if .Values.autoBuild }}
+{{- if .Values.autoBuild.enable }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -69,11 +69,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: {{ include "nginx.sdk.path" . }}
+              path: {{ include "nginx.autobuild.sdk.path" . }}
               port: http
           readinessProbe:
             httpGet:
-              path: {{ include "nginx.sdk.path" . }}
+              path: {{ include "nginx.autobuild.sdk.path" . }}
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -15,53 +15,51 @@ assets
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` |  |
+| affinity | object | `{}` | Affinity rules |
 | autoBuild.buildImage | string | `"node:18"` | docker image to use for the build |
 | autoBuild.buildParam.buildEnv | string | `"integ"` | node build parameter, environment |
-| autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch.<your host>"` | node build parameter, hyperswitch server host |
-| autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk.<your host>"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
-| autoBuild.enable | bool | `true` | enable npm auto build |
-| autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
+| autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch.dev.hub.flowbird.cloud"` | node build parameter, hyperswitch server host |
+| autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk.dev.hub.flowbird.cloud"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
+| autoBuild.enable | bool | `false` | enable npm auto build |
+| autoBuild.forceBuild | bool | `true` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
-| autoBuild.gitCloneParam.gitVersion | string | `"0.15.8"` | hyperswitch-web repository tag |
+| autoBuild.gitCloneParam.gitVersion | string | `"0.16.7"` | hyperswitch-web repository tag |
 | autoBuild.nginxConfig.extraPath | string | `"v0"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `100` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| autoscaling.targetMemoryUtilizationPercentage | int | `80` |  |
-| fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"nginx"` |  |
-| image.tag | string | `"1.25.3"` |  |
-| imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `"nginx"` |  |
-| ingress.enabled | bool | `true` |  |
-| ingress.hosts[0].host | string | `"hyperswitch-sdk.dev.hub.flowbird.cloud"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.tls[0].hosts[0] | string | `"hyperswitch-sdk.dev.hub.flowbird.cloud"` |  |
-| ingress.tls[0].secretName | string | `"wildcard-dev-tls"` |  |
-| nameOverride | string | `""` |  |
-| nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` |  |
-| podLabels | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
+| autoscaling.enabled | bool | `false` | enable autoscaling |
+| autoscaling.maxReplicas | int | `5` | autoscaling max replicas |
+| autoscaling.minReplicas | int | `1` | autoscaling min replicas |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` | autoscaling target CPU utilization |
+| autoscaling.targetMemoryUtilizationPercentage | int | `80` | autoscaling target memory utilization |
+| fullnameOverride | string | `""` | chart full name override |
+| image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.16.7/v0 |
+| image.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
+| image.repository | string | `"nginx"` | prebuild SDK image |
+| image.tag | string | `"0.16.7"` | prebuild image tag, the image tag whose default is the chart appVersion. |
+| imagePullSecrets | list | `[]` | image pull secret |
+| ingress.annotations | object | `{}` | ingress annotations |
+| ingress.className | string | `"nginx"` | ingress class name |
+| ingress.enabled | bool | `true` | enable/disable ingress |
+| ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | ingress hosts list |
+| ingress.tls | list | `[]` | tls configurations list |
+| nameOverride | string | `""` | chart override |
+| nodeSelector | object | `{}` | Node selector |
+| podAnnotations | object | `{}` | pod annotations |
+| podLabels | object | `{}` | pod labels |
+| podSecurityContext | object | `{}` | pod security context |
 | replicaCount | int | `1` | deployment/statefulset replicas |
-| resources | object | `{}` |  |
-| securityContext | object | `{}` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automount | bool | `true` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
-| tolerations | list | `[]` |  |
-| volumeMounts | list | `[]` |  |
-| volumes | list | `[]` |  |
+| resources | object | `{}` | pod ressource configuration |
+| securityContext | object | `{}` | security context |
+| service.port | int | `80` | service port |
+| service.type | string | `"ClusterIP"` | service type |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
+| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| tolerations | list | `[]` | Tolerations |
+| volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
+| volumes | list | `[]` | Additional volumes on the output Deployment definition. |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)

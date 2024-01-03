@@ -63,8 +63,16 @@ Create the name of the service account to use
 
 
 {{/*
-Ngnix statefulset sdk path
+Ngnix autobuild statefulset sdk path
+*/}}
+{{- define "nginx.autobuild.sdk.path" -}}
+{{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.autoBuild.nginxConfig.extraPath}}
+{{- end }}
+
+
+{{/*
+Ngnix deployment sdk path
 */}}
 {{- define "nginx.sdk.path" -}}
-{{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.autoBuild.nginxConfig.extraPath}}
+{{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.image.nginxConfig.extraPath }}
 {{- end }}

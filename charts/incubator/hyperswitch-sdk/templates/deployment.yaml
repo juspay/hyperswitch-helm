@@ -1,4 +1,4 @@
-{{- if not .Values.autoBuild }}
+{{- if not .Values.autoBuild.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,11 +43,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ include "nginx.sdk.path" . }}
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: {{ include "nginx.sdk.path" . }}
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
