@@ -285,10 +285,20 @@ services:
     hyperswitchSecretKey: secret_key
 
 redis:
-  #denotes if the redis has to be created as a part of the deployment
-  internal: true
-  host: "redis"
-  replicaCount: 1
+  # - enable Bitnami redis sub-chart helm installation
+  enabled: "true"
+  master:
+    count: 1
+  replica:
+    replicaCount: 0
+  auth:
+    enabled: false
+    sentinel: false
+
+
+# TODO to handle
+externalRedis: {}
+
 
 loadBalancer: 
   targetSecurityGroup: loadBalancer-sg
