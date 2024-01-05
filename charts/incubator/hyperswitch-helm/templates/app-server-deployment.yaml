@@ -238,9 +238,9 @@ spec:
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__KMS__KEY_ID
-          value: 
+          value: {{ .Values.application.server.secrets.kms_key_id }}
         - name: ROUTER__KMS__REGION
-          value: 
+          value: {{ .Values.application.server.secrets.kms_key_region }}
         - name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1
           value: 
         - name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2
