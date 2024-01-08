@@ -883,7 +883,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: {{ .Values.redis.host }}
+          value: {{ include "redis.svc" . }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY

@@ -30,3 +30,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "hyperswitch.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*Bitnami Redis host */}}
+{{- define "redis.svc" -}}
+{{- printf "%s-redis-master"  .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
