@@ -6,7 +6,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: hyperswitch-sdk-0f746cb72517
+  name: {{ .Values.application.sdk.labels.app }}-0f746cb72517
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.sdk.progressDeadlineSeconds}}
@@ -36,16 +36,16 @@ spec:
       containers:
       - env:
         - name: HYPERSWITCH_PUBLISHABLE_KEY
-          value: {{ .Values.application.sdk.env.hyperswitchPublishableKey }}
+          value: {{ .Values.services.sdkDemo.hyperswitchPublishableKey }}
         - name: HYPERSWITCH_SECRET_KEY
-          value: {{ .Values.application.sdk.env.hyperswitchSecretKey }}
+          value: {{ .Values.services.sdkDemo.hyperswitchSecretKey }}
         - name: HYPERSWITCH_SERVER_URL
-          value: {{ .Values.application.sdk.env.hyperswitchServerUrl }}
+          value: {{ .Values.services.router.host }}
         - name: HYPERSWITCH_CLIENT_URL
-          value: {{ .Values.application.sdk.env.hyperSwitchClientUrl }}
-        - name: SELF_SERVER_URL
-          value: {{ .Values.application.sdk.env.selfServerUrl }}
-        image: {{ .Values.application.sdk.image }}
+          value: "{{ .Values.services.sdkDemo.host }}/{{.Values.services.sdkDemo.version}}/{{.Values.services.sdkDemo.subversion}}"
+        image: {{ .Values.services.sdkDemo.image }}
+        ports:
+        - containerPort: 5252
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -54,7 +54,7 @@ spec:
               - /bin/bash
               - -c
               - pkill -15 node
-        name: hyperswitch-sdk
+        name: {{ .Values.application.sdk.labels.app }}
         resources:
           requests:
             cpu: 100m
@@ -79,3 +79,27 @@ spec:
           defaultMode: 420
           name: hyperswitch-config
         name: hyperswitch-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.application.sdk.labels.app }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 5252
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 5252
+  selector:
+    app: {{ .Values.application.sdk.labels.app }}
+  sessionAffinity: None
+  type: ClusterIP

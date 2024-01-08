@@ -1,0 +1,115 @@
+{{- $isS3 := contains ".s3." .Values.services.sdkDemo.host }}
+{{- if not $isS3 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hyperloader-nginx-conf
+data:
+  nginx.conf: |
+    server {
+        listen 9090;
+
+        location /{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }} {
+            root /usr/share/nginx/html;
+            try_files $uri $uri/ =404;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hyperswitch-web
+spec:
+  selector:
+    matchLabels:
+      app: hyperswitch-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hyperswitch-web
+    spec:
+      volumes:
+      - name: hyperloader-static
+        persistentVolumeClaim:
+          claimName: hyperloader-static-claim
+      containers:
+      - name: nginx
+        image: nginx:1.25.3
+        ports:
+        - containerPort: 9090
+        envFrom:
+        - configMapRef:
+            name: hyperloader-nginx-conf
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          rm /etc/nginx/conf.d/default.conf
+          echo $NGINX_CONF > /etc/nginx/conf.d/default.conf
+          mkdir -p /usr/share/nginx/html/$NGINX_LOCATION_PATH
+          cp -r /data/* /usr/share/nginx/html/$NGINX_LOCATION_PATH
+          if [ ! -f "/usr/share/nginx/html/$NGINX_LOCATION_PATH/HyperLoader.js" ]; then
+            echo "HyperLoader.js not found!"
+            exit 1
+          fi
+          nginx -g 'daemon off;'
+        volumeMounts:
+        - name: hyperloader-static
+          mountPath: /data
+        env:
+        - name: NGINX_LOCATION_PATH
+          value: "{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}"
+        - name: NGINX_CONF
+          valueFrom:
+            configMapKeyRef:
+              name: hyperloader-nginx-conf
+              key: nginx.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperswitch-web
+spec:
+  selector:
+    app: hyperswitch-web
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 9090
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 9090
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hyperswitch-web-ingress
+  namespace:  {{ .Release.Namespace }}
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+    alb.ingress.kubernetes.io/group.name: hyperswitch-web-alb-ingress-group
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-web
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
+    alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hyperswitch-web
+                port:
+                  number: 80
+{{- end }}

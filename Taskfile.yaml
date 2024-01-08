@@ -1,0 +1,26 @@
+# https://taskfile.dev
+
+version: '3'
+
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  package-incubator-hyperswitch-helm:
+    #language=sh
+    cmds:
+      - >
+        helm package charts/incubator/hyperswitch-helm 
+        --destination repo
+        --dependency-update
+    aliases:
+      - pihh
+
+  repo-update-index:
+    #language=sh
+    cmds:
+      - >
+        helm repo index repo 

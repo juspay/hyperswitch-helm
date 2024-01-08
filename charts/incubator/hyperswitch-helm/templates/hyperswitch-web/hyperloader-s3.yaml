@@ -1,0 +1,42 @@
+{{- $isS3 := contains ".s3." .Values.services.sdkDemo.host }}
+{{- if $isS3 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hyperloader-build-job-{{ $.Values.application.sdk.env | quote | sha1sum }}
+spec:
+  ttlSecondsAfterFinished: 0
+  template:
+    spec:
+      volumes:
+      - name: hyperloader-static
+        persistentVolumeClaim:
+          claimName: hyperloader-static-claim
+      containers:
+      - name: hyperloader-publish-s3
+        image: amazon/aws-cli:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Installing hyperswitch"
+          mkdir -p bucket/$NGINX_LOCATION_PATH
+          cp -r /data/* bucket/$NGINX_LOCATION_PATH
+          aws s3 cp --recursive bucket s3://$S3_BUCKET_NAME/$NGINX_LOCATION_PATH
+          echo "Completed publishing hyperswitch-web"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "4000m"
+        volumeMounts:
+        - name: hyperloader-static
+          mountPath: /data
+        env:
+        - name: S3_LOCATION_PATH
+          value: "{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}"
+        - name: S3_BUCKET_NAME
+          value: "{{.Values.application.sdk.env.s3BucketName}}"
+{{- end}}
