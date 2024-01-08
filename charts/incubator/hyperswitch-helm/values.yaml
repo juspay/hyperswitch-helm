@@ -288,7 +288,7 @@ services:
 
 redis:
   # - enable Bitnami redis sub-chart helm installation
-  enabled: "true"
+  enabled: true
   master:
     count: 1
   replica:
@@ -301,24 +301,34 @@ redis:
 # TODO to handle
 externalRedis: {}
 
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: "hyperswitch"
+        password: "ZGJwYXNzd29yZDEx"
+        database: "hyperswitch"
+  architecture: standalone
+  replication:
+    synchronousCommit: "off"
+    numSynchronousReplicas: 1
+  readReplicas:
+    replicaCount: 1
 
-loadBalancer: 
+# TODO to handle
+externalPostgres: {}
+
+initDB:
+  enable: true
+  checkPGisUp:
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    image: christophwurst/diesel-cli:latest
+
+loadBalancer:
   targetSecurityGroup: loadBalancer-sg
-
-db: 
-  #denotes if the db has to be created as a part of the deployment
-  internal: true
-  # Name of the database to be used
-  name: hyperswitch
-  # Hostname of the database to be used
-  host: hyperswitch-db.hyperswitch.svc.cluster.local
-  # Hostname of the database to be used for read replicas
-  replica_host: hyperswitch-db.hyperswitch.svc.cluster.local
-  # Username of the database to be used
-  user_name: db_user
-  # Password of the database to be used
-  password: "ZGJwYXNzd29yZDEx" #base64 encoded password eg: `echo -n "dbpassword11" | base64`
-  #psql -h hyperswitch-db.hyperswitch.svc.cluster.local -U db_user -d hyperswitch
 
 autoscaling:
   enabled: true
