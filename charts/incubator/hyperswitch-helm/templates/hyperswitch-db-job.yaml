@@ -1,0 +1,41 @@
+{{- if .Values.initDB }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-hyperswitch-db-{{ .Values.services.router.version }}
+  labels:
+    app: create-hyperswitch-db-{{ .Values.services.router.version }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+      containers:
+        - name: run-hyperswitch-db-migration
+          image: {{ .Values.initDB.migration.image }}
+          command: [ '/bin/sh', '-c' ]
+          #language=sh
+          args:
+            - |-
+              apt update
+              apt install -y git
+              git clone --branch $ROUTER_VERSION https://github.com/juspay/hyperswitch.git
+              cd hyperswitch
+              diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
+              echo "Completed hyperswitch database migration"
+          env:
+            - name: ROUTER_VERSION
+              value: {{ .Values.services.router.version }}
+            - name: POSTGRES_HOST
+              value: {{ include "postgresql.svc" . }}
+            - name: DBNAME
+              value: {{ .Values.postgresql.global.postgresql.auth.database }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.global.postgresql.auth.username }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "postgresql.secret" . }}
+                  key: password
+{{- end }}

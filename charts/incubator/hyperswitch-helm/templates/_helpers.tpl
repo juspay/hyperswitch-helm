@@ -31,8 +31,16 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*Bitnami Redis host */}}
+
 {{- define "redis.svc" -}}
 {{- printf "%s-redis-master"  .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+
+{{- define "postgresql.svc" -}}
+{{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "postgresql.secret" -}}
+{{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
