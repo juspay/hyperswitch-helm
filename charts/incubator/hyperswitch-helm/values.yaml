@@ -306,7 +306,7 @@ postgresql:
   global:
     postgresql:
       auth:
-        username: "hyperswitch"
+        username: "db_user"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"
   architecture: standalone
