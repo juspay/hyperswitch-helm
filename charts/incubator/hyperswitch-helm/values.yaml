@@ -99,6 +99,20 @@ application:
       recon_admin_api_key: test_admin
       kms_key_id: kms_key_id
       kms_key_region: us-east-1
+      kms_jwekey_locker_identifier1: dummy_val
+      kms_jwekey_locker_identifier2: dummy_val
+      kms_jwekey_locker_encryption_key1: dummy_val
+      kms_jwekey_locker_encryption_key2: dummy_val
+      kms_jwekey_locker_decryption_key1: dummy_val
+      kms_jwekey_locker_decryption_key2: dummy_val
+      kms_jwekey_vault_encryption_key: dummy_val
+      kms_jwekey_vault_private_key: dummy_val
+      kms_jwekey_tunnel_private_key: dummy_val
+      kms_jwekey_rust_locker_encryption_key: dummy_val
+      kms_connector_onboarding_paypal_client_id: dummy_val
+      kms_connector_onboarding_paypal_client_secet: dummy_val
+      kms_connector_onboarding_paypal_partner_id: dummy_val
+
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: locker-host

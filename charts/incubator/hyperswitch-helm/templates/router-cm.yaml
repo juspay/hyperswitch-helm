@@ -85,14 +85,18 @@ data:
   ROUTER__REDIS__CLUSTER_URLS: redis
   ROUTER__REDIS__HOST: {{ include "redis.svc" . | quote }}
   ROUTER__REDIS__PORT: "6379"
-  ROUTER__KMS__KEY_ID: ""
-  ROUTER__KMS__REGION: ""
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1: ""
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2: ""
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1: ""
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2: ""
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1: ""
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2: ""
+  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1: {{ .Values.application.server.secrets.kms_jwekey_locker_decryption_key1 }}
+  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2: {{ .Values.application.server.secrets.kms_jwekey_locker_decryption_key2 }}
+  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1: {{ .Values.application.server.secrets.kms_jwekey_locker_encryption_key1 }}
+  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2: {{ .Values.application.server.secrets.kms_jwekey_locker_encryption_key2 }}
+  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1: {{ .Values.application.server.secrets.kms_jwekey_locker_identifier1 }}
+  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2: {{ .Values.application.server.secrets.kms_jwekey_locker_identifier2 }}
+  ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY: {{ .Values.application.server.secrets.kms_jwekey_tunnel_private_key }}
+  ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY: {{ .Values.application.server.secrets.kms_jwekey_vault_encryption_key }}
+  ROUTER__JWEKEY__VAULT_PRIVATE_KEY: {{ .Values.application.server.secrets.kms_jwekey_vault_private_key }}
+  ROUTER__KMS__KEY_ID: {{ .Values.application.server.secrets.kms_key_id }}
+  ROUTER__KMS__REGION: {{ .Values.application.server.secrets.kms_key_region }}
+  ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY: {{ .Values.application.server.secrets.kms_jwekey_rust_locker_encryption_key }}
 {{/*  TODO  move to secret */}}
   ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY: {{ .Values.application.server.locker.locker_public_key | toYaml | indent 12 }}
   {{/*  TODO  move to secret */}}
@@ -609,9 +613,9 @@ data:
   ROUTER__LOCK_SETTINGS__DELAY_BETWEEN_RETRIES_IN_MILLISECONDS: "500"
   ROUTER__FRM__ENABLED: "true"
   ROUTER__CONNECTORS__VOLT__BASE_URL: https://api.sandbox.volt.io/
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID: ""
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET: ""
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID: ""
+  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_client_id }}
+  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_client_secret }}
+  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_partner_id }}
   ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED: "true"
   ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY: "Fifo"
   ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY: ""
