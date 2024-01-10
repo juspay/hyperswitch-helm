@@ -189,7 +189,7 @@ data:
   ROUTER__BANK_CONFIG__IDEAL__ADYEN__BANKS: >-
     abn_amro,asn_bank,bunq,handelsbanken,ing,knab,moneyou,rabobank,
     regiobank,revolut,sns_bank,triodos_bank,van_lanschot
-  ROUTER__REPLICA_DATABASE__HOST:
+  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.svc" . | quote }}
   ROUTER__REPLICA_DATABASE__POOL_SIZE: "20"
   ROUTER__TOKENIZATION__STRIPE__LONG_LIVED_TOKEN: "false"
   ROUTER__TOKENIZATION__STRIPE__PAYMENT_METHOD: wallet
