@@ -110,7 +110,7 @@ application:
       kms_jwekey_tunnel_private_key: dummy_val
       kms_jwekey_rust_locker_encryption_key: dummy_val
       kms_connector_onboarding_paypal_client_id: dummy_val
-      kms_connector_onboarding_paypal_client_secet: dummy_val
+      kms_connector_onboarding_paypal_client_secret: dummy_val
       kms_connector_onboarding_paypal_partner_id: dummy_val
 
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
