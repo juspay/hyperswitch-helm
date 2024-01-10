@@ -39,9 +39,7 @@ Use below command to install hyperswitch services with above configs
 helm install hyperswitch-v1 . -n hyperswitch
 ```
 
-{% hint style="success" %}
 That's it! Hyperswitch should be up and running on your AWS account  :tada: :tada:
-{% endhint %}
 
 ## Post-Deployment Checklist
 
