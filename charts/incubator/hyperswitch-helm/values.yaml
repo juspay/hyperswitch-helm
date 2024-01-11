@@ -110,10 +110,10 @@ application:
       kms_jwekey_tunnel_private_key: ZHVtbXlfdmFs
       kms_jwekey_rust_locker_encryption_key: ZHVtbXlfdmFs
       kms_connector_onboarding_paypal_client_id: ZHVtbXlfdmFs
-      kms_connector_onboarding_paypal_client_secet: ZHVtbXlfdmFs
+      kms_connector_onboarding_paypal_client_secret: ZHVtbXlfdmFs
       kms_connector_onboarding_paypal_partner_id: ZHVtbXlfdmFs
 
-    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+    master_enc_key: NDcxZjIyNTE2NzI0MzQ3YmNjYTljMjBjNWZhODhkOTgyMWM0NjA0ZTYzYTZhY2VmZmQyNDYwNTgwOWM5MjM3Yw==
     locker:
       host: locker-host
       locker_public_key: |

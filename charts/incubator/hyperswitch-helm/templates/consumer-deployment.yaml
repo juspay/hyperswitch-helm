@@ -35,6 +35,8 @@ spec:
             {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.consumer.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+      initContainers:
+        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:
       - env:
         - name: {{ .Values.application.global.env.pod_name.name }}
