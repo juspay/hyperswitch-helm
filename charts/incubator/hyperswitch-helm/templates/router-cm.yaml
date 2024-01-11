@@ -85,8 +85,6 @@ data:
   ROUTER__REDIS__CLUSTER_URLS: redis
   ROUTER__REDIS__HOST: {{ include "redis.svc" . | quote }}
   ROUTER__REDIS__PORT: "6379"
-  ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY: {{ .Values.application.server.secrets.kms_jwekey_rust_locker_encryption_key }}
-  ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY: ""
   ROUTER__LOCKER__BASILISK_HOST: {{ .Values.application.server.basilisk.host }}
   ROUTER__CONNECTORS__SUPPORTED__WALLETS: klarna,braintree,applepay
   ROUTER__CONNECTORS__WISE__BASE_URL: https://api.sandbox.transferwise.tech/
