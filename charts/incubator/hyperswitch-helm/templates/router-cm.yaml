@@ -85,22 +85,7 @@ data:
   ROUTER__REDIS__CLUSTER_URLS: redis
   ROUTER__REDIS__HOST: {{ include "redis.svc" . | quote }}
   ROUTER__REDIS__PORT: "6379"
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1: {{ .Values.application.server.secrets.kms_jwekey_locker_decryption_key1 }}
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2: {{ .Values.application.server.secrets.kms_jwekey_locker_decryption_key2 }}
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1: {{ .Values.application.server.secrets.kms_jwekey_locker_encryption_key1 }}
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2: {{ .Values.application.server.secrets.kms_jwekey_locker_encryption_key2 }}
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1: {{ .Values.application.server.secrets.kms_jwekey_locker_identifier1 }}
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2: {{ .Values.application.server.secrets.kms_jwekey_locker_identifier2 }}
-  ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY: {{ .Values.application.server.secrets.kms_jwekey_tunnel_private_key }}
-  ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY: {{ .Values.application.server.secrets.kms_jwekey_vault_encryption_key }}
-  ROUTER__JWEKEY__VAULT_PRIVATE_KEY: {{ .Values.application.server.secrets.kms_jwekey_vault_private_key }}
-  ROUTER__KMS__KEY_ID: {{ .Values.application.server.secrets.kms_key_id }}
-  ROUTER__KMS__REGION: {{ .Values.application.server.secrets.kms_key_region }}
   ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY: {{ .Values.application.server.secrets.kms_jwekey_rust_locker_encryption_key }}
-{{/*  TODO  move to secret */}}
-  ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY: {{ .Values.application.server.locker.locker_public_key | toYaml | indent 12 }}
-  {{/*  TODO  move to secret */}}
-  ROUTER__JWEKEY__VAULT_PRIVATE_KEY: {{ .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 12 }}
   ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY: ""
   ROUTER__LOCKER__BASILISK_HOST: {{ .Values.application.server.basilisk.host }}
   ROUTER__CONNECTORS__SUPPORTED__WALLETS: klarna,braintree,applepay
@@ -486,10 +471,6 @@ data:
       e_transfer_pocztowy24
   ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.svc" . }}
 {{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY: {{ .Values.application.server.secrets.kms_admin_api_key }}
-{{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET: {{ .Values.application.server.secrets.kms_jwt_secret }}
-{{/*  TODO : mv to secret object */}}
   ROUTER__SECRETS__ADMIN_API_KEY: {{ .Values.application.server.secrets.admin_api_key }}
 {{/*  TODO : mv to secret object */}}
   ROUTER__SECRETS__JWT_SECRET: {{ .Values.application.server.secrets.jwt_secret }}
@@ -553,7 +534,6 @@ data:
   ROUTER__CONNECTOR_CUSTOMER__CONNECTOR_LIST: stax,stripe,gocardless
   ROUTER__CONNECTOR_CUSTOMER__PAYOUT_CONNECTOR_LIST: wise
   ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.router.svc.cluster.local:4317
-  ROUTER__SECRETS__MASTER_ENC_KEY: {{ .Values.application.server.master_enc_key }}
   ROUTER__CONNECTOR_REQUEST_REFERENCE_ID_CONFIG__MERCHANT_IDS_SEND_PAYMENT_ID_AS_CONNECTOR_REQUEST_ID: ""
   ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP: "1685510751"
   ROUTER__DELAYED_SESSION_RESPONSE__CONNECTORS_WITH_DELAYED_SESSION_RESPONSE: trustpay,payme

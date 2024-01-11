@@ -69,6 +69,8 @@ spec:
             {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+      initContainers:
+        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:
       - env:
         - name: BINARY
@@ -99,6 +101,86 @@ spec:
             secretKeyRef:
               name: {{ include "postgresql.secret" . }}
               key: password
+        - name: ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__VAULT_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__VAULT_PRIVATE_KEY
+              name: hyperswitch-secrets
+        - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
+              name: hyperswitch-secrets
+        - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
+              name: hyperswitch-secrets
+        - name: ROUTER__KMS__KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__KMS__KEY_ID
+              name: hyperswitch-secrets
+        - name: ROUTER__KMS__REGION
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__KMS__REGION
+              name: hyperswitch-secrets
+        - name: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2
+              name: hyperswitch-secrets
+        - name: ROUTER__SECRETS__MASTER_ENC_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__SECRETS__MASTER_ENC_KEY
+              name: hyperswitch-secrets
+        - name: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
+              name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
+              name: hyperswitch-secrets
         envFrom:
           - configMapRef:
               name: router-cm-{{.Release.Name }}
