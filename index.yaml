@@ -3,7 +3,7 @@ entries:
   hyperswitch-helm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-01-11T16:43:51.214757+05:30"
+    created: "2024-01-11T22:41:13.524408+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -14,7 +14,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 13.2.27
     description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: 5fad569f31ffd36fbbd0427453c394ef8ae3017a0a69de219b4c25fa5058eada
+    digest: 5688fdf8cff9ca4faef3aabf3a4665391e8e739885876e60880a12402a067956
     name: hyperswitch-helm
     type: application
     urls:
@@ -22,7 +22,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-01-11T16:43:51.216625+05:30"
+    created: "2024-01-11T22:41:13.526145+05:30"
     description: A Helm chart for Kubernetes to deploy hyperswitch application
     digest: 09dc6d627da851e45d0d2ab779d0e532307a90a4f89468162bc50d2b914a1d66
     name: hyperswitch-helm
@@ -30,4 +30,4 @@ entries:
     urls:
     - https://dracarys18.github.io/hyperswitch-helm/repo/hyperswitch-helm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-11T16:43:51.204354+05:30"
+generated: "2024-01-11T22:41:13.515178+05:30"
