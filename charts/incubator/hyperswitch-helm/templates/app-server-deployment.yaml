@@ -181,6 +181,12 @@ spec:
             secretKeyRef:
               key: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
               name: hyperswitch-secrets
+        - name: ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY
+              name: hyperswitch-secrets
+
         envFrom:
           - configMapRef:
               name: router-cm-{{.Release.Name }}
