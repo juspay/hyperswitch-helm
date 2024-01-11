@@ -321,7 +321,7 @@ postgresql:
   global:
     postgresql:
       auth:
-        host: ""
+        host: "db_host"
         username: "db_user"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"
