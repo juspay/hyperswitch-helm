@@ -321,6 +321,7 @@ postgresql:
   global:
     postgresql:
       auth:
+        replica_host: "db_replica_host"
         host: "db_host"
         username: "db_user"
         password: "ZGJwYXNzd29yZDEx"

@@ -467,7 +467,7 @@ data:
       bnp_paribas_poland,bank_nowy_sa,credit_agricole,pay_with_bos,
       pay_with_citi_handlowy,pay_with_plus_bank,toyota_bank,velo_bank,
       e_transfer_pocztowy24
-  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.svc" . }}
+  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresqlreplica.svc" . }}
 {{/*  TODO : mv to secret object */}}
   ROUTER__SECRETS__ADMIN_API_KEY: {{ .Values.application.server.secrets.admin_api_key }}
 {{/*  TODO : mv to secret object */}}
@@ -477,14 +477,14 @@ data:
   ROUTER__ANALYTICS__SOURCE: sqlx
   ROUTER__ANALYTICS__CLICKHOUSE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
   ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME: {{ .Values.postgresql.global.postgresql.auth.database }}
-  ROUTER__ANALYTICS__CLICKHOUSE__HOST: {{ include "postgresql.svc" . }}
+  ROUTER__ANALYTICS__CLICKHOUSE__HOST: {{ include "postgresqlreplica.svc" . }}
   ROUTER__CONNECTORS__ZEN__BASE_URL: https://api.zen-test.com/
   ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL: https://secure.zen-test.com/
   ROUTER__CONNECTORS__SQUARE__BASE_URL: https://connect.squareupsandbox.com/
   ROUTER__CONNECTORS__SQUARE__SECONDARY_BASE_URL: https://pci-connect.squareupsandbox.com/
   ROUTER__CONNECTORS__STRIPE__BASE_URL_FILE_UPLOAD: https://files.stripe.com/
   ROUTER__ANALYTICS__SQLX__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
-  ROUTER__ANALYTICS__SQLX__HOST: {{ include "postgresql.svc" . }}
+  ROUTER__ANALYTICS__SQLX__HOST: {{ include "postgresqlreplica.svc" . }}
   ROUTER__ANALYTICS__SQLX__PORT: "5432"
   ROUTER__ANALYTICS__SQLX__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database }}
   ROUTER__ANALYTICS__SQLX__POOL_SIZE: "20"
