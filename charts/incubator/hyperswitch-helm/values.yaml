@@ -97,6 +97,7 @@ application:
       admin_api_key: test_admin
       jwt_secret: test_admin
       recon_admin_api_key: test_admin
+      kms_encrypted_api_hash_key: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYwMTIzNDU2Nzg5YWJjZGVmMDEyMzQ1Njc4OWFiY2RlZgo
       kms_key_id: a21zX2tleV9pZA==
       kms_key_region: dXMtZWFzdC0x
       kms_jwekey_locker_identifier1: ZHVtbXlfdmFs

@@ -3,12 +3,22 @@ entries:
   hyperswitch-helm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-12-27T16:55:34.359863+05:30"
+    created: "2024-01-12T01:34:19.721944+05:30"
     description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: aa82ecbb224304c610d8c5fcc00b62460d204d36492307de24e4eb91b127074b
+    digest: 1a25a64eac02d0b34086c2a922d61730f0fef252366f139a614eaebbf89dd505
     name: hyperswitch-helm
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/hyperswitch-helm-0.1.0.tgz
+    - https://dracarys18.github.io/hyperswitch-helm/hyperswitch-helm-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-27T16:55:34.357289+05:30"
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-01-12T01:34:19.727468+05:30"
+    description: A Helm chart for Kubernetes to deploy hyperswitch application
+    digest: 09dc6d627da851e45d0d2ab779d0e532307a90a4f89468162bc50d2b914a1d66
+    name: hyperswitch-helm
+    type: application
+    urls:
+    - https://dracarys18.github.io/hyperswitch-helm/repo/hyperswitch-helm-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-01-12T01:34:19.719002+05:30"

@@ -33,17 +33,17 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 
 {{- define "redis.svc" -}}
-{{- default (printf "%s-redis-master" .Release.Name) (printf "%s" .Values.redis.master.host) | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- default (printf "%s-redis-master" .Release.Name) (printf "%s" .Values.redis.master.host) -}}
 {{- end -}}
 
 {{- define "postgresqlreplica.svc" -}}
-{{- default (printf "%s-postgresqlreplica" .Release.Name) (printf "%s" .Values.postgresql.global.postgresql.auth.replica_host) | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- default (printf "%s-postgresqlreplica" .Release.Name) (printf "%s" .Values.postgresql.global.postgresql.auth.replica_host) -}}
 {{- end -}}
 
 {{- define "postgresql.svc" -}}
-{{- default (printf "%s-postgresql" .Release.Name) (printf "%s" .Values.postgresql.global.postgresql.auth.host) | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- default (printf "%s-postgresql" .Release.Name) (printf "%s" .Values.postgresql.global.postgresql.auth.host) -}}
 {{- end -}}
 
 {{- define "postgresql.secret" -}}
-{{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-postgresql" .Release.Name -}}
 {{- end -}}
