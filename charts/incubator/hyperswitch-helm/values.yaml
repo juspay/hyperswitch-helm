@@ -304,6 +304,7 @@ redis:
   # - enable Bitnami redis sub-chart helm installation
   enabled: true
   master:
+    host: "redis_host"
     count: 1
   replica:
     replicaCount: 0
@@ -320,6 +321,7 @@ postgresql:
   global:
     postgresql:
       auth:
+        host: ""
         username: "db_user"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"

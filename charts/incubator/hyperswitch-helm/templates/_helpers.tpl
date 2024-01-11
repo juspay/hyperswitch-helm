@@ -33,12 +33,12 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 
 {{- define "redis.svc" -}}
-{{- printf "%s-redis-master"  .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- default (printf "%s-redis-master" .Release.Name) (printf "%s" .Values.redis.master.host) | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 
 {{- define "postgresql.svc" -}}
-{{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- default (printf "%s-postgresql" .Release.Name) (printf "%s" .Values.postgresql.global.postgresql.auth.host) | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "postgresql.secret" -}}
