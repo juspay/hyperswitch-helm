@@ -1,0 +1,18 @@
+{{- if .Values.autoBuild }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sdk.fullname" . }}-nginx
+  labels:
+    {{- include "sdk.labels" . | nindent 4 }}
+data:
+  default.conf: |-
+    server {
+        listen 80;
+
+        location {{ include "nginx.sdk.path" . }} {
+            root /usr/share/nginx/html;
+            try_files $uri $uri/ =404;
+        }
+    }
+{{- end }}

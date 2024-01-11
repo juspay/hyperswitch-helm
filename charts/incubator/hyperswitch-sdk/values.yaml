@@ -1,0 +1,154 @@
+# Default values for sdk.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- deployment/statefulset replicas
+replicaCount: 1
+
+autoBuild:
+  # -- enable npm auto build
+  enable: true
+  # -- force rebuild assets even these files exist
+  forceBuild: false
+  # -- docker image to use for the build
+  buildImage: node:18
+  gitCloneParam:
+    # -- hyperswitch-web repository
+    gitRepo: https://github.com/juspay/hyperswitch-web
+    # -- hyperswitch-web repository tag
+    gitVersion: 0.16.7
+  buildParam:
+    # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
+    envSdkUrl: https://hyperswitch-sdk.<your host>
+    # -- node build parameter, hyperswitch server host
+    envBackendUrl: https://hyperswitch.<your host>
+    # -- node build parameter, environment
+    buildEnv: integ
+  nginxConfig:
+    # -- nginx static server extra path ( like https://<host>/0.15.8/v0 )
+    extraPath: v0
+    # -- nginx static server image
+    image: nginx
+    # -- nginx static server tag
+    tag: 1.25.3
+
+
+image:
+  # -- prebuild SDK image
+  repository: nginx
+  # -- prebuild image pull policy
+  pullPolicy: IfNotPresent
+  # -- prebuild image tag, the image tag whose default is the chart appVersion.
+  tag: 0.16.7
+  nginxConfig:
+    # -- nginx extra path used to set liveness and readiness probe /0.16.7/v0
+    extraPath: v0
+
+# -- image pull secret
+imagePullSecrets: []
+# -- chart override
+nameOverride: ""
+# -- chart full name override
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- pod annotations
+podAnnotations: {}
+# -- pod labels
+podLabels: {}
+
+# -- pod security context
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- security context
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+
+service:
+  # -- service type
+  type: ClusterIP
+  # -- service port
+  port: 80
+
+
+ingress:
+  # -- enable/disable ingress
+  enabled: true
+  # -- ingress class name
+  className: "nginx"
+  # -- ingress annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # -- ingress hosts list
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # -- tls configurations list
+  tls: []
+
+
+# -- pod ressource configuration
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  # -- enable autoscaling
+  enabled: false
+  # -- autoscaling min replicas
+  minReplicas: 1
+  # -- autoscaling max replicas
+  maxReplicas: 5
+  # -- autoscaling target CPU utilization
+  targetCPUUtilizationPercentage: 80
+  # -- autoscaling target memory utilization
+  targetMemoryUtilizationPercentage: 80
+
+# -- Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# -- Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
