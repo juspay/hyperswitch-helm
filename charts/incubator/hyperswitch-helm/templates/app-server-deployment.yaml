@@ -187,6 +187,24 @@ spec:
               key: ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY
               name: hyperswitch-secrets
 
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+              name: hyperswitch-secrets
+
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+              name: hyperswitch-secrets
+
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+              name: hyperswitch-secrets
+
         envFrom:
           - configMapRef:
               name: router-cm-{{.Release.Name }}
