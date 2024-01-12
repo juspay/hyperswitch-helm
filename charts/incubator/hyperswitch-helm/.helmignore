@@ -21,3 +21,5 @@
 .idea/
 *.tmproj
 .vscode/
+# devloppment yaml manifest / helm values files
+dev/

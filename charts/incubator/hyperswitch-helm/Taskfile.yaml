@@ -54,3 +54,49 @@ tasks:
       - helm-docs
     aliases:
       - d
+
+  helm-add-repo:
+    desc: helm add repo and upgrade
+    cmds:
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm repo update
+    aliases:
+      - har
+
+  helm-redis-install:
+    desc: deploy standalone bitnami redis based on helm chart
+    cmds:
+      - task: helm-add-repo
+      - >-
+        helm upgrade 
+        --install 
+        {{ .RELEASE_NAME }} 
+        bitnami/redis 
+        --version 18.6.1 
+        -n {{ .NAMESPACE }} 
+        --debug  
+        -f dev/bitnami-redis-values.yaml
+    vars:
+      RELEASE_NAME: redis-ext
+      NAMESPACE: hyperswitch-global-dev
+    aliases:
+      - hri
+
+  helm-postgres-install:
+    desc:  deploy standalone Postgresql based on helm chart
+    cmds:
+      - task: helm-add-repo
+      - >- 
+        helm upgrade
+        --install 
+        {{ .RELEASE_NAME }} 
+        bitnami/postgresql 
+        --version 13.2.9 
+        -n {{ .NAMESPACE }} 
+        --debug
+        -f dev/bitnami-pg.values.yaml
+    vars:
+      RELEASE_NAME: postgresql-ext
+      NAMESPACE: hyperswitch-global-dev
+    aliases:
+      - hpi
