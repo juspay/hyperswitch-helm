@@ -35,6 +35,7 @@ spec:
             {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{/* TODO: include check redis ready */}}
       containers:
         - name: hyperswitch-consumer
           image: {{ .Values.services.consumer.image }}
