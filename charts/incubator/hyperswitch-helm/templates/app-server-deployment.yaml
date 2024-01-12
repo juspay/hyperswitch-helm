@@ -174,8 +174,8 @@ spec:
         - name: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
-              name: hyperswitch-secrets
+              key: password
+              name: {{ include "postgresql.secret" . }}
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           valueFrom:
             secretKeyRef:
