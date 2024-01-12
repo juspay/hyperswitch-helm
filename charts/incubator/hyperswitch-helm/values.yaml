@@ -122,7 +122,6 @@ application:
         private
     basilisk:
       host: basilisk-host
-    server_base_url: https://sandbox.hyperswitch.io
   consumer:
     # Number of replicas to be used for the application
     replicas: 1
