@@ -174,8 +174,8 @@ spec:
         - name: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: ROUTER__ANALYTICS__SQLX__KMS_ENCRYPTED_PASSWORD
-              name: hyperswitch-secrets
+              key: password
+              name: {{ include "postgresql.secret" . }}
         - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
           valueFrom:
             secretKeyRef:
@@ -185,6 +185,24 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY
+              name: hyperswitch-secrets
+
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+              name: hyperswitch-secrets
+
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+              name: hyperswitch-secrets
+
+        - name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+          valueFrom:
+            secretKeyRef:
+              key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
               name: hyperswitch-secrets
 
         envFrom:
