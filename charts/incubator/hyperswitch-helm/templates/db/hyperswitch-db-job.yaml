@@ -28,14 +28,18 @@ spec:
             - name: ROUTER_VERSION
               value: {{ .Values.services.router.version }}
             - name: POSTGRES_HOST
-              value: {{ include "postgresql.svc" . }}
+              value: {{ include "postgresql.host" . }}
             - name: DBNAME
-              value: {{ .Values.postgresql.global.postgresql.auth.database }}
+              value: {{ include "postgresql.database" . }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.global.postgresql.auth.username }}
+              value: {{ include "postgresql.username" . }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "postgresql.secret" . }}
+                  {{- if .Values.postgresql.enabled }}
                   key: password
+                  {{- else if .Values.externalPostgresql.enabled }}
+                  key: primaryPassword
+                  {{- end }}
 {{- end }}
