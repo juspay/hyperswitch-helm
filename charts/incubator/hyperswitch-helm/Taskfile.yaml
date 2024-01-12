@@ -1,0 +1,56 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  check-helm-docs:
+    desc: "Check if helm-docs is installed"
+    #language=sh
+    cmds:
+      - >
+        command -v helm-docs &> /dev/null || 
+        (echo "helm-docs is not installed. Please install it from https://github.com/norwoodj/helm-docs/releases"; exit 1)
+    silent: true
+
+  install-pg-ext:
+    desc: install bitnami postgres external
+    cmds:
+      - >-
+        helm install postgresql-ext bitnami/postgresql 
+        --version 13.2.29 
+        -f dev/bitnami-pg.values.yaml 
+        -n hyperswitch-global-dev 
+        --debug
+    aliases:
+      - ipe
+
+  template:
+    cmds:
+      - helm template test  . -f values.yaml --debug > render.yaml
+    aliases:
+      - t
+
+  install:
+    cmds:
+      - helm upgrade --install hyperswitch  . -f values.yaml -n hyperswitch-global-dev --debug
+    aliases:
+      - i
+
+  dry-run:
+    desc: dry run chart installation
+    cmds:
+      - helm upgrade --install hyperswitch  . -f values.yaml -n hyperswitch-global-dev --debug --dry-run
+    aliases:
+      - dr
+
+  generate-doc:
+    cmds:
+      - task: check-helm-docs
+      - helm-docs
+    aliases:
+      - d
