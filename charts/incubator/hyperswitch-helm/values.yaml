@@ -301,7 +301,7 @@ services:
 
 redis:
   # - enable Bitnami redis sub-chart helm installation
-  enabled: false
+  enabled: true
   master:
     count: 1
   replica:
@@ -312,7 +312,7 @@ redis:
 
 externalRedis:
   # - Link this service to an external Redis server
-  enabled: true
+  enabled: false
   host: redis-ext-master
   port: 6379
   auth:
@@ -321,7 +321,7 @@ externalRedis:
     password: ""
 
 postgresql:
-  enabled: false
+  enabled: true
   global:
     postgresql:
       auth:
@@ -337,7 +337,7 @@ postgresql:
 
 externalPostgresql:
   # - Link this service to an external Postgres server
-  enabled: true
+  enabled: false
   primary:
     host: "postgresql-ext"
     port: 5432
