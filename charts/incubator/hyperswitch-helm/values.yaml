@@ -25,7 +25,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -35,10 +35,10 @@ application:
 
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application services
     env:
-      pod_name: 
+      pod_name:
         name: POD_NAME
         valueFrom:
           fieldRef:
@@ -77,7 +77,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -147,7 +147,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -156,7 +156,7 @@ application:
       app: hyperswitch-consumer
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: consumer
@@ -186,7 +186,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -195,11 +195,11 @@ application:
       app: hyperswitch-producer
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: producer
-  
+
   controlCenter:
     # Image to be used by the deployment to create the pod
     image: juspaydotin/hyperswitch-control-center:v1.17.0
@@ -226,7 +226,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -235,7 +235,7 @@ application:
       app: hyperswitch-control-center
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: dashboard
@@ -265,7 +265,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -274,7 +274,7 @@ application:
       app: hyperswitch-sdk-demo
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       host: hyperswitch-sdk-demo
@@ -282,7 +282,7 @@ application:
 
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
-  router: 
+  router:
     version: v1.105.0
     image: juspaydotin/hyperswitch-router:v1.105.0-standalone
     host: http://localhost:8080
@@ -302,7 +302,7 @@ services:
 
 redis:
   # - enable Bitnami redis sub-chart helm installation
-  enabled: true
+  enabled: false
   master:
     count: 1
   replica:
@@ -311,16 +311,22 @@ redis:
     enabled: false
     sentinel: false
 
-
-# TODO to handle
-externalRedis: {}
+externalRedis:
+  # - Link this service to an external Redis server
+  enabled: true
+  host: redis-ext-master
+  port: 6379
+  auth:
+    enabled: true
+    username: ""
+    password: ""
 
 postgresql:
-  enabled: true
+  enabled: false
   global:
     postgresql:
       auth:
-        username: "db_user"
+        username: "hyperswitch"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"
   architecture: standalone
@@ -330,8 +336,24 @@ postgresql:
   readReplicas:
     replicaCount: 1
 
-# TODO to handle
-externalPostgres: {}
+externalPostgresql:
+  # - Link this service to an external Postgres server
+  enabled: true
+  primary:
+    host: "postgresql-ext"
+    port: 5432
+    auth:
+      username: "hyperswitch"
+      password: "hyperswitch"
+      database: "hyperswitch"
+  readOnly:
+    enabled: false
+    host: "postgres-service"
+    port: 5432
+    auth:
+      username: "hyperswitch"
+      password: "hyperswitch"
+      database: "hyperswitch"
 
 initDB:
   enable: true
