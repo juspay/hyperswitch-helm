@@ -43,9 +43,9 @@ spec:
                 key: password
           - name: ROUTER__REPLICA_DATABASE__PASSWORD
             valueFrom:
-            secretKeyRef:
-              name: {{ include "postgresql.secret" . }}
-              key: password
+              secretKeyRef:
+                name: {{ include "postgresql.secret" . }}
+                key: password
           - name: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
             valueFrom:
               secretKeyRef:
