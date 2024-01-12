@@ -92,11 +92,11 @@ application:
       binary: router
       host: hyperswitch
     secrets:
-      kms_admin_api_key: test_admin
-      kms_jwt_secret: test_admin
-      admin_api_key: test_admin
-      jwt_secret: test_admin
-      recon_admin_api_key: test_admin
+      kms_admin_api_key: dGVzdF9hZG1pbg==
+      kms_jwt_secret: dGVzdF9hZG1pbg==
+      admin_api_key: dGVzdF9hZG1pbg==
+      jwt_secret: dGVzdF9hZG1pbg==
+      recon_admin_api_key: dGVzdF9hZG1pbg==
       kms_key_id: a21zX2tleV9pZA==
       kms_key_region: dXMtZWFzdC0x
       kms_jwekey_locker_identifier1: ZHVtbXlfdmFs
@@ -304,7 +304,7 @@ redis:
   # - enable Bitnami redis sub-chart helm installation
   enabled: true
   master:
-    host: "redis_host"
+    host: ""
     count: 1
   replica:
     replicaCount: 0
@@ -321,8 +321,8 @@ postgresql:
   global:
     postgresql:
       auth:
-        replica_host: "db_replica_host"
-        host: "db_host"
+        replica_host: ""
+        host: ""
         username: "db_user"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"
