@@ -53,6 +53,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: producer-cm-{{ .Release.Name }}
+            - secretRef:
+                name: producer-secret-{{.Release.Name }}
           resources:
             requests:
               cpu: 100m
