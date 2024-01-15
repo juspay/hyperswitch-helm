@@ -33,7 +33,9 @@ spec:
             {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
-        {{/* TODO: include check redis ready */}}
+        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- include "redis.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
       containers:
         - name: hyperswitch-producer
           image: {{ .Values.services.producer.image }}
