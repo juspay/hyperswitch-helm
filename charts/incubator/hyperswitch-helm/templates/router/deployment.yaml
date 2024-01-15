@@ -64,6 +64,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: router-cm-{{ .Release.Name }}
+            - secretRef:
+                name: router-secret-{{ .Release.Name }}
           livenessProbe:
             failureThreshold: 3
             httpGet:
