@@ -72,8 +72,6 @@ data:
   ROUTER__CONNECTORS__CRYPTOPAY__BASE_URL: https://business-sandbox.cryptopay.me
   ROUTER__CONNECTORS__CASHTOCODE__BASE_URL: https://cluster05.api-test.cashtocode.com
   ROUTER__LOCKER__LOCKER_SIGNING_KEY_ID: "1"
-  ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-  ROUTER__API_KEYS__HASH_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   ROUTER__SERVER__BASE_URL: {{ .Values.application.server.server_base_url | quote }}
   ROUTER__REDIS__CLUSTER_ENABLED: "false"
   ROUTER__REDIS__USE_LEGACY_VERSION: "false"
@@ -83,21 +81,6 @@ data:
   ROUTER__REDIS__DEFAULT_TTL: "300"
   ROUTER__REDIS__STREAM_READ_COUNT: "1"
   ROUTER__REDIS__CLUSTER_URLS: redis
-  ROUTER__REDIS__HOST: {{ include "redis.host" . | quote }}
-  ROUTER__REDIS__PORT: "6379"
-  ROUTER__KMS__KEY_ID: ""
-  ROUTER__KMS__REGION: ""
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1: ""
-  ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2: ""
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1: ""
-  ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2: ""
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1: ""
-  ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2: ""
-{{/*  TODO  move to secret */}}
-  ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY: {{ .Values.application.server.locker.locker_public_key | toYaml | indent 12 }}
-  {{/*  TODO  move to secret */}}
-  ROUTER__JWEKEY__VAULT_PRIVATE_KEY: {{ .Values.application.server.locker.hyperswitch_private_key | toYaml | indent 12 }}
-  ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY: ""
   ROUTER__LOCKER__BASILISK_HOST: {{ .Values.application.server.basilisk.host }}
   ROUTER__CONNECTORS__SUPPORTED__WALLETS: klarna,braintree,applepay
   ROUTER__CONNECTORS__WISE__BASE_URL: https://api.sandbox.transferwise.tech/
@@ -480,34 +463,16 @@ data:
     bnp_paribas_poland,bank_nowy_sa,credit_agricole,pay_with_bos,
     pay_with_citi_handlowy,pay_with_plus_bank,toyota_bank,velo_bank,
     e_transfer_pocztowy24
-  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.host" . }}
-{{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY: {{ .Values.application.server.secrets.kms_admin_api_key }}
-{{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET: {{ .Values.application.server.secrets.kms_jwt_secret }}
-{{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__ADMIN_API_KEY: {{ .Values.application.server.secrets.admin_api_key }}
-{{/*  TODO : mv to secret object */}}
-  ROUTER__SECRETS__JWT_SECRET: {{ .Values.application.server.secrets.jwt_secret }}
   RUN_ENV: sandbox
   RUST_MIN_STACK: "4194304"
   ROUTER__ANALYTICS__SOURCE: sqlx
-  ROUTER__ANALYTICS__CLICKHOUSE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
-  ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME: {{ .Values.postgresql.global.postgresql.auth.database }}
-  ROUTER__ANALYTICS__CLICKHOUSE__HOST: {{ include "postgresql.host" . }}
   ROUTER__CONNECTORS__ZEN__BASE_URL: https://api.zen-test.com/
   ROUTER__CONNECTORS__ZEN__SECONDARY_BASE_URL: https://secure.zen-test.com/
   ROUTER__CONNECTORS__SQUARE__BASE_URL: https://connect.squareupsandbox.com/
   ROUTER__CONNECTORS__SQUARE__SECONDARY_BASE_URL: https://pci-connect.squareupsandbox.com/
   ROUTER__CONNECTORS__STRIPE__BASE_URL_FILE_UPLOAD: https://files.stripe.com/
-  ROUTER__ANALYTICS__SQLX__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
-  ROUTER__ANALYTICS__SQLX__HOST: {{ include "postgresql.host" . }}
-  ROUTER__ANALYTICS__SQLX__PORT: "5432"
-  ROUTER__ANALYTICS__SQLX__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database }}
   ROUTER__ANALYTICS__SQLX__POOL_SIZE: "20"
   ROUTER__ANALYTICS__SQLX__CONNECTION_TIMEOUT: "10"
-  ROUTER__FILE_UPLOAD_CONFIG__BUCKET_NAME: bucket
-  ROUTER__FILE_UPLOAD_CONFIG__REGION: us-east-1
   ROUTER__PM_FILTERS__FORTE__CREDIT__CURRENCY: USD
   ROUTER__PM_FILTERS__FORTE__DEBIT__CURRENCY: USD
   ROUTER__CONNECTORS__DUMMYCONNECTOR__BASE_URL: http://localhost:8080/dummy-connector
@@ -549,8 +514,6 @@ data:
   ROUTER__CONNECTOR_CUSTOMER__CONNECTOR_LIST: stax,stripe,gocardless
   ROUTER__CONNECTOR_CUSTOMER__PAYOUT_CONNECTOR_LIST: wise
   ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.router.svc.cluster.local:4317
-  {{/*  TODO mv to secret object*/}}
-  ROUTER__SECRETS__MASTER_ENC_KEY: {{ .Values.application.server.master_enc_key }}
   ROUTER__CONNECTOR_REQUEST_REFERENCE_ID_CONFIG__MERCHANT_IDS_SEND_PAYMENT_ID_AS_CONNECTOR_REQUEST_ID: ""
   ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP: "1685510751"
   ROUTER__DELAYED_SESSION_RESPONSE__CONNECTORS_WITH_DELAYED_SESSION_RESPONSE: trustpay,payme
@@ -576,8 +539,6 @@ data:
     stripe,adyen,authorizedotnet,cybersource,globalpay,worldpay,multisafepay,nmi,nexinets,noon
   ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__PAYPAL__CONNECTOR_LIST: adyen
   ROUTER__CONNECTORS__OPAYO__BASE_URL: https://pi-test.sagepay.com/
-  {{/*  TODO mv to secret object*/}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_RECON_ADMIN_API_KEY: {{ .Values.application.server.secrets.recon_admin_api_key }}
   ROUTER__CONNECTORS__BRAINTREE__SECONDARY_BASE_URL: https://payments.sandbox.braintree-api.com/graphql
   ROUTER__TOKENIZATION__BRAINTREE__LONG_LIVED_TOKEN: "false"
   ROUTER__TOKENIZATION__BRAINTREE__PAYMENT_METHOD: card
@@ -594,14 +555,7 @@ data:
   ROUTER__REPORT_DOWNLOAD_CONFIG__REGION: eu-central-1
   ROUTER__TOKENIZATION__GOCARDLESS__LONG_LIVED_TOKEN: "true"
   ROUTER__TOKENIZATION__GOCARDLESS__PAYMENT_METHOD: bank_debit
-  ROUTER__MASTER_DATABASE__HOST: {{ include "postgresql.host" . }}
-  ROUTER__MASTER_DATABASE__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database }}
-  ROUTER__MASTER_DATABASE__PORT: "5432"
-  ROUTER__MASTER_DATABASE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
-  ROUTER__REPLICA_DATABASE__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database }}
   ROUTER__REPLICA_DATABASE__POOL_SIZE: "20"
-  ROUTER__REPLICA_DATABASE__PORT: "5432"
-  ROUTER__REPLICA_DATABASE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username }}
   ROUTER__LOG__CONSOLE__ENABLED: "true"
   ROUTER__LOG__CONSOLE__LEVEL: "DEBUG"
   ROUTER__LOG__CONSOLE__LOG_FORMAT: "json"
@@ -611,10 +565,6 @@ data:
   ROUTER__LOCK_SETTINGS__DELAY_BETWEEN_RETRIES_IN_MILLISECONDS: "500"
   ROUTER__FRM__ENABLED: "true"
   ROUTER__CONNECTORS__VOLT__BASE_URL: https://api.sandbox.volt.io/
-{{/*  TODO mv to secret object */}}
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_client_id }}
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_client_secret }}
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID: {{ .Values.application.server.secrets.kms_connector_onboarding_paypal_partner_id }}
   ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED: "true"
   ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY: "Fifo"
   ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY: ""
