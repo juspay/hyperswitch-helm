@@ -320,6 +320,13 @@ externalRedis:
     username: ""
     password: ""
 
+redisMiscConfig:
+  checkRedisIsUp:
+    initContainer:
+      enable: true
+      image: redis:7.2.4
+      maxAttempt: 30
+
 postgresql:
   enabled: true
   global:

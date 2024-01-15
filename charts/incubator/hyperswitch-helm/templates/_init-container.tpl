@@ -20,3 +20,27 @@
     done;
     echo "PostgreSQL is ready.";
 {{- end -}}
+
+
+{{/*Ensure Redis is up and running */}}
+{{- define "redis.initContainer.check.ready" -}}
+- name: check-redis
+  image: {{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.image }}
+  command: [ "/bin/sh", "-c" ]
+  #language=sh
+  args:
+  - >
+    MAX_ATTEMPTS={{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt }};
+    SLEEP_SECONDS=10;
+    attempt=0;
+    while ! redis-cli -h {{ include "redis.host" . }} -p {{ include "redis.port" . }} ping; do
+      if [ $attempt -ge $MAX_ATTEMPTS ]; then
+        echo "Redis did not become ready in time";
+        exit 1;
+      fi;
+      attempt=$((attempt+1));
+      echo "Waiting for Redis to be ready... Attempt: $attempt";
+      sleep $SLEEP_SECONDS;
+    done;
+    echo "Redis is ready.";
+{{- end -}}
