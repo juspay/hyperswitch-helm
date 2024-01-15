@@ -3,18 +3,9 @@ kind: ConfigMap
 metadata:
   name: consumer-cm-{{.Release.Name }}
 data:
-  ROUTER__ANALYTICS__CLICKHOUSE__DATABASE_NAME: {{ .Values.postgresql.global.postgresql.auth.database | quote }}
-  ROUTER__ANALYTICS__CLICKHOUSE__HOST: {{ include "postgresql.host" .  | quote }}
-  ROUTER__ANALYTICS__CLICKHOUSE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username | quote}}
   ROUTER__ANALYTICS__SOURCE: "sqlx"
   ROUTER__ANALYTICS__SQLX__CONNECTION_TIMEOUT: "10"
-  ROUTER__ANALYTICS__SQLX__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database | quote }}
-  ROUTER__ANALYTICS__SQLX__HOST: {{ include "postgresql.host" . | quote }}
   ROUTER__ANALYTICS__SQLX__POOL_SIZE: "20"
-  ROUTER__ANALYTICS__SQLX__PORT: "5432"
-  ROUTER__ANALYTICS__SQLX__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username | quote }}
-  ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-  ROUTER__API_KEYS__HASH_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   ROUTER__BANK_CONFIG__EPS__ADYEN__BANKS: >-
     bank_austria,bawag_psk_ag,dolomitenbank,easybank_ag,erste_bank_und_sparkassen,
     hypo_tirol_bank_ag,posojilnica_bank_e_gen,raiffeisen_bankengruppe_osterreich,
@@ -194,17 +185,8 @@ data:
   ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__APPLE_PAY__CONNECTOR_LIST: stripe,adyen
   ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__GOOGLE_PAY__CONNECTOR_LIST: stripe,adyen
   ROUTER__MANDATES__SUPPORTED_PAYMENT_METHODS__WALLET__PAYPAL__CONNECTOR_LIST: adyen
-  ROUTER__MASTER_DATABASE__HOST: {{ include "postgresql.host" . | quote }}
   ROUTER__MASTER_DATABASE__POOL_SIZE: "30"
-  ROUTER__MASTER_DATABASE__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database | quote }}
-  ROUTER__MASTER_DATABASE__PORT: "5432"
-  ROUTER__MASTER_DATABASE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username | quote }}
-{{/*  TODO manage postgres master / replicas */}}
-  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.host" . | quote }}
-  ROUTER__REPLICA_DATABASE__DBNAME: {{ .Values.postgresql.global.postgresql.auth.database | quote }}
   ROUTER__REPLICA_DATABASE__POOL_SIZE: "5"
-  ROUTER__REPLICA_DATABASE__PORT: "5432"
-  ROUTER__REPLICA_DATABASE__USERNAME: {{ .Values.postgresql.global.postgresql.auth.username | quote }}
   ROUTER__PAYOUTS__PAYOUT_ELIGIBILITY: "true"
   ROUTER__PM_FILTERS__ADYEN__ACH__COUNTRY: US
   ROUTER__PM_FILTERS__ADYEN__ACH__CURRENCY: USD
@@ -548,17 +530,6 @@ data:
   ROUTER__REDIS__DEFAULT_TTL: "300"
   ROUTER__REDIS__STREAM_READ_COUNT: "1"
   ROUTER__REDIS__CLUSTER_URLS: redis
-  ROUTER__REDIS__HOST: {{ include "redis.host" .  | quote }}
-  ROUTER__REDIS__PORT: "6379"
-{{/*    TODO move to secret */}}
-  ROUTER__SECRETS__KMS_ENCRYPTED_RECON_ADMIN_API_KEY: ""
-{{/*    TODO move to secret */}}
-  ROUTER__SECRETS__MASTER_ENC_KEY: ""
-{{/*    TODO move to secret */}}
-  ROUTER__SECRETS__ADMIN_API_KEY: ""
-{{/*    TODO move to secret */}}
-  ROUTER__SECRETS__JWT_SECRET: ""
-  ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP: "1685510751"
   ROUTER__SERVER__BASE_URL: https://api.hyperswitch.io
   ROUTER__SERVER__REQUEST_BODY_LIMIT: "32768"
   ROUTER__SERVER__WORKERS: "8"
@@ -604,10 +575,6 @@ data:
   ROUTER__SCHEDULER__STREAM: SCHEDULER_STREAM
   ROUTER__SCHEDULER__CONSUMER__CONSUMER_GROUP: SCHEDULER_GROUP
   ROUTER__SCHEDULER__CONSUMER__DISABLED: "false"
-{{/*    TODO move to secret */}}
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID: ""
-{{/*    TODO move to secret */}}
-  ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET: ""
   ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID: ""
   ROUTER__CONNECTOR_ONBOARDING__PAYPAL__ENABLED: "true"
   ROUTER__ANALYTICS__SQLX__QUEUE_STRATEGY: "Fifo"
