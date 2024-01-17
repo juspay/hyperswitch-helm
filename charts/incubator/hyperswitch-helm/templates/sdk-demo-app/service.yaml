@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.application.sdk.labels.app }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 5252
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 5252
+  selector:
+    app: {{ .Values.application.sdk.labels.app }}
+  sessionAffinity: None
+  type: ClusterIP

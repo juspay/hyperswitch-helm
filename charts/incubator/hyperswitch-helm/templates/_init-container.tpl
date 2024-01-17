@@ -9,7 +9,7 @@
     MAX_ATTEMPTS={{ .Values.initDB.checkPGisUp.maxAttempt }};
     SLEEP_SECONDS=10;
     attempt=0;
-    while ! pg_isready -U {{ .Values.postgresql.global.postgresql.auth.username }} -d {{ .Values.postgresql.global.postgresql.auth.database }} -h {{ include "postgresql.svc" . }} -p 5432; do
+    while ! pg_isready -U {{ include "postgresql.username" . }} -d {{ include "postgresql.database" . }} -h {{ include "postgresql.host" . }} -p 5432; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then
         echo "PostgreSQL did not become ready in time";
         exit 1;

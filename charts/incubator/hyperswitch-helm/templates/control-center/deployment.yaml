@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    {{- with (default .Values.application.global.annotations .Values.application.controlCenter.annotations) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  name: hyperswitch-control-center-0f746cb72517
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.controlCenter.progressDeadlineSeconds }}
+  replicas: {{ default .Values.application.global.replicas .Values.application.controlCenter.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Values.application.controlCenter.labels.app }}
+      version: 0f746cb72517
+  strategy:
+    {{- with (default .Values.application.global.strategy .Values.application.controlCenter.strategy) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.application.controlCenter.labels.app }}
+        version: 0f746cb72517
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.controlCenter.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      containers:
+        - name: hyperswitch-control-center
+          image: {{ .Values.services.controlCenter.image }}
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - pkill -15 node
+          env:
+            - name: apiBaseUrl
+              value: {{ .Values.services.router.host }}
+            - name: sdkBaseUrl
+              value: "{{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}/HyperLoader.js"
+          ports:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccountName: hyperswitch-router-role
+      terminationGracePeriodSeconds: {{ .Values.application.controlCenter.terminationGracePeriodSeconds }}
