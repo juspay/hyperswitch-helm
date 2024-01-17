@@ -883,7 +883,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: {{ .Values.redis.host }}
+          value: {{ include "redis.svc" . }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__SECRETS__KMS_ENCRYPTED_ADMIN_API_KEY
@@ -1059,7 +1059,7 @@ spec:
         - name: ROUTER__MASTER_DATABASE__MIN_IDLE
           value: "5"
         image: {{ .Values.services.consumer.image }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         lifecycle:
           preStop:
             exec:
@@ -1072,6 +1072,11 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
+            ephemeral-storage: "1Gi"
+          limits:
+            cpu: 500m
+            memory: 500Mi
+            ephemeral-storage: "2Gi"
         securityContext:
           privileged: false
         terminationMessagePath: /dev/termination-log
@@ -1080,6 +1085,8 @@ spec:
         - mountPath: /local/config/production.toml
           name: hyperswitch-config
           subPath: production.toml
+        - mountPath: /local/app
+          name: consumer-volume
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -1092,3 +1099,5 @@ spec:
           defaultMode: 420
           name: hyperswitch-config
         name: hyperswitch-config
+      - name: consumer-volume
+        emptyDir: {}

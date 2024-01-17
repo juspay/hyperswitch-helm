@@ -97,7 +97,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: "{{ .Values.application.sdk.labels.app }}-ingress"
-  namespace: hyperswitch
+  namespace:  {{ .Release.Namespace }}
   annotations:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/backend-protocol-version: HTTP1

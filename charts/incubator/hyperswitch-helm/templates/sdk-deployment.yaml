@@ -44,9 +44,7 @@ spec:
         - name: HYPERSWITCH_CLIENT_URL
           value: "{{ .Values.services.sdkDemo.host }}/{{.Values.services.sdkDemo.version}}/{{.Values.services.sdkDemo.subversion}}"
         image: {{ .Values.services.sdkDemo.image }}
-        ports:
-        - containerPort: 5252
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         lifecycle:
           preStop:
             exec:
@@ -55,10 +53,29 @@ spec:
               - -c
               - pkill -15 node
         name: {{ .Values.application.sdk.labels.app }}
+        ports:
+        - containerPort: 5252
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 5252
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
+            ephemeral-storage: "1Gi"
+          limits:
+            cpu: 500m
+            memory: 500Mi
+            ephemeral-storage: "2Gi"
         securityContext:
           privileged: false
         terminationMessagePath: /dev/termination-log

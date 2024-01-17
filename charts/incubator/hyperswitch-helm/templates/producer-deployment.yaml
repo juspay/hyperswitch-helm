@@ -181,7 +181,7 @@ spec:
         - name: ROUTER__REDIS__CLUSTER_URLS
           value: redis
         - name: ROUTER__REDIS__HOST
-          value: {{ .Values.redis.host }}
+          value: {{ include "redis.svc" . }}
         - name: ROUTER__REDIS__PORT
           value: "6379"
         - name: ROUTER__KMS__KEY_ID
@@ -553,7 +553,7 @@ spec:
         - name: ROUTER__MASTER_DATABASE__MIN_IDLE
           value: "5"
         image: {{ .Values.services.producer.image }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         lifecycle:
           preStop:
             exec:
@@ -566,6 +566,11 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
+            ephemeral-storage: "1Gi"
+          limits:
+            cpu: 500m
+            memory: 500Mi
+            ephemeral-storage: "2Gi"
         securityContext:
           privileged: false
         terminationMessagePath: /dev/termination-log

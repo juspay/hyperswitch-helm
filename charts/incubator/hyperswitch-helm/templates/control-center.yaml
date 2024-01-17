@@ -40,7 +40,7 @@ spec:
         - name: sdkBaseUrl
           value: "{{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}/HyperLoader.js"
         image: {{ .Values.services.controlCenter.image }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         lifecycle:
           preStop:
             exec:
@@ -48,15 +48,26 @@ spec:
               - /bin/bash
               - -c
               - pkill -15 node
-        name: hyperswitch-control-center
+        name: {{ .Values.application.controlCenter.labels.app }}
         ports:
         - containerPort: 9000
           name: http
           protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 9000
+            scheme: HTTP
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
+            ephemeral-storage: "1Gi"
+          limits:
+            cpu: 500m
+            memory: 500Mi
+            ephemeral-storage: "2Gi"
         securityContext:
           privileged: false
         terminationMessagePath: /dev/termination-log
@@ -81,7 +92,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hyperswitch-control-center
+  name: {{ .Values.application.controlCenter.labels.app }}
   namespace: {{ .Release.Namespace }}
 spec:
   internalTrafficPolicy: Cluster
@@ -98,7 +109,7 @@ spec:
     protocol: TCP
     targetPort: 9000
   selector:
-    app: hyperswitch-control-center
+    app: {{ .Values.application.controlCenter.labels.app }}
   sessionAffinity: None
   type: ClusterIP
 ---

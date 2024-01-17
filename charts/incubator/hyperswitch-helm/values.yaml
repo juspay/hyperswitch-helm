@@ -73,6 +73,12 @@ application:
                 operator: In
                 values:
                   - generic-compute
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: hyperswitch-server
+          topologyKey: "kubernetes.io/hostname"
     # The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
@@ -127,6 +133,12 @@ application:
                 operator: In
                 values:
                   - generic-compute
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: hyperswitch-server
+          topologyKey: "kubernetes.io/hostname"
     # The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
@@ -260,9 +272,6 @@ application:
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn: 
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
-    env:
-      host: hyperswitch-sdk-demo
-      binary: sdk
 
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
@@ -285,13 +294,21 @@ services:
     hyperswitchSecretKey: secret_key
 
 redis:
-  #denotes if the redis has to be created as a part of the deployment
-  internal: true
-  host: "redis"
-  replicaCount: 1
+  # - enable Bitnami redis sub-chart helm installation
+  enabled: true
+  master:
+    count: 1
+  replica:
+    replicaCount: 0
+  auth:
+    enabled: false
+    sentinel: false
+
+# TODO to handle
+externalRedis: {}
 
 loadBalancer: 
-  targetSecurityGroup: loadBalancer-sg
+  targetSecurityGroup: sg-0472eff4b96ca30f0
 
 db: 
   #denotes if the db has to be created as a part of the deployment
@@ -299,17 +316,41 @@ db:
   # Name of the database to be used
   name: hyperswitch
   # Hostname of the database to be used
-  host: hyperswitch-db.hyperswitch.svc.cluster.local
+  host:  hypers-v1-postgresql
   # Hostname of the database to be used for read replicas
-  replica_host: hyperswitch-db.hyperswitch.svc.cluster.local
+  replica_host:  hypers-v1-postgresql
   # Username of the database to be used
   user_name: db_user
   # Password of the database to be used
   password: "ZGJwYXNzd29yZDEx" #base64 encoded password eg: `echo -n "dbpassword11" | base64`
-  #psql -h hyperswitch-db.hyperswitch.svc.cluster.local -U db_user -d hyperswitch
+  #psql -h  hypers-v1-postgresql -U db_user -d hyperswitch
 
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
+
+postgresql:
+  global:
+    postgresql:
+      auth:
+        postgresPassword: dbpassword11
+        username: db_user
+        password: dbpassword11
+        database: hyperswitch
+
+promtail:
+  enabled: true
+  config:
+    snippets:
+      extraRelabelConfigs:
+        - action: "keep"
+          regex: "hyperswitch-.*"
+          source_labels: ["__meta_kubernetes_pod_label_app"]
+
+grafana:
+  enabled: true
+  adminPassword: "admin"
+  image: 
+    tag: 10.0.1
