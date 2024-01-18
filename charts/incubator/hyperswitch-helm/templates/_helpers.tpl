@@ -89,12 +89,32 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     {{- end -}}
 {{- end -}}
 
+{{/* Valide Postgres configuration and */}}
+{{/* select Postgres Replica host Internal or External depends on configuration */}}
+{{- define "postgresqlreplica.host" -}}
+{{- $test_pg := include "validate.postgresql.config" . }}
+    {{- if .Values.postgresql.enabled }}
+        {{- printf "%s-postgresql-read" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- printf "%s" .Values.externalPostgresql.readOnly.host -}}
+    {{- end -}}
+{{- end -}}
+
 {{/* Select Postgres master port Internal or External */}}
 {{- define "postgresql.port" -}}
     {{- if .Values.postgresql.enabled }}
         {{- printf "5432" -}}
     {{- else if .Values.externalPostgresql.enabled }}
         {{- printf "%s" .Values.externalPostgresql.primary.port -}}
+    {{- end -}}
+{{- end -}}
+
+{{/* Select Postgres replica port Internal or External */}}
+{{- define "postgresqlreplica.port" -}}
+    {{- if .Values.postgresql.enabled }}
+        {{- printf "5432" -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- printf "%s" .Values.externalPostgresql.readOnly.port -}}
     {{- end -}}
 {{- end -}}
 
@@ -113,6 +133,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
         {{- printf "%s" .Values.postgresql.global.postgresql.auth.username  -}}
     {{- else if .Values.externalPostgresql.enabled }}
         {{- printf "%s" .Values.externalPostgresql.primary.auth.username -}}
+    {{- end -}}
+{{- end -}}
+
+{{/* Select Postgres replica username Internal or External */}}
+{{- define "postgresqlreplica.username" -}}
+    {{- if .Values.postgresql.enabled }}
+        {{- printf "%s" .Values.postgresql.global.postgresql.auth.username  -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- printf "%s" .Values.externalPostgresql.readOnly.auth.username -}}
     {{- end -}}
 {{- end -}}
 
