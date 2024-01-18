@@ -24,6 +24,11 @@ spec:
       labels:
         app: {{ .Values.application.producer.labels.app }}
         version: b03005fv1
+      annotations:
+        checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
+        checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}
+        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:
@@ -33,7 +38,9 @@ spec:
             {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
-        {{/* TODO: include check redis ready */}}
+        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- include "redis.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
       containers:
         - name: hyperswitch-producer
           image: {{ .Values.services.producer.image }}
@@ -51,6 +58,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: producer-cm-{{ .Release.Name }}
+            - secretRef:
+                name: producer-secret-{{.Release.Name }}
           resources:
             requests:
               cpu: 100m

@@ -24,6 +24,10 @@ spec:
       annotations:
         kubectl.kubernetes.io/restartedAt: "2023-09-20T12:11:41+05:30"
         traffic.sidecar.istio.io/excludeOutboundIPRanges: {{ default .Values.application.global.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges .Values.application.server.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges }}
+        checksum/router-config: {{ include (print $.Template.BasePath "/router/configmap.yaml") . | sha256sum }}
+        checksum/router-secret: {{ include (print $.Template.BasePath "/router/secret.yaml") . | sha256sum }}
+        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.application.server.labels.app }}
         version: v1o52o1v2
@@ -36,7 +40,9 @@ spec:
             {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
-        {{/* TODO: include check redis ready */}}
+        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- include "redis.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
       containers:
         - name: hyperswitch-router
           image: {{ .Values.services.router.image }}
@@ -62,6 +68,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: router-cm-{{ .Release.Name }}
+            - secretRef:
+                name: router-secret-{{ .Release.Name }}
           livenessProbe:
             failureThreshold: 3
             httpGet:

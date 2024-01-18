@@ -23,6 +23,10 @@ spec:
     metadata:
       annotations:
         kubectl.kubernetes.io/restartedAt: "2023-04-21T14:21:23+05:30"
+        checksum/consumer-config: {{ include (print $.Template.BasePath "/consumer/configmap.yaml") . | sha256sum }}
+        checksum/consumer-secret: {{ include (print $.Template.BasePath "/consumer/secret.yaml") . | sha256sum }}
+        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.application.consumer.labels.app }}
         version: consumer-v1o47o0ohotfixo3
@@ -35,7 +39,9 @@ spec:
             {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
-        {{/* TODO: include check redis ready */}}
+        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- include "redis.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
       containers:
         - name: hyperswitch-consumer
           image: {{ .Values.services.consumer.image }}
@@ -53,6 +59,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: consumer-cm-{{ .Release.Name }}
+            - secretRef:
+                name: consumer-secret-{{ .Release.Name }}
           resources:
             requests:
               cpu: 100m
