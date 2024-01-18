@@ -335,10 +335,12 @@ postgresql:
         username: "hyperswitch"
         password: "ZGJwYXNzd29yZDEx"
         database: "hyperswitch"
-  architecture: standalone
+  architecture: replication
   replication:
     synchronousCommit: "off"
     numSynchronousReplicas: 1
+  primary:
+    name: ""
   readReplicas:
     replicaCount: 1
 
