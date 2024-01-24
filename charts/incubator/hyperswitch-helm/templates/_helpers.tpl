@@ -58,11 +58,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{/* Select Redis port Internal or External depends on configuration */}}
 {{- define "redis.port" -}}
-    {{- if .Values.redis.enabled }}
-        {{- printf "6379" -}}
-    {{- else if .Values.externalRedis.enabled }}
-        {{- printf "%s" .Values.externalRedis.port -}}
-    {{- end -}}
+    {{- printf "6379" -}}
 {{- end -}}
 
 {{/* Postgresql configuration validation template */}}
@@ -102,20 +98,12 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{/* Select Postgres master port Internal or External */}}
 {{- define "postgresql.port" -}}
-    {{- if .Values.postgresql.enabled }}
-        {{- printf "5432" -}}
-    {{- else if .Values.externalPostgresql.enabled }}
-        {{- printf "%s" .Values.externalPostgresql.primary.port -}}
-    {{- end -}}
+    {{- printf "5432" -}}
 {{- end -}}
 
 {{/* Select Postgres replica port Internal or External */}}
 {{- define "postgresqlreplica.port" -}}
-    {{- if .Values.postgresql.enabled }}
-        {{- printf "5432" -}}
-    {{- else if .Values.externalPostgresql.enabled }}
-        {{- printf "%s" .Values.externalPostgresql.readOnly.port -}}
-    {{- end -}}
+    {{- printf "5432" -}}
 {{- end -}}
 
 {{/* Select Postgres master database Internal or External */}}
