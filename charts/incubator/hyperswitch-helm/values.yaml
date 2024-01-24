@@ -314,7 +314,6 @@ externalRedis:
   # - Link this service to an external Redis server
   enabled: false
   host: redis-ext-master
-  port: 6379
   auth:
     enabled: true
     username: ""
@@ -349,7 +348,6 @@ externalPostgresql:
   enabled: false
   primary:
     host: "postgresql-ext"
-    port: 5432
     auth:
       username: "hyperswitch"
       password: "hyperswitch"
@@ -357,7 +355,6 @@ externalPostgresql:
   readOnly:
     enabled: false
     host: "postgres-service"
-    port: 5432
     auth:
       username: "hyperswitch"
       password: "hyperswitch"
