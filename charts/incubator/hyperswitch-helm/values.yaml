@@ -340,8 +340,14 @@ postgresql:
     numSynchronousReplicas: 1
   primary:
     name: ""
+    resources:
+      requests:
+        cpu: 150m
   readReplicas:
     replicaCount: 1
+    resources:
+      requests:
+        cpu: 100m
 
 externalPostgresql:
   # - Link this service to an external Postgres server
