@@ -95,4 +95,36 @@
     secretKeyRef:
       key: ROUTER__SECRETS__KMS_ENCRYPTED_JWT_SECRET
       name: hyperswitch-secrets
+- name: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY
+      name: hyperswitch-secrets
+- name: ROUTER__SECRETS__MASTER_ENC_KEY
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__SECRETS__MASTER_ENC_KEY
+      name: hyperswitch-secrets
+- name: ROUTER__SECRETS__KMS_ENCRYPTED_RECON_ADMIN_API_KEY
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__SECRETS__KMS_ENCRYPTED_RECON_ADMIN_API_KEY
+      name: hyperswitch-secrets
+- name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID
+      name: hyperswitch-secrets
+- name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET
+      name: hyperswitch-secrets
+- name: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
+      name: hyperswitch-secrets
+  
+
 {{- end -}}

@@ -29,6 +29,10 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: hyperloader-build-job-{{ $.Values.application.sdk.env | quote | sha1sum }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   ttlSecondsAfterFinished: 0
   template:

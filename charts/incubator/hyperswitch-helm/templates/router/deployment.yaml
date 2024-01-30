@@ -96,7 +96,7 @@ spec:
             timeoutSeconds: 1
           resources:
             requests:
-              cpu: 400m
+              cpu: 200m
               memory: 500Mi
           securityContext:
             privileged: false
