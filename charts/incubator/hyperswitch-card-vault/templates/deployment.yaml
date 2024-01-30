@@ -60,9 +60,9 @@ spec:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__DATABASE__PASSWORD
             - name: LOCKER__DATABASE__HOST
-              value: {{ .Values.server.env.database_host }}
+              value: {{ include "postgresql.host" }}
             - name: LOCKER__DATABASE__PORT
-              value: {{ .Values.server.env.database_port }}
+              value: {{ include "postgresql.port" }}
             - name: LOCKER__DATABASE__DBNAME
               value: {{ .Values.server.env.database_name }}
             - name: LOCKER__LIMIT__REQUEST_COUNT

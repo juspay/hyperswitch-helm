@@ -60,3 +60,22 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/* Select PostgreSQL host Internal or External */}}
+{{- define "postgresql.host" -}}
+  {{- if .Values.postgresql.enabled }}
+    {{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+  {{- else -}}
+    {{- printf "%s" .Values.server.env.database_host -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/* Select PostgreSQL port Internal or External */}}
+{{- define "postgresql.port" -}}
+  {{- if .Values.postgresql.enabled }}
+    {{- printf "5432" }}
+  {{- else -}}
+    {{- printf "%s" .Values.server.env.database_port -}}
+  {{- end -}}
+{{- end -}}
