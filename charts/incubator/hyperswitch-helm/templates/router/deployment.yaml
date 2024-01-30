@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    {{- with (default .Values.application.global.annotations .Values.application.server.annotations) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  name: hyperswitch-server-v1o52o1v2
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.server.progressDeadlineSeconds }}
+  replicas: {{ default .Values.application.global.replicas .Values.application.server.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Values.application.server.labels.app }}
+      version: v1o52o1v2
+  strategy:
+    {{- with (default .Values.application.global.strategy .Values.application.server.strategy) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2023-09-20T12:11:41+05:30"
+        traffic.sidecar.istio.io/excludeOutboundIPRanges: {{ default .Values.application.global.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges .Values.application.server.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges }}
+        checksum/router-config: {{ include (print $.Template.BasePath "/router/configmap.yaml") . | sha256sum }}
+        checksum/router-secret: {{ include (print $.Template.BasePath "/router/secret.yaml") . | sha256sum }}
+        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Values.application.server.labels.app }}
+        version: v1o52o1v2
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      initContainers:
+        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- include "redis.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: hyperswitch-router
+          image: {{ .Values.services.router.image }}
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - pkill -15 node
+          env:
+            {{/* TODO this env can be static ? */}}
+            - name: BINARY
+              value: {{ .Values.application.server.env.binary }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          {{- include "generic.envs" . | nindent 12 }}
+          {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: router-cm-{{ .Release.Name }}
+            - secretRef:
+                name: router-secret-{{ .Release.Name }}
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 400m
+              memory: 500Mi
+          securityContext:
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /local/config/production.toml
+              name: hyperswitch-config
+              subPath: production.toml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccountName: hyperswitch-router-role
+      terminationGracePeriodSeconds: {{ default .Values.application.global.terminationGracePeriodSeconds .Values.application.server.terminationGracePeriodSeconds  }}
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: hyperswitch-config
+          name: hyperswitch-config

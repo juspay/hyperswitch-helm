@@ -25,7 +25,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -35,10 +35,10 @@ application:
 
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application services
     env:
-      pod_name: 
+      pod_name:
         name: POD_NAME
         valueFrom:
           fieldRef:
@@ -77,7 +77,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -86,7 +86,7 @@ application:
       app: hyperswitch-server
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn: my-role-arn
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: router
@@ -97,6 +97,21 @@ application:
       admin_api_key: test_admin
       jwt_secret: test_admin
       recon_admin_api_key: test_admin
+      kms_key_id: kms_key_id
+      kms_key_region: us-east-1
+      kms_jwekey_locker_identifier1: dummy_val
+      kms_jwekey_locker_identifier2: dummy_val
+      kms_jwekey_locker_encryption_key1: dummy_val
+      kms_jwekey_locker_encryption_key2: dummy_val
+      kms_jwekey_locker_decryption_key1: dummy_val
+      kms_jwekey_locker_decryption_key2: dummy_val
+      kms_jwekey_vault_encryption_key: dummy_val
+      kms_jwekey_vault_private_key: dummy_val
+      kms_jwekey_tunnel_private_key: dummy_val
+      kms_jwekey_rust_locker_encryption_key: dummy_val
+      kms_connector_onboarding_paypal_client_id: dummy_val
+      kms_connector_onboarding_paypal_client_secret: dummy_val
+      kms_connector_onboarding_paypal_partner_id: dummy_val
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: locker-host
@@ -131,7 +146,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -140,7 +155,7 @@ application:
       app: hyperswitch-consumer
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: consumer
@@ -170,7 +185,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -179,11 +194,11 @@ application:
       app: hyperswitch-producer
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: producer
-  
+
   controlCenter:
     # Image to be used by the deployment to create the pod
     image: juspaydotin/hyperswitch-control-center:v1.17.0
@@ -210,7 +225,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -219,7 +234,7 @@ application:
       app: hyperswitch-control-center
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: dashboard
@@ -249,7 +264,7 @@ application:
     terminationGracePeriodSeconds: 30
     # Annotations that are to be added to the pods (extends global configuration)
     podAnnotations:
-      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32 
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # Annotations that are to be added the the deployments (extends global configuration)
     annotations:
       deployment.kubernetes.io/revision: "1"
@@ -258,7 +273,7 @@ application:
       app: hyperswitch-sdk-demo
     # service account annotations to be used
     serviceAccountAnnotations:
-      eks.amazonaws.com/role-arn: 
+      eks.amazonaws.com/role-arn:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       host: hyperswitch-sdk-demo
@@ -266,7 +281,7 @@ application:
 
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
-  router: 
+  router:
     version: v1.105.0
     image: juspaydotin/hyperswitch-router:v1.105.0-standalone
     host: http://localhost:8080
@@ -285,28 +300,76 @@ services:
     hyperswitchSecretKey: secret_key
 
 redis:
-  #denotes if the redis has to be created as a part of the deployment
-  internal: true
-  host: "redis"
-  replicaCount: 1
+  # - enable Bitnami redis sub-chart helm installation
+  enabled: true
+  master:
+    count: 1
+  replica:
+    replicaCount: 0
+  auth:
+    enabled: false
+    sentinel: false
 
-loadBalancer: 
+externalRedis:
+  # - Link this service to an external Redis server
+  enabled: false
+  host: redis-ext-master
+  auth:
+    enabled: true
+    username: ""
+    password: ""
+
+redisMiscConfig:
+  checkRedisIsUp:
+    initContainer:
+      enable: true
+      image: redis:7.2.4
+      maxAttempt: 30
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: "hyperswitch"
+        password: "ZGJwYXNzd29yZDEx"
+        database: "hyperswitch"
+  architecture: replication
+  replication:
+    synchronousCommit: "off"
+    numSynchronousReplicas: 1
+  primary:
+    name: ""
+  readReplicas:
+    replicaCount: 1
+
+externalPostgresql:
+  # - Link this service to an external Postgres server
+  enabled: false
+  primary:
+    host: "postgresql-ext"
+    auth:
+      username: "hyperswitch"
+      password: "hyperswitch"
+      database: "hyperswitch"
+  readOnly:
+    enabled: false
+    host: "postgres-service"
+    auth:
+      username: "hyperswitch"
+      password: "hyperswitch"
+      database: "hyperswitch"
+
+initDB:
+  enable: true
+  checkPGisUp:
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    image: christophwurst/diesel-cli:latest
+
+loadBalancer:
   targetSecurityGroup: loadBalancer-sg
-
-db: 
-  #denotes if the db has to be created as a part of the deployment
-  internal: true
-  # Name of the database to be used
-  name: hyperswitch
-  # Hostname of the database to be used
-  host: hyperswitch-db.hyperswitch.svc.cluster.local
-  # Hostname of the database to be used for read replicas
-  replica_host: hyperswitch-db.hyperswitch.svc.cluster.local
-  # Username of the database to be used
-  user_name: db_user
-  # Password of the database to be used
-  password: "ZGJwYXNzd29yZDEx" #base64 encoded password eg: `echo -n "dbpassword11" | base64`
-  #psql -h hyperswitch-db.hyperswitch.svc.cluster.local -U db_user -d hyperswitch
 
 autoscaling:
   enabled: true
