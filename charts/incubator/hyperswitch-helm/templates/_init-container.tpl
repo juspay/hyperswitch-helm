@@ -33,7 +33,7 @@
     MAX_ATTEMPTS={{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt }};
     SLEEP_SECONDS=10;
     attempt=0;
-    while ! redis-cli -h {{ include "redis.host" . }} -p {{ include "redis.port" . }} ping; do
+    while ! redis-cli -h {{ include "redis.host" . }} -p 6379 ping; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then
         echo "Redis did not become ready in time";
         exit 1;
