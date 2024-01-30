@@ -1,0 +1,73 @@
+# Default values for helm.
+global:
+  # Annotations to be added to all resources
+  annotations: {}
+
+  # Node affinity to be added to all resources
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      # matchExpression:
+      - key: node-type
+        operator: In
+        values:
+          - generic-compute
+
+# Values for hyperswitch-card-vault.
+server:
+  # Annotations to be added to hyperswitch-card-vault.
+  annotations: {}
+
+  # Image to be used for hyperswitch-card-vault.
+  image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
+
+  # values to be used in pod template.
+  pod:
+    # Annotations to be added to hyperswitch-card-vault pod.
+    annotations: {}
+
+  # Node affinity to be added to hyperswitch-card-vault.
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      # matchExpression:
+      - key: node-type
+        operator: In
+        values:
+          - generic-compute
+      # - key: spot-instance
+      #   operator: NotIn
+      #   values:
+      #     - "true"
+      # - key: <label for the node>
+      #   operator: In
+      #   values:
+      #     - <Value for the label>
+
+  # Environment variables to be added to hyperswitch-card-vault.
+  env:
+    database_username: # <value for the env variable>
+    database_host: # <value for the env variable>
+    database_port: # <value for the env variable>
+    database_name: # <value for the env variable>
+
+  # Secrets to be added to hyperswitch-card-vault.
+  secrets:
+    database_password: # <value for the secret>
+    master_key: # <value for the secret>
+    locker_private_key: # <value for the secret>
+    tenant_public_key: # <value for the secret>
+
+  # Extra values to be added to hyperswitch-card-vault.
+  extra:
+    # extra env variables to be added to hyperswitch-card-vault.
+    env: {}
+
+# Values for database (postgresql).
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: {{ tpl .Values.server.env.database_username . }}
+        password: {{ tpl .Values.server.secrets.database_password . }}
+        database: {{ tpl .Values.server.env.database_name . }}
+        architecture: standalone

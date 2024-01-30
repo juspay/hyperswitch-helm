@@ -1,40 +1,12 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: hyperswitch-vault
-  namespace: { { .Release.Namespace } }
-spec:
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 8080
-    - name: https
-      port: 443
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: hyperswitch-card-vault
-  sessionAffinity: None
-  type: ClusterIP
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: hyperswitch-vault-role
-  namespace: { { .Release.Namespace } }
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- with (default .Values.global.annotations .Values.server.annotations) }}
   annotations:
-    # data
-  name: hyperswitch-card-vault
-  namespace: { { .Release.Namespace } }
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  name: hyperswitch-card-vault-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -46,8 +18,12 @@ spec:
       maxUnavailable: 0
   template:
     metadata:
-      # annotations:
-      #   -
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.annotations .Values.server.pod.annotations) }}
+        {{- toYaml . | nindent 10 }} 
+        {{- end }}
       creationTimestamp: null
       labels:
         app: hyperswitch-card-vault
@@ -55,16 +31,19 @@ spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpression:
-                  - key: spot-instance
-                    operator: NotIn
-                    values:
-                      - "true"
-                  - key: inner # <label for the node>
-                    operator: In
-                    values:
-                      - vla # <Value for the label>
+            {{- with (default .Values.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+              matchExpression:
+              {{- toYaml . | nindent 18 }}
+            {{- end }}
+                # matchExpression:
+                #   - key: spot-instance
+                #     operator: NotIn
+                #     values:
+                #       - "true"
+                #   - key: inner # <label for the node>
+                #     operator: In
+                #     values:
+                #       - vla # <Value for the label>
       containers:
         - env:
             - name: LOCKER__LOG__CONSOLE__ENABLED
@@ -74,18 +53,18 @@ spec:
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
               value: default
             - name: LOCKER__DATABASE__USERNAME
-              value: # 
+              value: {{ .Values.server.env.database_username }}
             - name: LOCKER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets
+                  name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__DATABASE__PASSWORD
             - name: LOCKER__DATABASE__HOST
-              value: #
+              value: {{ .Values.server.env.database_host }}
             - name: LOCKER__DATABASE__PORT
-              value: #
+              value: {{ .Values.server.env.database_port }}
             - name: LOCKER__DATABASE__DBNAME
-              value: #
+              value: {{ .Values.server.env.database_name }}
             - name: LOCKER__LIMIT__REQUEST_COUNT
               value: 100
             - name: LOCKER__LIMIT__DURATION
@@ -111,7 +90,11 @@ spec:
               value: 5000
             - name: LOCKER__CACHE__TTI
               value: 7200
-          image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
+            {{- with .Values.server.extra.env }}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+          image: {{ .Values.server.image }}
+          # image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -168,5 +151,5 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: hyperswitch-vault-config
+            name: hyperswitch-vault-config-{{ .Release.Name }}
           name: hyperswitch-vault-config
