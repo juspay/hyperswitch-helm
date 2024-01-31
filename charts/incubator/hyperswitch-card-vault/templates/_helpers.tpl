@@ -61,21 +61,72 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+
+
+{{/*  validation */}}
+{{- define "validate.postgresql.config" -}}
+    {{- if not (or  .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
+        {{-  fail
+        "Both postgresql.enabled and external.postgresql.enabled cannot be 'false' at the same time. Please, onfigure at least one Redis."
+         }}
+    {{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
+        {{-  fail
+        "Both postgresql.enabled and external.postgresql.enabled cannot be 'true' at the same time. Select only once please"
+         }}
+    {{- end }}
+{{- end }}
+
+
 {{/* Select PostgreSQL host Internal or External */}}
 {{- define "postgresql.host" -}}
+{{- $test_db := include "validate.postgresql.config" . }}
   {{- if .Values.postgresql.enabled }}
     {{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
   {{- else -}}
-    {{- printf "%s" .Values.server.env.database_host -}}
+    {{- printf "%s" .Values.external.postgresql.config.host -}}
   {{- end -}}
 {{- end -}}
 
 
 {{/* Select PostgreSQL port Internal or External */}}
 {{- define "postgresql.port" -}}
+{{- $test_db := include "validate.postgresql.config" . }}
   {{- if .Values.postgresql.enabled }}
     {{- printf "\"5432\"" }}
   {{- else -}}
-    {{- printf "%s" .Values.server.env.database_port -}}
+    {{- printf "%s" .Values.external.postgresql.config.port -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/* Select PostgreSQL host Internal or External */}}
+{{- define "postgresql.username" -}}
+{{- $test_db := include "validate.postgresql.config" . }}
+  {{- if .Values.postgresql.enabled }}
+    {{- printf "%s" .Values.postgresql.global.postgresql.auth.username -}}
+  {{- else -}}
+    {{- printf "%s" .Values.external.postgresql.config.username -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/* Select PostgreSQL host Internal or External */}}
+{{- define "postgresql.name" -}}
+{{- $test_db := include "validate.postgresql.config" . }}
+  {{- if .Values.postgresql.enabled }}
+    {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
+  {{- else -}}
+    {{- printf "%s" .Values.external.postgresql.config.database -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{/* Select PostgreSQL host Internal or External */}}
+{{- define "postgresql.password" -}}
+{{- $test_db := include "validate.postgresql.config" . }}
+  {{- if .Values.postgresql.enabled }}
+    {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
+  {{- else -}}
+    {{- printf "%s" .Values.external.postgresql.config.password -}}
   {{- end -}}
 {{- end -}}

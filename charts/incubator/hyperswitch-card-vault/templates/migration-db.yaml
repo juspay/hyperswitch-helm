@@ -32,9 +32,9 @@ spec:
             - name: POSTGRES_HOST
               value: {{ include "postgresql.host" . }}
             - name: DBNAME
-              value: {{ .Values.server.env.database_name }}
+              value: {{ include "postgresql.name" . }}
             - name: POSTGRES_USER
-              value: {{ .Values.server.env.database_username }}
+              value: {{ include "postgresql.username" . }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

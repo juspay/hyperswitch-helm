@@ -9,7 +9,7 @@
     MAX_ATTEMPTS=10
     SLEEP_SECONDS=10;
     attempt=0;
-    while ! pg_isready -U {{ .Values.server.env.database_username }} -d {{ .Values.server.env.database_name }} -h {{ include "postgresql.host" . }} -p {{ include "postgresql.port" . }}; do
+    while ! pg_isready -U {{ include "postgresql.username" . }} -d {{ include "postgresql.name" . }} -h {{ include "postgresql.host" . }} -p {{ include "postgresql.port" . }}; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then
         echo "PostgreSQL did not become ready in time";
         exit 1;

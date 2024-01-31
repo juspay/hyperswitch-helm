@@ -42,16 +42,8 @@ server:
       #   values:
       #     - <Value for the label>
 
-  # Environment variables to be added to hyperswitch-card-vault.
-  env:
-    database_username: # <value for the env variable>
-    database_host: # <value for the env variable>
-    database_port: # <value for the env variable>
-    database_name: # <value for the env variable>
-
   # Secrets to be added to hyperswitch-card-vault.
   secrets:
-    database_password: # <value for the secret>
     master_key: # <value for the secret>
     locker_private_key: # <value for the secret>
     tenant_public_key: # <value for the secret>
@@ -67,10 +59,20 @@ postgresql:
   global:
     postgresql:
       auth:
-        username: {{ tpl .Values.server.env.database_username . }}
-        password: {{ tpl .Values.server.secrets.database_password . }}
-        database: {{ tpl .Values.server.env.database_name . }}
+        username: # <value for the secret>
+        password: # <value for the secret>
+        database: # <value for the secret>
         architecture: standalone
+
+external:
+  postgresql:
+    enabled: false
+    config:
+      host: # <value for the secret>
+      port: # <value for the secret>
+      username: # <value for the secret>
+      password: # <value for the secret>
+      database: # <value for the secret>
 
 # Values for the database migration job
 initDB:
