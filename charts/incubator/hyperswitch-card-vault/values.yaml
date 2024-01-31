@@ -71,3 +71,13 @@ postgresql:
         password: {{ tpl .Values.server.secrets.database_password . }}
         database: {{ tpl .Values.server.env.database_name . }}
         architecture: standalone
+
+# Values for the database migration job
+initDB:
+  # Should we run the migrations on the database
+  enable: false
+  checkPGisUp:
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    image: christophwurst/diesel-cli:latest
