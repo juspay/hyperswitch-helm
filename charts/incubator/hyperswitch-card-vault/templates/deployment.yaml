@@ -35,19 +35,10 @@ spec:
               matchExpression:
               {{- toYaml . | nindent 18 }}
             {{- end }}
-                # matchExpression:
-                #   - key: spot-instance
-                #     operator: NotIn
-                #     values:
-                #       - "true"
-                #   - key: inner # <label for the node>
-                #     operator: In
-                #     values:
-                #       - vla # <Value for the label>
       containers:
         - env:
             - name: LOCKER__LOG__CONSOLE__ENABLED
-              value: true
+              value: "true"
             - name: LOCKER__LOG__CONSOLE__LEVEL
               value: DEBUG
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
@@ -60,41 +51,40 @@ spec:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__DATABASE__PASSWORD
             - name: LOCKER__DATABASE__HOST
-              value: {{ include "postgresql.host" }}
+              value: {{ include "postgresql.host" . }}
             - name: LOCKER__DATABASE__PORT
-              value: {{ include "postgresql.port" }}
+              value: {{ include "postgresql.port" . }}
             - name: LOCKER__DATABASE__DBNAME
               value: {{ .Values.server.env.database_name }}
             - name: LOCKER__LIMIT__REQUEST_COUNT
-              value: 100
+              value: "100"
             - name: LOCKER__LIMIT__DURATION
-              value: 60
+              value: "60"
             - name: LOCKER__SECRETS__TENANT
               value: hyperswitch
             - name: LOCKER__SECRETS__MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets
+                  name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS__MASTER_KEY
             - name: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets
+                  name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
             - name: LOCKER__SECRETS__TENANT_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets
+                  name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS__TENANT_PUBLIC_KEY
             - name: LOCKER__CACHE__MAX_CAPACITY
-              value: 5000
+              value: "5000"
             - name: LOCKER__CACHE__TTI
-              value: 7200
+              value: "7200"
             {{- with .Values.server.extra.env }}
               {{- toYaml . | nindent 14 }}
             {{- end }}
           image: {{ .Values.server.image }}
-          # image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -145,8 +135,8 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccount: hyperswitch-router-role
-      serviceAccountName: hyperswitch-router-role
+      serviceAccount: hyperswitch-vault-role
+      serviceAccountName: hyperswitch-vault-role
       terminationGracePeriodSeconds: 120
       volumes:
         - configMap:

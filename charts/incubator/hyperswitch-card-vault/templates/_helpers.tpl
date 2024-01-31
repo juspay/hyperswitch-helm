@@ -74,7 +74,7 @@ Create the name of the service account to use
 {{/* Select PostgreSQL port Internal or External */}}
 {{- define "postgresql.port" -}}
   {{- if .Values.postgresql.enabled }}
-    {{- printf "5432" }}
+    {{- printf "\"5432\"" }}
   {{- else -}}
     {{- printf "%s" .Values.server.env.database_port -}}
   {{- end -}}
