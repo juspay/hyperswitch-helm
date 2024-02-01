@@ -392,7 +392,7 @@ hyperswitchsdk:
     nginxConfig:
       extraPath: v0
     buildParam:
-      envSdkUrl: http://localhost:9191
+      envSdkUrl: http://localhost:9090
       envBackendUrl: http://localhost:8080
   service:
-    port: 9191
+    port: 9090

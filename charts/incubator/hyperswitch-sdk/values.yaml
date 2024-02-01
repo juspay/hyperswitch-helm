@@ -19,9 +19,9 @@ autoBuild:
     gitVersion: 0.16.7
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
-    envSdkUrl: http://localhost:9090
+    envSdkUrl: https://hyperswitch-sdk.<your host>
     # -- node build parameter, hyperswitch server host
-    envBackendUrl: http://localhost:8080
+    envBackendUrl: https://hyperswitch.<your host>
     # -- node build parameter, environment
     buildEnv: integ
   nginxConfig:
@@ -84,7 +84,7 @@ service:
   # -- service type
   type: ClusterIP
   # -- service port
-  port: 9090
+  port: 80
 
 
 ingress:
