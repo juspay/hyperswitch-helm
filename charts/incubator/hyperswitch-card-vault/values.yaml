@@ -13,7 +13,7 @@ server:
   annotations: {}
 
   # Image to be used for hyperswitch-card-vault.
-  image: juspaydotin/hyperswitch-card-vault:v1.3.0-nokms
+  image: juspaydotin/hyperswitch-card-vault:0.1.3-nokms
 
   # values to be used in pod template.
   pod:
@@ -82,7 +82,7 @@ external:
 # Values for the database migration job
 initDB:
   # Should we run the migrations on the database
-  enable: false
+  enable: true
   checkPGisUp:
     image: postgres:16-alpine3.19
     maxAttempt: 30

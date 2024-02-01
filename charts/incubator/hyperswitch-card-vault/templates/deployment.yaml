@@ -44,7 +44,7 @@ spec:
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
               value: default
             - name: LOCKER__DATABASE__USERNAME
-              value: {{ include "postgresql.username" }}
+              value: {{ include "postgresql.username" . }}
             - name: LOCKER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
