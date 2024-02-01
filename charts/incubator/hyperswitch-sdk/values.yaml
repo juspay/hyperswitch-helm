@@ -11,7 +11,7 @@ autoBuild:
   # -- force rebuild assets even these files exist
   forceBuild: false
   # -- docker image to use for the build
-  buildImage: node:18
+  buildImage: jaganelavarasan/hyperswitch-web
   gitCloneParam:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
@@ -19,9 +19,9 @@ autoBuild:
     gitVersion: 0.16.7
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
-    envSdkUrl: https://hyperswitch-sdk.<your host>
+    envSdkUrl: http://localhost:9090
     # -- node build parameter, hyperswitch server host
-    envBackendUrl: https://hyperswitch.<your host>
+    envBackendUrl: http://localhost:8080
     # -- node build parameter, environment
     buildEnv: integ
   nginxConfig:
@@ -84,7 +84,7 @@ service:
   # -- service type
   type: ClusterIP
   # -- service port
-  port: 80
+  port: 9090
 
 
 ingress:

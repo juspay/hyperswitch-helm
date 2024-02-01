@@ -59,7 +59,7 @@ If you intend to save cards of your customers for future usage then you need a C
 
 | Service                | Configuration Key                                   | Description                                                                                                          |
 | ---------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| SdkDemo                       | `application.services.sdkDemo.host`      | <p>Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK.<br>Eg:https://{{your_host}}</p> |
+| SdkDemo                       | `hyperswitch-sdk.autoBuild.buildParam.envSdkUrl`      | <p>Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK.<br>Eg:https://{{your_host}}</p> |
 |                        | `application.services.sdkDemo.hyperswitchPublishableKey` | This should be set to your merchant publishable key. You will get this once you create a merchant.                   |
 |                        | `application.services.sdkDemo.hyperswitchSecretKey`      | This should be set to your merchant secret key. You can create this from the control center or via the REST API.     |
 

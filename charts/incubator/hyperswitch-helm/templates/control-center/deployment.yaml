@@ -46,7 +46,7 @@ spec:
             - name: apiBaseUrl
               value: {{ .Values.services.router.host }}
             - name: sdkBaseUrl
-              value: "{{ .Values.services.sdkDemo.host }}/{{ .Values.services.sdkDemo.version }}/{{ .Values.services.sdkDemo.subversion }}/HyperLoader.js"
+              value: {{ include "hyperswitch-sdk.host" . }}/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}/HyperLoader.js
           ports:
             - containerPort: 9000
               name: http

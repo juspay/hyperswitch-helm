@@ -293,9 +293,6 @@ services:
     image: juspaydotin/hyperswitch-control-center:v1.17.0
   sdkDemo:
     image: juspaydotin/hyperswitch-web:v1.0.10
-    version: 0.16.7
-    subversion: v0
-    host: http://localhost:9090
     hyperswitchPublishableKey: pub_key
     hyperswitchSecretKey: secret_key
 
@@ -382,3 +379,20 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
+
+hyperswitchsdk:
+  enabled: true
+  podAnnotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+  autoBuild:
+    gitCloneParam: 
+      gitVersion: 0.16.7
+    nginxConfig:
+      extraPath: v0
+    buildParam:
+      envSdkUrl: http://localhost:9191
+      envBackendUrl: http://localhost:8080
+  service:
+    port: 9191
