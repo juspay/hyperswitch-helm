@@ -5,12 +5,7 @@ global:
 
   # Node affinity to be added to all resources
   nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      # matchExpression:
-      - key: node-type
-        operator: In
-        values:
-          - generic-compute
+    requiredDuringSchedulingIgnoredDuringExecution: []
 
 # Values for hyperswitch-card-vault.
 server:
@@ -28,11 +23,8 @@ server:
   # Node affinity to be added to hyperswitch-card-vault.
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
+      []
       # matchExpression:
-      - key: node-type
-        operator: In
-        values:
-          - generic-compute
       # - key: spot-instance
       #   operator: NotIn
       #   values:
@@ -43,8 +35,19 @@ server:
       #     - <Value for the label>
 
   # Secrets to be added to hyperswitch-card-vault.
+  # To create the master key, follow the instructions provided here: https://github.com/juspay/hyperswitch-card-vault/blob/main/docs/guides/setup.md#preparing-the-required-keys
   secrets:
+    # Optionally, you can run `cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin`
     master_key: # <value for the secret>
+    # To create this key pairs, follow the instructions provided here:
+    ## Generating the private keys
+    # openssl genrsa -out locker-private-key.pem 2048
+    # openssl genrsa -out tenant-private-key.pem 2048
+    #
+    # # Generating the public keys
+    # openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
+    # openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
+
     locker_private_key: # <value for the secret>
     tenant_public_key: # <value for the secret>
 
@@ -56,12 +59,14 @@ server:
 # Values for database (postgresql).
 postgresql:
   enabled: true
+  primary:
+    name: locker-db
   global:
     postgresql:
       auth:
-        username: # <value for the secret>
-        password: # <value for the secret>
-        database: # <value for the secret>
+        username: db_user
+        password: V2tkS1ptTkhSbnBqZDI4OUNnPT0K
+        database: locker-db
         architecture: standalone
 
 external:
