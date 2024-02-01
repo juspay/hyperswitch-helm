@@ -14,7 +14,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{- include "locker-psql.initContainer.check.read" . | nindent 8 }}
       containers:
         - name: run-locker-db-migration
           image: {{ .Values.initDB.migration.image }}
@@ -30,11 +30,11 @@ spec:
               echo "Completed hyperswitch database migration"
           env:
             - name: POSTGRES_HOST
-              value: {{ include "postgresql.host" . }}
+              value: {{ include "locker-psql.host" . }}
             - name: DBNAME
-              value: {{ include "postgresql.name" . }}
+              value: {{ include "locker-psql.name" . }}
             - name: POSTGRES_USER
-              value: {{ include "postgresql.username" . }}
+              value: {{ include "locker-psql.username" . }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

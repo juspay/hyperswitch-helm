@@ -52,7 +52,6 @@ application:
     # secrets to be used by the hyperswitch application
     secrets:
 
-
   server:
     # Number of replicas to be used for the application
     replicas: 3
@@ -114,11 +113,46 @@ application:
       kms_connector_onboarding_paypal_partner_id: dummy_val
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
-      host: locker-host
+      host: hyperswitch-vault:8080
       locker_public_key: |
-        public
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsgwEJaGbRA1DNMzubq4M
+        7d+i6TSrFPiqrqnNkO0Dct58jGbJ36xIOxfsf7qa03kP+idEZnh0w9kWcVmx4aL+
+        nqeDzQtZ8RQdBMg2lJl4srDjxdKTABdeMq3c6W+tyXG1E/vz2qik0ROp65JkxlTS
+        T1e4wWC9IwpmaNAFtjW9oFc48K6Ou7SZOl/hAm5QJPUxsY1lFbbVwQD6pbRRhLas
+        zrGRFqczQVhtCz6ZsJWSpSwfpZAhNKlBHatkuojY4yLw/Qey3xaCR83fn2hCaoXO
+        ++9ffcbPIwxb7XTkbc25kJT+bOuN5ttnmAPRDV1l5hR432fiSqNIo015gTy83Nv2
+        LwIDAQAB
+        -----END PUBLIC KEY-----
+
       hyperswitch_private_key: |
-        private
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAsSnWltGc6kjcDAhtUoad0xlLJZCwLc6P80j8k3dgo92nqocU
+        KD7tsY61dgm3gKFr8sZPLbTaDV1SJ+jAeZNP476aonJVPottQvGduB5DqDCMcHDQ
+        krYkBtOb+/ID5qOi8ATVVMfJASjVbw/D0R/AEuiG0vmddl+8676xWIT8TZTmzowI
+        vvUIYEuaUS8DRpmTAWPXYdv72fDZtuyhpU0YGAdHGyQrHXwGdGe31N65vmqMyWoi
+        IXGMuJKqP/EZEqmVkkfWXuDioa57YrPUU07oD7KsS00L4QGBB3MeJxEpQjhmNybj
+        QeDejl4YPj3dboFyf6468skKS91+wV0ExghyTwIDAQABAoIBAGG7G8a9QVu477Kv
+        n2csHbpLNLo3VAkg7yYdOEA9VZFwAENBGuyMsmEFwbKo75LE+aDGpv0mzDcdKOod
+        KrimfCa9id5dRgsnrRGF6iSchWQty/tnMJgOZFdjuqPEwUQlNwhDElAfmhHKrdsD
+        jlk5s6J6pY2S57taWwSNgJW9XtWIiCvI+VXxSqK7KDjGwDko8Kv86/Gck87IBxa5
+        5OqDlvOsPSqTQpqT3BqFu7PSh/dPGZ90u2Yyvsns4EnBpVkxmxPKDddv/b2PkwnC
+        /gVoctmrZ+YRkXN/07L34TSJzdWVZis0+w7DydhIz/n1ueYIX7D1Ef7uHWi709AJ
+        HLnBvDkCgYEA5N3RG6993ef/zH7Ir+k4iwlUTkXI8YAEY2Vavpk21cG60kTwzhUN
+        KbjsLJRuX5N3soWxhlrXX+V7ihTSCXbO0mFpOQwW66XBKZyV3i5NllpS3+ldiyfO
+        FxjYgJVZsnXpJX3c4R4HwZ6qja4oKZabsqypg7BaIgGJMArkZUHJDYsCgYEAxirQ
+        kmN6MUZMa52gBZLGnAiXNVZj0yUmaDU5hLJlLHu00Ut80hOC9d4Ekv6R0Y/aSC3h
+        eVzPkrkFOSySytifyGK0cU+3ielJncIGJHraIYkWdM0aex1jX0Ms77hfMlCYcagJ
+        5uwiwFSNNboOWnm9P3M/1enJAsuw1MzFFBtBDs0CgYEA4N1MIh6H1Wqnur1q4uOL
+        iZft/EW2jAlSxnID+bbB2L3Sl9vimSi32SF28soXs9JJTd7rsG06pV7sxZt1TpUr
+        2iqZXtKRBpDCO+c8nKLz2mD+gj9giGPgqnLf7V5QVfZhz1NdnNWLm2IQgsn1bf8r
+        FR9uIhQ4Sqclqk1ZYF+FcccCgYAYeitfGZh7Q6Km3EZqydFsboc22F/mMb2Hu6NK
+        J7rlfrY77+YQEMbpVa4c9gLO7sTYi4pBMlyVU/M4N7A+C/nYh5CgOmeCSmWEbfXS
+        RbZx0/wJG1h9AolGuAZx6cUgcuIRj98BPgOg3BDBJSUmucjNcI/e/UyN4tkJv+1L
+        6X3ktQKBgQDMa06pjBgpRq8BJhcxs1mluPgHGad1lBzU5IcVX1oRFyux8PtsfSoA
+        kIYrGckStjrvfOD2VnTIQWAuujOTtxjP0yR+cHlmwWXZrrj5+x8kNAOqgN7gU1nt
+        KYpNT2+Sc7wxwAWIucVSN3eRNzRGTysxUWYKFUlpGRKP6NwJDEz9ew==
+        -----END RSA PRIVATE KEY-----
     basilisk:
       host: basilisk-host
     server_base_url: https://sandbox.hyperswitch.io
@@ -159,7 +193,6 @@ application:
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: consumer
-
 
   producer:
     # Number of replicas to be used for the application
@@ -382,3 +415,6 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
+
+hyperswitch-card-vault:
+  enabled: true

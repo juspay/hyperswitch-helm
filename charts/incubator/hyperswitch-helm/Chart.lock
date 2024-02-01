@@ -5,5 +5,8 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 13.2.27
-digest: sha256:07fc446cadc61ceb63e28686fe97678d391875cf78944264a31905d5b7cc4c55
-generated: "2024-01-08T13:08:33.024402206+01:00"
+- name: hyperswitch-card-vault
+  repository: file://../hyperswitch-card-vault
+  version: 0.1.0
+digest: sha256:92c04c97c8678d965516239e9ba8e84ea00eb32caa1075543a857b75e09eae6d
+generated: "2024-02-01T18:21:45.314242+05:30"

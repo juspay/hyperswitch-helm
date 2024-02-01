@@ -44,18 +44,18 @@ spec:
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
               value: default
             - name: LOCKER__DATABASE__USERNAME
-              value: {{ include "postgresql.username" . }}
+              value: {{ include "locker-psql.username" . }}
             - name: LOCKER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__DATABASE__PASSWORD
             - name: LOCKER__DATABASE__HOST
-              value: {{ include "postgresql.host" . }}
+              value: {{ include "locker-psql.host" . }}
             - name: LOCKER__DATABASE__PORT
-              value: {{ include "postgresql.port" . }}
+              value: {{ include "locker-psql.port" . }}
             - name: LOCKER__DATABASE__DBNAME
-              value: {{ include "postgresql.name" . }}
+              value: {{ include "locker-psql.name" . }}
             - name: LOCKER__LIMIT__REQUEST_COUNT
               value: "100"
             - name: LOCKER__LIMIT__DURATION
