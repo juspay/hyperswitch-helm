@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-hyperswitch-db
+  name: create-locker-db
   labels:
-    app: create-hyperswitch-db
+    app: create-locker-db
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
@@ -16,7 +16,7 @@ spec:
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:
-        - name: run-hyperswitch-db-migration
+        - name: run-locker-db-migration
           image: {{ .Values.initDB.migration.image }}
           command: [ '/bin/sh', '-c' ]
           #language=sh

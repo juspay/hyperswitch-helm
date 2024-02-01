@@ -39,6 +39,7 @@ server:
   secrets:
     # Optionally, you can run `cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin`
     master_key: # <value for the secret>
+
     # To create this key pairs, follow the instructions provided here:
     ## Generating the private keys
     # openssl genrsa -out locker-private-key.pem 2048
@@ -48,8 +49,8 @@ server:
     # openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
     # openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
 
-    locker_private_key: # <value for the secret>
-    tenant_public_key: # <value for the secret>
+    locker_private_key: # use the content of locker-private-key.pem
+    tenant_public_key: # use the content of tenant-public-key.pem
 
   # Extra values to be added to hyperswitch-card-vault.
   extra:
