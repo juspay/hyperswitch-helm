@@ -42,7 +42,7 @@ spec:
         - name: HYPERSWITCH_SERVER_URL
           value: {{ .Values.services.router.host }}
         - name: HYPERSWITCH_CLIENT_URL
-          value: "{{ .Values.services.sdkDemo.host }}/{{.Values.services.sdkDemo.version}}/{{.Values.services.sdkDemo.subversion}}"
+          value: {{ include "hyperswitch-sdk.host" . }}/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}"
         image: {{ .Values.services.sdkDemo.image }}
         ports:
         - containerPort: 5252
