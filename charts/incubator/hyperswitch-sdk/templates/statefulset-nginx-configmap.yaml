@@ -8,9 +8,9 @@ metadata:
 data:
   default.conf: |-
     server {
-        listen 80;
-
+        listen {{ .Values.service.port }};
         location {{ include "nginx.sdk.path" . }} {
+            autoindex on;
             root /usr/share/nginx/html;
             try_files $uri $uri/ =404;
         }

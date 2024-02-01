@@ -8,5 +8,8 @@ dependencies:
 - name: hyperswitch-card-vault
   repository: file://../hyperswitch-card-vault
   version: 0.1.0
-digest: sha256:92c04c97c8678d965516239e9ba8e84ea00eb32caa1075543a857b75e09eae6d
-generated: "2024-02-01T18:21:45.314242+05:30"
+- name: hyperswitchsdk
+  repository: file://../hyperswitch-sdk
+  version: 0.1.0
+digest: sha256:362d4004c9eb47e250d440c50355147d32be77e4725016a0acdd7a99d14c1a3c
+generated: "2024-02-02T02:57:03.293813+05:30"

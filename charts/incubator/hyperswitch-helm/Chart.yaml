@@ -17,3 +17,7 @@ dependencies:
     version: 0.1.0
     repository: "file://../hyperswitch-card-vault"
     condition: hyperswitch-card-vault.enabled
+  - name: hyperswitchsdk
+    version: 0.1.0
+    repository: "file://../hyperswitch-sdk"
+    condition: hyperswitchsdk.enabled

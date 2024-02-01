@@ -120,8 +120,8 @@ spec:
             timeoutSeconds: 1
           resources:
             requests:
-              cpu: 400m
-              memory: 500Mi
+              cpu: 100m
+              memory: 200Mi
 
           securityContext:
             privileged: false
