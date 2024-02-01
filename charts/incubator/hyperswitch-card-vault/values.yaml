@@ -1,0 +1,129 @@
+# Default values for helm.
+global:
+  # Annotations to be added to all resources
+  annotations: {}
+
+  # Node affinity to be added to all resources
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+
+# Values for hyperswitch-card-vault.
+server:
+  # Annotations to be added to hyperswitch-card-vault.
+  annotations: {}
+
+  # Image to be used for hyperswitch-card-vault.
+  image: juspaydotin/hyperswitch-card-vault:0.1.3-nokms
+
+  # values to be used in pod template.
+  pod:
+    # Annotations to be added to hyperswitch-card-vault pod.
+    annotations: {}
+
+  # Node affinity to be added to hyperswitch-card-vault.
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      []
+      # matchExpression:
+      # - key: spot-instance
+      #   operator: NotIn
+      #   values:
+      #     - "true"
+      # - key: <label for the node>
+      #   operator: In
+      #   values:
+      #     - <Value for the label>
+
+  # Secrets to be added to hyperswitch-card-vault.
+  # To create the master key, follow the instructions provided here: https://github.com/juspay/hyperswitch-card-vault/blob/main/docs/guides/setup.md#preparing-the-required-keys
+  secrets:
+    # Optionally, you can run `cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin`
+    master_key: a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef
+
+    # To create this key pairs, follow the instructions provided here:
+    ## Generating the private keys
+    # openssl genrsa -out locker-private-key.pem 2048
+    # openssl genrsa -out tenant-private-key.pem 2048
+    #
+    # # Generating the public keys
+    # openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
+    # openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
+
+    # The private key for the locker from locker-private-key.pem
+    locker_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEA4EXw24jOqrjZzhZG7ef9MYNWqHfTHKfliRRxZOWkjYIUuGjH
+      xxIE5mjo6VK8KQljbpK1EXYsWYjaTBiLzYzagTu7uacw2dTvPIIbxJcxDfmDFoct
+      XppRrwjHizEayLoixwe93zQ6W+QXLVMI6muJUgpiJ8+vvfYUbN9AWDgiAmVQV08P
+      8CRvFGXI4Yyn7Tcg+7tLbAYr+z8ZvmUBPcAKboqJzZBgPpTZe0k4sIwPVIDnPVVH
+      9Jk/tmU/MhjEL1XIMYBX7/S+uOQrr5NRhSvHHBi6iF/OzzYnOz4Jhcb2m9zyT1qv
+      ObY59avDovK4fI3KdQsd7tvfu9h2438JiHrjSwIDAQABAoIBAQCUDLeuRMahHrvx
+      dvVF0fJrwBbxyYAcl51H+63LfGk/XRLOlaTj/jor3C987zf1IxR3hvNu3oLybAwn
+      VcDcZVJNI6COMxdlhVKUsBMimOgyIHdv5LaHj/nCQVpwwW67+VxB5RNriC/KP20p
+      Z3ooPer9tIsNWuXZ0duz70CrvAp/ZyPboS5iICRMTzkimWeEy6wPunpk5YOQhyPn
+      GL5Gd2DNRqCGnk1GWUwBCY9/iWs0TW5jx8K6PUlwswQHU+Me8zeXo1iT4nMr2yId
+      BTlwOia9ZHjDqEulrV/2YERsLKbdLTy7jhxK/uibZuxol5/hr8ELQkoHzu6yFOU/
+      kYYIPAtBAoGBAPKtuZvR7nO1AWx+qaAtHicMQcazGatxQfz1rfJ/ny8ayEN/GVye
+      rvcNbJMwAG38VIUh0so8VgITgEX/mbGndxL5jpstTd1SXM1walBTu59kFVsnmQZn
+      hUyO8oxMZNDpgS1Dc2eX/JGBEYmJbz/5DyDa1pAglp8Ej8KJnBc9d82rAoGBAOyV
+      kj8PzJSduMS7oZoek/HKdvelWBNpeBC9rnCXAVbyjYv5rU5VISr0mfAJK54jjxXn
+      PEYApJgSB8fTxFHh3TapBjExkkm293o5CKVrSbv9v0yPbZh1FOBa6DK3hBs8Zwlq
+      iikD2Dqof/qcJML5njWO5TaN/DfySaxIeSdKLWDhAoGBALCA7kiIrbf2ZGy2y0S2
+      zAF2hriwNvFc1LPZNIT1kZ+/CP0eiiG1QGhrmRaMiSN1rTuPWDLDI4MrD9bZir2N
+      oatpWvE+SC2648iABLMb05CgSHAeIsxnqqn+JicowQK5cryrHFqyTn69szWnggSz
+      bu9kez4klahetvi1AZRdnq81AoGADbXlUc5CluJFEPGmvd3DySFon5Vvc0CLerzj
+      XRcDNty7oz8G8iEw2OJwAV8mrfV1l1ldPtlOsJlq5gO5vt0OCtrkxvkOd0MpOGYR
+      wDRlg4WDDpbJTSqL2SyrhDTqbQGlHwCTnSjh4RRexlFCOCJrLsNnOTAlS8C40Ekq
+      7EH6O0ECgYEAksw52Si+wcCzsfjT1WCywlJ4SFaQIpYt5/zuOiY+XUtcZfVEuRWa
+      FkN/n61HQVy+Quv918VHldElTDqv6O0x/OU2xvjiXCoQh4zTcAXxw4cCTGxxNM4J
+      LubCEvK1De5p5JZYVarob+X2uOIdVRpcD9PYIslKDz0OwfhiFwEkqdQ=
+      -----END RSA PRIVATE KEY-----
+    # The public key for the locker from locker-public-key.pem
+    tenant_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsM2GTqIlJxx1bA9HFFPJ
+      2HFIJGh9iWJTqn9OWoayOUpM01fT86ZMR6ozCPKiKGk1nkKcSS+wWemrMBGZD76H
+      rcnx93rHZzkx/F1/Rxtuy3Dp1GMmVZ+jO8ZMIRl5LBBtAXG4BTC/+ckrGcEocrT1
+      YvqshrWinXbBfkCyzE+tBo++6oFwsdMBZdLfF4C3nnSJxQaUgddQ9dItG6ywDM55
+      jvKpQL6TnhPxc2Th0T1UEVGWbw8VOyhLfYXa8+nB7z3zebvIIrZgu5DIu4k8A8yu
+      kyW98E7XBg8vOG9qIEXfhkWHQZfApZdQVIpwczXateiKKbtSVFMQHeafo6dIq90B
+      1wIDAQAB
+      -----END PUBLIC KEY-----
+
+  # Extra values to be added to hyperswitch-card-vault.
+  extra:
+    # extra env variables to be added to hyperswitch-card-vault.
+    env: {}
+
+# Values for database (postgresql).
+postgresql:
+  enabled: true
+  primary:
+    name: locker-db
+  global:
+    postgresql:
+      auth:
+        username: db_user
+        password: V2tkS1ptTkhSbnBqZDI4OUNnPT0K
+        database: locker-db
+        architecture: standalone
+
+external:
+  postgresql:
+    enabled: false
+    config:
+      host: # <value for the secret>
+      port: # <value for the secret>
+      username: # <value for the secret>
+      password: # <value for the secret>
+      database: # <value for the secret>
+
+# Values for the database migration job
+initDB:
+  # Should we run the migrations on the database
+  enable: true
+  checkPGisUp:
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    image: christophwurst/diesel-cli:latest
