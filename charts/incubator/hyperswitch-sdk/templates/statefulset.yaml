@@ -34,7 +34,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: sdk-builder
-          image: "{{ .Values.autoBuild.buildImage }}:{{ .Values.autoBuild.gitCloneParam.gitVersion }}"
+          image: "{{ .Values.autoBuild.buildImage }}:builder-{{ .Values.autoBuild.gitCloneParam.gitVersion }}"
           command:
             - /bin/sh
             - -c
@@ -46,13 +46,16 @@ spec:
               if [ "$FORCE_BUILD" != "true" ] && [ -f "$BUILD_COMPLETE_FILE" ]; then
                 echo "Build complete file exists, skipping build."
               else
-                git checkout -b v{{ .Values.autoBuild.gitCloneParam.gitVersion }}
-                npm install
-                npm run re:build
-                envSdkUrl={{ .Values.autoBuild.buildParam.envSdkUrl }} envBackendUrl={{ .Values.autoBuild.buildParam.envBackendUrl }} npm run build:{{.Values.autoBuild.buildParam.buildEnv}}
-                cp -rfv dist/{{.Values.autoBuild.buildParam.buildEnv}}/* /dist
+                envSdkUrl={{ .Values.autoBuild.buildParam.envSdkUrl }} envBackendUrl={{ .Values.autoBuild.buildParam.envBackendUrl }}
+                cd dist/integ
+                ls -lth
+                sed -i'' -e 's|https://dev.hyperswitch.io/|'${envSdkUrl}'/|g' app.js HyperLoader.js
+                sed -i'' -e 's|https://integ-api.hyperswitch.io|'$envBackendUrl'|g' app.js HyperLoader.js
+                cp -rfv * /dist
                 touch "$BUILD_COMPLETE_FILE"
               fi
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: build-storage
               mountPath: /dist
