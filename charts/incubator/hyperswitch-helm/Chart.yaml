@@ -13,6 +13,10 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 13.2.27
     condition: postgresql.enabled
+  - name: hyperswitch-card-vault
+    version: 0.1.0
+    repository: "file://../hyperswitch-card-vault"
+    condition: hyperswitch-card-vault.enabled
   - name: hyperswitchsdk
     version: 0.1.0
     repository: "file://../hyperswitch-sdk"

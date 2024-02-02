@@ -70,6 +70,8 @@ spec:
                 name: router-cm-{{ .Release.Name }}
             - secretRef:
                 name: router-secret-{{ .Release.Name }}
+            - secretRef:
+                name: hyperswitch-secrets
           livenessProbe:
             failureThreshold: 3
             httpGet:
