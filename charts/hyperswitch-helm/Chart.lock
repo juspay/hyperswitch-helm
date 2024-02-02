@@ -5,5 +5,8 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 13.2.27
-digest: sha256:07fc446cadc61ceb63e28686fe97678d391875cf78944264a31905d5b7cc4c55
-generated: "2024-02-02T13:27:07.816289272+03:30"
+- name: hyperswitchsdk
+  repository: https://mehdi-ra.github.io/hyperswitch-helm
+  version: 0.1.1
+digest: sha256:f230ea130cabd9fe1e591b9ea9b3584851af1eba3495fe16f9c7b49146f9d05d
+generated: "2024-02-02T13:37:13.134665481+03:30"
