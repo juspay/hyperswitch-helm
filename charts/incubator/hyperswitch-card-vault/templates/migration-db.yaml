@@ -14,7 +14,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-        {{- include "locker-psql.initContainer.check.read" . | nindent 8 }}
+        {{- include "locker-psql.initContainer.check.ready" . | nindent 8 }}
       containers:
         - name: run-locker-db-migration
           image: {{ .Values.initDB.migration.image }}
