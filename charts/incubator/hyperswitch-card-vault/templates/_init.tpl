@@ -1,5 +1,5 @@
 {{/*Ensure postgres database is up and running */}}
-{{- define "locker-psql.initContainer.check.read" -}}
+{{- define "locker-psql.initContainer.check.ready" -}}
 - name: check-postgres
   image: {{ .Values.initDB.checkPGisUp.image }}
   command: [ "/bin/sh", "-c" ]

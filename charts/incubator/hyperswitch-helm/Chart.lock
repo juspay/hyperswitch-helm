@@ -12,4 +12,4 @@ dependencies:
   repository: file://../hyperswitch-sdk
   version: 0.1.0
 digest: sha256:362d4004c9eb47e250d440c50355147d32be77e4725016a0acdd7a99d14c1a3c
-generated: "2024-02-02T02:57:03.293813+05:30"
+generated: "2024-02-03T00:57:23.799091+05:30"
