@@ -104,17 +104,8 @@ application:
       kms_jwekey_locker_encryption_key2: dummy_val
       kms_jwekey_locker_decryption_key1: dummy_val
       kms_jwekey_locker_decryption_key2: dummy_val
-      kms_jwekey_vault_encryption_key: dummy_val
-      kms_jwekey_vault_private_key: dummy_val
-      kms_jwekey_tunnel_private_key: dummy_val
-      kms_jwekey_rust_locker_encryption_key: dummy_val
-      kms_connector_onboarding_paypal_client_id: dummy_val
-      kms_connector_onboarding_paypal_client_secret: dummy_val
-      kms_connector_onboarding_paypal_partner_id: dummy_val
-    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
-    locker:
-      host: hyperswitch-vault:8080
-      locker_public_key: |
+      # these are only test keys, please change it when deploying to production or other environments
+      kms_jwekey_vault_encryption_key: |
         -----BEGIN PUBLIC KEY-----
         MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsgwEJaGbRA1DNMzubq4M
         7d+i6TSrFPiqrqnNkO0Dct58jGbJ36xIOxfsf7qa03kP+idEZnh0w9kWcVmx4aL+
@@ -124,8 +115,8 @@ application:
         ++9ffcbPIwxb7XTkbc25kJT+bOuN5ttnmAPRDV1l5hR432fiSqNIo015gTy83Nv2
         LwIDAQAB
         -----END PUBLIC KEY-----
-
-      hyperswitch_private_key: |
+      # these are only test keys, please change it when deploying to production or other environments
+      kms_jwekey_vault_private_key: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEpAIBAAKCAQEAsSnWltGc6kjcDAhtUoad0xlLJZCwLc6P80j8k3dgo92nqocU
         KD7tsY61dgm3gKFr8sZPLbTaDV1SJ+jAeZNP476aonJVPottQvGduB5DqDCMcHDQ
@@ -153,6 +144,16 @@ application:
         kIYrGckStjrvfOD2VnTIQWAuujOTtxjP0yR+cHlmwWXZrrj5+x8kNAOqgN7gU1nt
         KYpNT2+Sc7wxwAWIucVSN3eRNzRGTysxUWYKFUlpGRKP6NwJDEz9ew==
         -----END RSA PRIVATE KEY-----
+      kms_jwekey_tunnel_private_key: dummy_val
+      kms_jwekey_rust_locker_encryption_key: dummy_val
+      kms_connector_onboarding_paypal_client_id: dummy_val
+      kms_connector_onboarding_paypal_client_secret: dummy_val
+      kms_connector_onboarding_paypal_partner_id: dummy_val
+    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+    locker:
+      host: http://hyperswitch-vault
+      locker_public_key: 
+      hyperswitch_private_key: 
     basilisk:
       host: basilisk-host
     server_base_url: https://sandbox.hyperswitch.io
