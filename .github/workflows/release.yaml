@@ -42,8 +42,9 @@ jobs:
         continue-on-error: true
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.6.0
         with:
+          skip_existing: true
           charts_dir: charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
