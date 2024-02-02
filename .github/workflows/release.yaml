@@ -36,7 +36,7 @@ jobs:
 
       - name: Add repositories
         run: |
-          for dir in $(ls -d charts/incubator/*/); do
+          for dir in $(ls -d ./charts/incubator/*); do
             helm dependency list $dir 2> /dev/null | tail +2 | head -n -1 | awk '{ print "helm repo add " $1 " " $3 }' | while read cmd; do $cmd; done
           done
 
