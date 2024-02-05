@@ -15,11 +15,11 @@ entries:
       version: 13.2.27
     - condition: hyperswitch-card-vault.enabled
       name: hyperswitch-card-vault
-      repository: file://../hyperswitch-card-vault
+      repository: https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-card-vault
       version: 0.1.0
     - condition: hyperswitchsdk.enabled
       name: hyperswitchsdk
-      repository: file://../hyperswitch-sdk
+      repository: https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-sdk
       version: 0.1.0
     description: A Helm chart for Kubernetes to deploy hyperswitch application
     digest: 3f7f831ee51fe3969c53f897dba799fc28863fe2208187e0c3efe082fa035e91
