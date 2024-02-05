@@ -3,7 +3,7 @@ entries:
   hyperswitch-helm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-01-30T18:56:49.620629+05:30"
+    created: "2024-02-05T14:35:28.554926+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -13,8 +13,16 @@ entries:
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 13.2.27
+    - condition: hyperswitch-card-vault.enabled
+      name: hyperswitch-card-vault
+      repository: https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-card-vault
+      version: 0.1.0
+    - condition: hyperswitchsdk.enabled
+      name: hyperswitchsdk
+      repository: https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-sdk
+      version: 0.1.0
     description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: 997531272e7b03a37a0214901c087c69e14cc6effcdf670b7516819293730943
+    digest: 3f7f831ee51fe3969c53f897dba799fc28863fe2208187e0c3efe082fa035e91
     name: hyperswitch-helm
     type: application
     urls:
@@ -22,7 +30,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-01-30T18:56:49.622715+05:30"
+    created: "2024-02-05T14:35:28.557263+05:30"
     description: A Helm chart for Kubernetes to deploy hyperswitch application
     digest: 09dc6d627da851e45d0d2ab779d0e532307a90a4f89468162bc50d2b914a1d66
     name: hyperswitch-helm
@@ -30,4 +38,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/repo/hyperswitch-helm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-30T18:56:49.611176+05:30"
+generated: "2024-02-05T14:35:28.536984+05:30"

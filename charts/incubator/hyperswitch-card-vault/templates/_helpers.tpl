@@ -91,11 +91,7 @@ Create the name of the service account to use
 {{/* Select PostgreSQL port Internal or External */}}
 {{- define "locker-psql.port" -}}
 {{- $test_db := include "validate.locker-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-    {{- printf "\"5432\"" }}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.port -}}
-  {{- end -}}
+  {{- printf "\"5432\"" }}
 {{- end -}}
 
 
@@ -114,9 +110,9 @@ Create the name of the service account to use
 {{- define "locker-psql.name" -}}
 {{- $test_db := include "validate.locker-psql.config" . }}
   {{- if .Values.postgresql.enabled }}
-    {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.database -}}
+      {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
+  {{- else if .Values.external.enabled -}}
+      {{- printf "%s" .Values.external.postgresql.config.database -}}
   {{- end -}}
 {{- end -}}
 
@@ -125,8 +121,8 @@ Create the name of the service account to use
 {{- define "locker-psql.password" -}}
 {{- $test_db := include "validate.locker-psql.config" . }}
   {{- if .Values.postgresql.enabled }}
-    {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.password -}}
+      {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
+  {{- else if .Values.external.enabled -}}
+      {{- printf "%s" .Values.external.postgresql.config.password -}}
   {{- end -}}
 {{- end -}}
