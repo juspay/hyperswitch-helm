@@ -388,6 +388,7 @@ externalPostgresql:
     auth:
       username: "hyperswitch"
       password: "hyperswitch"
+      plainpassword: 
       database: "hyperswitch"
   readOnly:
     enabled: false
@@ -395,6 +396,7 @@ externalPostgresql:
     auth:
       username: "hyperswitch"
       password: "hyperswitch"
+      plainpassword: 
       database: "hyperswitch"
 
 initDB:
