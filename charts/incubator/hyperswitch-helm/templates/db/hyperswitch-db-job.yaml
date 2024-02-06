@@ -44,6 +44,6 @@ spec:
                   {{- if .Values.postgresql.enabled }}
                   key: password
                   {{- else if .Values.externalPostgresql.enabled }}
-                  key: primaryPassword
+                  key: primaryPlainPassword
                   {{- end }}
 {{- end }}
