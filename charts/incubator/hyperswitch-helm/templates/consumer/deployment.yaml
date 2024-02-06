@@ -61,6 +61,8 @@ spec:
                 name: consumer-cm-{{ .Release.Name }}
             - secretRef:
                 name: consumer-secret-{{ .Release.Name }}
+            - secretRef:
+                name: hyperswitch-secrets
           resources:
             requests:
               cpu: 100m
