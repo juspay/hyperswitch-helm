@@ -32,7 +32,7 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             {{- with (default .Values.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-              matchExpression:
+              nodeSelectorTerms:
               {{- toYaml . | nindent 18 }}
             {{- end }}
       containers:
