@@ -3,14 +3,14 @@ entries:
   hyperswitch-card-vault:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-02-05T15:34:37.66241+05:30"
+    created: "2024-02-08T20:29:53.190692+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 13.2.27
     description: A Helm chart for creating Hyperswitch Card Vault
-    digest: 79a76ca3be81ca4fc182881daaaff515e05817e8dacc63474bd15b70eaf644f7
+    digest: e0377e10dfc0999702d9a5620eb9e0ddcf93a3a07969991bc0f9db0da1c2e9ec
     name: hyperswitch-card-vault
     type: application
     urls:
@@ -29,7 +29,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 16.1.0
-    created: "2024-02-05T15:34:37.665347+05:30"
+    created: "2024-02-08T20:29:53.19391+05:30"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -58,4 +58,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-card-vault/charts/postgresql-13.2.27.tgz
     version: 13.2.27
-generated: "2024-02-05T15:34:37.657992+05:30"
+generated: "2024-02-08T20:29:53.18747+05:30"
