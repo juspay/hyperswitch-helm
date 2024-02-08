@@ -15,6 +15,13 @@ spec:
       restartPolicy: OnFailure
       initContainers:
         {{- include "locker-psql.initContainer.check.ready" . | nindent 8 }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- with (default .Values.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+              nodeSelectorTerms:
+              {{- toYaml . | nindent 18 }}
+            {{- end }}
       containers:
         - name: run-locker-db-migration
           image: {{ .Values.initDB.migration.image }}
