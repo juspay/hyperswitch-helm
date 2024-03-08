@@ -3,7 +3,7 @@ entries:
   hyperswitch-helm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-02-08T20:33:22.104678+05:30"
+    created: "2024-03-08T14:50:32.588035+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -22,7 +22,7 @@ entries:
       repository: file://../hyperswitch-sdk
       version: 0.1.0
     description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: b8e7560d42a7d7822c46cc9f0d21e820433ca836a54c8ebf0ad03308fa1f8970
+    digest: b8fdc915192e3d700da35f65f8394a6479a2555c9b0b060f15e4c6aae7a287d5
     name: hyperswitch-helm
     type: application
     urls:
@@ -30,7 +30,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-02-08T20:33:22.106152+05:30"
+    created: "2024-03-08T14:50:32.589823+05:30"
     description: A Helm chart for Kubernetes to deploy hyperswitch application
     digest: 09dc6d627da851e45d0d2ab779d0e532307a90a4f89468162bc50d2b914a1d66
     name: hyperswitch-helm
@@ -38,4 +38,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/repo/hyperswitch-helm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-08T20:33:22.092813+05:30"
+generated: "2024-03-08T14:50:32.575955+05:30"
