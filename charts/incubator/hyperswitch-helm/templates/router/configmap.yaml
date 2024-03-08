@@ -21,6 +21,10 @@ data:
   ROUTER__APPLEPAY_MERCHANT_CONFIGS__APPLEPAY_ENDPOINT: >-
     https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
   ROUTER__LOCKER__HOST: {{ .Values.application.server.locker.host | quote }}
+  {{- if .Values.application.server.locker.host }}
+  ROUTER__PROXY__HTTPS_URL: {{ .Values.application.server.proxy.https_url | quote }}
+  ROUTER_HTTPS_PROXY: {{ .Values.application.server.proxy.https_url | quote }}
+  {{- end }}
   ROUTER__LOCKER__MOCK_LOCKER: "false"
   ROUTER__LOG__TELEMETRY__TRACES_ENABLED: "true"
   ROUTER__LOG__TELEMETRY__METRICS_ENABLED: "true"
