@@ -86,6 +86,10 @@ application:
     # service account annotations to be used
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn: my-role-arn
+
+    proxy:
+      enabled: false
+      https_url: http://localhost:80/
     # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
     env:
       binary: router
