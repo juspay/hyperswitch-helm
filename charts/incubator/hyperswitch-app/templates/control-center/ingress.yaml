@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ .Values.application.sdk.labels.app }}-ingress"
-  namespace: hyperswitch
+  name: hyperswitch-control-center-ingress
+  namespace:  {{ .Release.Namespace }}
   annotations:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-    alb.ingress.kubernetes.io/group.name: "{{ .Values.application.sdk.labels.app }}-alb-ingress-group"
+    alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
     alb.ingress.kubernetes.io/ip-address-type: ipv4
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: {{ .Values.application.sdk.labels.app }}
+    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
     alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
@@ -17,12 +17,12 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - http:
+    - http: 
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.application.sdk.labels.app }}
+                name: hyperswitch-control-center
                 port:
                   number: 80

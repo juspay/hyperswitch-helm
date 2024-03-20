@@ -15,7 +15,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: hyperswitch-web-ingress
   labels:
     {{- include "sdk.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}

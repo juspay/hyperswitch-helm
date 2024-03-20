@@ -13,7 +13,7 @@ tasks:
     #language=sh
     cmds:
       - >
-        helm package charts/incubator/hyperswitch-helm 
+        helm package charts/incubator/hyperswitch-stack
         --destination repo
         --dependency-update
     aliases:

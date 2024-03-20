@@ -10,11 +10,11 @@ This section outlines cloud-provider agnostic deployment steps for easy installa
 
 ### Step 1 - Clone repo and Update Configurations
 
-Clone the [hyperswitch-helm](https://github.com/juspay/hyperswitch-helm) repo and start updating the configs
+Clone the [hyperswitch-stack](https://github.com/juspay/hyperswitch-helm) repo and start updating the configs
 
 ```
 git clone https://github.com/juspay/hyperswitch-helm.git
-cd hyperswitch-helm/charts/incubator/hyperswitch-helm
+cd hyperswitch-helm/charts/incubator/hyperswitch-stack
 ```
 
 To deploy the Helm chart, you need to update following values for each service in `values.yaml`
@@ -23,6 +23,11 @@ To deploy the Helm chart, you need to update following values for each service i
 
 ### Step 2 - Install Hyperswitch
 
+Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
+```bash
+kubectl label nodes <your-node-name> node-type=generic-compute
+kubectl create namespace hyperswitch
+```
 Use below command to install hyperswitch services with above configs
 
 ```bash

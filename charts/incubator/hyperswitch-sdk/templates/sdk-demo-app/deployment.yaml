@@ -2,35 +2,35 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations: 
-  {{- with (default .Values.application.global.annotations .Values.application.sdk.annotations) }}
+  {{- with .Values.sdkDemo.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: {{ .Values.application.sdk.labels.app }}-0f746cb72517
+  name: {{ .Values.sdkDemo.labels.app }}-0f746cb72517
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.sdk.progressDeadlineSeconds}}
-  replicas: {{ default .Values.application.global.replicas .Values.application.sdk.replicas }}
+  progressDeadlineSeconds: {{ .Values.sdkDemo.progressDeadlineSeconds}}
+  replicas: {{ .Values.sdkDemo.replicas }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.application.sdk.labels.app }}
+      app: {{ .Values.sdkDemo.labels.app }}
       version: 0f746cb72517
   strategy:
-  {{- with (default .Values.application.global.strategy .Values.application.sdk.strategy) }}
+  {{- with .Values.sdkDemo.strategy }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.application.sdk.labels.app }}
+        app: {{ .Values.sdkDemo.labels.app }}
         version: 0f746cb72517
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.sdk.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
+            {{- with .Values.sdkDemo.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
       containers:
@@ -40,7 +40,7 @@ spec:
         - name: HYPERSWITCH_SECRET_KEY
           value: {{ .Values.services.sdkDemo.hyperswitchSecretKey }}
         - name: HYPERSWITCH_SERVER_URL
-          value: {{ .Values.services.router.host }}
+          value: {{ .Values.autoBuild.buildParam.envBackendUrl }}
         - name: HYPERSWITCH_CLIENT_URL
           value: {{ include "hyperswitch-sdk.host" . }}/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}"
         image: {{ .Values.services.sdkDemo.image }}
@@ -54,7 +54,7 @@ spec:
               - /bin/bash
               - -c
               - pkill -15 node
-        name: {{ .Values.application.sdk.labels.app }}
+        name: {{ .Values.sdkDemo.labels.app }}
         resources:
           requests:
             cpu: 100m
@@ -67,6 +67,5 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccount: hyperswitch-router-role
-      serviceAccountName: hyperswitch-router-role
-      terminationGracePeriodSeconds: {{ .Values.application.sdk.terminationGracePeriodSeconds}}
+      serviceAccountName: {{ include "sdk.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.sdkDemo.terminationGracePeriodSeconds}}
