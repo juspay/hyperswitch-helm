@@ -6,8 +6,8 @@ then
     kubectl port-forward deployment/hyperswitch-server-v1o52o1v2 8080:8080 -n {{ .Release.Namespace }} & \
     kubectl port-forward deployment/hyperswitch-control-center-0f746cb72517 9000:9000 -n {{ .Release.Namespace }} & \
     echo "======================================================"
-    echo "** App server running on: http://locahost:8080      **"
-    echo "** Control center running on: http://locahost:9000  **"
+    echo "** App server running on: http://localhost:8080      **"
+    echo "** Control center running on: http://localhost:9000  **"
     echo "======================================================"
     echo "\nRun this command to close exposed ports kill\n"
     echo "kill \$( lsof -i:8080 -t ) && kill \$( lsof -i:9000 -t )"
