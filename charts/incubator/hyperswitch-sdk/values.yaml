@@ -1,3 +1,42 @@
+sdkDemo:
+  # Number of replicas to be used for the application
+  replicas: 1
+  # Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # The strategy that can be used to replace the old pods by new ones
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # Specify affinity for nodes to which the pods should start on
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node-type
+              operator: In
+              values:
+                - generic-compute
+  # The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # Annotations that are to be added to the pods (extends global configuration)
+  podAnnotations:
+    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  # Annotations that are to be added the the deployments (extends global configuration)
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  # Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  labels:
+    app: hyperswitch-sdk-demo
+  # service account annotations to be used
+  serviceAccountAnnotations:
+    eks.amazonaws.com/role-arn:
+  # Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+  env:
+    host: hyperswitch-sdk-demo
+    binary: sdk
+
 # Default values for sdk.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -19,9 +58,9 @@ autoBuild:
     gitVersion: 0.16.7
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
-    envSdkUrl: https://hyperswitch-sdk.<your host>
+    envSdkUrl: https://hyperswitch-sdk
     # -- node build parameter, hyperswitch server host
-    envBackendUrl: https://hyperswitch.<your host>
+    envBackendUrl: https://hyperswitch
     # -- node build parameter, environment
     buildEnv: integ
   nginxConfig:
@@ -84,7 +123,7 @@ service:
   # -- service type
   type: ClusterIP
   # -- service port
-  port: 80
+  port: 9090
 
 
 ingress:
@@ -152,3 +191,15 @@ tolerations: []
 
 # -- Affinity rules
 affinity: {}
+
+# loadbalancer security group
+loadBalancer:
+  targetSecurityGroup: loadBalancer-sg
+
+services:
+  router:
+    host: http://localhost:8080
+  sdkDemo:
+    image: juspaydotin/hyperswitch-web:v1.0.10
+    hyperswitchPublishableKey: pub_key
+    hyperswitchSecretKey: secret_key

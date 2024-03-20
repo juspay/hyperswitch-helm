@@ -14,9 +14,9 @@ entries:
     name: hyperswitch-card-vault
     type: application
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-helm/charts/hyperswitch-card-vault-0.1.0.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/hyperswitch-card-vault-0.1.0.tgz
     version: 0.1.0
-  hyperswitch-helm:
+  hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-02-12T19:16:42.425551+05:30"
@@ -39,10 +39,10 @@ entries:
       version: 0.1.0
     description: A Helm chart for Kubernetes to deploy hyperswitch application
     digest: 322d5d28cbbd9073d9b6fc026cf32560be05155f6b1169f9eee179a72f6ff93b
-    name: hyperswitch-helm
+    name: hyperswitch-app
     type: application
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-helm/hyperswitch-helm-0.1.0.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/hyperswitch-app-0.1.0.tgz
     version: 0.1.0
   hyperswitchsdk:
   - apiVersion: v2
@@ -59,7 +59,7 @@ entries:
     name: hyperswitchsdk
     type: application
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-helm/charts/hyperswitchsdk-0.1.0.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/hyperswitchsdk-0.1.0.tgz
     version: 0.1.0
   postgresql:
   - annotations:
@@ -101,7 +101,7 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-helm/charts/postgresql-13.2.27.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/postgresql-13.2.27.tgz
     version: 13.2.27
   redis:
   - annotations:
@@ -142,6 +142,6 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/redis
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-helm/charts/redis-18.6.1.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/redis-18.6.1.tgz
     version: 18.6.1
 generated: "2024-02-12T19:16:42.411118+05:30"

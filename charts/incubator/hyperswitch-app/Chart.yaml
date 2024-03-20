@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: 1.16.0
 description: A Helm chart for Kubernetes to deploy hyperswitch application
-name: hyperswitch-helm
+name: hyperswitch-app
 type: application
 version: 0.1.0
 dependencies:
@@ -17,7 +17,3 @@ dependencies:
     version: 0.1.0
     repository: "file://../hyperswitch-card-vault"
     condition: hyperswitch-card-vault.enabled
-  - name: hyperswitchsdk
-    version: 0.1.0
-    repository: "file://../hyperswitch-sdk"
-    condition: hyperswitchsdk.enabled

@@ -147,18 +147,3 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "externalPostgresql.secret.name" . -}}
   {{- end -}}
 {{- end -}}
-
-{{/* Define the name for hyperswitch sdk host */}}
-{{- define "hyperswitch-sdk.host" -}}
-{{- printf "%s" .Values.hyperswitchsdk.autoBuild.buildParam.envSdkUrl -}}
-{{- end -}}
-
-{{/* Define the name for hyperswitch sdk version */}}
-{{- define "hyperswitch-sdk.version" -}}
-{{- printf "%s" .Values.hyperswitchsdk.autoBuild.gitCloneParam.gitVersion -}}
-{{- end -}}
-
-{{/* Define the name for hyperswitch sdk subversion */}}
-{{- define "hyperswitch-sdk.subversion" -}}
-{{- printf "%s" .Values.hyperswitchsdk.autoBuild.nginxConfig.extraPath -}}
-{{- end -}}

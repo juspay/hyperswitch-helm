@@ -76,3 +76,18 @@ Ngnix deployment sdk path
 {{- define "nginx.sdk.path" -}}
 {{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.image.nginxConfig.extraPath }}
 {{- end }}
+
+{{/* Define the name for hyperswitch sdk host */}}
+{{- define "hyperswitch-sdk.host" -}}
+{{- printf "%s" .Values.autoBuild.buildParam.envSdkUrl -}}
+{{- end -}}
+
+{{/* Define the name for hyperswitch sdk version */}}
+{{- define "hyperswitch-sdk.version" -}}
+{{- printf "%s" .Values.autoBuild.gitCloneParam.gitVersion -}}
+{{- end -}}
+
+{{/* Define the name for hyperswitch sdk subversion */}}
+{{- define "hyperswitch-sdk.subversion" -}}
+{{- printf "%s" .Values.autoBuild.nginxConfig.extraPath -}}
+{{- end -}}
