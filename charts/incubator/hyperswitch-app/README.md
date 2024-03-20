@@ -23,7 +23,7 @@ To deploy the Helm chart, you need to update following values for each service i
 
 ### Step 2 - Install Hyperswitch
 
-Before installing the service make sure you labels your kubernetes nodes and created a namespace `hyperswitch`
+Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
 ```bash
 kubectl label nodes <your-node-name> node-type=generic-compute
 kubectl create namespace hyperswitch
