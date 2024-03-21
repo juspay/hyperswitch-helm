@@ -1,6 +1,6 @@
 apiVersion: v2
-name: hyperswitch-helm
-description: A Helm chart for Kubernetes
+name: hyperswitch-stack
+description: Helm chart for Hyperswitch services
 
 # A chart can be either an 'application' or a 'library' chart.
 #
