@@ -99,7 +99,7 @@ affinity: {}
 
 # loadbalancer security group
 loadBalancer:
-  targetSecurityGroup: &lb_security_group sg-092440e3fc3ac75b3
+  targetSecurityGroup: &lb_security_group lg-security-group
 
 services:
   router:
