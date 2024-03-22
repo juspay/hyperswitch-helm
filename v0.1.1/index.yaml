@@ -3,7 +3,7 @@ entries:
   hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-03-21T18:18:57.320582+05:30"
+    created: "2024-03-22T17:23:03.732653+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -17,6 +17,6 @@ entries:
     name: hyperswitch-stack
     type: application
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-stack/hyperswitch-stack-0.1.1.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-stack/v0.1.1/hyperswitch-stack-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-21T18:18:57.306099+05:30"
+generated: "2024-03-22T17:23:03.717983+05:30"
