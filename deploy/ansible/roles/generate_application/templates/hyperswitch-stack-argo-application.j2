@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hyperswitch-stack-application
+spec:
+  destination:
+  # providing 
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: charts/incubator/hyperswitch-stack
+    repoURL: https://github.com/Shubh-k04/hyperswitch-helm.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  # since no values file has been provided, it will take the values from the values.yaml present in the helm chart    

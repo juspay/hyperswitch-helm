@@ -1,0 +1,12 @@
+- name: Generate argo application
+  template:
+    src: "hyperswitch-stack-argo-application.j2"
+    dest: "hyperswitch-stack-argo-application.yaml"
+
+- name: Clone gitops repo
+
+- name: Add argo application to gitops repo
+
+- name: Commit changes to gitops repo
+
+- name: Push changes to gitops repo
