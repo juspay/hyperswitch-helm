@@ -2,7 +2,8 @@
 
 ## Design Overview
 
-### Git repositorys' structure
+### Git repositories' structure
+![Repositories structure](images/Automation_flowchart.png)
 1. **App Repo**: This repository will contain the application manifests(`hyperswitch-helm`) which will be deployed by Argo CD. The folder structure would look like:
 ```yaml
 charts/ # unchanged
@@ -16,15 +17,17 @@ deploy/     # contains the logic to generate and push argocd application manifes
                     main.yaml
                 templates/
                     hyperswitch-stack-argo-application.j2
+                vars/
+                    main.yaml
 ```
-- The `deploy` folder is reponsible for generating the Argo CD application manifests and pushing them to the `Argo-CD-Gitops-Repo`. 
-- The `generate-argo-app.yaml` is the main playbook which will be executed by the CI/CD pipeline (preferably by a Github Action to prevent any manual intervention). The `generate_application` role is responsible for generating the Argo CD application manifests. 
-- The `hyperswitch-stack-argo-application.j2` is the jinja2 template which will contains the argocd application manifest. 
+- The [`deploy`](https://github.com/Shubh-k04/hyperswitch-helm/tree/hiring-challenge/deploy/ansible) folder is responsible for generating the Argo CD application manifests and pushing them to the `Argo-CD-Gitops-Repo`. 
+- The [`generate-argo-app.yaml`](https://github.com/Shubh-k04/hyperswitch-helm/blob/hiring-challenge/deploy/ansible/generate-argo-app.yaml) is the main playbook which will be executed by the CI/CD pipeline (preferably by a Github Action to prevent any manual intervention). The `generate_application` role is responsible for generating the Argo CD application manifests. 
+- The [`templates/`](https://github.com/Shubh-k04/hyperswitch-helm/tree/hiring-challenge/deploy/ansible/roles/generate_application/templates) is the folder which will contain the argocd application manifest and the rollout manifest. 
 
 2. **Infrastructure Repo**: This [repository](https://github.com/Shubh-k04/hyperswitch-infrastructure)(`hyperswitch-infrastructure`) will contain the infrastructure manifests which will be help in deploying:
-- Argocd on the cluster
-- Configuring Argo CD with required RBAC permissions (specific to the application and lifecycles)
-- Create app of apps pattern for Argo CD for the initial setup
+- Argocd on the cluster.
+- Configuring Argo CD with required RBAC permissions (specific to the application and lifecycles).
+- Create app of apps pattern for Argo CD for the initial setup.
 - Install Argocd CRDs like Notifications, Rollouts etc.
 
 The folder structure would look like:
@@ -37,7 +40,7 @@ deploy/
                 tasks/
                     main.yaml
                 templates/
-                    argocd-install.j2
+                    argocd-notifications.j2
                     argocd-rbac.j2
                     app-of-apps.j2
                 vars/
@@ -48,7 +51,7 @@ deploy/
 dev/
     sources/
         hyperswitch-stack-argo-application.yaml
-        hyperswitch-<app2>-argo-application.yaml
+        hyperswitch-<app2>-argo-application.yaml # if more applications are to be added to the repo
         hyperswitch-<app3>-argo-application.yaml
         ...
     infrastructure/
@@ -66,7 +69,7 @@ As per the above structure, the repository contains a lifecycle wise division (d
 ## Expected Outcomes
 
 ### ArgoCD integration
-ArgoCD will contain 2 app-of-apps which will be responsible for deploying the application manifests and infrastructure components(like AppProject, MachineSets etc.).
+ArgoCD will contain 2 [app-of-apps](https://github.com/Shubh-k04/hyperswitch-infrastructure/blob/main/deploy/ansible/roles/infra_deploy/templates/app-of-apps-infrastructure.j2) which will be responsible for deploying the application manifests and infrastructure components(like AppProject, MachineSets etc.).
 ```yaml
 ---
 ## Sources App of Apps
@@ -100,7 +103,7 @@ spec:
     source:
         repoURL: 'https://github.com/Shubh-k04/hyperswitch-gitops.git'
         targetRevision: master
-        path: "dev/sources" # path to the infrastructure manifests
+        path: "dev/infrastructure" # path to the infrastructure manifests
     destination:
         server: 'https://kubernetes.default.svc'
         namespace: "{{ argocd_namespace }}"
@@ -129,9 +132,10 @@ These annotations will ensure that the application is automatically synced to th
 Reference: [ArgoCD Sync Policy](https://argoproj.github.io/argo-cd/user-guide/sync-policy/)
 
 ### Automation
+![Generate App](images/Generate_ArgoCD_App_flowchart.png)
 1. To automate the deployment process, we will use Github Actions. 
     - The Github Actions will be triggered on every push to the `hyperswitch-helm` repository. 
-    - The Github Actions will execute the [playbook]() `generate-argo-app.yaml` which will generate the Argo CD application manifests present in the [ansible role]().
+    - The Github Actions will execute the playbook `generate-argo-app.yaml` which will generate the Argo CD application manifests present in the ansible role.
     - The generated argo application is then pushed to the `hyperswitch-gitops` repo (under the `dev/sources` folder).
 
 2. To integrate automated testing:
@@ -166,10 +170,11 @@ Reference: [ArgoCD Sync Policy](https://argoproj.github.io/argo-cd/user-guide/sy
 
 1. For IaC leveraging and to define and manage the infrastructure configurations, we have created a separate infrastructure repository `hyperswitch-infrastructure`. This repository will contain everything our cluster would need during the time of build:
     - Machineset configuration
-    - DNS entry for ArgoCD server
-    - Deploying ArgoCD
+    - DNS entry for ArgoCD server.
+    - Deploying ArgoCD.
     - Configuring RBAC (if needed)
-    - Generate app-of-apps for infrastructure and applications
+    - Generate app-of-apps for infrastructure and applications.
+    - Generate the notifications and rollouts configuration for argocd.
 
 2. To store the infrastructure configuration, we are generating all manifests and pushing all templates related to infrastructure to `hyperswitch-gitops` repository (dev/infrastructure folder). Since there will be an ArgoCD Application pointing to the `dev/infrastructure` path, and `targetRevision` is also defined to either the `main` branch, or a custom `release-<version>` branch, it takes care of version-control for infrastructure changes. Similarly, to maintain consistency, we will enable autoSync annotations:
 ```yaml
@@ -234,7 +239,7 @@ As we can see here, we can configure the configurations to the helm chart based 
 **NOTE: Assumption is that env, stage and prod all have different ArgoCD deployed**
 
 ### Notifications and Reporting
-
+![Notifications](images/Notification_flowchart.png)
 1. To enable notifications, we are installing `ArgoCD Notification` via `hyperswitch-infrastructure`. Then we have setup a email notification configuration looks something like:
 
 ```yaml
