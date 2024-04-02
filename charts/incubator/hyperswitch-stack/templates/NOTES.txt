@@ -9,7 +9,7 @@ then
   echo "======================================================"
   echo "** App server running on: http://localhost:8080      **"
   echo "** Control center running on: http://localhost:9000  **"
-  echo "** Hyperswitch Web running on: http://localhost:9090 **"
+  echo "** Hyperswitch Web running on: http://localhost:9090/0.27.2/v0/HyperLoader.js **"
   echo "======================================================"
   echo "\nRun this command to close exposed ports kill\n"
   echo "kill \$( lsof -i:8080 -t ) && kill \$( lsof -i:9090 -t ) && kill \$( lsof -i:9000 -t )"
