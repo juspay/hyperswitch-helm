@@ -125,6 +125,27 @@
     secretKeyRef:
       key: ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID
       name: hyperswitch-secrets
+- name: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__KMS__KEY_ID
+      name: hyperswitch-secrets
+- name: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__REGION
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__KMS__REGION
+      name: hyperswitch-secrets
+- name: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__KEY_ID
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__KMS__KEY_ID
+      name: hyperswitch-secrets
+- name: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__REGION
+  valueFrom:
+    secretKeyRef:
+      key: ROUTER__KMS__REGION
+      name: hyperswitch-secrets
+      
   
 
 {{- end -}}

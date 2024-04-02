@@ -149,6 +149,10 @@ application:
       kms_connector_onboarding_paypal_client_id: dummy_val
       kms_connector_onboarding_paypal_client_secret: dummy_val
       kms_connector_onboarding_paypal_partner_id: dummy_val
+      redis_temp_locker_encryption_key: dummy_val
+      crm_token: dummy_val
+      forex_api_key: dummy_val
+      pm_auth_key: dummy_val
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: http://hyperswitch-vault
@@ -157,6 +161,9 @@ application:
     basilisk:
       host: basilisk-host
     server_base_url: https://sandbox.hyperswitch.io
+    opensearch:
+      host: opensearch-host
+    run_env: sandbox
   consumer:
     # Number of replicas to be used for the application
     replicas: 1
@@ -235,7 +242,7 @@ application:
 
   controlCenter:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-control-center:v1.17.0
+    image: juspaydotin/hyperswitch-control-center:v1.29.9
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -277,18 +284,18 @@ application:
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   router:
-    version: v1.105.0
-    image: juspaydotin/hyperswitch-router:v1.105.0-standalone
+    version: v1.107.0
+    image: juspaydotin/hyperswitch-router:v1.107.0
     host: http://localhost:8080
   consumer:
-    image: juspaydotin/hyperswitch-consumer:v1.105.0-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.107.0
   producer:
-    image: juspaydotin/hyperswitch-producer:v1.105.0-standalone
+    image: juspaydotin/hyperswitch-producer:v1.107.0
   controlCenter:
-    image: juspaydotin/hyperswitch-control-center:v1.17.0
+    image: juspaydotin/hyperswitch-control-center:v1.29.9
   sdk:
     host: http://localhost:9090
-    version: 0.16.7
+    version: 0.27.2
     subversion: v0
 redis:
   # - enable Bitnami redis sub-chart helm installation
