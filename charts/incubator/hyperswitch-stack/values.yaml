@@ -164,12 +164,12 @@ hyperswitch-app:
   services:
     router:
       version: v1.107.0
-      image: juspaydotin/hyperswitch-router:v1.107.0
+      image: juspaydotin/hyperswitch-router:v1.107.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.107.0
+      image: juspaydotin/hyperswitch-consumer:v1.107.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.107.0
+      image: juspaydotin/hyperswitch-producer:v1.107.0-standalone
     controlCenter:
       image: juspaydotin/hyperswitch-control-center:v1.29.9
     sdk:
