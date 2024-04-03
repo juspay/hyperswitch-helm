@@ -3,12 +3,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hyperswitch-server-v1o52o1v2
+  name: hyperswitch-server-v1o107o0
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: hyperswitch-server-v1o52o1v2
+    name: hyperswitch-server-v1o107o0
   minReplicas: 3
   maxReplicas: 5
   metrics:
