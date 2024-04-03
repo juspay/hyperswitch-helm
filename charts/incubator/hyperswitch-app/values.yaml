@@ -164,6 +164,7 @@ application:
     opensearch:
       host: opensearch-host
     run_env: sandbox
+    secrets_manager: no_encryption
   consumer:
     # Number of replicas to be used for the application
     replicas: 1
