@@ -445,7 +445,7 @@ data:
   ROUTER__REPORT_DOWNLOAD_CONFIG__PAYMENT_FUNCTION: "weekly_payment_report_generator_step_1"
   ROUTER__REPORT_DOWNLOAD_CONFIG__REFUND_FUNCTION: "weekly_refund_report_generator_step_1"
   ROUTER__REPORT_DOWNLOAD_CONFIG__REGION: "eu-central-1"
-  ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER: "no_encryption"
+  ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER: {{ .Values.application.server.secrets_manager | quote }}
   ROUTER__SERVER__BASE_URL: {{ .Values.application.server.server_base_url | quote }}
   ROUTER__SERVER__REQUEST_BODY_LIMIT: "32768"
   ROUTER__SERVER__WORKERS: "8"

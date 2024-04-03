@@ -3,7 +3,7 @@ entries:
   hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-04-03T01:24:08.856458+05:30"
+    created: "2024-04-03T08:40:34.891309+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -13,10 +13,10 @@ entries:
       repository: file://../hyperswitch-sdk
       version: 0.1.0
     description: Helm chart for Hyperswitch services
-    digest: b20e9958f9c1d1ed9de3c6975564745d217ef66f6bb6d3c8d3228cfef69edb25
+    digest: 510db0f949bf5b0752120323c855879173427dadb48f8f4a8b961001f4528137
     name: hyperswitch-stack
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.1.1/hyperswitch-stack-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-03T01:24:08.802531+05:30"
+generated: "2024-04-03T08:40:34.876309+05:30"
