@@ -150,6 +150,13 @@ application:
       kms_connector_onboarding_paypal_client_secret: dummy_val
       kms_connector_onboarding_paypal_partner_id: dummy_val
       redis_temp_locker_encryption_key: dummy_val
+      apple_pay_merchant_cert: dummy_val
+      apple_pay_merchant_cert_key: dummy_val
+      apple_pay_ppc: dummy_val
+      apple_pay_ppc_key: dummy_val
+      apple_pay_merchant_conf_merchant_cert: dummy_val
+      apple_pay_merchant_conf_merchant_cert_key: dummy_val
+      apple_pay_merchant_conf_merchant_id: dummy_val
       crm_token: dummy_val
       forex_api_key: dummy_val
       pm_auth_key: dummy_val
