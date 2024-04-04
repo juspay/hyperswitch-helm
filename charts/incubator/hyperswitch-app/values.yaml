@@ -159,7 +159,9 @@ application:
       apple_pay_merchant_conf_merchant_id: dummy_val
       crm_token: dummy_val
       forex_api_key: dummy_val
+      forex_fallback_api_key: dummy_val
       pm_auth_key: dummy_val
+      api_hash_key: dummy_val
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: http://hyperswitch-vault
