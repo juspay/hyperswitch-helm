@@ -23,10 +23,9 @@ spec:
     metadata:
       annotations:
         kubectl.kubernetes.io/restartedAt: "2023-04-21T14:21:23+05:30"
-        checksum/consumer-config: {{ include (print $.Template.BasePath "/consumer/configmap2.yaml") . | sha256sum }}
+        checksum/consumer-config: {{ include (print $.Template.BasePath "/consumer/configmap.yaml") . | sha256sum }}
         checksum/consumer-secret: {{ include (print $.Template.BasePath "/consumer/secret.yaml") . | sha256sum }}
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
-        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.application.consumer.labels.app }}
         version: consumer-v1o107o0
@@ -57,8 +56,6 @@ spec:
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           envFrom:
-            - configMapRef:
-                name: consumer-cm-{{ .Release.Name }}
             - secretRef:
                 name: consumer-secret-{{ .Release.Name }}
             - secretRef:
@@ -72,9 +69,9 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-            - mountPath: /local/config/production.toml
+            - mountPath: /local/config/sandbox.toml
               name: hyperswitch-config
-              subPath: production.toml
+              subPath: sandbox.toml
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -84,5 +81,5 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: hyperswitch-config
+            name: consumer-cm-{{ .Release.Name }}
           name: hyperswitch-config
