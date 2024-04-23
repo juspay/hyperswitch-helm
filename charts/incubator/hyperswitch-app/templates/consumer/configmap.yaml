@@ -1,8 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: consumer-cm-{{.Release.Name }}
-data:
-  sandbox.toml: |
-    {{ .Files.Get "consumer.toml" | nindent 4 }}
-    {{ .Files.Get "misc.toml" | nindent 4 }}
+  name: consumer-cm-{{ .Release.Name }}
+data: 
+  consumer.toml: |
+
+    {{- if eq .Values.application.server.run_env "production" -}}
+    {{ .Files.Get "configs/consumer.toml" | nindent 4 }}
+    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
+    {{- else -}}
+    {{ .Files.Get "configs/consumer.toml" | nindent 4 }}
+    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
+    {{- end }}
+

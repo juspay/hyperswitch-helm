@@ -70,7 +70,7 @@ spec:
           volumeMounts:
             - mountPath: /local/config/sandbox.toml
               name: hyperswitch-config
-              subPath: sandbox.toml
+              subPath: producer.toml
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

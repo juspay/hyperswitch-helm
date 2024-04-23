@@ -3,6 +3,13 @@ kind: ConfigMap
 metadata:
   name: producer-cm-{{.Release.Name }}
 data:
-  sandbox.toml: |
-    {{ .Files.Get "producer.toml" | nindent 4 }}
-    {{ .Files.Get "misc.toml" | nindent 4 }}
+  producer.toml: |
+    {{- if eq .Values.application.server.run_env "production" -}}
+    {{ .Files.Get "configs/producer.toml" | nindent 4 }}
+    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
+    {{- else -}}
+    {{ .Files.Get "configs/producer.toml" | nindent 4 }}
+    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
+    {{- end }}
