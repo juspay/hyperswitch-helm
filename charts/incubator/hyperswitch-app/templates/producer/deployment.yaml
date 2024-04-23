@@ -28,7 +28,6 @@ spec:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
         checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
-        checksum/misc-config: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:
@@ -56,8 +55,6 @@ spec:
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           envFrom:
-            - configMapRef:
-                name: producer-cm-{{ .Release.Name }}
             - secretRef:
                 name: producer-secret-{{.Release.Name }}
             - secretRef:
@@ -71,9 +68,15 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
+            {{- if eq .Values.application.server.run_env "production" }}
             - mountPath: /local/config/production.toml
               name: hyperswitch-config
-              subPath: production.toml
+              subPath: producer.toml
+            {{- else }}
+            - mountPath: /local/config/sandbox.toml
+              name: hyperswitch-config
+              subPath: producer.toml
+            {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -83,5 +86,5 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: hyperswitch-config
+            name: producer-cm-{{.Release.Name }}
           name: hyperswitch-config
