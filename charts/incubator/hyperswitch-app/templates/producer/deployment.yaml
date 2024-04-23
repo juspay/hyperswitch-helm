@@ -68,9 +68,15 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
+            {{- if eq .Values.application.server.run_env "production" }}
+            - mountPath: /local/config/production.toml
+              name: hyperswitch-config
+              subPath: producer.toml
+            {{- else }}
             - mountPath: /local/config/sandbox.toml
               name: hyperswitch-config
               subPath: producer.toml
+            {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
