@@ -26,7 +26,7 @@ spec:
       containers:
       - env:
         - name: S3_BUCKET
-          value: "logs-bucket-eks-hs-2023-05-12"
+          value:  {{ .Values.application.server.bucket_name }}
         - name: S3_REGION
           value: "us-east-1"
         image: docker.io/fluent/fluentd-kubernetes-daemonset:v1.16-debian-s3-1
