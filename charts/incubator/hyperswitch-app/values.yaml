@@ -173,7 +173,8 @@ application:
     opensearch:
       host: opensearch-host
     run_env: sandbox
-    secrets_manager: aws_kms
+    secrets_manager: no_encryption
+    encryption_manager: no_encryption
     bucket_name: app-logs-bucket-eks
   consumer:
     # Number of replicas to be used for the application

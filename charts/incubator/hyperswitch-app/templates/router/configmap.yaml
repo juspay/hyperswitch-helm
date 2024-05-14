@@ -4,6 +4,12 @@ metadata:
   name: router-cm-{{.Release.Name }}
 data:
   router.toml: |
+    [secrets_management]
+    secrets_manager = "{{ .Values.application.server.secrets_manager }}" # Secrets manager client to be used
+
+    [encryption_management]
+    encryption_manager = "{{ .Values.application.server.encryption_manager }}" # Encryption manager client to be used
+
     {{- if eq .Values.application.server.run_env "production" -}}
     {{ .Files.Get "configs/misc.toml" | nindent 4 }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}

@@ -80,12 +80,6 @@ log_directory = "logs"
 log_file_name = "debug.log"
 enable_async = true
 
-[secrets_management]
-secrets_manager = "aws_kms" # Secrets manager client to be used
-
-[encryption_management]
-encryption_manager = "aws_kms" # Encryption manager client to be used
-
 [report_download_config]
 dispute_function = "report_download_config_dispute_function" # Config to download dispute report
 payment_function = "report_download_config_payment_function" # Config to download payment report
