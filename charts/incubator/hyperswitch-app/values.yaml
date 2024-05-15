@@ -252,7 +252,7 @@ application:
 
   controlCenter:
     # Image to be used by the deployment to create the pod
-    image: juspaydotin/hyperswitch-control-center:v1.29.9
+    image: juspaydotin/hyperswitch-control-center:v1.30.0
     # Number of replicas to be used for the application
     replicas: 1
     # Wait time allowed for the deployment before the deployment is marked as failed
@@ -294,18 +294,18 @@ application:
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   router:
-    version: v1.107.0
-    image: juspaydotin/hyperswitch-router:v1.107.0-standalone
+    version: v1.108.0
+    image: juspaydotin/hyperswitch-router:v1.108.0-standalone
     host: http://localhost:8080
   consumer:
-    image: juspaydotin/hyperswitch-consumer:v1.107.0-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.108.0-standalone
   producer:
-    image: juspaydotin/hyperswitch-producer:v1.107.0-standalone
+    image: juspaydotin/hyperswitch-producer:v1.108.0-standalone
   controlCenter:
-    image: juspaydotin/hyperswitch-control-center:v1.29.9
+    image: juspaydotin/hyperswitch-control-center:v1.30.0
   sdk:
     host: http://localhost:9090
-    version: 0.27.2
+    version: 0.35.4
     subversion: v0
 redis:
   # - enable Bitnami redis sub-chart helm installation

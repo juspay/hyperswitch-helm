@@ -116,7 +116,7 @@ hyperswitchsdk:
   autoBuild:
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.27.2
+      gitVersion: 0.35.4
     nginxConfig:
       extraPath: v0
     buildParam:
@@ -163,16 +163,16 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.107.0
-      image: juspaydotin/hyperswitch-router:v1.107.0-standalone
+      version: v1.108.0
+      image: juspaydotin/hyperswitch-router:v1.108.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.107.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.108.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.107.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.108.0-standalone
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.29.9
+      image: juspaydotin/hyperswitch-control-center:v1.30.0
     sdk:
       host: *web_sdk_host
-      version: 0.27.2
+      version: 0.35.4
       subversion: v0
