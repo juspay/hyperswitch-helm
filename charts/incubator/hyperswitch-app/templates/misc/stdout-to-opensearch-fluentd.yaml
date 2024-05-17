@@ -1,0 +1,151 @@
+# apiVersion: v1
+# data:
+#   fluent.conf: "@include kubernetes.conf\n\n# Hyperswitch Server Source\n\n<source>\n
+#     \ @type tail\n  @id in_tail_hyperswitch-server-router_logs\n\n  path /var/log/containers/hyperswitch-server*.log\n
+#     \ pos_file /var/log/fluentd-hyperswitch-server-router-containers.log.pos\n  tag
+#     \"hyperswitchserverrouterv3.*\"\n  read_from_head true\n  <parse>\n    @type regexp\n
+#     \   expression /^(?<time>.+) (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/\n
+#     \ </parse>\n</source>\n\n# Istio Logs Source\n  <source>\n  @type tail\n  @id
+#     in_tail_istio_logs\n\n  path /var/log/containers/*istio-proxy*.log\n  pos_file
+#     /var/log/istio.log.pos\n  tag \"istio.*\"\n  read_from_head true\n  <parse>\n
+#     \   @type regexp\n    expression /^(?<time>.+) (?<stream>stdout|stderr)( (?<logtag>.))?
+#     (?<log>.*)$/\n  </parse>\n</source>\n\n# Hyperswitch Consumer Source\n\n<source>\n
+#     \ @type tail\n  @id in_tail_hyperswitch-consumer_logs\n\n  path /var/log/containers/hyperswitch-consumer*hyperswitch-*.log\n
+#     \ pos_file /var/log/fluentd-hyperswitch-consumer-containers.log.pos\n  tag \"consumer.*\"\n
+#     \ read_from_head true\n  <parse>\n    @type regexp\n    expression /^(?<time>.+)
+#     (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/\n  </parse>\n</source>\n\n#
+#     Hyperswitch Drainer Source\n\n<source>\n  @type tail\n  @id in_tail_hyperswitch-drainer_logs\n\n
+#     \ path /var/log/containers/hyperswitch-drainer*hyperswitch-*.log\n  pos_file /var/log/fluentd-hyperswitch-drainer-containers.log.pos\n
+#     \ tag \"drainer.*\"\n  read_from_head true\n  <parse>\n    @type regexp\n    expression
+#     /^(?<time>.+) (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/\n  </parse>\n</source>\n\n\n#
+#     HyperSwitch Producer Source\n\n<source>\n  @type tail\n  @id in_tail_hyperswitch-producer_logs\n\n
+#     \ path /var/log/containers/hyperswitch-producer*hyperswitch-*.log\n  pos_file
+#     /var/log/fluentd-hyperswitch-producer-containers.log.pos\n  tag \"producer.*\"\n
+#     \ read_from_head true\n  <parse>\n    @type regexp\n    expression /^(?<time>.+)
+#     (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/\n  </parse>\n</source>\n\n\n#
+#     Hyperswitch Server Filter\n\n<filter hyperswitchserverrouterv3.**>\n  @type parser\n\n
+#     \ key_name log\n  reserve_time true\n  <parse>\n    @type multi_format\n    <pattern>\n
+#     \     format json\n      hash_value_field json_log\n      format_name 'json'\n
+#     \   </pattern>\n    <pattern>\n      format regexp\n      expression /^(?<message>.*)$/\n
+#     \     format_name 'raw_message'\n    </pattern>\n  </parse>\n</filter>\n\n<filter
+#     hyperswitchserverrouterv3.**>\n  @type kubernetes_metadata\n</filter>\n\n<filter
+#     hyperswitchserverrouterv3.**>\n  @type grep\n  <regexp>\n    key $.kubernetes.container_name\n
+#     \   pattern /bach/\n  </regexp>\n</filter>\n\n\n# Hyperswitch Drainer Filter\n\n<filter
+#     drainer.**>\n  @type parser\n\n  key_name log\n  reserve_time true\n  <parse>\n
+#     \   @type multi_format\n    <pattern>\n      format json\n      hash_value_field
+#     json_log\n      format_name 'json'\n    </pattern>\n    <pattern>\n      format
+#     regexp\n      expression /^(?<message>.*)$/\n      format_name 'raw_message'\n
+#     \   </pattern>\n  </parse>\n</filter>\n\n<filter drainer.**>\n  @type kubernetes_metadata\n</filter>\n\n<filter
+#     drainer.**>\n  @type grep\n  <regexp>\n    key $.kubernetes.container_name\n    pattern
+#     /drainer/\n  </regexp>\n</filter>\n\n# HyperSwitch Consumer Filter\n\n<filter
+#     consumer.**>\n  @type parser\n\n  key_name log\n  reserve_time true\n  <parse>\n
+#     \   @type multi_format\n    <pattern>\n      format json\n      hash_value_field
+#     json_log\n      format_name 'json'\n    </pattern>\n    <pattern>\n      format
+#     regexp\n      expression /^(?<message>.*)$/\n      format_name 'raw_message'\n
+#     \   </pattern>\n  </parse>\n</filter>\n\n<filter consumer.**>\n  @type kubernetes_metadata\n</filter>\n\n<filter
+#     consumer.**>\n  @type grep\n  <regexp>\n    key $.kubernetes.container_name\n
+#     \   pattern /consumer/\n  </regexp>\n</filter>    \n\n# Hyperswicth Producer filter\n\n<filter
+#     producer.**>\n  @type parser\n\n  key_name log\n  reserve_time true\n  <parse>\n
+#     \   @type multi_format\n    <pattern>\n      format json\n      hash_value_field
+#     json_log\n      format_name 'json'\n    </pattern>\n    <pattern>\n      format
+#     regexp\n      expression /^(?<message>.*)$/\n      format_name 'raw_message'\n
+#     \   </pattern>\n  </parse>\n</filter>\n\n<filter producer.**>\n  @type kubernetes_metadata\n</filter>\n\n<filter
+#     producer.**>\n  @type grep\n  <regexp>\n    key $.kubernetes.container_name\n
+#     \   pattern /producer/\n  </regexp>\n</filter>\n\n# Hyperswitch istio Filter\n\n#
+#     <filter istio.**>\n#   @type grep\n#   <regexp>\n#     key $.kubernetes.container_name\n#
+#     \    pattern /istio-proxy/\n#   </regexp>\n# </filter>\n\n<filter istio.**>\n
+#     \ @type parser\n\n  key_name log\n  reserve_time true\n  <parse>\n    @type multi_format\n
+#     \   <pattern>\n      format regexp\n      expression /^\\[(?<time>[^\\s]*)\\]
+#     \"(?<method>[\\w-]*) (?<path>[^\\s]*) (?<protocol>[^\\s]*)\" (?<status_code>\\d+)
+#     (?<response_flags>[^\\s]*) \"(?<response_details>[^\\s]*)\" \"(?<upstream_failure_reason>[^\\s]*)\"
+#     (?<bytes_received>\\d*) (?<bytes_sent>\\d*) (?<duration>\\d*) (?<upstream_service_time>[\\d-]*)
+#     \"(?<forwarded_for>.*)\" \"(?<user_agent>.*)\" \"(?<request_id>[^\\s]*)\" \"(?<dns_authority>[^\\s]*)\"
+#     \"(?<upstream_service>[^\\s]*)\" (?<upstream_cluster>[^\\s]*) (?<upstream_local>[^\\s]*)
+#     (?<downstream_local>[^\\s]*) (?<downstream_remote>[^\\s]*) (?<route_name>[^\\s]*)/\n
+#     \     hash_value_field json_log\n      format_name 'json'\n    </pattern>\n    <pattern>\n
+#     \     format regexp\n      expression /^(?<message>.*)$/\n      format_name 'raw_message'\n
+#     \   </pattern>\n  </parse>\n</filter>\n\n\n# Hyperswitch Istio Match\n\n<match
+#     istio.**>\n    <format>\n      @type json\n    </format>\n    @type copy\n      <store>\n
+#     \       @type opensearch\n        @id hyperswitch-istio_out_es\n        id_key
+#     _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key
+#     true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections
+#     false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n\n
+#     \       host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n
+#     \       scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify
+#     \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix
+#     \"istio\"\n        logstash_format true\n        type_name fluentd\n        <buffer>\n
+#     \         @type file\n          path /var/log/kafka-buffers/hyperswitch-istio-buffer\n
+#     \         flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size
+#     5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval
+#     30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n
+#     \       </buffer>\n    </store>\n    # <store>\n    #     @type stdout\n    #
+#     </store>\n</match>\n\n# Hyperswitch Drainer Match\n\n<match drainer.**>\n    <format>\n
+#     \     @type json\n    </format>\n    @type copy\n      <store>\n        @type
+#     opensearch\n        @id hyperswitch-drainer_out_es\n        id_key _hash\n        remove_keys
+#     _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer
+#     true\n        reload_on_failure true\n        reload_connections false\n        request_timeout
+#     120s\n        bulk_message_request_threshold 10MB\n\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n
+#     \       port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME']
+#     || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] ||
+#     'true'}\"\n        logstash_prefix \"drainer\"\n        logstash_format true\n
+#     \       type_name fluentd\n        <buffer>\n          @type file\n          path
+#     /var/log/kafka-buffers/hyperswitch-drainer-buffer\n          flush_thread_count
+#     6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length
+#     4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type
+#     exponential_backoff\n          overflow_action drop_oldest_chunk\n        </buffer>\n
+#     \   </store>\n</match>\n\n\n# Hyperswitch Server Match  \n\n<match hyperswitchserverrouterv3.**>\n
+#     \   <format>\n      @type json\n    </format>\n    @type copy\n      <store>\n
+#     \       @type opensearch\n        @id hyperswitch-server-router_out_es\n        id_key
+#     _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key
+#     true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections
+#     false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n\n
+#     \       host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n
+#     \       scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify
+#     \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix
+#     \"hyperswitchserverrouterv3\"\n        logstash_format true\n        type_name
+#     fluentd\n        <buffer>\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-server-router-buffer\n
+#     \         flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size
+#     5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval
+#     30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n
+#     \       </buffer>\n    </store>\n</match>\n\n# Hyperswitch Consumer Match\n\n<match
+#     consumer.**>\n    <format>\n      @type json\n    </format>\n    @type copy\n
+#     \     <store>\n        @type opensearch\n        @id hyperswitch-consumer_out_es\n
+#     \       id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key
+#     true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections
+#     false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n
+#     \       host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n
+#     \       scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify
+#     \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix
+#     \"consumer\"\n        logstash_format true\n        type_name fluentd\n        <buffer>\n
+#     \         @type file\n          path /var/log/kafka-buffers/hyperswitch-consumer-buffer\n
+#     \         flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size
+#     5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval
+#     30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n
+#     \       </buffer>\n    </store>\n</match>   \n\n# Hyperswitch Producer Match \n<match
+#     producer.**>\n    <format>\n      @type json\n    </format>\n    @type copy\n
+#     \     <store>\n        @type opensearch\n        @id hyperswitch-producer_out_es\n
+#     \       id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key
+#     true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections
+#     false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n
+#     \       host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n
+#     \       scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify
+#     \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix
+#     \"producer\"\n        logstash_format true\n        type_name fluentd\n        <buffer>\n
+#     \         @type file\n          path /var/log/kafka-buffers/hyperswitch-producer-buffer\n
+#     \         flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size
+#     5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval
+#     30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n
+#     \       </buffer>\n    </store>\n</match>"
+# kind: ConfigMap
+# metadata:
+#   annotations:
+#     kubectl.kubernetes.io/last-applied-configuration: |
+#       {"apiVersion":"v1","data":{"fluent.conf":"@include kubernetes.conf\n\n# Hyperswitch Server Source\n\n\u003csource\u003e\n  @type tail\n  @id in_tail_hyperswitch-server-router_logs\n\n  path /var/log/containers/hyperswitch-server*.log\n  pos_file /var/log/fluentd-hyperswitch-server-router-containers.log.pos\n  tag \"hyperswitchserverrouterv3.*\"\n  read_from_head true\n  \u003cparse\u003e\n    @type regexp\n    expression /^(?\u003ctime\u003e.+) (?\u003cstream\u003estdout|stderr)( (?\u003clogtag\u003e.))? (?\u003clog\u003e.*)$/\n  \u003c/parse\u003e\n\u003c/source\u003e\n\n# Istio Logs Source\n  \u003csource\u003e\n  @type tail\n  @id in_tail_istio_logs\n\n  path /var/log/containers/*istio-proxy*.log\n  pos_file /var/log/istio.log.pos\n  tag \"istio.*\"\n  read_from_head true\n  \u003cparse\u003e\n    @type regexp\n    expression /^(?\u003ctime\u003e.+) (?\u003cstream\u003estdout|stderr)( (?\u003clogtag\u003e.))? (?\u003clog\u003e.*)$/\n  \u003c/parse\u003e\n\u003c/source\u003e\n\n# Hyperswitch Consumer Source\n\n\u003csource\u003e\n  @type tail\n  @id in_tail_hyperswitch-consumer_logs\n\n  path /var/log/containers/hyperswitch-consumer*hyperswitch-*.log\n  pos_file /var/log/fluentd-hyperswitch-consumer-containers.log.pos\n  tag \"consumer.*\"\n  read_from_head true\n  \u003cparse\u003e\n    @type regexp\n    expression /^(?\u003ctime\u003e.+) (?\u003cstream\u003estdout|stderr)( (?\u003clogtag\u003e.))? (?\u003clog\u003e.*)$/\n  \u003c/parse\u003e\n\u003c/source\u003e\n\n# Hyperswitch Drainer Source\n\n\u003csource\u003e\n  @type tail\n  @id in_tail_hyperswitch-drainer_logs\n\n  path /var/log/containers/hyperswitch-drainer*hyperswitch-*.log\n  pos_file /var/log/fluentd-hyperswitch-drainer-containers.log.pos\n  tag \"drainer.*\"\n  read_from_head true\n  \u003cparse\u003e\n    @type regexp\n    expression /^(?\u003ctime\u003e.+) (?\u003cstream\u003estdout|stderr)( (?\u003clogtag\u003e.))? (?\u003clog\u003e.*)$/\n  \u003c/parse\u003e\n\u003c/source\u003e\n\n\n# HyperSwitch Producer Source\n\n\u003csource\u003e\n  @type tail\n  @id in_tail_hyperswitch-producer_logs\n\n  path /var/log/containers/hyperswitch-producer*hyperswitch-*.log\n  pos_file /var/log/fluentd-hyperswitch-producer-containers.log.pos\n  tag \"producer.*\"\n  read_from_head true\n  \u003cparse\u003e\n    @type regexp\n    expression /^(?\u003ctime\u003e.+) (?\u003cstream\u003estdout|stderr)( (?\u003clogtag\u003e.))? (?\u003clog\u003e.*)$/\n  \u003c/parse\u003e\n\u003c/source\u003e\n\n\n# Hyperswitch Server Filter\n\n\u003cfilter hyperswitchserverrouterv3.**\u003e\n  @type parser\n\n  key_name log\n  reserve_time true\n  \u003cparse\u003e\n    @type multi_format\n    \u003cpattern\u003e\n      format json\n      hash_value_field json_log\n      format_name 'json'\n    \u003c/pattern\u003e\n    \u003cpattern\u003e\n      format regexp\n      expression /^(?\u003cmessage\u003e.*)$/\n      format_name 'raw_message'\n    \u003c/pattern\u003e\n  \u003c/parse\u003e\n\u003c/filter\u003e\n\n\u003cfilter hyperswitchserverrouterv3.**\u003e\n  @type kubernetes_metadata\n\u003c/filter\u003e\n\n\u003cfilter hyperswitchserverrouterv3.**\u003e\n  @type grep\n  \u003cregexp\u003e\n    key $.kubernetes.container_name\n    pattern /bach/\n  \u003c/regexp\u003e\n\u003c/filter\u003e\n\n\n# Hyperswitch Drainer Filter\n\n\u003cfilter drainer.**\u003e\n  @type parser\n\n  key_name log\n  reserve_time true\n  \u003cparse\u003e\n    @type multi_format\n    \u003cpattern\u003e\n      format json\n      hash_value_field json_log\n      format_name 'json'\n    \u003c/pattern\u003e\n    \u003cpattern\u003e\n      format regexp\n      expression /^(?\u003cmessage\u003e.*)$/\n      format_name 'raw_message'\n    \u003c/pattern\u003e\n  \u003c/parse\u003e\n\u003c/filter\u003e\n\n\u003cfilter drainer.**\u003e\n  @type kubernetes_metadata\n\u003c/filter\u003e\n\n\u003cfilter drainer.**\u003e\n  @type grep\n  \u003cregexp\u003e\n    key $.kubernetes.container_name\n    pattern /drainer/\n  \u003c/regexp\u003e\n\u003c/filter\u003e\n\n# HyperSwitch Consumer Filter\n\n\u003cfilter consumer.**\u003e\n  @type parser\n\n  key_name log\n  reserve_time true\n  \u003cparse\u003e\n    @type multi_format\n    \u003cpattern\u003e\n      format json\n      hash_value_field json_log\n      format_name 'json'\n    \u003c/pattern\u003e\n    \u003cpattern\u003e\n      format regexp\n      expression /^(?\u003cmessage\u003e.*)$/\n      format_name 'raw_message'\n    \u003c/pattern\u003e\n  \u003c/parse\u003e\n\u003c/filter\u003e\n\n\u003cfilter consumer.**\u003e\n  @type kubernetes_metadata\n\u003c/filter\u003e\n\n\u003cfilter consumer.**\u003e\n  @type grep\n  \u003cregexp\u003e\n    key $.kubernetes.container_name\n    pattern /consumer/\n  \u003c/regexp\u003e\n\u003c/filter\u003e    \n\n# Hyperswicth Producer filter\n\n\u003cfilter producer.**\u003e\n  @type parser\n\n  key_name log\n  reserve_time true\n  \u003cparse\u003e\n    @type multi_format\n    \u003cpattern\u003e\n      format json\n      hash_value_field json_log\n      format_name 'json'\n    \u003c/pattern\u003e\n    \u003cpattern\u003e\n      format regexp\n      expression /^(?\u003cmessage\u003e.*)$/\n      format_name 'raw_message'\n    \u003c/pattern\u003e\n  \u003c/parse\u003e\n\u003c/filter\u003e\n\n\u003cfilter producer.**\u003e\n  @type kubernetes_metadata\n\u003c/filter\u003e\n\n\u003cfilter producer.**\u003e\n  @type grep\n  \u003cregexp\u003e\n    key $.kubernetes.container_name\n    pattern /producer/\n  \u003c/regexp\u003e\n\u003c/filter\u003e\n\n# Hyperswitch istio Filter\n\n# \u003cfilter istio.**\u003e\n#   @type grep\n#   \u003cregexp\u003e\n#     key $.kubernetes.container_name\n#     pattern /istio-proxy/\n#   \u003c/regexp\u003e\n# \u003c/filter\u003e\n\n\u003cfilter istio.**\u003e\n  @type parser\n\n  key_name log\n  reserve_time true\n  \u003cparse\u003e\n    @type multi_format\n    \u003cpattern\u003e\n      format regexp\n      expression /^\\[(?\u003ctime\u003e[^\\s]*)\\] \"(?\u003cmethod\u003e[\\w-]*) (?\u003cpath\u003e[^\\s]*) (?\u003cprotocol\u003e[^\\s]*)\" (?\u003cstatus_code\u003e\\d+) (?\u003cresponse_flags\u003e[^\\s]*) \"(?\u003cresponse_details\u003e[^\\s]*)\" \"(?\u003cupstream_failure_reason\u003e[^\\s]*)\" (?\u003cbytes_received\u003e\\d*) (?\u003cbytes_sent\u003e\\d*) (?\u003cduration\u003e\\d*) (?\u003cupstream_service_time\u003e[\\d-]*) \"(?\u003cforwarded_for\u003e.*)\" \"(?\u003cuser_agent\u003e.*)\" \"(?\u003crequest_id\u003e[^\\s]*)\" \"(?\u003cdns_authority\u003e[^\\s]*)\" \"(?\u003cupstream_service\u003e[^\\s]*)\" (?\u003cupstream_cluster\u003e[^\\s]*) (?\u003cupstream_local\u003e[^\\s]*) (?\u003cdownstream_local\u003e[^\\s]*) (?\u003cdownstream_remote\u003e[^\\s]*) (?\u003croute_name\u003e[^\\s]*)/\n      hash_value_field json_log\n      format_name 'json'\n    \u003c/pattern\u003e\n    \u003cpattern\u003e\n      format regexp\n      expression /^(?\u003cmessage\u003e.*)$/\n      format_name 'raw_message'\n    \u003c/pattern\u003e\n  \u003c/parse\u003e\n\u003c/filter\u003e\n\n\n# Hyperswitch Istio Match\n\n\u003cmatch istio.**\u003e\n    \u003cformat\u003e\n      @type json\n    \u003c/format\u003e\n    @type copy\n      \u003cstore\u003e\n        @type opensearch\n        @id hyperswitch-istio_out_es\n        id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix \"istio\"\n        logstash_format true\n        type_name fluentd\n        \u003cbuffer\u003e\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-istio-buffer\n          flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n        \u003c/buffer\u003e\n    \u003c/store\u003e\n    # \u003cstore\u003e\n    #     @type stdout\n    # \u003c/store\u003e\n\u003c/match\u003e\n\n# Hyperswitch Drainer Match\n\n\u003cmatch drainer.**\u003e\n    \u003cformat\u003e\n      @type json\n    \u003c/format\u003e\n    @type copy\n      \u003cstore\u003e\n        @type opensearch\n        @id hyperswitch-drainer_out_es\n        id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix \"drainer\"\n        logstash_format true\n        type_name fluentd\n        \u003cbuffer\u003e\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-drainer-buffer\n          flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n        \u003c/buffer\u003e\n    \u003c/store\u003e\n\u003c/match\u003e\n\n\n# Hyperswitch Server Match  \n\n\u003cmatch hyperswitchserverrouterv3.**\u003e\n    \u003cformat\u003e\n      @type json\n    \u003c/format\u003e\n    @type copy\n      \u003cstore\u003e\n        @type opensearch\n        @id hyperswitch-server-router_out_es\n        id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix \"hyperswitchserverrouterv3\"\n        logstash_format true\n        type_name fluentd\n        \u003cbuffer\u003e\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-server-router-buffer\n          flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n        \u003c/buffer\u003e\n    \u003c/store\u003e\n\u003c/match\u003e\n\n# Hyperswitch Consumer Match\n\n\u003cmatch consumer.**\u003e\n    \u003cformat\u003e\n      @type json\n    \u003c/format\u003e\n    @type copy\n      \u003cstore\u003e\n        @type opensearch\n        @id hyperswitch-consumer_out_es\n        id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix \"consumer\"\n        logstash_format true\n        type_name fluentd\n        \u003cbuffer\u003e\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-consumer-buffer\n          flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n        \u003c/buffer\u003e\n    \u003c/store\u003e\n\u003c/match\u003e   \n\n# Hyperswitch Producer Match \n\u003cmatch producer.**\u003e\n    \u003cformat\u003e\n      @type json\n    \u003c/format\u003e\n    @type copy\n      \u003cstore\u003e\n        @type opensearch\n        @id hyperswitch-producer_out_es\n        id_key _hash\n        remove_keys _hash\n        @log_level debug\n        include_tag_key true\n        prefer_oj_serializer true\n        reload_on_failure true\n        reload_connections false\n        request_timeout 120s\n        bulk_message_request_threshold 10MB\n        host \"#{ENV['FLUENT_ELASTICSEARCH_HOST']}\"\n        port \"#{ENV['FLUENT_ELASTICSEARCH_PORT']}\"\n        scheme \"#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'http'}\"\n        ssl_verify \"#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'true'}\"\n        logstash_prefix \"producer\"\n        logstash_format true\n        type_name fluentd\n        \u003cbuffer\u003e\n          @type file\n          path /var/log/kafka-buffers/hyperswitch-producer-buffer\n          flush_thread_count 6\n          flush_interval 1s\n          chunk_limit_size 5M\n          queue_limit_length 4\n          flush_mode interval\n          retry_max_interval 30\n          retry_type exponential_backoff\n          overflow_action drop_oldest_chunk\n        \u003c/buffer\u003e\n    \u003c/store\u003e\n\u003c/match\u003e"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"fluentd-new-cm","namespace":"kube-analytics"}}
+#   creationTimestamp: "2024-03-12T09:21:56Z"
+#   labels:
+#     velero.io/backup-name: kube-analytics-bkp-1710235192.2949905
+#     velero.io/restore-name: kube-analytics-rstr-1710235312.7062979
+#   name: fluentd-new-cm
+#   namespace: kube-analytics
+#   resourceVersion: "683552"
+#   uid: 1c63620c-5703-4258-9398-fd38ecc49235
