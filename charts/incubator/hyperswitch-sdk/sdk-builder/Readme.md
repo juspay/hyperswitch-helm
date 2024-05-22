@@ -4,7 +4,7 @@ Whenever we try to host Hyperloader.js for new version, we need to build asset. 
 
 ```
 cd hyperswitch-helm/charts/incubator/hyperswitch-sdk/sdk-builder
-docker build --build-arg SDK_VERSION=<0.16.7> --platform=linux/amd64 -t hyperswitch-web .
-docker tag hyperswitch-web <user>/hyperswitch-web:<0.16.7>
-docker push <user>/hyperswitch-web:<0.16.7>
+docker build --build-arg SDK_VERSION=<0.35.4> --platform=linux/amd64 -t hyperswitch-web .
+docker tag hyperswitch-web <user>/hyperswitch-web:<0.35.4>
+docker push <user>/hyperswitch-web:<0.35.4>
 ```
