@@ -1,0 +1,35 @@
+# Default values for hyperswitch-istio.
+
+replicaCount: 1
+
+image:
+  version: "v1o107o0"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations: {}
+  hosts:
+    paths:
+      - path: /
+        pathType: Prefix
+        port: 80
+        name: istio-ingressgateway
+      - path: /healthz/ready
+        pathType: Prefix
+        port: 15021
+        name: istio-ingressgateway
+  tls: []
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
