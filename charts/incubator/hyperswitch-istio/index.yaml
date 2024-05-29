@@ -3,12 +3,12 @@ entries:
   hyperswitch-istio:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-29T20:17:29.463835+05:30"
+    created: "2024-05-29T20:30:53.347893+05:30"
     description: A Helm chart for Kubernetes
-    digest: 1ac0d8d9622328d2f68871f826d4904a0975b948e5d9cb86dc9a7f5159b80f22
+    digest: 76018f9e55103e249a9bea636c729dd69677a2667d162cec08e6c7a70d02ec3f
     name: hyperswitch-istio
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-istio-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-29T20:17:29.462848+05:30"
+generated: "2024-05-29T20:30:53.346537+05:30"
