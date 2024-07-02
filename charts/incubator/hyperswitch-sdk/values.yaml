@@ -55,7 +55,7 @@ autoBuild:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
     # -- hyperswitch-web repository tag
-    gitVersion: 0.27.2
+    gitVersion: 0.35.4
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
     envSdkUrl: https://hyperswitch-sdk
@@ -78,9 +78,9 @@ image:
   # -- prebuild image pull policy
   pullPolicy: IfNotPresent
   # -- prebuild image tag, the image tag whose default is the chart appVersion.
-  tag: 0.27.2
+  tag: 0.35.4
   nginxConfig:
-    # -- nginx extra path used to set liveness and readiness probe /0.27.2/v0
+    # -- nginx extra path used to set liveness and readiness probe /0.35.4/v0
     extraPath: v0
 
 # -- image pull secret

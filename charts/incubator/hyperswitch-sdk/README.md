@@ -23,7 +23,7 @@ assets
 | autoBuild.enable | bool | `false` | enable npm auto build |
 | autoBuild.forceBuild | bool | `true` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
-| autoBuild.gitCloneParam.gitVersion | string | `"0.27.2"` | hyperswitch-web repository tag |
+| autoBuild.gitCloneParam.gitVersion | string | `"0.35.4"` | hyperswitch-web repository tag |
 | autoBuild.nginxConfig.extraPath | string | `"v0"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
@@ -33,10 +33,10 @@ assets
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | autoscaling target CPU utilization |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | autoscaling target memory utilization |
 | fullnameOverride | string | `""` | chart full name override |
-| image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.27.2/v0 |
+| image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.35.4/v0 |
 | image.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
 | image.repository | string | `"nginx"` | prebuild SDK image |
-| image.tag | string | `"0.27.2"` | prebuild image tag, the image tag whose default is the chart appVersion. |
+| image.tag | string | `"0.35.4"` | prebuild image tag, the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | image pull secret |
 | ingress.annotations | object | `{}` | ingress annotations |
 | ingress.className | string | `"nginx"` | ingress class name |

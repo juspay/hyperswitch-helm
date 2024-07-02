@@ -5,7 +5,7 @@ metadata:
     {{- with (default .Values.application.global.annotations .Values.application.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-control-center-v1o29o9
+  name: hyperswitch-control-center-v1o30o0
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.controlCenter.progressDeadlineSeconds }}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.application.controlCenter.labels.app }}
-      version: v1o29o9
+      version: v1o30o0
   strategy:
     {{- with (default .Values.application.global.strategy .Values.application.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -23,7 +23,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.application.controlCenter.labels.app }}
-        version: v1o29o9
+        version: v1o30o0
     spec:
       affinity:
         nodeAffinity:
@@ -47,6 +47,67 @@ spec:
               value: {{ .Values.services.router.host }}
             - name: sdkBaseUrl
               value: {{ .Values.services.sdk.host }}/{{ .Values.services.sdk.version }}/{{ .Values.services.sdk.subversion }}/HyperLoader.js
+            - name: "default__endpoints__api_url"
+              value: {{ .Values.services.router.host }}
+            - name: "default__endpoints__sdk_url"
+              value: {{ .Values.services.sdk.host }}/{{ .Values.services.sdk.version }}/{{ .Values.services.sdk.subversion }}/HyperLoader.js
+            - name: "mixpanelToken"
+              value: "dd4da7f62941557e716fbc0a19f9cc7e"
+            - name: "default__theme__primary_color"
+              value: "#006DF9"
+            - name: "default__theme__primary_hover_color"
+              value: "#005ED6"
+            - name: "default__theme__sidebar_color"
+              value: "#242F48"
+            - name: "default__endpoints__logo_url"
+            - name: "default__endpoints__favicon_url"
+            - name: "default__endpoints__mixpanel_token"
+            - name: "default__features__test_live_toggle"
+              value: "false"
+            - name: "default__features__is_live_mode"
+              value: "false"
+            - name: "default__features__email"
+              value: "false"
+            - name: "default__features__quick_start"
+              value: "false"
+            - name: "default__features__audit_trail"
+              value: "true"
+            - name: "default__features__system_metrics"
+              value: "false"
+            - name: "default__features__sample_data"
+              value: "false"
+            - name: "default__features__frm"
+              value: "false"
+            - name: "default__features__payout"
+              value: "false"
+            - name: "default__features__recon"
+              value: "false"
+            - name: "default__features__test_processors"
+              value: "false"
+            - name: "default__features__feedback"
+              value: "false"
+            - name: "default__features__mixpanel"
+              value: "false"
+            - name: "default__features__generate_report"
+              value: "true"
+            - name: "default__features__user_journey_analytics"
+              value: "false"
+            - name: "default__features__surcharge"
+              value: "false"
+            - name: "default__features__dispute_evidence_upload"
+              value: "false"
+            - name: "default__features__paypal_automatic_flow"
+              value: "false"
+            - name: "default__features__threeds_authenticator"
+              value: "false"
+            - name: "default__features__global_search"
+              value: "true"
+            - name: "default__features__dispute_analytics"
+              value: "false"
+            - name: "default__features__configure_pmts"
+              value: "false"
+            - name: "default__features__branding"
+              value: "false"
           ports:
             - containerPort: 9000
               name: http

@@ -40,36 +40,6 @@
 
 {{/* Generic secret enviornnement variables */}}
 {{- define "generic.envs" -}}
-- name: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY1
-      name: hyperswitch-secrets
-- name: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_DECRYPTION_KEY2
-      name: hyperswitch-secrets
-- name: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY1
-      name: hyperswitch-secrets
-- name: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_ENCRYPTION_KEY2
-      name: hyperswitch-secrets
-- name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER1
-      name: hyperswitch-secrets
-- name: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2
-  valueFrom:
-    secretKeyRef:
-      key: ROUTER__JWEKEY__LOCKER_KEY_IDENTIFIER2
-      name: hyperswitch-secrets
 - name: ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY
   valueFrom:
     secretKeyRef:
