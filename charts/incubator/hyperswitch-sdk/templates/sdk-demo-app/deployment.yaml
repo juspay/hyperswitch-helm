@@ -6,7 +6,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: {{ .Values.sdkDemo.labels.app }}-v1o35o4
+  name: {{ .Values.sdkDemo.labels.app }}-v0o35o4
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ .Values.sdkDemo.progressDeadlineSeconds}}
@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.sdkDemo.labels.app }}
-      version: v1o35o4
+      version: v0o35o4
   strategy:
   {{- with .Values.sdkDemo.strategy }}
     {{- toYaml . | nindent 4 }}
@@ -25,7 +25,7 @@ spec:
       creationTimestamp: null
       labels:
         app: {{ .Values.sdkDemo.labels.app }}
-        version: v1o35o4
+        version: v0o35o4
     spec:
       affinity:
         nodeAffinity:
