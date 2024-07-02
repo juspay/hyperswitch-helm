@@ -5,7 +5,7 @@ metadata:
     {{- with (default .Values.application.global.annotations .Values.application.consumer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-consumer-v1o8o0
+  name: hyperswitch-consumer-v1o108o2
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.consumer.progressDeadlineSeconds }}
