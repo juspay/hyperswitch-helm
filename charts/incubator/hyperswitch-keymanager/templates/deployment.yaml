@@ -47,6 +47,21 @@ spec:
             secretKeyRef:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__SECRETS__KMS_CONFIG__REGION
+        - name: CRIPTA__CERTS__TLS_CERT
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__CERTS__TLS_CERT
+        - name: CRIPTA__CERTS__TLS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__CERTS__TLS_KEY
+        - name: CRIPTA__CERTS__ROOT_CA
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__CERTS__ROOT_CA
         image: {{ .Values.server.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

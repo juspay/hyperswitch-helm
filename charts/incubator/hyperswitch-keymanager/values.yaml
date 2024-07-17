@@ -12,6 +12,9 @@ server:
   secrets:
     iam_role: iam_role
     region: us-east-1
+    ca_cert: sample_cert
+    tls_key: sample_cert
+    tls_cert: sample_cert
   annotations: {}
 
 # Values for database (postgresql).
