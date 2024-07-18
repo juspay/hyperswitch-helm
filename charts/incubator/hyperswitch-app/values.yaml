@@ -154,7 +154,7 @@ application:
       forex_api_key: dummy_val
       forex_fallback_api_key: dummy_val
       pm_auth_key: dummy_val
-      api_hash_key: dummy_val
+      api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: http://hyperswitch-vault
@@ -295,18 +295,18 @@ application:
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   router:
-    version: v1.108.2
-    image: juspaydotin/hyperswitch-router:v1.108.2-standalone
+    version: v1.109.0
+    image: juspaydotin/hyperswitch-router:v1.109.0-standalone
     host: http://localhost:8080
   consumer:
-    image: juspaydotin/hyperswitch-consumer:v1.108.2-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.109.0-standalone
   producer:
-    image: juspaydotin/hyperswitch-producer:v1.108.2-standalone
+    image: juspaydotin/hyperswitch-producer:v1.109.0-standalone
   controlCenter:
-    image: juspaydotin/hyperswitch-control-center:v1.30.0
+    image: juspaydotin/hyperswitch-control-center:v1.31.0
   sdk:
     host: http://localhost:9090
-    version: 0.35.4
+    version: 0.71.11
     subversion: v0
 redis:
   # - enable Bitnami redis sub-chart helm installation
