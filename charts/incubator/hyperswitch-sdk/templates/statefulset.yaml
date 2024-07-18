@@ -50,7 +50,7 @@ spec:
                 cd dist/integ
                 ls -lth
                 sed -i'' -e 's|https://dev.hyperswitch.io/|'${envSdkUrl}'/|g' app.js HyperLoader.js
-                sed -i'' -e 's|https://integ-api.hyperswitch.io|'$envBackendUrl'|g' app.js HyperLoader.js
+                sed -i'' -e 's|https://beta.hyperswitch.io/api|'$envBackendUrl'|g' app.js HyperLoader.js
                 cp -rfv * /dist
                 touch "$BUILD_COMPLETE_FILE"
               fi
