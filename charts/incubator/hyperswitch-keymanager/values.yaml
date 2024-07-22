@@ -5,10 +5,14 @@
 replicaCount: 1
 
 global:
-  image: juspaydotin/hyperswitch-keymanager:0.1.0
+  image: juspaydotin/hyperswitch-encryption-service:0.1.1
   annotations: {}
 
+autoscaling:
+  enabled: false
+
 server:
+  image: juspaydotin/hyperswitch-encryption-service:0.1.1
   secrets:
     iam_role: iam_role
     region: us-east-1
@@ -19,7 +23,7 @@ server:
 
 # Values for database (postgresql).
 postgresql:
-  enabled: true
+  enabled: false
   nameOverride: locker-db
   global:
     postgresql:

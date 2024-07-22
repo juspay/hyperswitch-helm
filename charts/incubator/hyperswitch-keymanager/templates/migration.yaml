@@ -18,10 +18,12 @@ spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-              nodeSelectorTerms:
-              {{- toYaml . | nindent 18 }}
-            {{- end }}
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - keymanager-ng
       containers:
         - name: run-keymanager-db-migration
           image: {{ .Values.initDB.migration.image }}

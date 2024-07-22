@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  hyperswitch-keymanager:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-07-22T18:33:26.987138+05:30"
+    description: A Helm chart for deploying Hyperswitch Keymanager
+    digest: 8a626f63af94b8d8dfdf485f02eedcf5d305056f6dc931a63363ded8509fa942
+    name: hyperswitch-keymanager
+    type: application
+    urls:
+    - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-keymanager/hyperswitch-keymanager-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-22T18:33:26.986603+05:30"
