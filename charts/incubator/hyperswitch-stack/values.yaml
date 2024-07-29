@@ -152,27 +152,30 @@ hyperswitchsdk:
                 port:
                   number: 80
 
-hyperswitchCardVault:
-  secrets: 
-    master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
-
 hyperswitch-app:
   initDB:
-    enable: true
+    enable: false
   loadBalancer:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.109.0
-      image: juspaydotin/hyperswitch-router:v1.109.0-standalone
+      version: 2024.07.25.0
+      image: juspaydotin/hyperswitch-router:2024.07.25.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.109.0-standalone
+      image: juspaydotin/hyperswitch-consumer:2024.07.25.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.109.0-standalone
+      image: juspaydotin/hyperswitch-producer:2024.07.25.0-standalone
     controlCenter:
       image: juspaydotin/hyperswitch-control-center:v1.31.0
     sdk:
       host: *web_sdk_host
       version: 0.71.11
       subversion: v0
+  hyperswitch-card-vault:
+    secrets: 
+      master_key: a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef
+    server:
+      image: juspaydotin/hyperswitch-card-vault:v0.4.0
+    initDB:
+      enable: false
