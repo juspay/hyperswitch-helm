@@ -30,7 +30,7 @@ Use below command to install hyperswitch services with above configs
 helm install hyperswitch-v1 . -n hyperswitch
 ```
 
-That's it! Hyperswitch should be up and running on your AWS account  :tada: :tada:
+That's it! Hyperswitch should be up and running :tada: :tada:
 
 ## Post-Deployment Checklist
 
@@ -60,6 +60,13 @@ Use the Hyperswitch Demo app and [make a payment with test card](https://opensou
 
 Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyperswitch/folder/25176183-0103918c-6611-459b-9faf-354dee8e4437) to try out REST APIs
 
+
+### Install grafana and loki for logs
+```
+helm repo add grafana https://grafana.github.io/helm-charts  
+helm install loki grafana/loki-stack -f hyperswitch-helm/charts/incubator/hyperswitch-app/loki.yaml -n hyperswitch
+
+```
 ### Get Repo Info
 ```bash
 helm repo add hyperswitch-helm https://juspay.github.io/hyperswitch-helm
