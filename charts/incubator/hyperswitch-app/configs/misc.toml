@@ -10,9 +10,6 @@ queue_strategy = "Fifo"   # Add the queue strategy used by the database bb8 clie
 
 [connector_onboarding.paypal]
 enabled = true # boolean
-client_id = "paypal_client_id"
-client_secret = "paypal_client_secret"
-partner_id = "paypal_partner_id"
 
 [connector_request_reference_id_config]
 merchant_ids_send_payment_id_as_connector_request_id = [
@@ -112,7 +109,6 @@ card = "credit,debit"
 
 
 [payment_method_auth]
-pm_auth_key = "pm_auth_key" # Payment method auth key used for authorization
 redis_expiry = 900          # Redis expiry time in milliseconds
 
 [redis]
