@@ -31,7 +31,7 @@ spec:
             - |-
               apt update
               apt install -y git
-              git clone --single-branch --branch main https://github.com/juspay/hyperswitch-card-vault.git
+              git clone --single-branch --branch $VERSION https://github.com/juspay/hyperswitch-card-vault.git
               cd hyperswitch-card-vault
               diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
               echo "Completed hyperswitch database migration"
@@ -42,6 +42,8 @@ spec:
               value: {{ include "locker-psql.name" . }}
             - name: POSTGRES_USER
               value: {{ include "locker-psql.username" . }}
+            - name: VERSION
+              value: {{ regexReplaceAll "^[^:]+:" .Values.server.image "" }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

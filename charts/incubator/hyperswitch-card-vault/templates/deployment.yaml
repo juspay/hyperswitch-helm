@@ -100,7 +100,7 @@ spec:
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 5
-            periodSeconds: 3
+            periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 1
           name: tartarus
@@ -115,7 +115,7 @@ spec:
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 5
-            periodSeconds: 5
+            periodSeconds: 50
             successThreshold: 1
             timeoutSeconds: 1
           resources:

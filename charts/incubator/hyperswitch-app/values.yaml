@@ -161,7 +161,7 @@ application:
       host_rs: 
       mock_locker : false                                                    # Emulate a locker locally using Postgres
       locker_signing_key_id : "1"                                           # Key_id to sign basilisk hs locker
-      locker_enabled : false                                                 # Boolean to enable or disable saving cards in locker
+      locker_enabled : true                                                 # Boolean to enable or disable saving cards in locker
       
       locker_public_key: 
       hyperswitch_private_key: 
@@ -295,18 +295,18 @@ application:
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   router:
-    version: v1.109.0
-    image: juspaydotin/hyperswitch-router:v1.109.0-standalone
+    version: v1.110.0
+    image: juspaydotin/hyperswitch-router:v1.110.0-standalone
     host: http://localhost:8080
   consumer:
-    image: juspaydotin/hyperswitch-consumer:v1.109.0-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.110.0-standalone
   producer:
-    image: juspaydotin/hyperswitch-producer:v1.109.0-standalone
+    image: juspaydotin/hyperswitch-producer:v1.110.0-standalone
   controlCenter:
-    image: juspaydotin/hyperswitch-control-center:v1.31.0
+    image: juspaydotin/hyperswitch-control-center:v1.32.0
   sdk:
     host: http://localhost:9090
-    version: 0.71.11
+    version: 0.80.0
     subversion: v0
 redis:
   # - enable Bitnami redis sub-chart helm installation

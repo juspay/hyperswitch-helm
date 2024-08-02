@@ -61,6 +61,8 @@ autoBuild:
     envSdkUrl: https://hyperswitch-sdk
     # -- node build parameter, hyperswitch server host
     envBackendUrl: https://hyperswitch
+    # -- node build parameter, hyperswitch SDK logs host
+    envLogsUrl: https://hyperswitch-sdk-logs
     # -- node build parameter, environment
     buildEnv: integ
   nginxConfig:
