@@ -116,7 +116,7 @@ hyperswitchsdk:
   autoBuild:
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.71.11
+      gitVersion: 0.80.0
     nginxConfig:
       extraPath: v0
     buildParam:
@@ -159,23 +159,24 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: 2024.07.25.0
-      image: juspaydotin/hyperswitch-router:2024.07.25.0-standalone
+      version: v1.110.0
+      image: juspaydotin/hyperswitch-router:v1.110.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:2024.07.25.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.110.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:2024.07.25.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.110.0-standalone
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.31.0
+      image: juspaydotin/hyperswitch-control-center:v1.32.0
     sdk:
       host: *web_sdk_host
-      version: 0.71.11
+      version: 0.80.0
       subversion: v0
   hyperswitch-card-vault:
-    secrets: 
-      master_key: a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef
+    enabled: true
     server:
       image: juspaydotin/hyperswitch-card-vault:v0.4.0
+      secrets: 
+        master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
     initDB:
       enable: false

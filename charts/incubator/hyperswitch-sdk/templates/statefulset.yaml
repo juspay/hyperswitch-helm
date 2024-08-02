@@ -46,11 +46,12 @@ spec:
               if [ "$FORCE_BUILD" != "true" ] && [ -f "$BUILD_COMPLETE_FILE" ]; then
                 echo "Build complete file exists, skipping build."
               else
-                envSdkUrl={{ .Values.autoBuild.buildParam.envSdkUrl }} envBackendUrl={{ .Values.autoBuild.buildParam.envBackendUrl }}
+                envSdkUrl={{ .Values.autoBuild.buildParam.envSdkUrl }} envBackendUrl={{ .Values.autoBuild.buildParam.envBackendUrl }} envLogsUrl={{ .Values.autoBuild.buildParam.envLogsUrl }}
                 cd dist/integ
                 ls -lth
                 sed -i'' -e 's|https://dev.hyperswitch.io/|'${envSdkUrl}'/|g' app.js HyperLoader.js
                 sed -i'' -e 's|https://beta.hyperswitch.io/api|'$envBackendUrl'|g' app.js HyperLoader.js
+                sed -i'' -e 's|https://sandbox.hyperswitch.io/logs/sdk|'$envLogsUrl'|g' app.js HyperLoader.js
                 cp -rfv * /dist
                 touch "$BUILD_COMPLETE_FILE"
               fi
