@@ -17,11 +17,11 @@ data:
     log_level = "debug"
 
     [database]
-    user = {{ .Values.external.postgresql.config.username }}
-    password = {{ .Values.external.postgresql.config.password }}
-    host = {{ .Values.external.postgresql.config.host }}
+    user = {{ quote .Values.external.postgresql.config.username }}
+    password = {{ quote .Values.external.postgresql.config.password }}
+    host = {{ quote .Values.external.postgresql.config.host }}
     port = 5432
-    dbname = {{ .Values.external.postgresql.config.database }}
+    dbname = {{ quote .Values.external.postgresql.config.database }}
     pool_size = 5
     min_idle = 2
 
