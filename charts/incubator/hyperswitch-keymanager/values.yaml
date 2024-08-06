@@ -1,0 +1,60 @@
+# Default values for hyperswitch-keymanager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+global:
+  image: juspaydotin/hyperswitch-encryption-service:v0.1.3
+  annotations: {}
+
+autoscaling:
+  enabled: false
+
+server:
+  image: juspaydotin/hyperswitch-encryption-service:v0.1.3
+  secrets:
+    key_id: sample_key_id
+    iam_role: iam_role
+    region: us-east-1
+    ca_cert: sample_cert
+    tls_key: sample_cert
+    tls_cert: sample_cert
+  annotations: {}
+
+# Values for database (postgresql).
+postgresql:
+  enabled: false
+  nameOverride: locker-db
+  global:
+    postgresql:
+      auth:
+        username: db_user
+        password: V2tkS1ptTkhSbnBqZDI4OUNnPT0K
+        database: locker-db
+        architecture: standalone
+  primary:
+    name: ""
+    resources:
+      requests:
+        cpu: 100m
+
+external:
+  postgresql:
+    enabled: false
+    config:
+      host: # <value for the secret>
+      port: # <value for the secret>
+      username: # <value for the secret>
+      password: # <value for the secret>
+      database: # <value for the secret>
+
+# Values for the database migration job
+initDB:
+  # Should we run the migrations on the database
+  enable: true
+  checkPGisUp:
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    image: christophwurst/diesel-cli:latest
