@@ -33,7 +33,7 @@ assets
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | autoscaling target CPU utilization |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | autoscaling target memory utilization |
 | fullnameOverride | string | `""` | chart full name override |
-| image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.35.4/v0 |
+| image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.80.0/v0 |
 | image.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
 | image.repository | string | `"nginx"` | prebuild SDK image |
 | image.tag | string | `"0.35.4"` | prebuild image tag, the image tag whose default is the chart appVersion. |
