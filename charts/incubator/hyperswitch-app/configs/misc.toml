@@ -8,6 +8,9 @@ pool_size = 5             # Number of connections to keep open
 connection_timeout = 10   # Timeout for database connection in seconds
 queue_strategy = "Fifo"   # Add the queue strategy used by the database bb8 client
 
+[applepay_merchant_configs]
+applepay_endpoint = "https://apple-pay-gateway.apple.com/paymentservices/registerMerchant" # Apple pay gateway merchant endpoint
+
 [connector_onboarding.paypal]
 enabled = true # boolean
 
@@ -29,6 +32,11 @@ aws_region = ""                      # AWS region used by AWS SES
 base_url = ""                        # Dashboard base url used when adding links that should redirect to self, say https://app.hyperswitch.io for example
 allowed_unverified_days = 1          # Number of days the api calls ( with jwt token ) can be made without verifying the email
 active_email_client = "SES"          # The currently active email client
+
+# Configuration for aws ses, applicable when the active email client is SES
+[email.aws_ses]
+email_role_arn = ""        # The amazon resource name ( arn ) of the role which has permission to send emails
+sts_role_session_name = "" # An identifier for the assumed role session, used to uniquely identify a session.
 
 [events]
 source = "logs" # The event sink to push events supports kafka or logs (stdout)
@@ -61,6 +69,7 @@ level = "DEBUG"
 log_format = "json"
 
 [log.file]
+enabled = false
 level = "DEBUG"
 log_format = "json"
 
@@ -85,9 +94,6 @@ connection_timeout = 10
 queue_strategy = "Fifo"
 
 [generic_link]
-[generic_link.payment_method_collect]
-sdk_url = "http://localhost:9090/0.16.7/v0/HyperLoader.js"
-expiry = 900
 [generic_link.payment_method_collect.ui_config]
 theme = "#4285F4"
 logo = "https://app.hyperswitch.io/HyperswitchFavicon.png"
@@ -97,9 +103,6 @@ card = "credit,debit"
 bank_transfer = "ach,bacs,sepa"
 wallet = "paypal,pix,venmo"
 
-[generic_link.payout_link]
-sdk_url = "http://localhost:9090/0.16.7/v0/HyperLoader.js"
-expiry = 900
 [generic_link.payout_link.ui_config]
 theme = "#4285F4"
 logo = "https://app.hyperswitch.io/HyperswitchFavicon.png"

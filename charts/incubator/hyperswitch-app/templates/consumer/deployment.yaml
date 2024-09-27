@@ -5,7 +5,7 @@ metadata:
     {{- with (default .Values.application.global.annotations .Values.application.consumer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-consumer-v1o108o2
+  name: hyperswitch-consumer-v1o111o0
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.consumer.progressDeadlineSeconds }}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.application.consumer.labels.app }}
-      version: consumer-v1o108o2
+      version: consumer-v1o111o0
   strategy:
     {{- with (default .Values.application.global.strategy .Values.application.consumer.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -28,7 +28,7 @@ spec:
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.application.consumer.labels.app }}
-        version: consumer-v1o108o2
+        version: consumer-v1o111o0
     spec:
       affinity:
         nodeAffinity:
