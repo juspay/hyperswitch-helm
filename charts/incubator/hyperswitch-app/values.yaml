@@ -175,6 +175,7 @@ application:
     encryption_manager: no_encryption 
     sdk_url: http://localhost:9090/0.80.0/v0/HyperLoader.js  # SDK URL to be used for payment_link, generic_link.payment_method_collect, generic_link.payout_link config
     proxy:
+      enabled: false
       http_url: "http://proxy_http_url"    # Outgoing proxy http URL to proxy the HTTP traffic
       https_url: "https://proxy_https_url" # Outgoing proxy https URL to proxy the HTTPS traffic
       bypass_proxy_urls: []                # A list of URLs that should bypass the proxy

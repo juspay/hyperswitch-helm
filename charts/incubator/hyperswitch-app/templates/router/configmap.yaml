@@ -19,10 +19,13 @@ data:
     sdk_url = "{{ .Values.application.server.sdk_url }}"
     [opensearch]
     host = "{{ .Values.application.server.opensearch.host }}"
+
+    {{- if .Values.application.server.proxy.enabled }}
     [proxy]
-    http_url = "{{ .Values.application.server.proxy.http_url }}"    
+    http_url = "{{ .Values.application.server.proxy.http_url }}"
     https_url = "{{ .Values.application.server.proxy.https_url }}"
     bypass_proxy_urls = {{ .Values.application.server.proxy.bypass_proxy_urls }}
+    {{- end }}
 
     [generic_link.payment_method_collect]
     sdk_url = "{{ .Values.application.server.sdk_url }}"

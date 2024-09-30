@@ -154,7 +154,7 @@ hyperswitchsdk:
 
 hyperswitch-app:
   initDB:
-    enable: false
+    enable: true
   loadBalancer:
     targetSecurityGroup: *lb_security_group
   services:
