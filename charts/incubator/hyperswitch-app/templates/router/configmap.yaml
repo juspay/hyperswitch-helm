@@ -14,10 +14,27 @@ data:
     mock_locker = {{ .Values.application.server.locker.mock_locker }}
     locker_signing_key_id = "{{ .Values.application.server.locker.locker_signing_key_id }}"
     locker_enabled = {{ .Values.application.server.locker.locker_enabled }}
+    ttl_for_storage_in_secs = {{ .Values.application.server.locker.ttl_for_storage_in_secs }}
     [payment_link]
-    sdk_url = "{{ .Values.application.server.payment_link.sdk_url }}"
+    sdk_url = "{{ .Values.application.server.sdk_url }}"
     [opensearch]
     host = "{{ .Values.application.server.opensearch.host }}"
+
+    {{- if .Values.application.server.proxy.enabled }}
+    [proxy]
+    http_url = "{{ .Values.application.server.proxy.http_url }}"
+    https_url = "{{ .Values.application.server.proxy.https_url }}"
+    bypass_proxy_urls = {{ .Values.application.server.proxy.bypass_proxy_urls }}
+    {{- end }}
+
+    [generic_link.payment_method_collect]
+    sdk_url = "{{ .Values.application.server.sdk_url }}"
+    expiry = 900
+
+    [generic_link.payout_link]
+    sdk_url = "{{ .Values.application.server.sdk_url }}"
+    expiry = 900
+
     
     {{- if eq .Values.application.server.run_env "production" -}}
     {{ .Files.Get "configs/misc.toml" | nindent 4 }}

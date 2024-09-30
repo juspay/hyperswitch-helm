@@ -82,7 +82,7 @@ image:
   # -- prebuild image tag, the image tag whose default is the chart appVersion.
   tag: 0.35.4
   nginxConfig:
-    # -- nginx extra path used to set liveness and readiness probe /0.35.4/v0
+    # -- nginx extra path used to set liveness and readiness probe /0.80.0/v0
     extraPath: v0
 
 # -- image pull secret

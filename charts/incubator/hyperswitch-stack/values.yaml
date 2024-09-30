@@ -154,20 +154,20 @@ hyperswitchsdk:
 
 hyperswitch-app:
   initDB:
-    enable: false
+    enable: true
   loadBalancer:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.110.0
-      image: juspaydotin/hyperswitch-router:v1.110.0-standalone
+      version: v1.111.0
+      image: juspaydotin/hyperswitch-router:v1.111.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.110.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.111.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.110.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.111.0-standalone
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.32.0
+      image: juspaydotin/hyperswitch-control-center:v1.33.0
     sdk:
       host: *web_sdk_host
       version: 0.80.0

@@ -161,8 +161,8 @@ application:
       host_rs: 
       mock_locker : false                                                    # Emulate a locker locally using Postgres
       locker_signing_key_id : "1"                                           # Key_id to sign basilisk hs locker
-      locker_enabled : true                                                 # Boolean to enable or disable saving cards in locker
-      
+      locker_enabled : false                                                 # Boolean to enable or disable saving cards in locker
+      ttl_for_storage_in_secs : 220752000                                   # Time to live for storage entries in locker
       locker_public_key: 
       hyperswitch_private_key: 
     basilisk:
@@ -172,9 +172,13 @@ application:
       host: https://localhost:9200
     run_env: sandbox
     secrets_manager: no_encryption
-    encryption_manager: no_encryption
-    payment_link: 
-      sdk_url: http://localhost:9090/0.35.4/v0/HyperLoader.js
+    encryption_manager: no_encryption 
+    sdk_url: http://localhost:9090/0.80.0/v0/HyperLoader.js  # SDK URL to be used for payment_link, generic_link.payment_method_collect, generic_link.payout_link config
+    proxy:
+      enabled: false
+      http_url: "http://proxy_http_url"    # Outgoing proxy http URL to proxy the HTTP traffic
+      https_url: "https://proxy_https_url" # Outgoing proxy https URL to proxy the HTTPS traffic
+      bypass_proxy_urls: []                # A list of URLs that should bypass the proxy
   consumer:
     # Number of replicas to be used for the application
     replicas: 1
@@ -295,15 +299,15 @@ application:
 # configuration values to be used by the service that is connected to the hyperswitch server
 services:
   router:
-    version: v1.110.0
-    image: juspaydotin/hyperswitch-router:v1.110.0-standalone
+    version: v1.111.0
+    image: juspaydotin/hyperswitch-router:v1.111.0-standalone
     host: http://localhost:8080
   consumer:
-    image: juspaydotin/hyperswitch-consumer:v1.110.0-standalone
+    image: juspaydotin/hyperswitch-consumer:v1.111.0-standalone
   producer:
-    image: juspaydotin/hyperswitch-producer:v1.110.0-standalone
+    image: juspaydotin/hyperswitch-producer:v1.111.0-standalone
   controlCenter:
-    image: juspaydotin/hyperswitch-control-center:v1.32.0
+    image: juspaydotin/hyperswitch-control-center:v1.33.0
   sdk:
     host: http://localhost:9090
     version: 0.80.0
