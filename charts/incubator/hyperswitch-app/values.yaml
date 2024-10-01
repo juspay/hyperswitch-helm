@@ -155,6 +155,7 @@ application:
       forex_fallback_api_key: dummy_val
       pm_auth_key: dummy_val
       api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      user_auth_encryption_key: dummy_val
     master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
     locker:
       host: http://hyperswitch-vault
