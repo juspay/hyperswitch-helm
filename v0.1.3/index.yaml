@@ -17,6 +17,6 @@ entries:
     name: hyperswitch-stack
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/hyperswitch-stack-0.1.3.tgz
+    - https://juspay.github.io/hyperswitch-helm/v0.1.3/hyperswitch-stack-0.1.3.tgz
     version: 0.1.3
 generated: "2024-09-30T20:30:06.841093+05:30"
