@@ -89,5 +89,5 @@ helm repo update
 When you want others to use the changes you have added you need to package it and then index it
 ```bash
 helm package .
-helm repo index . --url https://juspay.github.io/hyperswitch-helm
+helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 ```
