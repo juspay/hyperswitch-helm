@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: hyperswitch-stack-rollouts
+spec:
+  replicas: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: {{ application.controlCenter.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ application.controlCenter.labels.app }}
+  strategy:
+    canary:
+        maxSurge: 1
+        maxUnavailable: 1

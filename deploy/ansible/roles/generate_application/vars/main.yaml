@@ -1,0 +1,5 @@
+env: dev
+application:
+  controlCenter:
+    labels:
+      app: hyperswitch-stack
