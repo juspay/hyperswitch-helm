@@ -8,5 +8,20 @@ dependencies:
 - name: hyperswitch-card-vault
   repository: file://../hyperswitch-card-vault
   version: 0.1.0
-digest: sha256:92c04c97c8678d965516239e9ba8e84ea00eb32caa1075543a857b75e09eae6d
-generated: "2024-02-19T12:14:03.697715+05:30"
+- name: kafka
+  repository: https://charts.bitnami.com/bitnami
+  version: 31.0.0
+- name: clickhouse
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.3.3
+- name: mailhog
+  repository: https://codecentric.github.io/helm-charts
+  version: 4.0.0
+- name: loki-stack
+  repository: https://grafana.github.io/helm-charts
+  version: 2.10.2
+- name: vector
+  repository: https://helm.vector.dev
+  version: 0.37.0
+digest: sha256:b1eea34b88633ace4b132ad8b465433df70c46ac6454a8d3709afecb1321f4d1
+generated: "2024-12-03T18:02:04.53908+05:30"

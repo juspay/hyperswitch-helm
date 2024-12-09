@@ -24,7 +24,7 @@ tasks:
         helm install postgresql-ext bitnami/postgresql 
         --version 13.2.29 
         -f dev/bitnami-pg.values.yaml 
-        -n hyperswitch-global-dev 
+        -n hyperswitch 
         --debug
     aliases:
       - ipe
@@ -37,14 +37,14 @@ tasks:
 
   install:
     cmds:
-      - helm upgrade --install hyperswitch  . -f values.yaml -n hyperswitch-global-dev --debug
+      - helm upgrade --install hyperswitch-v1  . -f values.yaml -n hyperswitch --debug
     aliases:
       - i
 
   dry-run:
     desc: dry run chart installation
     cmds:
-      - helm upgrade --install hyperswitch  . -f values.yaml -n hyperswitch-global-dev --debug --dry-run
+      - helm upgrade --install hyperswitch-v1  . -f values.yaml -n hyperswitch --debug --dry-run
     aliases:
       - dr
 
@@ -78,7 +78,7 @@ tasks:
         -f dev/bitnami-redis-values.yaml
     vars:
       RELEASE_NAME: redis-ext
-      NAMESPACE: hyperswitch-global-dev
+      NAMESPACE: hyperswitch
     aliases:
       - hri
 
@@ -97,6 +97,6 @@ tasks:
         -f dev/bitnami-pg.values.yaml
     vars:
       RELEASE_NAME: postgresql-ext
-      NAMESPACE: hyperswitch-global-dev
+      NAMESPACE: hyperswitch
     aliases:
       - hpi

@@ -1,174 +1,207 @@
-
-# Analytics configuration.
 [analytics]
-source = "sqlx" # The Analytics source/strategy to be used
+source = "{{ .Values.application.server.analytics.source }}"
 
 [analytics.sqlx]
-pool_size = 5             # Number of connections to keep open
-connection_timeout = 10   # Timeout for database connection in seconds
-queue_strategy = "Fifo"   # Add the queue strategy used by the database bb8 client
+pool_size = {{ .Values.application.server.analytics.sqlx.pool_size }}             # Number of connections to keep open
+connection_timeout = {{ .Values.application.server.analytics.sqlx.connection_timeout }}    # Timeout for database connection in seconds
+queue_strategy = "{{ .Values.application.server.analytics.sqlx.queue_strategy }}"   # Add the queue strategy used by the database bb8 client
+
+[paze_decrypt_keys]
+paze_private_key = "{{ .Values.application.server.paze_decrypt_keys.paze_private_key }}"                       # Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
+paze_private_key_passphrase = "{{ .Values.application.server.paze_decrypt_keys.paze_private_key_passphrase }}" # PEM Passphrase used for generating Private Key File cakey.pem
 
 [applepay_merchant_configs]
 applepay_endpoint = "https://apple-pay-gateway.apple.com/paymentservices/registerMerchant" # Apple pay gateway merchant endpoint
 
 [connector_onboarding.paypal]
-enabled = true # boolean
+enabled = {{ .Values.application.server.connector_onboarding.paypal.enabled }} # boolean
 
 [connector_request_reference_id_config]
-merchant_ids_send_payment_id_as_connector_request_id = [
-  "merchant_id_1",
-  "merchant_id_2"
-]
+merchant_ids_send_payment_id_as_connector_request_id = {{ .Values.application.server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id }}
 
 [cors]
-max_age = 30                            # Maximum time (in seconds) for which this CORS request may be cached.
-allowed_methods = "GET,POST,PUT,DELETE" # List of methods that are allowed
-wildcard_origin = true                 # If true, allows any origin to make requests
+max_age = {{ .Values.application.server.cors.max_age }}                            # Maximum time (in seconds) for which this CORS request may be cached.
+allowed_methods = "{{ .Values.application.server.cors.allowed_methods }}" # List of methods that are allowed
+wildcard_origin = {{ .Values.application.server.cors.wildcard_origin }}                 # If true, allows any origin to make requests
 
-# EmailClient configuration. Only applicable when the `email` feature flag is enabled.
 [email]
-sender_email = "example@example.com" # Sender email
-aws_region = ""                      # AWS region used by AWS SES
-base_url = ""                        # Dashboard base url used when adding links that should redirect to self, say https://app.hyperswitch.io for example
-allowed_unverified_days = 1          # Number of days the api calls ( with jwt token ) can be made without verifying the email
-active_email_client = "SES"          # The currently active email client
-
-# Configuration for aws ses, applicable when the active email client is SES
-[email.aws_ses]
-email_role_arn = ""        # The amazon resource name ( arn ) of the role which has permission to send emails
-sts_role_session_name = "" # An identifier for the assumed role session, used to uniquely identify a session.
+active_email_client = "{{ .Values.application.server.email.active_email_client }}"
 
 [events]
-source = "logs" # The event sink to push events supports kafka or logs (stdout)
+source = "{{ .Values.application.server.events.source }}"
 
 [events.kafka]
-brokers = []                          # Kafka broker urls for bootstrapping the client
-intent_analytics_topic = "topic"      # Kafka topic to be used for PaymentIntent events
-attempt_analytics_topic = "topic"     # Kafka topic to be used for PaymentAttempt events
-refund_analytics_topic = "topic"      # Kafka topic to be used for Refund events
-api_logs_topic = "topic"              # Kafka topic to be used for incoming api events
-connector_logs_topic = "topic"        # Kafka topic to be used for connector api events
-outgoing_webhook_logs_topic = "topic" # Kafka topic to be used for outgoing webhook events
-dispute_analytics_topic = "topic"     # Kafka topic to be used for Dispute events
-audit_events_topic = "topic"          # Kafka topic to be used for Payment Audit events
-payout_analytics_topic = "topic"      # Kafka topic to be used for Payouts and PayoutAttempt events
-consolidated_events_topic = "topic"      # Kafka topic to be used for Consolidated events
-authentication_analytics_topic = "topic" # Kafka topic to be used for Authentication events
-fraud_check_analytics_topic = "topic"    # Kafka topic to be used for Fraud Check events
+brokers = {{ .Values.application.server.events.kafka.brokers }}
+intent_analytics_topic = "{{ .Values.application.server.events.kafka.intent_analytics_topic }}"      # Kafka topic to be used for PaymentIntent events
+attempt_analytics_topic = "{{ .Values.application.server.events.kafka.attempt_analytics_topic }}"     # Kafka topic to be used for PaymentAttempt events
+refund_analytics_topic = "{{ .Values.application.server.events.kafka.refund_analytics_topic }}"      # Kafka topic to be used for Refund events
+api_logs_topic = "{{ .Values.application.server.events.kafka.api_logs_topic }}"              # Kafka topic to be used for incoming api events
+connector_logs_topic = "{{ .Values.application.server.events.kafka.connector_logs_topic }}"        # Kafka topic to be used for connector api events
+outgoing_webhook_logs_topic = "{{ .Values.application.server.events.kafka.outgoing_webhook_logs_topic }}" # Kafka topic to be used for outgoing webhook events
+dispute_analytics_topic = "{{ .Values.application.server.events.kafka.dispute_analytics_topic }}"     # Kafka topic to be used for Dispute events
+audit_events_topic = "{{ .Values.application.server.events.kafka.audit_events_topic }}"          # Kafka topic to be used for Payment Audit events
+payout_analytics_topic = "{{ .Values.application.server.events.kafka.payout_analytics_topic }}"      # Kafka topic to be used for Payouts and PayoutAttempt events
+consolidated_events_topic = "{{ .Values.application.server.events.kafka.consolidated_events_topic }}"      # Kafka topic to be used for Consolidated events
+authentication_analytics_topic = "{{ .Values.application.server.events.kafka.authentication_analytics_topic }}" # Kafka topic to be used for Authentication events
+fraud_check_analytics_topic = "{{ .Values.application.server.events.kafka.fraud_check_analytics_topic }}"    # Kafka topic to be used for Fraud Check events
 
 [forex_api]
-call_delay = 21600                # Api calls are made after every 6 hrs
-local_fetch_retry_count = 5       # Fetch from Local cache has retry count as 5
-local_fetch_retry_delay = 1000    # Retry delay for checking write condition
-api_timeout = 20000               # Api timeouts once it crosses 20000 ms
-redis_lock_timeout = 26000        # Redis remains write locked for 26000 ms once the acquire_redis_lock is called
+call_delay = {{ .Values.application.server.forex_api.call_delay }}                # Api calls are made after every 6 hrs
+local_fetch_retry_count = {{ .Values.application.server.forex_api.local_fetch_retry_count }}       # Fetch from Local cache has retry count as 5
+local_fetch_retry_delay = {{ .Values.application.server.forex_api.local_fetch_retry_delay }}    # Retry delay for checking write condition
+api_timeout = {{ .Values.application.server.forex_api.api_timeout }}               # Api timeouts once it crosses 20000 ms
+redis_lock_timeout = {{ .Values.application.server.forex_api.redis_lock_timeout }}        # Redis remains write locked for 26000 ms once the acquire_redis_lock is called
+
+[locker]
+host = "{{ .Values.application.server.locker.host }}"
+host_rs = "{{ .Values.application.server.locker.host_rs}}"
+mock_locker = {{ .Values.application.server.locker.mock_locker }}
+locker_signing_key_id = "{{ .Values.application.server.locker.locker_signing_key_id }}"
+locker_enabled = {{ .Values.application.server.locker.locker_enabled }}
+ttl_for_storage_in_secs = {{ .Values.application.server.locker.ttl_for_storage_in_secs }}
 
 [log.console]
-enabled = true
-level = "DEBUG"
-log_format = "json"
+enabled = {{ .Values.application.server.log.console.enabled }}
+level = "{{ .Values.application.server.log.console.level }}"
+log_format = "{{ .Values.application.server.log.console.log_format }}"
 
 [log.file]
-enabled = false
-level = "DEBUG"
-log_format = "json"
+enabled = {{ .Values.application.server.log.file.enabled }}
+level = "{{ .Values.application.server.log.file.level }}"
+log_format = "{{ .Values.application.server.log.file.log_format }}"
 
 [log.telemetry]
-traces_enabled = false                                # boolean [true or false], whether traces are enabled
-metrics_enabled = false                               # boolean [true or false], whether metrics are enabled
-ignore_errors = false                                 # boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
-sampling_rate = 0.1                                   # decimal rate between 0.0 - 1.0
-otel_exporter_otlp_endpoint = "http://localhost:4317" # endpoint to send metrics and traces to, can include port number
-otel_exporter_otlp_timeout = 5000                     # timeout (in milliseconds) for sending metrics and traces
-use_xray_generator = false                            # Set this to true for AWS X-ray compatible traces
-route_to_trace = ["*/confirm"]
-bg_metrics_collection_interval_in_secs = 15           # Interval for collecting the metrics in background thread
+traces_enabled = {{ .Values.application.server.log.telemetry.traces_enabled }}                                # boolean [true or false], whether traces are enabled
+metrics_enabled = {{ .Values.application.server.log.telemetry.metrics_enabled }}                               # boolean [true or false], whether metrics are enabled
+ignore_errors = {{ .Values.application.server.log.telemetry.ignore_errors }}                                 # boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
+sampling_rate = {{ .Values.application.server.log.telemetry.sampling_rate }}                                   # decimal rate between 0.0 - 1.0
+otel_exporter_otlp_endpoint = "{{ .Values.application.server.log.telemetry.otel_exporter_otlp_endpoint }}" # endpoint to send metrics and traces to, can include port number
+otel_exporter_otlp_timeout = {{ .Values.application.server.log.telemetry.otel_exporter_otlp_timeout }}                     # timeout (in milliseconds) for sending metrics and traces
+use_xray_generator = {{ .Values.application.server.log.telemetry.use_xray_generator }}                            # Set this to true for AWS X-ray compatible traces
+route_to_trace = {{ .Values.application.server.log.telemetry.route_to_trace }}
+bg_metrics_collection_interval_in_secs = {{ .Values.application.server.log.telemetry.bg_metrics_collection_interval_in_secs }}           # Interval for collecting the metrics in background thread
 
 [lock_settings]
-delay_between_retries_in_milliseconds = 500 # Delay between retries in milliseconds
-redis_lock_expiry_seconds = 180             # Seconds before the redis lock expires
+delay_between_retries_in_milliseconds = {{ .Values.application.server.lock_settings.delay_between_retries_in_milliseconds }} # Delay between retries in milliseconds
+redis_lock_expiry_seconds = {{ .Values.application.server.lock_settings.redis_lock_expiry_seconds }}             # Seconds before the redis lock expires
 
 [master_database]
-pool_size = "20"
-connection_timeout = 10   
-queue_strategy = "Fifo"
+pool_size = "{{ .Values.application.server.master_database.pool_size }}"
+connection_timeout = {{ .Values.application.server.master_database.connection_timeout }}   
+queue_strategy = "{{ .Values.application.server.master_database.queue_strategy }}"
 
 [generic_link]
+[generic_link.payment_method_collect]
+sdk_url = {{ include "hyperswitchWeb.hyperloaderUrl" . | quote }}
+expiry = 900
+
 [generic_link.payment_method_collect.ui_config]
-theme = "#4285F4"
-logo = "https://app.hyperswitch.io/HyperswitchFavicon.png"
-merchant_name = "HyperSwitch"
+theme = "{{ .Values.application.server.generic_link.payment_method_collect.ui_config.theme }}"
+logo = "{{ .Values.application.server.generic_link.payment_method_collect.ui_config.logo }}"
+merchant_name = "{{ .Values.application.server.generic_link.payment_method_collect.ui_config.merchant_name }}"
+
 [generic_link.payment_method_collect.enabled_payment_methods]
-card = "credit,debit"
-bank_transfer = "ach,bacs,sepa"
-wallet = "paypal,pix,venmo"
+card = "{{ .Values.application.server.generic_link.payment_method_collect.enabled_payment_methods.card }}"
+bank_transfer = "{{ .Values.application.server.generic_link.payment_method_collect.enabled_payment_methods.bank_transfer }}"
+wallet = "{{ .Values.application.server.generic_link.payment_method_collect.enabled_payment_methods.wallet }}"
+
+[generic_link.payout_link]
+sdk_url = {{ include "hyperswitchWeb.hyperloaderUrl" . | quote }}
+expiry = 900
 
 [generic_link.payout_link.ui_config]
-theme = "#4285F4"
-logo = "https://app.hyperswitch.io/HyperswitchFavicon.png"
-merchant_name = "HyperSwitch"
-[generic_link.payout_link.enabled_payment_methods]
-card = "credit,debit"
+theme = "{{ .Values.application.server.generic_link.payout_link.ui_config.theme }}"
+logo = "{{ .Values.application.server.generic_link.payout_link.ui_config.logo }}"
+merchant_name = "{{ .Values.application.server.generic_link.payout_link.ui_config.merchant_name }}"
 
+[generic_link.payout_link.enabled_payment_methods]
+card = "{{ .Values.application.server.generic_link.payout_link.enabled_payment_methods.card }}"
+
+[payment_link]
+sdk_url = {{ include "hyperswitchWeb.hyperloaderUrl" . | quote }}
 
 [payment_method_auth]
-redis_expiry = 900          # Redis expiry time in milliseconds
+redis_expiry = {{ .Values.application.server.payment_method_auth.redis_expiry }}          # Redis expiry time in milliseconds
+
+{{- if .Values.application.server.proxy.enabled }}
+[proxy]
+http_url = "{{ .Values.application.server.proxy.http_url }}"    
+https_url = "{{ .Values.application.server.proxy.https_url }}"
+bypass_proxy_urls = {{ .Values.application.server.proxy.bypass_proxy_urls }}
+{{- end }}
 
 [redis]
-host = "127.0.0.1"
-port = 6379
-pool_size = 5 # Number of connections to keep open
-reconnect_max_attempts = 5 # Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
-reconnect_delay = 5 # Delay between reconnection attempts, in milliseconds
-default_ttl = 300 # Default TTL for entries, in seconds
-default_hash_ttl = 900 # Default TTL for hashes entries, in seconds
-use_legacy_version = false # RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
-stream_read_count = 1 # Default number of entries to read from stream if not provided in stream read options
-auto_pipeline = true # Whether or not the client should automatically pipeline commands across tasks when possible.
-disable_auto_backpressure = false # Whether or not to disable the automatic backpressure features when pipelining is enabled.
-max_in_flight_commands = 5000 # The maximum number of in-flight commands (per connection) before backpressure will be applied.
-default_command_timeout = 30 # An optional timeout to apply to all commands. In seconds
-unresponsive_timeout = 10 # An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.
-max_feed_count = 200 # The maximum number of frames that will be fed to a socket before flushing.
-cluster_enabled = false # boolean
-cluster_urls = [
-    "redis.cluster.uri-1:8080",
-    "redis.cluster.uri-2:4115",
-] # List of redis cluster urls
+host = "{{ .Values.application.server.redis.host }}"
+port = {{ .Values.application.server.redis.port }}
+pool_size = {{ .Values.application.server.redis.pool_size }} # Number of connections to keep open
+reconnect_max_attempts = {{ .Values.application.server.redis.reconnect_max_attempts }} # Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
+reconnect_delay = {{ .Values.application.server.redis.reconnect_delay }} # Delay between reconnection attempts, in milliseconds
+default_ttl = {{ .Values.application.server.redis.default_ttl }} # Default TTL for entries, in seconds
+default_hash_ttl = {{ .Values.application.server.redis.default_hash_ttl }} # Default TTL for hashes entries, in seconds
+use_legacy_version = {{ .Values.application.server.redis.use_legacy_version }} # RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
+stream_read_count = {{ .Values.application.server.redis.stream_read_count }} # Default number of entries to read from stream if not provided in stream read options
+auto_pipeline = {{ .Values.application.server.redis.auto_pipeline }} # Whether or not the client should automatically pipeline commands across tasks when possible.
+disable_auto_backpressure = {{ .Values.application.server.redis.disable_auto_backpressure }} # Whether or not to disable the automatic backpressure features when pipelining is enabled.
+max_in_flight_commands = {{ .Values.application.server.redis.max_in_flight_commands }} # The maximum number of in-flight commands (per connection) before backpressure will be applied.
+default_command_timeout = {{ .Values.application.server.redis.default_command_timeout }} # An optional timeout to apply to all commands. In seconds
+unresponsive_timeout = {{ .Values.application.server.redis.unresponsive_timeout }} # An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.
+max_feed_count = {{ .Values.application.server.redis.max_feed_count }} # The maximum number of frames that will be fed to a socket before flushing.
+cluster_enabled = {{ .Values.application.server.redis.cluster_enabled }} # boolean
+cluster_urls = {{ .Values.application.server.redis.cluster_urls }} # List of redis cluster urls
 
 [replica_database]
-pool_size = "20"
-connection_timeout = 10   # Timeout for database connection in seconds
-queue_strategy = "Fifo"   # Add the queue strategy used by the database bb8 client
+pool_size = "{{ .Values.application.server.replica_database.pool_size }}"
+connection_timeout = {{ .Values.application.server.replica_database.connection_timeout }}   # Timeout for database connection in seconds
+queue_strategy = "{{ .Values.application.server.replica_database.queue_strategy }}"   # Add the queue strategy used by the database bb8 client
+
+[opensearch]
+host = "{{ .Values.application.server.opensearch.host }}"
 
 [opensearch.auth]
-auth = "basic"
-username = "admin"
-password = "admin"
-region = "eu-central-1"
+auth = "{{ .Values.application.server.opensearch.auth.auth }}"
+username = "{{ .Values.application.server.opensearch.auth.username }}"
+password = "{{ .Values.application.server.opensearch.auth.password }}"
+region = "{{ .Values.application.server.opensearch.auth.region }}"
 
 [opensearch.indexes]
-payment_attempts = "hyperswitch-payment-attempt-events"
-payment_intents = "hyperswitch-payment-intent-events"
-refunds = "hyperswitch-refund-events"
-disputes = "hyperswitch-dispute-events"
+payment_attempts = "{{ .Values.application.server.opensearch.indexes.payment_attempts }}"
+payment_intents = "{{ .Values.application.server.opensearch.indexes.payment_intents }}"
+refunds = "{{ .Values.application.server.opensearch.indexes.refunds }}"
+disputes = "{{ .Values.application.server.opensearch.indexes.disputes }}"
+sessionizer_payment_attempts = "{{ .Values.application.server.opensearch.indexes.sessionizer_payment_attempts }}"
+sessionizer_payment_intents = "{{ .Values.application.server.opensearch.indexes.sessionizer_payment_intents }}"
+sessionizer_refunds = "{{ .Values.application.server.opensearch.indexes.sessionizer_refunds }}"
+sessionizer_disputes = "{{ .Values.application.server.opensearch.indexes.sessionizer_disputes }}"
 
 [report_download_config]
-dispute_function = "report_download_config_dispute_function" # Config to download dispute report
-payment_function = "report_download_config_payment_function" # Config to download payment report
-refund_function = "report_download_config_refund_function"   # Config to download refund report
-region = "report_download_config_region"    
+dispute_function = "{{ .Values.application.server.report_download_config.dispute_function }}" # Config to download dispute report
+payment_function = "{{ .Values.application.server.report_download_config.payment_function }}" # Config to download payment report
+refund_function = "{{ .Values.application.server.report_download_config.refund_function }}"   # Config to download refund report
+region = "{{ .Values.application.server.report_download_config.region }}"    
 
 [server]
-port = 8080
-host = "0.0.0.0"
-request_body_limit = 32768 # Post request body is limited to 16k
-shutdown_timeout = 30
-workers = 8
+port = {{ .Values.application.server.server.port }}
+host = "{{ .Values.application.server.server.host }}"
+request_body_limit = {{ .Values.application.server.server.request_body_limit }} # Post request body is limited to 16k
+shutdown_timeout = {{ .Values.application.server.server.shutdown_timeout }}
+workers = {{ .Values.application.server.server.workers }}
 
-[multitenancy]
-enabled = false
-global_tenant = { schema = "public", redis_key_prefix = "", clickhouse_database = "default"}
+# Secrets manager client to be used
+{{- toToml (dict "secrets_management" .Values.application.server.secrets_management) | nindent 0 }}
 
-[multitenancy.tenants]
-public = { name = "hyperswitch", base_url = "http://localhost:8080", schema = "public", redis_key_prefix = "", clickhouse_database = "default"}
+# Encryption manager client to be used
+{{- toToml (dict "encryption_management" .Values.application.server.encryption_management) | nindent 0 }}
+
+
+{{- toToml (dict "multitenancy" .Values.application.server.multitenancy) | nindent 0 }}
+
+{{- toToml (dict "user" .Values.application.server.user) | nindent 0 }}
+
+[cell_information]
+id = "{{ .Values.application.server.cell_information.id }}" # Default CellID for Global Cell Information
+
+
+[grpc_client.dynamic_routing_client] # Dynamic Routing Client Configuration
+host = "{{ .Values.application.server.grpc_client.dynamic_routing_client.host }}" # Client Host
+port = {{ .Values.application.server.grpc_client.dynamic_routing_client.port }}        # Client Port
+service = "{{ .Values.application.server.grpc_client.dynamic_routing_client.service }}" # Service name

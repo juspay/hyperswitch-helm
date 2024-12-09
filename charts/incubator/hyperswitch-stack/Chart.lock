@@ -1,9 +1,9 @@
 dependencies:
 - name: hyperswitch-app
   repository: file://../hyperswitch-app
-  version: 0.1.0
-- name: hyperswitchsdk
+  version: 0.2.0
+- name: hyperswitch-web
   repository: file://../hyperswitch-sdk
-  version: 0.1.0
-digest: sha256:a91ba94aa25e0e4acabf71f9896cc0d0446d9db8199334131cabf8494f018a36
-generated: "2024-04-04T20:39:38.523045+05:30"
+  version: 0.2.0
+digest: sha256:68b616435dc49b2bfd8a9777e88ad10c9daf353263aec59d181f2bb929deb783
+generated: "2024-12-02T14:34:40.628596+05:30"

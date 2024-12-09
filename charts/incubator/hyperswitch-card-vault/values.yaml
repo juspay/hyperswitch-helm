@@ -49,7 +49,8 @@ server:
     # openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
     # openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
 
-    # The private key for the locker from locker-private-key.pem
+    # -- The private key for the locker from locker-private-key.pem
+    # @default -- -----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----
     locker_private_key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpAIBAAKCAQEAsgwEJaGbRA1DNMzubq4M7d+i6TSrFPiqrqnNkO0Dct58jGbJ
@@ -78,7 +79,8 @@ server:
       deYMmUHKvQBUaPG0Q2uu2n+mYKFQK6XucRFeHcPSzElk15nki/DAYaxOLzBEi8hI
       0vCnCqm+d6KBKsS5i0pMgvPdC07VrWKnyzdX4goP0CaAhI0A1OGlsA==
       -----END RSA PRIVATE KEY-----
-    # The public key for the locker from locker-public-key.pem
+    # -- The public key for the tenant from tenant-public-key.pem
+    # @default -- -----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----
     tenant_public_key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsSnWltGc6kjcDAhtUoad

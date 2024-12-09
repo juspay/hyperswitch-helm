@@ -33,8 +33,8 @@ entries:
       name: hyperswitch-card-vault
       repository: file://../hyperswitch-card-vault
       version: 0.1.0
-    - condition: hyperswitchsdk.enabled
-      name: hyperswitchsdk
+    - condition: hyperswitch-web.enabled
+      name: hyperswitch-web
       repository: file://../hyperswitch-sdk
       version: 0.1.0
     description: A Helm chart for Kubernetes to deploy hyperswitch application
@@ -44,7 +44,7 @@ entries:
     urls:
     - https://juspay.github.io/charts/incubator/hyperswitch-app/hyperswitch-app-0.1.0.tgz
     version: 0.1.0
-  hyperswitchsdk:
+  hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
     created: "2024-02-12T19:16:42.430653+05:30"
@@ -56,10 +56,10 @@ entries:
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
     digest: b65cc1aff20bbd241de410bfc65bd74b4b2bce00d22d0e0ccefb77bd9a01dbc8
-    name: hyperswitchsdk
+    name: hyperswitch-web
     type: application
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/hyperswitchsdk-0.1.0.tgz
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/hyperswitch-web-0.1.0.tgz
     version: 0.1.0
   postgresql:
   - annotations:

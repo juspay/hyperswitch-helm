@@ -1,6 +1,6 @@
 apiVersion: v1
 entries:
-  hyperswitchsdk:
+  hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
     created: "2024-02-05T15:36:27.540917+05:30"
@@ -12,9 +12,9 @@ entries:
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
     digest: 27b6128573e089f04ae6179186fb7f761b33cd61c3fa1fb9aeb040d567051cf2
-    name: hyperswitchsdk
+    name: hyperswitch-web
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-sdk/hyperswitchsdk-0.1.0.tgz
+    - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-sdk/hyperswitch-web-0.1.0.tgz
     version: 0.1.0
 generated: "2024-02-05T15:36:27.540243+05:30"

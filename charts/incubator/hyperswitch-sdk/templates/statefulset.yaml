@@ -47,9 +47,10 @@ spec:
                 echo "Build complete file exists, skipping build."
               else
                 envSdkUrl={{ .Values.autoBuild.buildParam.envSdkUrl }} envBackendUrl={{ .Values.autoBuild.buildParam.envBackendUrl }} envLogsUrl={{ .Values.autoBuild.buildParam.envLogsUrl }}
-                cd dist/integ
+                cd dist/sandbox
                 ls -lth
-                sed -i'' -e 's|https://dev.hyperswitch.io/|'${envSdkUrl}'/|g' app.js HyperLoader.js
+                sed -i'' -e 's|https://beta.hyperswitch.io/|'${envSdkUrl}'/|g' app.js HyperLoader.js
+                sed -i'' -e 's|https://sandbox.hyperswitch.io|'$envBackendUrl'|g' app.js HyperLoader.js
                 sed -i'' -e 's|https://beta.hyperswitch.io/api|'$envBackendUrl'|g' app.js HyperLoader.js
                 sed -i'' -e 's|https://sandbox.hyperswitch.io/logs/sdk|'$envLogsUrl'|g' app.js HyperLoader.js
                 cp -rfv * /dist
@@ -85,7 +86,7 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
             - name: build-storage
-              mountPath: /usr/share/nginx/html/{{ .Values.autoBuild.gitCloneParam.gitVersion}}/{{.Values.autoBuild.nginxConfig.extraPath}}
+              mountPath: /usr/share/nginx/html/web/{{ .Values.autoBuild.gitCloneParam.gitVersion}}/{{.Values.autoBuild.nginxConfig.extraPath}}
             - name: nginx
               mountPath: /etc/nginx/conf.d
       volumes:

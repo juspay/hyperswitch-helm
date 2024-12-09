@@ -66,7 +66,7 @@ Create the name of the service account to use
 Ngnix autobuild statefulset sdk path
 */}}
 {{- define "nginx.autobuild.sdk.path" -}}
-{{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.autoBuild.nginxConfig.extraPath}}
+{{- printf "/web/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.autoBuild.nginxConfig.extraPath}}
 {{- end }}
 
 
@@ -74,7 +74,7 @@ Ngnix autobuild statefulset sdk path
 Ngnix deployment sdk path
 */}}
 {{- define "nginx.sdk.path" -}}
-{{- printf "/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.image.nginxConfig.extraPath }}
+{{- printf "/web/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.image.nginxConfig.extraPath }}
 {{- end }}
 
 {{/* Define the name for hyperswitch sdk host */}}

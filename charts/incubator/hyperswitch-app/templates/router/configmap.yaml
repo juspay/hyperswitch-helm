@@ -4,42 +4,10 @@ metadata:
   name: router-cm-{{.Release.Name }}
 data:
   router.toml: |
-    [secrets_management]
-    secrets_manager = "{{ .Values.application.server.secrets_manager }}" # Secrets manager client to be used
-    [encryption_management]
-    encryption_manager = "{{ .Values.application.server.encryption_manager }}" # Encryption manager client to be used
-    [locker]
-    host = "{{ .Values.application.server.locker.host }}"
-    host_rs = "{{ .Values.application.server.locker.host_rs}}"
-    mock_locker = {{ .Values.application.server.locker.mock_locker }}
-    locker_signing_key_id = "{{ .Values.application.server.locker.locker_signing_key_id }}"
-    locker_enabled = {{ .Values.application.server.locker.locker_enabled }}
-    ttl_for_storage_in_secs = {{ .Values.application.server.locker.ttl_for_storage_in_secs }}
-    [payment_link]
-    sdk_url = "{{ .Values.application.server.sdk_url }}"
-    [opensearch]
-    host = "{{ .Values.application.server.opensearch.host }}"
-
-    {{- if .Values.application.server.proxy.enabled }}
-    [proxy]
-    http_url = "{{ .Values.application.server.proxy.http_url }}"
-    https_url = "{{ .Values.application.server.proxy.https_url }}"
-    bypass_proxy_urls = {{ .Values.application.server.proxy.bypass_proxy_urls }}
-    {{- end }}
-
-    [generic_link.payment_method_collect]
-    sdk_url = "{{ .Values.application.server.sdk_url }}"
-    expiry = 900
-
-    [generic_link.payout_link]
-    sdk_url = "{{ .Values.application.server.sdk_url }}"
-    expiry = 900
-
-    
     {{- if eq .Values.application.server.run_env "production" -}}
-    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
     {{- else -}}
-    {{ .Files.Get "configs/misc.toml" | nindent 4 }}
+    {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
     {{- end }}

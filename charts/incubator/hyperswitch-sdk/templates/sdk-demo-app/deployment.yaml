@@ -1,3 +1,4 @@
+{{- if .Values.sdkDemo.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,7 +43,7 @@ spec:
         - name: HYPERSWITCH_SERVER_URL
           value: {{ .Values.autoBuild.buildParam.envBackendUrl }}
         - name: HYPERSWITCH_CLIENT_URL
-          value: {{ include "hyperswitch-sdk.host" . }}/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}
+          value: {{ include "hyperswitch-sdk.host" . }}/web/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}
         image: {{ .Values.services.sdkDemo.image }}
         ports:
         - containerPort: 5252
@@ -69,3 +70,4 @@ spec:
       securityContext: {}
       serviceAccountName: {{ include "sdk.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.sdkDemo.terminationGracePeriodSeconds}}
+{{- end }}

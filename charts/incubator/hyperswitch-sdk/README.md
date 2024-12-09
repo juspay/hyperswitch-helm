@@ -1,6 +1,6 @@
-# hyperswitch-sdk
+# hyperswitch-web
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -16,14 +16,14 @@ assets
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Affinity rules |
-| autoBuild.buildImage | string | `"node:18"` | docker image to use for the build |
-| autoBuild.buildParam.buildEnv | string | `"integ"` | node build parameter, environment |
-| autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch.dev.hub.flowbird.cloud"` | node build parameter, hyperswitch server host |
-| autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk.dev.hub.flowbird.cloud"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
-| autoBuild.enable | bool | `false` | enable npm auto build |
-| autoBuild.forceBuild | bool | `true` | force rebuild assets even these files exist |
+| autoBuild.buildImage | string | `"juspaydotin/hyperswitch-web"` | docker image to use for the build |
+| autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch"` | node build parameter, hyperswitch server host |
+| autoBuild.buildParam.envLogsUrl | string | `"https://hyperswitch-sdk-logs"` | node build parameter, hyperswitch SDK logs host |
+| autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
+| autoBuild.enable | bool | `true` | enable npm auto build |
+| autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
-| autoBuild.gitCloneParam.gitVersion | string | `"0.35.4"` | hyperswitch-web repository tag |
+| autoBuild.gitCloneParam.gitVersion | string | `"0.71.11"` | hyperswitch-web repository tag |
 | autoBuild.nginxConfig.extraPath | string | `"v0"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
@@ -32,6 +32,7 @@ assets
 | autoscaling.minReplicas | int | `1` | autoscaling min replicas |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | autoscaling target CPU utilization |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | autoscaling target memory utilization |
+| envFrom[0].configMapRef.name | string | `"hyperswitch-web-nginx"` |  |
 | fullnameOverride | string | `""` | chart full name override |
 | image.nginxConfig.extraPath | string | `"v0"` | nginx extra path used to set liveness and readiness probe /0.80.0/v0 |
 | image.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
@@ -43,23 +44,44 @@ assets
 | ingress.enabled | bool | `true` | enable/disable ingress |
 | ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | ingress hosts list |
 | ingress.tls | list | `[]` | tls configurations list |
+| loadBalancer.targetSecurityGroup | string | `"loadBalancer-sg"` |  |
 | nameOverride | string | `""` | chart override |
 | nodeSelector | object | `{}` | Node selector |
 | podAnnotations | object | `{}` | pod annotations |
 | podLabels | object | `{}` | pod labels |
 | podSecurityContext | object | `{}` | pod security context |
 | replicaCount | int | `1` | deployment/statefulset replicas |
-| resources | object | `{}` | pod ressource configuration |
+| resources | object | `{"limits":{"cpu":"1500m","memory":"3Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | pod ressource configuration |
+| sdkDemo.annotations."deployment.kubernetes.io/revision" | string | `"1"` |  |
+| sdkDemo.enabled | bool | `true` |  |
+| sdkDemo.env.binary | string | `"sdk"` |  |
+| sdkDemo.env.host | string | `"hyperswitch-sdk-demo"` |  |
+| sdkDemo.labels.app | string | `"hyperswitch-sdk-demo"` |  |
+| sdkDemo.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
+| sdkDemo.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
+| sdkDemo.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
+| sdkDemo.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges | string | `"10.23.6.12/32"` |  |
+| sdkDemo.progressDeadlineSeconds | int | `600` |  |
+| sdkDemo.replicas | int | `1` |  |
+| sdkDemo.serviceAccountAnnotations."eks.amazonaws.com/role-arn" | string | `nil` |  |
+| sdkDemo.strategy.rollingUpdate.maxSurge | int | `1` |  |
+| sdkDemo.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
+| sdkDemo.strategy.type | string | `"RollingUpdate"` |  |
+| sdkDemo.terminationGracePeriodSeconds | int | `30` |  |
 | securityContext | object | `{}` | security context |
-| service.port | int | `80` | service port |
+| service.port | int | `9090` | service port |
 | service.type | string | `"ClusterIP"` | service type |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| services.router.host | string | `"http://localhost:8080"` |  |
+| services.sdkDemo.hyperswitchPublishableKey | string | `"pub_key"` |  |
+| services.sdkDemo.hyperswitchSecretKey | string | `"secret_key"` |  |
+| services.sdkDemo.image | string | `"juspaydotin/hyperswitch-web:v1.0.10"` |  |
 | tolerations | list | `[]` | Tolerations |
-| volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
-| volumes | list | `[]` | Additional volumes on the output Deployment definition. |
+| volumeMounts | list | `[{"mountPath":"/etc/nginx/conf.d/default.conf","name":"nginx-config-volume","subPath":"default.conf"}]` | Additional volumeMounts on the output Deployment definition. |
+| volumes | list | `[{"configMap":{"name":"hyperswitch-web-nginx"},"name":"nginx-config-volume"}]` | Additional volumes on the output Deployment definition. |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

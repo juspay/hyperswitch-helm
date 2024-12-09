@@ -107,21 +107,28 @@ services:
   sdk:
     host: &web_sdk_host http://localhost:9090
 
-hyperswitchsdk:
+hyperswitch-web:
+  fullnameOverride: "hyperswitch-web"
   enabled: true
+  sdkDemo:
+    enabled: false
+  image:
+    pullPolicy: Always
   podAnnotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
   autoBuild:
+    enable: true
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.80.0
+      gitVersion: 0.103.1
     nginxConfig:
       extraPath: v0
     buildParam:
       envSdkUrl: *web_sdk_host
       envBackendUrl: *router_host
+      envLogsUrl: http://localhost:3103
   service:
     port: 9090
   loadBalancer:
@@ -159,19 +166,35 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.111.0
-      image: juspaydotin/hyperswitch-router:v1.111.0-standalone
+      version: v1.112.0
+      image: juspaydotin/hyperswitch-router:v1.112.0-standalone
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.111.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.112.0-standalone
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.111.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.112.0-standalone
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.33.0
+      image: juspaydotin/hyperswitch-control-center:v1.34.2
     sdk:
       host: *web_sdk_host
-      version: 0.80.0
+      version: 0.103.1
       subversion: v0
+  application:
+    server:
+      replicas: 1
+      secrets:
+        # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+        forex_api_key: forex_api_key
+        forex_fallback_api_key: forex_fallback_api_key
+      locker:
+          locker_enabled: true
+      run_env: sandbox
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  
   hyperswitch-card-vault:
     enabled: true
     server:
