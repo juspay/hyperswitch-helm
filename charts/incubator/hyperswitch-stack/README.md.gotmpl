@@ -223,7 +223,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 ```
 
 {{ define "chart.valueDefaultSectionColumnRender" }}
-<div> <pre>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</pre> </div>
+<div> <code>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</code> </div>
 {{ end }}
 
 {{ define "chart.valueDefaultSectionRowRender" }}
@@ -239,15 +239,15 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 {{ define "chart.valueDefaultSectionHeading" }}
 <thead>
-	<th max-width="300px">Key</th>
-	<th max-width="300px">Default</th>
-	<th min-width="300px">Description</th>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
 </thead>
 {{ end }}
 
 {{ define "chart.valuesSectionTableHtml" }}
 <h3>{{- .SectionName }}</h3>
-<table height="400px" >
+<table height="400px">
 {{ template "chart.valueDefaultSectionHeading" . }}
 <tbody>
 {{- range .SectionItems }}
