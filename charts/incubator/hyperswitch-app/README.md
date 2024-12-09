@@ -1385,6 +1385,24 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <tbody>
 	
 <tr>
+    <td id="global--annotations"><div style="max-width: 300px;"><a href="./values.yaml#L4">global.annotations</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>{}</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="global--nodeAffinity--requiredDuringSchedulingIgnoredDuringExecution"><div style="max-width: 300px;"><a href="./values.yaml#L8">global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>[]</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
     <td id="application--controlCenter--annotations"><div style="max-width: 300px;"><a href="./values.yaml#L696">application.controlCenter.annotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
@@ -3170,6 +3188,240 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
 </td>
     <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--config--database"><div style="max-width: 300px;"><a href="./values.yaml#L125">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--config--host"><div style="max-width: 300px;"><a href="./values.yaml#L121">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--config--password"><div style="max-width: 300px;"><a href="./values.yaml#L124">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--config--port"><div style="max-width: 300px;"><a href="./values.yaml#L122">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--config--username"><div style="max-width: 300px;"><a href="./values.yaml#L123">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--external--postgresql--enabled"><div style="max-width: 300px;"><a href="./values.yaml#L119">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>false</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--initDB--checkPGisUp--image"><div style="max-width: 300px;"><a href="./values.yaml#L132">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"postgres:16-alpine3.19"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--initDB--checkPGisUp--maxAttempt"><div style="max-width: 300px;"><a href="./values.yaml#L133">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>30</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--initDB--enable"><div style="max-width: 300px;"><a href="./values.yaml#L130">hyperswitch-card-vault.initDB.enable</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>true</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--initDB--migration--image"><div style="max-width: 300px;"><a href="./values.yaml#L135">hyperswitch-card-vault.initDB.migration.image</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"christophwurst/diesel-cli:latest"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--enabled"><div style="max-width: 300px;"><a href="./values.yaml#L102">hyperswitch-card-vault.postgresql.enabled</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>true</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--architecture"><div style="max-width: 300px;"><a href="./values.yaml#L110">hyperswitch-card-vault.postgresql.global.postgresql.auth.architecture</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"standalone"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--database"><div style="max-width: 300px;"><a href="./values.yaml#L109">hyperswitch-card-vault.postgresql.global.postgresql.auth.database</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"locker-db"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--password"><div style="max-width: 300px;"><a href="./values.yaml#L108">hyperswitch-card-vault.postgresql.global.postgresql.auth.password</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"V2tkS1ptTkhSbnBqZDI4OUNnPT0K"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--username"><div style="max-width: 300px;"><a href="./values.yaml#L107">hyperswitch-card-vault.postgresql.global.postgresql.auth.username</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"db_user"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--nameOverride"><div style="max-width: 300px;"><a href="./values.yaml#L103">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"locker-db"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--primary--name"><div style="max-width: 300px;"><a href="./values.yaml#L112">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>""</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--postgresql--primary--resources--requests--cpu"><div style="max-width: 300px;"><a href="./values.yaml#L115">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"100m"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--annotations"><div style="max-width: 300px;"><a href="./values.yaml#L13">hyperswitch-card-vault.server.annotations</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>{}</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--extra--env"><div style="max-width: 300px;"><a href="./values.yaml#L98">hyperswitch-card-vault.server.extra.env</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>{}</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--image"><div style="max-width: 300px;"><a href="./values.yaml#L16">hyperswitch-card-vault.server.image</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-card-vault:v0.4.0"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--nodeAffinity--requiredDuringSchedulingIgnoredDuringExecution"><div style="max-width: 300px;"><a href="./values.yaml#L25">hyperswitch-card-vault.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>[]</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--pod--annotations"><div style="max-width: 300px;"><a href="./values.yaml#L21">hyperswitch-card-vault.server.pod.annotations</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>{}</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--secrets--locker_private_key"><div style="max-width: 300px;"><a href="./values.yaml#L54">hyperswitch-card-vault.server.secrets.locker_private_key</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td>The private key for the locker from locker-private-key.pem</td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--secrets--master_key"><div style="max-width: 300px;"><a href="./values.yaml#L41">hyperswitch-card-vault.server.secrets.master_key</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-card-vault--server--secrets--tenant_public_key"><div style="max-width: 300px;"><a href="./values.yaml#L84">hyperswitch-card-vault.server.secrets.tenant_public_key</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>null</pre> </div>
+</td>
+    <td>The public key for the tenant from tenant-public-key.pem</td>
 </tr>
 
 </tbody>
