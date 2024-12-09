@@ -235,9 +235,9 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <table height="400px" >
 
 <thead>
-	<th style="max-width: 300px;">Key</th>
-	<th style="max-width: 300px;">Default</th>
-	<th style="min-width: 300px;">Description</th>
+	<th max-width="300px">Key</th>
+	<th max-width="300px">Default</th>
+	<th min-width="300px">Description</th>
 </thead>
 
 <tbody>
@@ -519,9 +519,9 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <table height="400px" >
 
 <thead>
-	<th style="max-width: 300px;">Key</th>
-	<th style="max-width: 300px;">Default</th>
-	<th style="min-width: 300px;">Description</th>
+	<th max-width="300px">Key</th>
+	<th max-width="300px">Default</th>
+	<th min-width="300px">Description</th>
 </thead>
 
 <tbody>
@@ -863,9 +863,9 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <table height="400px" >
 
 <thead>
-	<th style="max-width: 300px;">Key</th>
-	<th style="max-width: 300px;">Default</th>
-	<th style="min-width: 300px;">Description</th>
+	<th max-width="300px">Key</th>
+	<th max-width="300px">Default</th>
+	<th min-width="300px">Description</th>
 </thead>
 
 <tbody>
@@ -1530,9 +1530,9 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <table height="400px" >
 
 <thead>
-	<th style="max-width: 300px;">Key</th>
-	<th style="max-width: 300px;">Default</th>
-	<th style="min-width: 300px;">Description</th>
+	<th max-width="300px">Key</th>
+	<th max-width="300px">Default</th>
+	<th min-width="300px">Description</th>
 </thead>
 
 <tbody>
@@ -1635,9 +1635,9 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 <table>
 
 <thead>
-	<th style="max-width: 300px;">Key</th>
-	<th style="max-width: 300px;">Default</th>
-	<th style="min-width: 300px;">Description</th>
+	<th max-width="300px">Key</th>
+	<th max-width="300px">Default</th>
+	<th min-width="300px">Description</th>
 </thead>
 
 <tbody>
