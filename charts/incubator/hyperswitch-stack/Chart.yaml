@@ -28,5 +28,5 @@ dependencies:
     repository: "file://../hyperswitch-app"
   - name: hyperswitch-web
     version: 0.2.0
-    repository: "file://../hyperswitch-sdk"
+    repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled

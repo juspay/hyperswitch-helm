@@ -37,20 +37,21 @@ server:
   # Secrets to be added to hyperswitch-card-vault.
   # To create the master key, follow the instructions provided here: https://github.com/juspay/hyperswitch-card-vault/blob/main/docs/guides/setup.md#preparing-the-required-keys
   secrets:
-    # Optionally, you can run `cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin`
+    # -- Optionally, you can run </br>
+    # <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre>
+    # @default -- "master_key"
     master_key: a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef
 
-    # To create this key pairs, follow the instructions provided here:
-    ## Generating the private keys
-    # openssl genrsa -out locker-private-key.pem 2048
-    # openssl genrsa -out tenant-private-key.pem 2048
-    #
-    # # Generating the public keys
-    # openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
-    # openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
+    # -- To create this key pairs, follow the instructions provided here: </br>
+    # # Generating the private keys
+    # <pre>openssl genrsa -out locker-private-key.pem 2048</pre>
+    # <pre>openssl genrsa -out tenant-private-key.pem 2048</pre>
+    # # Generating the public keys </br>
+    # <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre>
+    # <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre>
 
-    # -- The private key for the locker from locker-private-key.pem
-    # @default -- -----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----
+    # The private key for the locker from locker-private-key.pem
+    # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
     locker_private_key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpAIBAAKCAQEAsgwEJaGbRA1DNMzubq4M7d+i6TSrFPiqrqnNkO0Dct58jGbJ
@@ -79,8 +80,9 @@ server:
       deYMmUHKvQBUaPG0Q2uu2n+mYKFQK6XucRFeHcPSzElk15nki/DAYaxOLzBEi8hI
       0vCnCqm+d6KBKsS5i0pMgvPdC07VrWKnyzdX4goP0CaAhI0A1OGlsA==
       -----END RSA PRIVATE KEY-----
+    
     # -- The public key for the tenant from tenant-public-key.pem
-    # @default -- -----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----
+    # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
     tenant_public_key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsSnWltGc6kjcDAhtUoad

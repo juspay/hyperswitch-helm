@@ -146,6 +146,7 @@ application:
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn: my-role-arn
     # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+    # @ignored
     env:
       binary: router
       host: hyperswitch
@@ -170,7 +171,7 @@ application:
       kms_key_region: us-east-1
       # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
       # @section -- App Server Secrets
-      # @default -- -----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----
+      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
       kms_jwekey_vault_encryption_key: |
         -----BEGIN PUBLIC KEY-----
         MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsgwEJaGbRA1DNMzubq4M
@@ -183,7 +184,7 @@ application:
         -----END PUBLIC KEY-----
       # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
       # @section -- App Server Secrets
-      # @default -- -----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----
+      # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
       kms_jwekey_vault_private_key: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEpAIBAAKCAQEAsSnWltGc6kjcDAhtUoad0xlLJZCwLc6P80j8k3dgo92nqocU
@@ -502,8 +503,10 @@ application:
       redis_expiry: 900
     paze_decrypt_keys:
       # -- Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
+      # @section -- App Server Secrets
       paze_private_key: PAZE_PRIVATE_KEY
       # -- PEM Passphrase used for generating Private Key File cakey.pem
+      # @section -- App Server Secrets
       paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
     proxy:
       # -- A list of URLs that should bypass the proxy
@@ -595,12 +598,14 @@ application:
     # -- Wait time allowed for the deployment before the deployment is marked as failed
     progressDeadlineSeconds: 600
     # -- The strategy that can be used to replace the old pods by new ones
+    # @ignored
     strategy:
       rollingUpdate:
         maxSurge: 1
         maxUnavailable: 0
       type: RollingUpdate
     # Specify affinity for nodes to which the pods should start on
+    # @ignored
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
@@ -610,17 +615,22 @@ application:
                 values:
                   - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
+    # @ignored
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
+    # @ignored
     podAnnotations:
       traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # -- Annotations that are to be added the the deployments (extends global configuration)
+    # @ignored
     annotations:
       deployment.kubernetes.io/revision: "1"
     # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+    # @ignored
     labels:
       app: hyperswitch-consumer
     # -- service account annotations to be used
+    # @ignored
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn:
     # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
@@ -670,8 +680,10 @@ application:
     # -- Number of replicas to be used for the application
     replicas: 1
     # -- Wait time allowed for the deployment before the deployment is marked as failed
+    # @ignored
     progressDeadlineSeconds: 600
     # -- The strategy that can be used to replace the old pods by new ones
+    # @ignored
     strategy:
       rollingUpdate:
         maxSurge: 1
@@ -688,17 +700,22 @@ application:
                 values:
                   - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
+    # @ignored
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
+    # @ignored
     podAnnotations:
       traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
     # -- Annotations that are to be added the the deployments (extends global configuration)
+    # @ignored
     annotations:
       deployment.kubernetes.io/revision: "1"
     # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+    # @ignored
     labels:
       app: hyperswitch-control-center
     # -- service account annotations to be used
+    # @ignored
     serviceAccountAnnotations:
       eks.amazonaws.com/role-arn:
     env:
@@ -753,7 +770,7 @@ application:
       # -- Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.
       # @section -- Control Center configs
       default__features__sample_data: "false"
-      # -- Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified.
+      # -- Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management
       # @section -- Control Center configs
       default__features__frm: "false"
       # -- Enables the payout functionality in the dashboard. When enabled, this allows users to configure payout profiles, manage recipient details, schedule disbursements, and process payout batches to pay out funds to third parties.
@@ -998,6 +1015,9 @@ kafka:
     # -- kafka provisioning replicationFactor
     # @section -- Dependencies configuration
     replicationFactor: 1
+  # -- (tpl/string) -- Kafka extraConfig
+  # @notationType -- tpl
+  # @section -- Dependencies configuration
   extraConfig: |
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1

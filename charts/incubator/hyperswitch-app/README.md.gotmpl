@@ -47,47 +47,108 @@ After deploying the Helm chart, you should verify that everything is working cor
 * [ ] &#x20;Verify if you are able to [create API key](https://opensource.hyperswitch.io/run-hyperswitch-locally/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
 * [ ] &#x20;Verify if you are able to [configure a new payment processor](https://opensource.hyperswitch.io/run-hyperswitch-locally/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
 
-## Test a payment
+## 💳 Test a payment
 
-Hyperswitch Demo store will mimic the behavior of your checkout page. Please follow below steps to initiate demo app
+Hyperswitch Control center will mimic the behavior of your checkout page. Please follow below steps to test a payment with the deployed app
 
-### Step 1 - Deploy card vault
+### 🔐 Step 1 - Deploy card vault
 
-### Card Vault Installation
+By default card vault and its dependencies are installed, however you need to create master key, custodian keys and unlock the locker to start saving cards. 
 
-If you intend to save cards of your customers for future usage then you need a Card Vault. This helm chart doesn't cover inbuilt card vault support as it will violate PCI compliance. You can install manually by following the steps [here](https://opensource.hyperswitch.io/going-live/pci-compliance/card-vault-installation) or use [this doc to deploy card vault in aws](https://opensource.hyperswitch.io/hyperswitch-open-source/deploy-hyperswitch-on-aws/deploy-card-vault)
+<details> 
+  <summary>
+    <b> Step 1: Generating the keys </b>
+  </summary> 
+  <p> 
+  To generate the master key and the custodian keys use the following command after cloning the repository.
+    
+    # Generate master key
+    git clone https://github.com/juspay/hyperswitch-card-vault.git
+    cd hyperswitch-card-vault
+    cargo run --bin utils -- master-key
+    To generate the JWE and JWS keys run the following commands
 
-### Step 2 - Configure below details again in your `values.yaml`
+    # Generating the private keys
+    openssl genrsa -out locker-private-key.pem 2048
+    openssl genrsa -out tenant-private-key.pem 2048
 
-| Service                | Configuration Key                                   | Description                                                                                                          |
-| ---------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| SdkDemo                       | `hyperswitch-sdk.autoBuild.buildParam.envSdkUrl`      | <p>Set to the URL of your hosted Hyperloader to access the Hyperswitch SDK.<br>Eg:https://{your_host}</p> |
-|                        | `application.services.sdkDemo.hyperswitchPublishableKey` | This should be set to your merchant publishable key. You will get this once you create a merchant.                   |
-|                        | `application.services.sdkDemo.hyperswitchSecretKey`      | This should be set to your merchant secret key. You can create this from the control center or via the REST API.     |
+    # Generating the public keys
+    openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
+    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem  
+</p> 
+</details> 
+<details> 
+  <summary>
+    <b> Step 2: Update the keys in deployment </b>
+  </summary> 
+  <p> 
 
-### Step 3 - Run helm upgrade to restart pods with updated config
+    # Update below values in hyperswitch-stack/values.yaml
+    # The public key for the locker from locker-public-key.pem
+    hyperswitch-app.application.server.secrets.kms_jwekey_vault_encryption_key: |
+      -----BEGIN PUBLIC KEY-----
+      ...
+      -----END PUBLIC KEY-----
+    # The private key for the tenant from tenant-private-key.pem
+    hyperswitch-app.application.server.secrets.kms_jwekey_vault_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      ...
+      -----END RSA PRIVATE KEY-----
+    # The private key for the locker from locker-private-key.pem
+    hyperswitch-card-vault.server.secrets.locker_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      ...
+      -----END RSA PRIVATE KEY-----
+    # The public key for the tenant from tenant-public-key.pem
+    hyperswitch-card-vault.server.secrets.tenant_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      ...
+      -----END PUBLIC KEY-----
 
-```
-helm upgrade --install hyperswitch-v1 . -n hyperswitch -f values.yaml
-```
+   </p> 
+</details> 
+<details> 
+  <summary> <b> Step 3: Unlock the locker </b> </summary> 
+  <p> 
+  Once the locker is up and running, use the 2 key custodian keys generated earlier securely to unlock the locker for use.
+  Go to the respective locker Pod, open its shell and run below cURLs
 
-### Step 4 - Make a payment using our Demo App
+  The following cURLs are to be used to provide keys
 
-Use the Hyperswitch Demo app and [make a payment with test card](https://opensource.hyperswitch.io/hyperswitch-open-source/test-a-payment).
+    # temporary turn of saving to history to run the following commands
+    unset HISTFILE 
+
+    # key 1
+    curl -X 'POST' \
+      'localhost:8080/custodian/key1' \
+      -H 'accept: text/plain' \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "key": <key 1>
+    }'
+
+    # key 2
+    curl -X 'POST' \
+      'localhost:8080/custodian/key2' \
+      -H 'accept: text/plain' \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "key": <key 2>
+    }'
+
+    # decrypt
+    curl -X 'POST' 'localhost:8080/custodian/decrypt'
+    
+  If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
+   </p> 
+</details> 
+
+### Step 2 - Make a payment using our Control Center
+
+Use the Hyperswitch Control Center and [make a payment with test card](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/test-a-payment).
 
 Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyperswitch/folder/25176183-0103918c-6611-459b-9faf-354dee8e4437) to try out REST APIs
 
-### Get Repo Info
-```bash
-helm repo add hyperswitch-helm https://juspay.github.io/hyperswitch-helm
-helm repo update
-```
-### Contribution guidelines
-When you want others to use the changes you have added you need to package it and then index it
-```bash
-helm package .
-helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
-```
 
 {{ define "chart.valueDefaultSectionColumnRender" }}
 <div style="max-width: 300px;"> <pre>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</pre> </div>
@@ -95,7 +156,8 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 {{ define "chart.valueDefaultSectionRowRender" }}
 <tr>
-    <td id="{{ .Key | replace "." "--" }}"><div style="max-width: 300px;"><a href="./values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
+    <td id="{{ .Key | replace "." "--" }}"><div style="max-width: 300px;">
+    <a href="{{ if .Dependency }}../{{ .Dependency }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
     <td>{{ template "chart.valueDefaultSectionColumnRender" . }}</td>
     <td>{{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }}</td>
 </tr>
