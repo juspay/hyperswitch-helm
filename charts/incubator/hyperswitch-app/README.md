@@ -22,6 +22,7 @@ cd hyperswitch-helm/charts/incubator/hyperswitch-stack
 ### Step 2 - Install Hyperswitch
 
 Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
+Note: minimum --memory 6000 --cpus 4 needed
 ```bash
 kubectl label nodes <your-node-name> node-type=generic-compute
 kubectl create namespace hyperswitch
@@ -119,26 +120,10 @@ By default card vault and its dependencies are installed, however you need to cr
     # temporary turn of saving to history to run the following commands
     unset HISTFILE
 
-    # key 1
-    curl -X 'POST' \
-      'localhost:8080/custodian/key1' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 1>
-    }'
-
-    # key 2
-    curl -X 'POST' \
-      'localhost:8080/custodian/key2' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 2>
-    }'
-
-    # decrypt
-    curl -X 'POST' 'localhost:8080/custodian/decrypt'
+    # Add key1, key2 and then decrypt
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
+    curl -X POST http://localhost:8080/custodian/decrypt
    
   If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p>
@@ -828,7 +813,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--auth--password"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1039">clickhouse.auth.password</a></div></td>
+    <a href="./values.yaml#L1041">clickhouse.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
 </td>
@@ -838,7 +823,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--auth--username"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1036">clickhouse.auth.username</a></div></td>
+    <a href="./values.yaml#L1038">clickhouse.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
 </td>
@@ -848,7 +833,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--config--TZ"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1045">clickhouse.config.TZ</a></div></td>
+    <a href="./values.yaml#L1047">clickhouse.config.TZ</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Asia/Kolkata"</pre> </div>
 </td>
@@ -858,7 +843,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1028">clickhouse.enabled</a></div></td>
+    <a href="./values.yaml#L1031">clickhouse.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -868,7 +853,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1031">clickhouse.fullnameOverride</a></div></td>
+    <a href="./values.yaml#L1034">clickhouse.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"clickhouse"</pre> </div>
 </td>
@@ -878,7 +863,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--logLevel"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1066">clickhouse.logLevel</a></div></td>
+    <a href="./values.yaml#L1068">clickhouse.logLevel</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"error"</pre> </div>
 </td>
@@ -888,7 +873,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1051">clickhouse.replicaCount</a></div></td>
+    <a href="./values.yaml#L1053">clickhouse.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -898,7 +883,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--shards"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1048">clickhouse.shards</a></div></td>
+    <a href="./values.yaml#L1050">clickhouse.shards</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -907,28 +892,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--ulimits--nofile--hard"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1059">clickhouse.ulimits.nofile.hard</a></div></td>
-    <td>
-<div style="max-width: 300px;"> <pre>262144</pre> </div>
-</td>
-    <td>Clickhouse hard limit</td>
-</tr>
-
-	
-<tr>
-    <td id="clickhouse--ulimits--nofile--soft"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1056">clickhouse.ulimits.nofile.soft</a></div></td>
-    <td>
-<div style="max-width: 300px;"> <pre>262144</pre> </div>
-</td>
-    <td>Clickhouse soft limit</td>
-</tr>
-
-	
-<tr>
     <td id="clickhouse--zookeeper--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1063">clickhouse.zookeeper.replicaCount</a></div></td>
+    <a href="./values.yaml#L1065">clickhouse.zookeeper.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -1108,7 +1073,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--broker--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L985">kafka.broker.replicaCount</a></div></td>
+    <a href="./values.yaml#L987">kafka.broker.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -1118,7 +1083,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--controller--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L981">kafka.controller.replicaCount</a></div></td>
+    <a href="./values.yaml#L982">kafka.controller.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -1128,7 +1093,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L973">kafka.enabled</a></div></td>
+    <a href="./values.yaml#L974">kafka.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1138,7 +1103,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L976">kafka.fullnameOverride</a></div></td>
+    <a href="./values.yaml#L977">kafka.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"kafka0"</pre> </div>
 </td>
@@ -1148,7 +1113,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--listeners--client--protocol"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1001">kafka.listeners.client.protocol</a></div></td>
+    <a href="./values.yaml#L1004">kafka.listeners.client.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
 </td>
@@ -1158,7 +1123,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--listeners--controller--protocol"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1013">kafka.listeners.controller.protocol</a></div></td>
+    <a href="./values.yaml#L1016">kafka.listeners.controller.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
 </td>
@@ -1168,7 +1133,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--listeners--external--protocol"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1009">kafka.listeners.external.protocol</a></div></td>
+    <a href="./values.yaml#L1012">kafka.listeners.external.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
 </td>
@@ -1178,7 +1143,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--listeners--interbroker--protocol"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1005">kafka.listeners.interbroker.protocol</a></div></td>
+    <a href="./values.yaml#L1008">kafka.listeners.interbroker.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
 </td>
@@ -1188,7 +1153,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--provisioning--replicationFactor"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1017">kafka.provisioning.replicationFactor</a></div></td>
+    <a href="./values.yaml#L1020">kafka.provisioning.replicationFactor</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -1198,7 +1163,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--service--ports--client"><div style="max-width: 300px;">
-    <a href="./values.yaml#L996">kafka.service.ports.client</a></div></td>
+    <a href="./values.yaml#L999">kafka.service.ports.client</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>29092</pre> </div>
 </td>
@@ -1208,7 +1173,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="kafka--zookeeper--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L991">kafka.zookeeper.replicaCount</a></div></td>
+    <a href="./values.yaml#L994">kafka.zookeeper.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -1218,7 +1183,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--grafana--adminPassword"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1119">loki-stack.grafana.adminPassword</a></div></td>
+    <a href="./values.yaml#L1121">loki-stack.grafana.adminPassword</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"admin"</pre> </div>
 </td>
@@ -1228,7 +1193,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--grafana--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1116">loki-stack.grafana.enabled</a></div></td>
+    <a href="./values.yaml#L1118">loki-stack.grafana.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1238,7 +1203,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--grafana--image--tag"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1123">loki-stack.grafana.image.tag</a></div></td>
+    <a href="./values.yaml#L1125">loki-stack.grafana.image.tag</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"10.0.1"</pre> </div>
 </td>
@@ -1248,7 +1213,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--loki--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1096">loki-stack.loki.enabled</a></div></td>
+    <a href="./values.yaml#L1098">loki-stack.loki.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1258,7 +1223,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--loki--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1099">loki-stack.loki.fullnameOverride</a></div></td>
+    <a href="./values.yaml#L1101">loki-stack.loki.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"loki"</pre> </div>
 </td>
@@ -1268,7 +1233,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loki-stack--promtail--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1103">loki-stack.promtail.enabled</a></div></td>
+    <a href="./values.yaml#L1105">loki-stack.promtail.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1278,7 +1243,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="mailhog--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1087">mailhog.enabled</a></div></td>
+    <a href="./values.yaml#L1089">mailhog.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1288,7 +1253,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="mailhog--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1090">mailhog.fullnameOverride</a></div></td>
+    <a href="./values.yaml#L1092">mailhog.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"mailhog"</pre> </div>
 </td>
@@ -1458,7 +1423,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="vector--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1128">vector.enabled</a></div></td>
+    <a href="./values.yaml#L1130">vector.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1468,7 +1433,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="vector--env[0]"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1132">vector.env[0]</a></div></td>
+    <a href="./values.yaml#L1134">vector.env[0]</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
   "name": "KAFKA_HOST",
@@ -3328,7 +3293,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="autoscaling--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L962">autoscaling.enabled</a></div></td>
+    <a href="./values.yaml#L963">autoscaling.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -3338,7 +3303,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="autoscaling--maxReplicas"><div style="max-width: 300px;">
-    <a href="./values.yaml#L964">autoscaling.maxReplicas</a></div></td>
+    <a href="./values.yaml#L965">autoscaling.maxReplicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
 </td>
@@ -3348,7 +3313,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="autoscaling--minReplicas"><div style="max-width: 300px;">
-    <a href="./values.yaml#L963">autoscaling.minReplicas</a></div></td>
+    <a href="./values.yaml#L964">autoscaling.minReplicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -3358,7 +3323,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="autoscaling--targetCPUUtilizationPercentage"><div style="max-width: 300px;">
-    <a href="./values.yaml#L965">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <a href="./values.yaml#L966">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>80</pre> </div>
 </td>
@@ -3368,7 +3333,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="clickhouse--image--tag"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1041">clickhouse.image.tag</a></div></td>
+    <a href="./values.yaml#L1043">clickhouse.image.tag</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>24.3</pre> </div>
 </td>
@@ -3377,18 +3342,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--resourcesPreset"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1032">clickhouse.resourcesPreset</a></div></td>
-    <td>
-<div style="max-width: 300px;"> <pre>"none"</pre> </div>
-</td>
-    <td></td>
-</tr>
-
-	
-<tr>
     <td id="hyperswitch-card-vault--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L968">hyperswitch-card-vault.enabled</a></div></td>
+    <a href="./values.yaml#L969">hyperswitch-card-vault.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -3428,7 +3383,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="initDB--migration--image"><div style="max-width: 300px;">
-    <a href="./values.yaml#L956">initDB.migration.image</a></div></td>
+    <a href="./values.yaml#L957">initDB.migration.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"christophwurst/diesel-cli:latest"</pre> </div>
 </td>
@@ -3437,8 +3392,38 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
+    <td id="initDB--refs"><div style="max-width: 300px;">
+    <a href="./values.yaml#L955">initDB.refs</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"tags"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="kafka--broker--resourcesPreset"><div style="max-width: 300px;">
+    <a href="./values.yaml#L988">kafka.broker.resourcesPreset</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"none"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="kafka--controller--resourcesPreset"><div style="max-width: 300px;">
+    <a href="./values.yaml#L983">kafka.controller.resourcesPreset</a></div></td>
+    <td>
+<div style="max-width: 300px;"> <pre>"none"</pre> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
     <td id="kafka--extraConfig"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1021">kafka.extraConfig</a></div></td>
+    <a href="./values.yaml#L1024">kafka.extraConfig</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</pre> </div>
 </td>
@@ -3448,7 +3433,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	
 <tr>
     <td id="loadBalancer--targetSecurityGroup"><div style="max-width: 300px;">
-    <a href="./values.yaml#L959">loadBalancer.targetSecurityGroup</a></div></td>
+    <a href="./values.yaml#L960">loadBalancer.targetSecurityGroup</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"loadBalancer-sg"</pre> </div>
 </td>

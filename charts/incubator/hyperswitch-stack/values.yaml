@@ -4,6 +4,11 @@ loadBalancer:
   targetSecurityGroup: &lb_security_group lg-security-group
 
 # @ignored
+service:
+  type: ClusterIP
+  port: 80
+
+# @ignored
 services:
   router:
     host: &router_host http://localhost:8080
@@ -17,7 +22,7 @@ hyperswitch-web:
   sdkDemo:
     enabled: false
   image:
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   podAnnotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
@@ -106,4 +111,4 @@ hyperswitch-app:
       secrets: 
         master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
     initDB:
-      enable: false
+      enable: true

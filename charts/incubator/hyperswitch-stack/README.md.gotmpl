@@ -79,6 +79,7 @@ helm repo update
 ### Step 2 - Install Hyperswitch
 
 Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
+Note: minimum --memory 6000 --cpus 4 needed
 ```bash
 kubectl label nodes <your-node-name> node-type=generic-compute
 kubectl create namespace hyperswitch
@@ -176,26 +177,10 @@ By default card vault and its dependencies are installed, however you need to cr
     # temporary turn of saving to history to run the following commands
     unset HISTFILE 
 
-    # key 1
-    curl -X 'POST' \
-      'localhost:8080/custodian/key1' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 1>
-    }'
-
-    # key 2
-    curl -X 'POST' \
-      'localhost:8080/custodian/key2' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 2>
-    }'
-
-    # decrypt
-    curl -X 'POST' 'localhost:8080/custodian/decrypt'
+    # Add key1, key2 and then decrypt
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
+    curl -X POST http://localhost:8080/custodian/decrypt
     
   If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p> 

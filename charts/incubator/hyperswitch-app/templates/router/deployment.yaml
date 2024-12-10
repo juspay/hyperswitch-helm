@@ -57,11 +57,6 @@ spec:
             {{/* TODO this env can be static ? */}}
             - name: BINARY
               value: {{ .Values.application.server.env.binary }}
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.name
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           envFrom:
@@ -71,8 +66,10 @@ spec:
                 name: router-secret-{{ .Release.Name }}
             - secretRef:
                 name: hyperswitch-secrets
-          {{- toYaml (default .Values.application.global.livenessProbe .Values.application.server.livenessProbe) | nindent 10 }}
-          {{- toYaml (default .Values.application.global.readinessProbe .Values.application.server.readinessProbe) | nindent 10 }}
+          livenessProbe:
+          {{- toYaml (default .Values.application.global.livenessProbe .Values.application.server.livenessProbe) | nindent 12 }}
+          readinessProbe:
+          {{- toYaml (default .Values.application.global.readinessProbe .Values.application.server.readinessProbe) | nindent 12 }}
           ports:
             - containerPort: 8080
               name: http

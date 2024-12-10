@@ -952,6 +952,7 @@ initDB:
   checkPGisUp:
     image: postgres:16-alpine3.19
     maxAttempt: 30
+  refs: tags # tags or heads
   migration:
     image: christophwurst/diesel-cli:latest
 
@@ -979,10 +980,12 @@ kafka:
     # -- Number of replicas to be used for controller
     # @section -- Dependencies configuration
     replicaCount: 1
+    resourcesPreset: "none"
   broker:
     # -- Number of replicas to be used for broker
     # @section -- Dependencies configuration
     replicaCount: 1
+    resourcesPreset: "none"
   # broker:
   # replicaCount: 1
   zookeeper:
@@ -1029,7 +1032,6 @@ clickhouse:
   # -- Name of the Clickhouse sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "clickhouse"
-  resourcesPreset: "none"
   auth:
     # -- Clickhouse username
     # @section -- Dependencies configuration
@@ -1049,14 +1051,6 @@ clickhouse:
   # -- Clickhouse replica count
   # @section -- Dependencies configuration
   replicaCount: 1
-  ulimits:
-    nofile:
-      # -- Clickhouse soft limit
-      # @section -- Dependencies configuration
-      soft: 262144
-      # -- Clickhouse hard limit
-      # @section -- Dependencies configuration
-      hard: 262144
   zookeeper:
     # -- Zookerper replica count
     # @section -- Dependencies configuration

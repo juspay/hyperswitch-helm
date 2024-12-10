@@ -2,12 +2,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-hyperswitch-db-{{ .Values.services.router.version }}
+  name: hyperswitch-create-db-{{ .Values.services.router.version }}
   labels:
-    app: create-hyperswitch-db-{{ .Values.services.router.version }}
+    app: hyperswitch-create-db-{{ .Values.services.router.version }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -18,17 +17,19 @@ spec:
       containers:
         - name: run-hyperswitch-db-migration
           image: {{ .Values.initDB.migration.image }}
+          imagePullPolicy: IfNotPresent
           command: [ '/bin/sh', '-c' ]
           #language=sh
           args:
             - |-
-              apt update
-              apt install -y git
-              git clone --single-branch --branch $ROUTER_VERSION https://github.com/juspay/hyperswitch.git
+              curl -L -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
+              tar -xzvf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
               cd hyperswitch
               diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
               echo "Completed hyperswitch database migration"
           env:
+            - name: REFERENCE
+              value: {{ .Values.initDB.refs }}
             - name: ROUTER_VERSION
               value: {{ .Values.services.router.version }}
             - name: POSTGRES_HOST

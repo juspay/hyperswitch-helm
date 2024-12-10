@@ -78,6 +78,7 @@ helm repo update
 ### Step 2 - Install Hyperswitch
 
 Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
+Note: minimum --memory 6000 --cpus 4 needed
 ```bash
 kubectl label nodes <your-node-name> node-type=generic-compute
 kubectl create namespace hyperswitch
@@ -175,26 +176,10 @@ By default card vault and its dependencies are installed, however you need to cr
     # temporary turn of saving to history to run the following commands
     unset HISTFILE
 
-    # key 1
-    curl -X 'POST' \
-      'localhost:8080/custodian/key1' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 1>
-    }'
-
-    # key 2
-    curl -X 'POST' \
-      'localhost:8080/custodian/key2' \
-      -H 'accept: text/plain' \
-      -H 'Content-Type: application/json' \
-      -d '{
-      "key": <key 2>
-    }'
-
-    # decrypt
-    curl -X 'POST' 'localhost:8080/custodian/decrypt'
+    # Add key1, key2 and then decrypt
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
+    curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
+    curl -X POST http://localhost:8080/custodian/decrypt
    
   If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p>
@@ -892,7 +877,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--auth--password"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1039">hyperswitch-app.clickhouse.auth.password</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1041">hyperswitch-app.clickhouse.auth.password</a></div></td>
     <td>
 <div> <code>""</code> </div>
 </td>
@@ -902,7 +887,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--auth--username"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1036">hyperswitch-app.clickhouse.auth.username</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1038">hyperswitch-app.clickhouse.auth.username</a></div></td>
     <td>
 <div> <code>"default"</code> </div>
 </td>
@@ -912,7 +897,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--config--TZ"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1045">hyperswitch-app.clickhouse.config.TZ</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1047">hyperswitch-app.clickhouse.config.TZ</a></div></td>
     <td>
 <div> <code>"Asia/Kolkata"</code> </div>
 </td>
@@ -922,7 +907,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1028">hyperswitch-app.clickhouse.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1031">hyperswitch-app.clickhouse.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -932,7 +917,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--fullnameOverride"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1031">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1034">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
     <td>
 <div> <code>"clickhouse"</code> </div>
 </td>
@@ -942,7 +927,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--logLevel"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1066">hyperswitch-app.clickhouse.logLevel</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1068">hyperswitch-app.clickhouse.logLevel</a></div></td>
     <td>
 <div> <code>"error"</code> </div>
 </td>
@@ -952,7 +937,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--replicaCount"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1051">hyperswitch-app.clickhouse.replicaCount</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1053">hyperswitch-app.clickhouse.replicaCount</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -962,7 +947,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--shards"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1048">hyperswitch-app.clickhouse.shards</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1050">hyperswitch-app.clickhouse.shards</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -971,28 +956,8 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 	
 <tr>
-    <td id="hyperswitch-app--clickhouse--ulimits--nofile--hard"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1059">hyperswitch-app.clickhouse.ulimits.nofile.hard</a></div></td>
-    <td>
-<div> <code>262144</code> </div>
-</td>
-    <td>Clickhouse hard limit</td>
-</tr>
-
-	
-<tr>
-    <td id="hyperswitch-app--clickhouse--ulimits--nofile--soft"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1056">hyperswitch-app.clickhouse.ulimits.nofile.soft</a></div></td>
-    <td>
-<div> <code>262144</code> </div>
-</td>
-    <td>Clickhouse soft limit</td>
-</tr>
-
-	
-<tr>
     <td id="hyperswitch-app--clickhouse--zookeeper--replicaCount"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1063">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1065">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -1172,7 +1137,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--broker--replicaCount"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L985">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L987">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -1182,7 +1147,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--controller--replicaCount"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L981">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L982">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -1192,7 +1157,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L973">hyperswitch-app.kafka.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L974">hyperswitch-app.kafka.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1202,7 +1167,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--fullnameOverride"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L976">hyperswitch-app.kafka.fullnameOverride</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L977">hyperswitch-app.kafka.fullnameOverride</a></div></td>
     <td>
 <div> <code>"kafka0"</code> </div>
 </td>
@@ -1212,7 +1177,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--listeners--client--protocol"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1001">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1004">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
     <td>
 <div> <code>"PLAINTEXT"</code> </div>
 </td>
@@ -1222,7 +1187,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--listeners--controller--protocol"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1013">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1016">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
     <td>
 <div> <code>"PLAINTEXT"</code> </div>
 </td>
@@ -1232,7 +1197,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--listeners--external--protocol"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1009">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1012">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
     <td>
 <div> <code>"PLAINTEXT"</code> </div>
 </td>
@@ -1242,7 +1207,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--listeners--interbroker--protocol"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1005">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1008">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
     <td>
 <div> <code>"PLAINTEXT"</code> </div>
 </td>
@@ -1252,7 +1217,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--provisioning--replicationFactor"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1017">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1020">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -1262,7 +1227,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--service--ports--client"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L996">hyperswitch-app.kafka.service.ports.client</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L999">hyperswitch-app.kafka.service.ports.client</a></div></td>
     <td>
 <div> <code>29092</code> </div>
 </td>
@@ -1272,7 +1237,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--kafka--zookeeper--replicaCount"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L991">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L994">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -1282,7 +1247,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--grafana--adminPassword"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1119">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1121">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
     <td>
 <div> <code>"admin"</code> </div>
 </td>
@@ -1292,7 +1257,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--grafana--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1116">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1118">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1302,7 +1267,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--grafana--image--tag"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1123">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1125">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
     <td>
 <div> <code>"10.0.1"</code> </div>
 </td>
@@ -1312,7 +1277,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--loki--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1096">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1098">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1322,7 +1287,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--loki--fullnameOverride"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1099">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1101">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
     <td>
 <div> <code>"loki"</code> </div>
 </td>
@@ -1332,7 +1297,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loki-stack--promtail--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1103">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1105">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1342,7 +1307,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--mailhog--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1087">hyperswitch-app.mailhog.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1089">hyperswitch-app.mailhog.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1352,7 +1317,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--mailhog--fullnameOverride"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1090">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1092">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
     <td>
 <div> <code>"mailhog"</code> </div>
 </td>
@@ -1522,7 +1487,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--vector--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1128">hyperswitch-app.vector.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1130">hyperswitch-app.vector.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -1532,7 +1497,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--vector--env[0]"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1132">hyperswitch-app.vector.env[0]</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1134">hyperswitch-app.vector.env[0]</a></div></td>
     <td>
 <div> <code>{
   "name": "KAFKA_HOST",
@@ -3392,7 +3357,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--autoscaling--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L962">hyperswitch-app.autoscaling.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L963">hyperswitch-app.autoscaling.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -3402,7 +3367,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--autoscaling--maxReplicas"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L964">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L965">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
     <td>
 <div> <code>10</code> </div>
 </td>
@@ -3412,7 +3377,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--autoscaling--minReplicas"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L963">hyperswitch-app.autoscaling.minReplicas</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L964">hyperswitch-app.autoscaling.minReplicas</a></div></td>
     <td>
 <div> <code>1</code> </div>
 </td>
@@ -3422,7 +3387,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--autoscaling--targetCPUUtilizationPercentage"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L965">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L966">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td>
 <div> <code>80</code> </div>
 </td>
@@ -3432,7 +3397,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--clickhouse--image--tag"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1041">hyperswitch-app.clickhouse.image.tag</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1043">hyperswitch-app.clickhouse.image.tag</a></div></td>
     <td>
 <div> <code>24.3</code> </div>
 </td>
@@ -3441,18 +3406,8 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 	
 <tr>
-    <td id="hyperswitch-app--clickhouse--resourcesPreset"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1032">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
-    <td>
-<div> <code>"none"</code> </div>
-</td>
-    <td></td>
-</tr>
-
-	
-<tr>
     <td id="hyperswitch-app--hyperswitch-card-vault--enabled"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L968">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L969">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
     <td>
 <div> <code>true</code> </div>
 </td>
@@ -3492,7 +3447,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--initDB--migration--image"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L956">hyperswitch-app.initDB.migration.image</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L957">hyperswitch-app.initDB.migration.image</a></div></td>
     <td>
 <div> <code>"christophwurst/diesel-cli:latest"</code> </div>
 </td>
@@ -3501,8 +3456,38 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 	
 <tr>
+    <td id="hyperswitch-app--initDB--refs"><div style="max-width: 300px;">
+    <a href="../hyperswitch-app/values.yaml#L955">hyperswitch-app.initDB.refs</a></div></td>
+    <td>
+<div> <code>"tags"</code> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-app--kafka--broker--resourcesPreset"><div style="max-width: 300px;">
+    <a href="../hyperswitch-app/values.yaml#L988">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
+    <td>
+<div> <code>"none"</code> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
+    <td id="hyperswitch-app--kafka--controller--resourcesPreset"><div style="max-width: 300px;">
+    <a href="../hyperswitch-app/values.yaml#L983">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
+    <td>
+<div> <code>"none"</code> </div>
+</td>
+    <td></td>
+</tr>
+
+	
+<tr>
     <td id="hyperswitch-app--kafka--extraConfig"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L1021">hyperswitch-app.kafka.extraConfig</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L1024">hyperswitch-app.kafka.extraConfig</a></div></td>
     <td>
 <div> <code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code> </div>
 </td>
@@ -3512,7 +3497,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 	
 <tr>
     <td id="hyperswitch-app--loadBalancer--targetSecurityGroup"><div style="max-width: 300px;">
-    <a href="../hyperswitch-app/values.yaml#L959">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
+    <a href="../hyperswitch-app/values.yaml#L960">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
     <td>
 <div> <code>"loadBalancer-sg"</code> </div>
 </td>
