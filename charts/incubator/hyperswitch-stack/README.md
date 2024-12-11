@@ -201,8 +201,10 @@ Join our Conversation in [Slack](https://join.slack.com/t/hyperswitch-io/shared_
 
 When you want others to use the changes you have added you need to package it and then index it
 ```bash
+cd hyperswitch-helm/charts/incubator/hyperswitch-stack
 helm package .
 helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
+mkdir -p ../../v<version> && mv hyperswitch-stack-<version>.tgz index.yaml ../../v<version>
 ```
 
 ## Requirements

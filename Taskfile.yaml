@@ -13,9 +13,11 @@ tasks:
     #language=sh
     cmds:
       - >
-        helm package charts/incubator/hyperswitch-stack
-        --destination repo
-        --dependency-update
+        STACK=charts/incubator/hyperswitch-stack &&
+        version=$(grep '^version:' $STACK/Chart.yaml | awk '{print $2}') &&
+        helm package $STACK --dependency-update &&
+        helm repo index $STACK --url https://juspay.github.io/hyperswitch-helm/v$version &&
+        mkdir -p v$version && mv hyperswitch-stack-$version.tgz $STACK/index.yaml v$version
     aliases:
       - pihh
 
