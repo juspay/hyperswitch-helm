@@ -213,7 +213,7 @@ helm repo index . --url https://juspay.github.io/hyperswitch-helm/<version>
 
 {{ define "chart.valueDefaultSectionRowRender" }}
 <tr>
-    <td id="{{ .Key | replace "." "--" }}"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="{{ if .Dependency }}../{{- $prefix := index (splitList "." .Dependency ) (sub (len (splitList "." .Dependency)) 1) -}}{{ $prefix }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
     <td>{{ template "chart.valueDefaultSectionColumnRender" . }}</td>
     <td>{{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }}</td>

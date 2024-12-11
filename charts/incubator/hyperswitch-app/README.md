@@ -164,7 +164,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 <tbody>
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__agreement_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L748">application.controlCenter.env.default__endpoints__agreement_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"</pre> </div>
@@ -174,7 +174,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__agreement_version"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L754">application.controlCenter.env.default__endpoints__agreement_version</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"1.0.0"</pre> </div>
@@ -184,7 +184,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__dss_certificate_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L751">application.controlCenter.env.default__endpoints__dss_certificate_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"</pre> </div>
@@ -194,7 +194,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__favicon_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L742">application.controlCenter.env.default__endpoints__favicon_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -204,7 +204,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__logo_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L739">application.controlCenter.env.default__endpoints__logo_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -214,7 +214,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__endpoints__mixpanel_token"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L745">application.controlCenter.env.default__endpoints__mixpanel_token</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dd4da7f62941557e716fbc0a19f9cc7e"</pre> </div>
@@ -224,7 +224,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__branding"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L808">application.controlCenter.env.default__features__branding</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -234,7 +234,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__email"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L763">application.controlCenter.env.default__features__email</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -244,7 +244,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__feedback"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L787">application.controlCenter.env.default__features__feedback</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -254,7 +254,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__frm"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L775">application.controlCenter.env.default__features__frm</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -264,7 +264,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__generate_report"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L793">application.controlCenter.env.default__features__generate_report</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -274,7 +274,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__is_live_mode"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L760">application.controlCenter.env.default__features__is_live_mode</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -284,7 +284,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__mixpanel"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L790">application.controlCenter.env.default__features__mixpanel</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -294,7 +294,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__payout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L778">application.controlCenter.env.default__features__payout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -304,7 +304,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__quick_start"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L766">application.controlCenter.env.default__features__quick_start</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -314,7 +314,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__recon"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L781">application.controlCenter.env.default__features__recon</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -324,7 +324,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__sample_data"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L772">application.controlCenter.env.default__features__sample_data</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -334,7 +334,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__surcharge"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L799">application.controlCenter.env.default__features__surcharge</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -344,7 +344,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__system_metrics"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L769">application.controlCenter.env.default__features__system_metrics</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -354,7 +354,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__test_live_toggle"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L757">application.controlCenter.env.default__features__test_live_toggle</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -364,7 +364,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__test_processors"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L784">application.controlCenter.env.default__features__test_processors</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -374,7 +374,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__totp"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L812">application.controlCenter.env.default__features__totp</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -384,7 +384,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__user_journey_analytics"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L796">application.controlCenter.env.default__features__user_journey_analytics</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -394,7 +394,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__theme__primary_color"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L730">application.controlCenter.env.default__theme__primary_color</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"#006DF9"</pre> </div>
@@ -404,7 +404,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__theme__primary_hover_color"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L733">application.controlCenter.env.default__theme__primary_hover_color</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"#005ED6"</pre> </div>
@@ -414,7 +414,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__theme__sidebar_color"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L736">application.controlCenter.env.default__theme__sidebar_color</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"#242F48"</pre> </div>
@@ -424,7 +424,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--mixpanelToken"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L727">application.controlCenter.env.mixpanelToken</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dd4da7f62941557e716fbc0a19f9cc7e"</pre> </div>
@@ -448,7 +448,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 <tbody>
 	
 <tr>
-    <td id="application--server--analytics--clickhouse--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L270">application.server.analytics.clickhouse.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
@@ -458,7 +458,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--clickhouse--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L273">application.server.analytics.clickhouse.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://clickhouse:8123"</pre> </div>
@@ -468,7 +468,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--clickhouse--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L279">application.server.analytics.clickhouse.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -478,7 +478,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--clickhouse--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L276">application.server.analytics.clickhouse.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
@@ -488,7 +488,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--aws_region"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L315">application.server.email.aws_region</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"us-east-1"</pre> </div>
@@ -498,7 +498,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--aws_ses--email_role_arn"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L319">application.server.email.aws_ses.email_role_arn</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"arn:aws:iam::123456789012:role/SendEmailRole"</pre> </div>
@@ -508,7 +508,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--aws_ses--sts_role_session_name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L322">application.server.email.aws_ses.sts_role_session_name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"SendEmailRole"</pre> </div>
@@ -518,7 +518,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--prod_intent_recipient_email"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L325">application.server.email.prod_intent_recipient_email</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"business@example.com"</pre> </div>
@@ -528,7 +528,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--recon_recipient_email"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L328">application.server.email.recon_recipient_email</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"recon@example.com"</pre> </div>
@@ -538,7 +538,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--sender_email"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L331">application.server.email.sender_email</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"example@example.com"</pre> </div>
@@ -548,7 +548,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L337">application.server.email.smtp.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"mailhog"</pre> </div>
@@ -558,7 +558,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L342">application.server.email.smtp.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -568,7 +568,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--paze_decrypt_keys--paze_private_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L507">application.server.paze_decrypt_keys.paze_private_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PAZE_PRIVATE_KEY"</pre> </div>
@@ -578,7 +578,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--paze_decrypt_keys--paze_private_key_passphrase"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L510">application.server.paze_decrypt_keys.paze_private_key_passphrase</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PAZE_PRIVATE_KEY_PASSPHRASE"</pre> </div>
@@ -588,7 +588,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--admin_api_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L156">application.server.secrets.admin_api_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"test_admin"</pre> </div>
@@ -598,7 +598,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--api_hash_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L261">application.server.secrets.api_hash_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"</pre> </div>
@@ -608,7 +608,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_merchant_cert"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L231">application.server.secrets.apple_pay_merchant_cert</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -618,7 +618,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_merchant_cert_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L234">application.server.secrets.apple_pay_merchant_cert_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -628,7 +628,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_merchant_conf_merchant_cert"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L243">application.server.secrets.apple_pay_merchant_conf_merchant_cert</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -638,7 +638,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_merchant_conf_merchant_cert_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L246">application.server.secrets.apple_pay_merchant_conf_merchant_cert_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -648,7 +648,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_merchant_conf_merchant_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L249">application.server.secrets.apple_pay_merchant_conf_merchant_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -658,7 +658,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_ppc"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L237">application.server.secrets.apple_pay_ppc</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -668,7 +668,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--apple_pay_ppc_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L240">application.server.secrets.apple_pay_ppc_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -678,7 +678,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--forex_api_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L252">application.server.secrets.forex_api_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -688,7 +688,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--forex_fallback_api_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L255">application.server.secrets.forex_fallback_api_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -698,7 +698,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--jwt_secret"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L159">application.server.secrets.jwt_secret</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"test_admin"</pre> </div>
@@ -708,7 +708,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_jwekey_vault_encryption_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L175">application.server.secrets.kms_jwekey_vault_encryption_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"</pre> </div>
@@ -718,7 +718,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_jwekey_vault_private_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L188">application.server.secrets.kms_jwekey_vault_private_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"</pre> </div>
@@ -728,7 +728,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_key_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L168">application.server.secrets.kms_key_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"kms_key_id"</pre> </div>
@@ -738,7 +738,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_key_region"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L171">application.server.secrets.kms_key_region</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"us-east-1"</pre> </div>
@@ -748,7 +748,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--master_enc_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L162">application.server.secrets.master_enc_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c"</pre> </div>
@@ -758,7 +758,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--pm_auth_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L258">application.server.secrets.pm_auth_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -768,7 +768,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--recon_admin_api_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L165">application.server.secrets.recon_admin_api_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"test_admin"</pre> </div>
@@ -778,7 +778,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--redis_temp_locker_encryption_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L228">application.server.secrets.redis_temp_locker_encryption_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -788,7 +788,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--user_auth_encryption_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L264">application.server.secrets.user_auth_encryption_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -812,7 +812,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 <tbody>
 	
 <tr>
-    <td id="clickhouse--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1041">clickhouse.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -822,7 +822,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1038">clickhouse.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
@@ -832,7 +832,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--config--TZ"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1047">clickhouse.config.TZ</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Asia/Kolkata"</pre> </div>
@@ -842,7 +842,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1031">clickhouse.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -852,7 +852,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--fullnameOverride"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1034">clickhouse.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"clickhouse"</pre> </div>
@@ -862,8 +862,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--logLevel"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1068">clickhouse.logLevel</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1060">clickhouse.logLevel</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"error"</pre> </div>
 </td>
@@ -872,7 +872,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1053">clickhouse.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -882,7 +882,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--shards"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1050">clickhouse.shards</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -892,8 +892,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--zookeeper--replicaCount"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1065">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1057">clickhouse.zookeeper.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
 </td>
@@ -902,7 +902,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L911">externalPostgresql.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -912,7 +912,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--primary--auth--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L928">externalPostgresql.primary.auth.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -922,7 +922,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--primary--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L922">externalPostgresql.primary.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -932,7 +932,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--primary--auth--plainpassword"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L925">externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -942,7 +942,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--primary--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L919">externalPostgresql.primary.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -952,7 +952,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--primary--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L915">externalPostgresql.primary.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"postgresql-ext"</pre> </div>
@@ -962,7 +962,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--auth--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L948">externalPostgresql.readOnly.auth.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -972,7 +972,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L942">externalPostgresql.readOnly.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -982,7 +982,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--auth--plainpassword"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L945">externalPostgresql.readOnly.auth.plainpassword</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -992,7 +992,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L939">externalPostgresql.readOnly.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -1002,7 +1002,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L932">externalPostgresql.readOnly.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -1012,7 +1012,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalPostgresql--readOnly--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L935">externalPostgresql.readOnly.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"postgres-service"</pre> </div>
@@ -1022,7 +1022,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalRedis--auth--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L848">externalRedis.auth.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1032,7 +1032,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalRedis--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L854">externalRedis.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -1042,7 +1042,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalRedis--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L851">externalRedis.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -1052,7 +1052,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalRedis--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L841">externalRedis.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -1062,7 +1062,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="externalRedis--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L844">externalRedis.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"redis-ext-master"</pre> </div>
@@ -1072,7 +1072,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--broker--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L987">kafka.broker.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1082,7 +1082,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--controller--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L982">kafka.controller.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1092,7 +1092,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L974">kafka.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1102,7 +1102,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--fullnameOverride"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L977">kafka.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"kafka0"</pre> </div>
@@ -1112,7 +1112,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--listeners--client--protocol"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1004">kafka.listeners.client.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
@@ -1122,7 +1122,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--listeners--controller--protocol"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1016">kafka.listeners.controller.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
@@ -1132,7 +1132,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--listeners--external--protocol"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1012">kafka.listeners.external.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
@@ -1142,7 +1142,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--listeners--interbroker--protocol"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1008">kafka.listeners.interbroker.protocol</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"PLAINTEXT"</pre> </div>
@@ -1152,7 +1152,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--provisioning--replicationFactor"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1020">kafka.provisioning.replicationFactor</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1162,7 +1162,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--service--ports--client"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L999">kafka.service.ports.client</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>29092</pre> </div>
@@ -1172,7 +1172,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--zookeeper--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L994">kafka.zookeeper.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1182,8 +1182,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--grafana--adminPassword"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1121">loki-stack.grafana.adminPassword</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1113">loki-stack.grafana.adminPassword</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"admin"</pre> </div>
 </td>
@@ -1192,8 +1192,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--grafana--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1118">loki-stack.grafana.enabled</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1110">loki-stack.grafana.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1202,8 +1202,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--grafana--image--tag"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1125">loki-stack.grafana.image.tag</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1117">loki-stack.grafana.image.tag</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"10.0.1"</pre> </div>
 </td>
@@ -1212,8 +1212,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--loki--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1098">loki-stack.loki.enabled</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1090">loki-stack.loki.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1222,8 +1222,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--loki--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1101">loki-stack.loki.fullnameOverride</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1093">loki-stack.loki.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"loki"</pre> </div>
 </td>
@@ -1232,8 +1232,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loki-stack--promtail--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1105">loki-stack.promtail.enabled</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1097">loki-stack.promtail.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1242,8 +1242,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="mailhog--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1089">mailhog.enabled</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1081">mailhog.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1252,8 +1252,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="mailhog--fullnameOverride"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1092">mailhog.fullnameOverride</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1084">mailhog.fullnameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"mailhog"</pre> </div>
 </td>
@@ -1262,7 +1262,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--architecture"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L881">postgresql.architecture</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"replication"</pre> </div>
@@ -1272,7 +1272,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L866">postgresql.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1282,7 +1282,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--global--postgresql--auth--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L878">postgresql.global.postgresql.auth.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -1292,7 +1292,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--global--postgresql--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L875">postgresql.global.postgresql.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"ZGJwYXNzd29yZDEx"</pre> </div>
@@ -1302,7 +1302,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--global--postgresql--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L872">postgresql.global.postgresql.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch"</pre> </div>
@@ -1312,7 +1312,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--primary--name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L892">postgresql.primary.name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -1322,7 +1322,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--primary--resources--requests--cpu"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L897">postgresql.primary.resources.requests.cpu</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"150m"</pre> </div>
@@ -1332,7 +1332,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--readReplicas--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L901">postgresql.readReplicas.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1342,7 +1342,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--readReplicas--resources--requests--cpu"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L906">postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"100m"</pre> </div>
@@ -1352,7 +1352,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--replication--numSynchronousReplicas"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L888">postgresql.replication.numSynchronousReplicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1362,7 +1362,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="postgresql--replication--synchronousCommit"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L885">postgresql.replication.synchronousCommit</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"off"</pre> </div>
@@ -1372,7 +1372,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redis--auth--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L833">redis.auth.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -1382,7 +1382,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redis--auth--sentinel"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L836">redis.auth.sentinel</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -1392,7 +1392,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redis--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L821">redis.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1402,7 +1402,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redis--master--count"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L825">redis.master.count</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1412,7 +1412,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redis--replica--replicaCount"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L829">redis.replica.replicaCount</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>0</pre> </div>
@@ -1422,8 +1422,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="vector--enabled"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1130">vector.enabled</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1122">vector.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
 </td>
@@ -1432,8 +1432,8 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="vector--env[0]"><div style="max-width: 300px;">
-    <a href="./values.yaml#L1134">vector.env[0]</a></div></td>
+    <td><div style="max-width: 300px;">
+    <a href="./values.yaml#L1126">vector.env[0]</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
   "name": "KAFKA_HOST",
@@ -1459,7 +1459,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 <tbody>
 	
 <tr>
-    <td id="services--consumer--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L15">services.consumer.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-consumer:v1.112.0"</pre> </div>
@@ -1469,7 +1469,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--controlCenter--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L23">services.controlCenter.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-control-center:v1.34.2"</pre> </div>
@@ -1479,7 +1479,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--producer--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L19">services.producer.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-producer:v1.112.0"</pre> </div>
@@ -1489,7 +1489,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--router--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L11">services.router.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://localhost:8080"</pre> </div>
@@ -1499,7 +1499,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--router--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L8">services.router.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-router:v1.112.0"</pre> </div>
@@ -1509,7 +1509,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--router--version"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L5">services.router.version</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"v1.112.0"</pre> </div>
@@ -1519,7 +1519,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--sdk--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L27">services.sdk.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://localhost:9090"</pre> </div>
@@ -1529,7 +1529,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--sdk--subversion"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L33">services.sdk.subversion</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"v0"</pre> </div>
@@ -1539,7 +1539,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="services--sdk--version"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L30">services.sdk.version</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"0.103.1"</pre> </div>
@@ -1564,7 +1564,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 <tbody>
 	
 <tr>
-    <td id="global--annotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L4">global.annotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{}</pre> </div>
@@ -1574,7 +1574,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="global--nodeAffinity--requiredDuringSchedulingIgnoredDuringExecution"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L8">global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>[]</pre> </div>
@@ -1584,7 +1584,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--binary"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L723">application.controlCenter.env.binary</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dashboard"</pre> </div>
@@ -1594,7 +1594,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__authentication_analytics"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L809">application.controlCenter.env.default__features__authentication_analytics</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1604,7 +1604,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__compliance_certificate"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L815">application.controlCenter.env.default__features__compliance_certificate</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1614,7 +1614,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__configure_pmts"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L805">application.controlCenter.env.default__features__configure_pmts</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1624,7 +1624,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__custom_webhook_headers"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L814">application.controlCenter.env.default__features__custom_webhook_headers</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1634,7 +1634,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__dispute_analytics"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L804">application.controlCenter.env.default__features__dispute_analytics</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1644,7 +1644,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__dispute_evidence_upload"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L800">application.controlCenter.env.default__features__dispute_evidence_upload</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1654,7 +1654,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__global_search"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L803">application.controlCenter.env.default__features__global_search</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1664,7 +1664,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__live_users_counter"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L813">application.controlCenter.env.default__features__live_users_counter</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1674,7 +1674,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__paypal_automatic_flow"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L801">application.controlCenter.env.default__features__paypal_automatic_flow</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1684,7 +1684,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__performance_monitor"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L816">application.controlCenter.env.default__features__performance_monitor</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1694,7 +1694,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__pm_authentication_processor"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L817">application.controlCenter.env.default__features__pm_authentication_processor</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1704,7 +1704,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--default__features__threeds_authenticator"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L802">application.controlCenter.env.default__features__threeds_authenticator</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"false"</pre> </div>
@@ -1714,7 +1714,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--env--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L724">application.controlCenter.env.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-control-center"</pre> </div>
@@ -1724,7 +1724,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--controlCenter--replicas"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L681">application.controlCenter.replicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1734,7 +1734,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--source"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L281">application.server.analytics.source</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"clickhouse"</pre> </div>
@@ -1744,7 +1744,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--sqlx--connection_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L284">application.server.analytics.sqlx.connection_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -1754,7 +1754,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--sqlx--pool_size"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L286">application.server.analytics.sqlx.pool_size</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5</pre> </div>
@@ -1764,7 +1764,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--analytics--sqlx--queue_strategy"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L288">application.server.analytics.sqlx.queue_strategy</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Fifo"</pre> </div>
@@ -1774,7 +1774,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--annotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L140">application.server.annotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
@@ -1786,7 +1786,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--applepay_merchant_configs--applepay_endpoint"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L291">application.server.applepay_merchant_configs.applepay_endpoint</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://apple-pay-gateway.apple.com/paymentservices/registerMerchant"</pre> </div>
@@ -1796,7 +1796,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--cell_information--id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L294">application.server.cell_information.id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"12345"</pre> </div>
@@ -1806,7 +1806,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--connector_onboarding--paypal--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L297">application.server.connector_onboarding.paypal.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1816,7 +1816,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--connector_request_reference_id_config--merchant_ids_send_payment_id_as_connector_request_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L300">application.server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"['merchant_id_1','merchant_id_2']"</pre> </div>
@@ -1826,7 +1826,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--cors--allowed_methods"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L303">application.server.cors.allowed_methods</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"GET,POST,PUT,DELETE"</pre> </div>
@@ -1836,7 +1836,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--cors--max_age"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L305">application.server.cors.max_age</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -1846,7 +1846,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--cors--wildcard_origin"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L307">application.server.cors.wildcard_origin</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -1856,7 +1856,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--active_email_client"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L310">application.server.email.active_email_client</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"SES"</pre> </div>
@@ -1866,7 +1866,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--allowed_unverified_days"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L312">application.server.email.allowed_unverified_days</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -1876,7 +1876,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--connection"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L334">application.server.email.smtp.connection</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"plaintext"</pre> </div>
@@ -1886,7 +1886,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--port"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L344">application.server.email.smtp.port</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"1025"</pre> </div>
@@ -1896,7 +1896,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L346">application.server.email.smtp.timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -1906,7 +1906,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--email--smtp--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L339">application.server.email.smtp.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -1916,7 +1916,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--encryption_management--encryption_manager"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L349">application.server.encryption_management.encryption_manager</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"no_encryption"</pre> </div>
@@ -1926,7 +1926,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--api_logs_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L355">application.server.events.kafka.api_logs_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-api-log-events"</pre> </div>
@@ -1936,7 +1936,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--attempt_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L357">application.server.events.kafka.attempt_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-payment-attempt-events"</pre> </div>
@@ -1946,7 +1946,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--audit_events_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L359">application.server.events.kafka.audit_events_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-audit-events"</pre> </div>
@@ -1956,7 +1956,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--authentication_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L361">application.server.events.kafka.authentication_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-authentication-events"</pre> </div>
@@ -1966,7 +1966,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--brokers"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L362">application.server.events.kafka.brokers</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"['kafka0:29092']"</pre> </div>
@@ -1976,7 +1976,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--connector_logs_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L364">application.server.events.kafka.connector_logs_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-outgoing-connector-events"</pre> </div>
@@ -1986,7 +1986,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--consolidated_events_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L366">application.server.events.kafka.consolidated_events_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-consolidated-events"</pre> </div>
@@ -1996,7 +1996,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--dispute_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L368">application.server.events.kafka.dispute_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-dispute-events"</pre> </div>
@@ -2006,7 +2006,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--fraud_check_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L370">application.server.events.kafka.fraud_check_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-fraud-check-events"</pre> </div>
@@ -2016,7 +2016,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--intent_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L372">application.server.events.kafka.intent_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-payment-intent-events"</pre> </div>
@@ -2026,7 +2026,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--outgoing_webhook_logs_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L374">application.server.events.kafka.outgoing_webhook_logs_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-outgoing-webhook-events"</pre> </div>
@@ -2036,7 +2036,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--payout_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L376">application.server.events.kafka.payout_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-payout-events"</pre> </div>
@@ -2046,7 +2046,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--kafka--refund_analytics_topic"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L378">application.server.events.kafka.refund_analytics_topic</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-refund-events"</pre> </div>
@@ -2056,7 +2056,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--events--source"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L352">application.server.events.source</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"kafka"</pre> </div>
@@ -2066,7 +2066,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--forex_api--api_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L387">application.server.forex_api.api_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>20001</pre> </div>
@@ -2076,7 +2076,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--forex_api--call_delay"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L381">application.server.forex_api.call_delay</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>21601</pre> </div>
@@ -2086,7 +2086,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--forex_api--local_fetch_retry_count"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L383">application.server.forex_api.local_fetch_retry_count</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5</pre> </div>
@@ -2096,7 +2096,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--forex_api--local_fetch_retry_delay"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L385">application.server.forex_api.local_fetch_retry_delay</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1010</pre> </div>
@@ -2106,7 +2106,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--forex_api--redis_lock_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L389">application.server.forex_api.redis_lock_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>260001</pre> </div>
@@ -2116,7 +2116,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--enabled_payment_methods--bank_transfer"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L398">application.server.generic_link.payment_method_collect.enabled_payment_methods.bank_transfer</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"ach,bacs,sepa"</pre> </div>
@@ -2126,7 +2126,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--enabled_payment_methods--card"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L397">application.server.generic_link.payment_method_collect.enabled_payment_methods.card</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"credit,debit"</pre> </div>
@@ -2136,7 +2136,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--enabled_payment_methods--wallet"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L399">application.server.generic_link.payment_method_collect.enabled_payment_methods.wallet</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"paypal,pix,venmo"</pre> </div>
@@ -2146,7 +2146,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--ui_config--logo"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L393">application.server.generic_link.payment_method_collect.ui_config.logo</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://app.hyperswitch.io/HyperswitchFavicon.png"</pre> </div>
@@ -2156,7 +2156,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--ui_config--merchant_name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L394">application.server.generic_link.payment_method_collect.ui_config.merchant_name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"HyperSwitch"</pre> </div>
@@ -2166,7 +2166,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payment_method_collect--ui_config--theme"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L395">application.server.generic_link.payment_method_collect.ui_config.theme</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"#4285F4"</pre> </div>
@@ -2176,7 +2176,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payout_link--enabled_payment_methods--card"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L402">application.server.generic_link.payout_link.enabled_payment_methods.card</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"credit,debit"</pre> </div>
@@ -2186,7 +2186,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payout_link--ui_config--logo"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L404">application.server.generic_link.payout_link.ui_config.logo</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://app.hyperswitch.io/HyperswitchFavicon.png"</pre> </div>
@@ -2196,7 +2196,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payout_link--ui_config--merchant_name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L405">application.server.generic_link.payout_link.ui_config.merchant_name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"HyperSwitch"</pre> </div>
@@ -2206,7 +2206,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--generic_link--payout_link--ui_config--theme"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L406">application.server.generic_link.payout_link.ui_config.theme</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"#4285F4"</pre> </div>
@@ -2216,7 +2216,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--grpc_client--dynamic_routing_client--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L410">application.server.grpc_client.dynamic_routing_client.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"localhost"</pre> </div>
@@ -2226,7 +2226,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--grpc_client--dynamic_routing_client--port"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L412">application.server.grpc_client.dynamic_routing_client.port</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>7000</pre> </div>
@@ -2236,7 +2236,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--grpc_client--dynamic_routing_client--service"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L414">application.server.grpc_client.dynamic_routing_client.service</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dynamo"</pre> </div>
@@ -2246,7 +2246,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--labels"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L143">application.server.labels</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
@@ -2258,7 +2258,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--lock_settings--delay_between_retries_in_milliseconds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L418">application.server.lock_settings.delay_between_retries_in_milliseconds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>500</pre> </div>
@@ -2268,7 +2268,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--lock_settings--redis_lock_expiry_seconds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L420">application.server.lock_settings.redis_lock_expiry_seconds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>180</pre> </div>
@@ -2278,7 +2278,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L426">application.server.locker.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://hyperswitch-vault"</pre> </div>
@@ -2288,7 +2288,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--host_rs"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L428">application.server.locker.host_rs</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -2298,7 +2298,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--locker_enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L430">application.server.locker.locker_enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -2308,7 +2308,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--locker_signing_key_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L432">application.server.locker.locker_signing_key_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"1"</pre> </div>
@@ -2318,7 +2318,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--mock_locker"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L434">application.server.locker.mock_locker</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2328,7 +2328,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--locker--ttl_for_storage_in_secs"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L436">application.server.locker.ttl_for_storage_in_secs</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>220752000</pre> </div>
@@ -2338,7 +2338,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--console--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L439">application.server.log.console.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -2348,7 +2348,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--console--level"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L441">application.server.log.console.level</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"DEBUG"</pre> </div>
@@ -2358,7 +2358,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--console--log_format"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L442">application.server.log.console.log_format</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"json"</pre> </div>
@@ -2368,7 +2368,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--file--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L444">application.server.log.file.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2378,7 +2378,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--file--level"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L445">application.server.log.file.level</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"DEBUG"</pre> </div>
@@ -2388,7 +2388,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--file--log_format"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L446">application.server.log.file.log_format</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"json"</pre> </div>
@@ -2398,7 +2398,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--bg_metrics_collection_interval_in_secs"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L450">application.server.log.telemetry.bg_metrics_collection_interval_in_secs</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>15</pre> </div>
@@ -2408,7 +2408,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--ignore_errors"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L452">application.server.log.telemetry.ignore_errors</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2418,7 +2418,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--metrics_enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L454">application.server.log.telemetry.metrics_enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2428,7 +2428,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--otel_exporter_otlp_endpoint"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L456">application.server.log.telemetry.otel_exporter_otlp_endpoint</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://localhost:4317"</pre> </div>
@@ -2438,7 +2438,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--otel_exporter_otlp_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L458">application.server.log.telemetry.otel_exporter_otlp_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5000</pre> </div>
@@ -2448,7 +2448,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--route_to_trace"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L459">application.server.log.telemetry.route_to_trace</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"['*/confirm']"</pre> </div>
@@ -2458,7 +2458,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--sampling_rate"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L460">application.server.log.telemetry.sampling_rate</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>0.1</pre> </div>
@@ -2468,7 +2468,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--traces_enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L462">application.server.log.telemetry.traces_enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2478,7 +2478,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--log--telemetry--use_xray_generator"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L464">application.server.log.telemetry.use_xray_generator</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2488,7 +2488,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--master_database--connection_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L468">application.server.master_database.connection_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -2498,7 +2498,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--master_database--pool_size"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L470">application.server.master_database.pool_size</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"20"</pre> </div>
@@ -2508,7 +2508,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--master_database--queue_strategy"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L472">application.server.master_database.queue_strategy</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Fifo"</pre> </div>
@@ -2518,7 +2518,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L474">application.server.multitenancy.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2528,7 +2528,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--global_tenant--clickhouse_database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L476">application.server.multitenancy.global_tenant.clickhouse_database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
@@ -2538,7 +2538,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--global_tenant--redis_key_prefix"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L477">application.server.multitenancy.global_tenant.redis_key_prefix</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -2548,7 +2548,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--global_tenant--schema"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L478">application.server.multitenancy.global_tenant.schema</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"public"</pre> </div>
@@ -2558,7 +2558,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--tenants--public--base_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L481">application.server.multitenancy.tenants.public.base_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://localhost:8080"</pre> </div>
@@ -2568,7 +2568,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--tenants--public--clickhouse_database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L482">application.server.multitenancy.tenants.public.clickhouse_database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"default"</pre> </div>
@@ -2578,7 +2578,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--tenants--public--redis_key_prefix"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L483">application.server.multitenancy.tenants.public.redis_key_prefix</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -2588,7 +2588,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--multitenancy--tenants--public--schema"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L484">application.server.multitenancy.tenants.public.schema</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"public"</pre> </div>
@@ -2598,7 +2598,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--auth--auth"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L487">application.server.opensearch.auth.auth</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"basic"</pre> </div>
@@ -2608,7 +2608,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L489">application.server.opensearch.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"admin"</pre> </div>
@@ -2618,7 +2618,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--auth--region"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L490">application.server.opensearch.auth.region</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"eu-central-1"</pre> </div>
@@ -2628,7 +2628,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L488">application.server.opensearch.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"admin"</pre> </div>
@@ -2638,7 +2638,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L491">application.server.opensearch.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://localhost:9200"</pre> </div>
@@ -2648,7 +2648,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--disputes"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L493">application.server.opensearch.indexes.disputes</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-dispute-events"</pre> </div>
@@ -2658,7 +2658,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--payment_attempts"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L494">application.server.opensearch.indexes.payment_attempts</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-payment-attempt-events"</pre> </div>
@@ -2668,7 +2668,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--payment_intents"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L495">application.server.opensearch.indexes.payment_intents</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-payment-intent-events"</pre> </div>
@@ -2678,7 +2678,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--refunds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L496">application.server.opensearch.indexes.refunds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"hyperswitch-refund-events"</pre> </div>
@@ -2688,7 +2688,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--sessionizer_disputes"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L497">application.server.opensearch.indexes.sessionizer_disputes</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"sessionizer-dispute-events"</pre> </div>
@@ -2698,7 +2698,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--sessionizer_payment_attempts"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L498">application.server.opensearch.indexes.sessionizer_payment_attempts</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"sessionizer-payment-attempt-events"</pre> </div>
@@ -2708,7 +2708,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--sessionizer_payment_intents"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L499">application.server.opensearch.indexes.sessionizer_payment_intents</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"sessionizer-payment-intent-events"</pre> </div>
@@ -2718,7 +2718,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--opensearch--indexes--sessionizer_refunds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L500">application.server.opensearch.indexes.sessionizer_refunds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"sessionizer-refund-events"</pre> </div>
@@ -2728,7 +2728,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--payment_method_auth--redis_expiry"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L503">application.server.payment_method_auth.redis_expiry</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>900</pre> </div>
@@ -2738,7 +2738,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--podAnnotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L137">application.server.podAnnotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
@@ -2750,7 +2750,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--progressDeadlineSeconds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L93">application.server.progressDeadlineSeconds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>600</pre> </div>
@@ -2760,7 +2760,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--proxy--bypass_proxy_urls"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L513">application.server.proxy.bypass_proxy_urls</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>[]</pre> </div>
@@ -2770,7 +2770,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--proxy--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L514">application.server.proxy.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2780,7 +2780,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--proxy--http_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L516">application.server.proxy.http_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://proxy_http_url"</pre> </div>
@@ -2790,7 +2790,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--proxy--https_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L518">application.server.proxy.https_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"https://proxy_https_url"</pre> </div>
@@ -2800,7 +2800,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--auto_pipeline"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L522">application.server.redis.auto_pipeline</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -2810,7 +2810,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--cluster_enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L524">application.server.redis.cluster_enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2820,7 +2820,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--cluster_urls"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L526">application.server.redis.cluster_urls</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']"</pre> </div>
@@ -2830,7 +2830,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--default_command_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L528">application.server.redis.default_command_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -2840,7 +2840,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--default_hash_ttl"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L530">application.server.redis.default_hash_ttl</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>900</pre> </div>
@@ -2850,7 +2850,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--default_ttl"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L532">application.server.redis.default_ttl</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>300</pre> </div>
@@ -2860,7 +2860,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--disable_auto_backpressure"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L534">application.server.redis.disable_auto_backpressure</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2870,7 +2870,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L535">application.server.redis.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"127.0.0.1"</pre> </div>
@@ -2880,7 +2880,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--max_feed_count"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L537">application.server.redis.max_feed_count</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>200</pre> </div>
@@ -2890,7 +2890,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--max_in_flight_commands"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L539">application.server.redis.max_in_flight_commands</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5000</pre> </div>
@@ -2900,7 +2900,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--pool_size"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L541">application.server.redis.pool_size</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5</pre> </div>
@@ -2910,7 +2910,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--port"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L542">application.server.redis.port</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>6379</pre> </div>
@@ -2920,7 +2920,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--reconnect_delay"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L544">application.server.redis.reconnect_delay</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5</pre> </div>
@@ -2930,7 +2930,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--reconnect_max_attempts"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L546">application.server.redis.reconnect_max_attempts</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>5</pre> </div>
@@ -2940,7 +2940,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--stream_read_count"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L548">application.server.redis.stream_read_count</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -2950,7 +2950,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--unresponsive_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L550">application.server.redis.unresponsive_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -2960,7 +2960,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--redis--use_legacy_version"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L552">application.server.redis.use_legacy_version</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -2970,7 +2970,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--replica_database--connection_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L556">application.server.replica_database.connection_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -2980,7 +2980,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--replica_database--pool_size"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L558">application.server.replica_database.pool_size</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"20"</pre> </div>
@@ -2990,7 +2990,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--replica_database--queue_strategy"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L560">application.server.replica_database.queue_strategy</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Fifo"</pre> </div>
@@ -3000,7 +3000,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--replicas"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L91">application.server.replicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -3010,7 +3010,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--report_download_config--dispute_function"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L563">application.server.report_download_config.dispute_function</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"report_download_config_dispute_function"</pre> </div>
@@ -3020,7 +3020,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--report_download_config--payment_function"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L565">application.server.report_download_config.payment_function</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"report_download_config_payment_function"</pre> </div>
@@ -3030,7 +3030,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--report_download_config--refund_function"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L567">application.server.report_download_config.refund_function</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"report_download_config_refund_function"</pre> </div>
@@ -3040,7 +3040,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--report_download_config--region"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L569">application.server.report_download_config.region</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"report_download_config_region"</pre> </div>
@@ -3050,7 +3050,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--run_env"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L571">application.server.run_env</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"sandbox"</pre> </div>
@@ -3060,7 +3060,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_connector_onboarding_paypal_client_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L221">application.server.secrets.kms_connector_onboarding_paypal_client_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -3070,7 +3070,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_connector_onboarding_paypal_client_secret"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L223">application.server.secrets.kms_connector_onboarding_paypal_client_secret</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -3080,7 +3080,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_connector_onboarding_paypal_partner_id"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L225">application.server.secrets.kms_connector_onboarding_paypal_partner_id</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -3090,7 +3090,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_jwekey_rust_locker_encryption_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L219">application.server.secrets.kms_jwekey_rust_locker_encryption_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -3100,7 +3100,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets--kms_jwekey_tunnel_private_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L217">application.server.secrets.kms_jwekey_tunnel_private_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"dummy_val"</pre> </div>
@@ -3110,7 +3110,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets_management--hc_vault--token"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L577">application.server.secrets_management.hc_vault.token</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"vault_token"</pre> </div>
@@ -3120,7 +3120,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets_management--hc_vault--url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L576">application.server.secrets_management.hc_vault.url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://vault:8200"</pre> </div>
@@ -3130,7 +3130,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--secrets_management--secrets_manager"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L574">application.server.secrets_management.secrets_manager</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"no_encryption"</pre> </div>
@@ -3140,7 +3140,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--server--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L580">application.server.server.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"0.0.0.0"</pre> </div>
@@ -3150,7 +3150,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--server--port"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L581">application.server.server.port</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>8080</pre> </div>
@@ -3160,7 +3160,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--server--request_body_limit"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L583">application.server.server.request_body_limit</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>32768</pre> </div>
@@ -3170,7 +3170,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--server--shutdown_timeout"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L586">application.server.server.shutdown_timeout</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -3180,7 +3180,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--server--workers"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L587">application.server.server.workers</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>8</pre> </div>
@@ -3190,7 +3190,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--serviceAccountAnnotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L146">application.server.serviceAccountAnnotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{
@@ -3202,7 +3202,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--strategy--rollingUpdate--maxSurge"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L97">application.server.strategy.rollingUpdate.maxSurge</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -3212,7 +3212,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--strategy--rollingUpdate--maxUnavailable"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L98">application.server.strategy.rollingUpdate.maxUnavailable</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>0</pre> </div>
@@ -3222,7 +3222,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--strategy--type"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L99">application.server.strategy.type</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"RollingUpdate"</pre> </div>
@@ -3232,7 +3232,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--terminationGracePeriodSeconds"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L135">application.server.terminationGracePeriodSeconds</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -3242,7 +3242,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--user--base_url"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L589">application.server.user.base_url</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"http://localhost:9000"</pre> </div>
@@ -3252,7 +3252,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--user--force_two_factor_auth"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L590">application.server.user.force_two_factor_auth</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -3262,7 +3262,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--user--password_validity_in_days"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L591">application.server.user.password_validity_in_days</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"90"</pre> </div>
@@ -3272,7 +3272,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--user--totp_issuer_name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L592">application.server.user.totp_issuer_name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"Hyperswitch Sandbox"</pre> </div>
@@ -3282,7 +3282,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="application--server--user--two_factor_auth_expiry_in_secs"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L593">application.server.user.two_factor_auth_expiry_in_secs</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"300"</pre> </div>
@@ -3292,7 +3292,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="autoscaling--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L963">autoscaling.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3302,7 +3302,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="autoscaling--maxReplicas"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L965">autoscaling.maxReplicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>10</pre> </div>
@@ -3312,7 +3312,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="autoscaling--minReplicas"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L964">autoscaling.minReplicas</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>1</pre> </div>
@@ -3322,7 +3322,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="autoscaling--targetCPUUtilizationPercentage"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L966">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>80</pre> </div>
@@ -3332,7 +3332,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="clickhouse--image--tag"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1043">clickhouse.image.tag</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>24.3</pre> </div>
@@ -3342,7 +3342,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L969">hyperswitch-card-vault.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3352,7 +3352,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="initDB--checkPGisUp--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L953">initDB.checkPGisUp.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"postgres:16-alpine3.19"</pre> </div>
@@ -3362,7 +3362,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="initDB--checkPGisUp--maxAttempt"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L954">initDB.checkPGisUp.maxAttempt</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -3372,7 +3372,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="initDB--enable"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L951">initDB.enable</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3382,7 +3382,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="initDB--migration--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L957">initDB.migration.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"christophwurst/diesel-cli:latest"</pre> </div>
@@ -3392,7 +3392,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="initDB--refs"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L955">initDB.refs</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"tags"</pre> </div>
@@ -3402,7 +3402,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--broker--resourcesPreset"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L988">kafka.broker.resourcesPreset</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"none"</pre> </div>
@@ -3412,7 +3412,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--controller--resourcesPreset"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L983">kafka.controller.resourcesPreset</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"none"</pre> </div>
@@ -3422,7 +3422,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="kafka--extraConfig"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L1024">kafka.extraConfig</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</pre> </div>
@@ -3432,7 +3432,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="loadBalancer--targetSecurityGroup"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L960">loadBalancer.targetSecurityGroup</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"loadBalancer-sg"</pre> </div>
@@ -3442,7 +3442,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redisMiscConfig--checkRedisIsUp--initContainer--enable"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L859">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3452,7 +3452,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redisMiscConfig--checkRedisIsUp--initContainer--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L860">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"redis:7.2.4"</pre> </div>
@@ -3462,7 +3462,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="redisMiscConfig--checkRedisIsUp--initContainer--maxAttempt"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="./values.yaml#L861">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -3472,7 +3472,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--config--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L127">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -3482,7 +3482,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--config--host"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L123">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -3492,7 +3492,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--config--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L126">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -3502,7 +3502,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--config--port"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L124">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -3512,7 +3512,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--config--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L125">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>null</pre> </div>
@@ -3522,7 +3522,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--external--postgresql--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L121">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>false</pre> </div>
@@ -3532,7 +3532,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--initDB--checkPGisUp--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L134">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"postgres:16-alpine3.19"</pre> </div>
@@ -3542,7 +3542,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--initDB--checkPGisUp--maxAttempt"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L135">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>30</pre> </div>
@@ -3552,7 +3552,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--initDB--enable"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L132">hyperswitch-card-vault.initDB.enable</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3562,7 +3562,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--initDB--migration--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L137">hyperswitch-card-vault.initDB.migration.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"christophwurst/diesel-cli:latest"</pre> </div>
@@ -3572,7 +3572,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--enabled"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L104">hyperswitch-card-vault.postgresql.enabled</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>true</pre> </div>
@@ -3582,7 +3582,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--architecture"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L112">hyperswitch-card-vault.postgresql.global.postgresql.auth.architecture</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"standalone"</pre> </div>
@@ -3592,7 +3592,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--database"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L111">hyperswitch-card-vault.postgresql.global.postgresql.auth.database</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"locker-db"</pre> </div>
@@ -3602,7 +3602,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--password"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L110">hyperswitch-card-vault.postgresql.global.postgresql.auth.password</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"V2tkS1ptTkhSbnBqZDI4OUNnPT0K"</pre> </div>
@@ -3612,7 +3612,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--global--postgresql--auth--username"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L109">hyperswitch-card-vault.postgresql.global.postgresql.auth.username</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"db_user"</pre> </div>
@@ -3622,7 +3622,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--nameOverride"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L105">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"locker-db"</pre> </div>
@@ -3632,7 +3632,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--primary--name"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L114">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>""</pre> </div>
@@ -3642,7 +3642,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--postgresql--primary--resources--requests--cpu"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L117">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"100m"</pre> </div>
@@ -3652,7 +3652,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--annotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L13">hyperswitch-card-vault.server.annotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{}</pre> </div>
@@ -3662,7 +3662,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--extra--env"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L100">hyperswitch-card-vault.server.extra.env</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{}</pre> </div>
@@ -3672,7 +3672,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--image"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L16">hyperswitch-card-vault.server.image</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"juspaydotin/hyperswitch-card-vault:v0.4.0"</pre> </div>
@@ -3682,7 +3682,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--nodeAffinity--requiredDuringSchedulingIgnoredDuringExecution"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L25">hyperswitch-card-vault.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>[]</pre> </div>
@@ -3692,7 +3692,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--pod--annotations"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L21">hyperswitch-card-vault.server.pod.annotations</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>{}</pre> </div>
@@ -3702,7 +3702,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--secrets--locker_private_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L55">hyperswitch-card-vault.server.secrets.locker_private_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"</pre> </div>
@@ -3712,7 +3712,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--secrets--master_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L43">hyperswitch-card-vault.server.secrets.master_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"master_key"</pre> </div>
@@ -3722,7 +3722,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 	
 <tr>
-    <td id="hyperswitch-card-vault--server--secrets--tenant_public_key"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="../hyperswitch-card-vault/values.yaml#L86">hyperswitch-card-vault.server.secrets.tenant_public_key</a></div></td>
     <td>
 <div style="max-width: 300px;"> <pre>"-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"</pre> </div>

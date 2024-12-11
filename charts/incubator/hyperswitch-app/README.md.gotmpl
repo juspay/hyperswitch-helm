@@ -141,7 +141,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 {{ define "chart.valueDefaultSectionRowRender" }}
 <tr>
-    <td id="{{ .Key | replace "." "--" }}"><div style="max-width: 300px;">
+    <td><div style="max-width: 300px;">
     <a href="{{ if .Dependency }}../{{ .Dependency }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
     <td>{{ template "chart.valueDefaultSectionColumnRender" . }}</td>
     <td>{{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }}</td>
