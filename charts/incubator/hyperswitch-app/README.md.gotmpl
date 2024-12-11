@@ -135,57 +135,55 @@ Use the Hyperswitch Control Center and [make a payment with test card](https://d
 Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyperswitch/folder/25176183-0103918c-6611-459b-9faf-354dee8e4437) to try out REST APIs
 
 
-{{ define "chart.valueDefaultSectionColumnRender" }}
-<div style="max-width: 300px;"> <pre>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</pre> </div>
-{{ end }}
-
-{{ define "chart.valueDefaultSectionRowRender" }}
-<tr>
-    <td><div style="max-width: 300px;">
-    <a href="{{ if .Dependency }}../{{ .Dependency }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
-    <td>{{ template "chart.valueDefaultSectionColumnRender" . }}</td>
+{{- define "chart.valueDefaultSectionColumnRender" -}}
+<div><code>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</code></div>
+{{- end -}}
+{{- define "chart.valueDefaultSectionRowRender" -}}
+  <tr>
+    <td><div><a href="{{ if .Dependency }}../{{- $prefix := index (splitList "." .Dependency ) (sub (len (splitList "." .Dependency)) 1) -}}{{ $prefix }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
+    <td>{{- template "chart.valueDefaultSectionColumnRender" . -}}</td>
     <td>{{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }}</td>
-</tr>
-{{ end }}
+  </tr>
+{{- end -}}
 
 {{ define "chart.valueDefaultSectionHeading" }}
 <thead>
-	<th>Key</th>
-	<th>Default</th>
-	<th>Description</th>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
 </thead>
 {{ end }}
 
 {{ define "chart.valuesSectionTableHtml" }}
 <h3>{{- .SectionName }}</h3>
-<table height="400px" >
-{{ template "chart.valueDefaultSectionHeading" . }}
+<table height="400px">
+{{- template "chart.valueDefaultSectionHeading" . -}}
 <tbody>
-{{- range .SectionItems }}
-	{{ template "chart.valueDefaultSectionRowRender" . }}
-{{- end }}
+{{- range .SectionItems -}}
+	{{- template "chart.valueDefaultSectionRowRender" . -}}
+{{- end -}}
 </tbody>
 </table>
-{{ end }}
+{{- end -}}
 
 {{ template "chart.requirementsSection" . }}
 
 {{ define "chart.valuesSectionHtml" }}
-    {{ if .Sections }}
-{{ template "chart.valuesHeader" . }}
-        {{ if .Sections.Sections }}
-            {{- range .Sections.Sections }}
-                {{ template "chart.valuesSectionTableHtml" . }}
-            {{- end }}
-        {{- end }}
-    {{ end }}
+    {{- if .Sections -}}
+{{- template "chart.valuesHeader" . -}}
+        {{- if .Sections.Sections }}
+            {{- range .Sections.Sections -}}
+                {{- template "chart.valuesSectionTableHtml" . -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
     {{ if .Sections.DefaultSection.SectionItems }}
 <h3>{{- .Sections.DefaultSection.SectionName }}</h3>
 <table>
 {{ template "chart.valueDefaultSectionHeading" . }}
 <tbody>
 {{- range .Sections.DefaultSection.SectionItems }}
-	{{ template "chart.valueDefaultSectionRowRender" . }}
+	{{- template "chart.valueDefaultSectionRowRender" . -}}
 {{- end }}
 </tbody>
 </table>
