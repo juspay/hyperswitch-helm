@@ -27,6 +27,16 @@ wildcard_origin = {{ .Values.application.server.cors.wildcard_origin }}         
 [email]
 active_email_client = "{{ .Values.application.server.email.active_email_client }}"
 
+[email.aws_ses]
+email_role_arn = "{{ .Values.application.server.email.aws_ses.email_role_arn }}"
+sts_role_session_name = "{{ .Values.application.server.email.aws_ses.sts_role_session_name }}"
+
+[email.smtp]
+connection = "{{ .Values.application.server.email.smtp.connection }}"
+host = "{{ .Values.application.server.email.smtp.host }}"
+port = "{{ .Values.application.server.email.smtp.port }}"
+timeout = {{ .Values.application.server.email.smtp.timeout }}
+
 [events]
 source = "{{ .Values.application.server.events.source }}"
 

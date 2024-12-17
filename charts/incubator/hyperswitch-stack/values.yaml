@@ -75,15 +75,15 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.112.0
-      image: juspaydotin/hyperswitch-router:v1.112.0-standalone
+      version: v1.112.1
+      image: juspaydotin/hyperswitch-router:v1.112.1
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.112.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.112.1
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.112.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.112.1
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.34.2
+      image: juspaydotin/hyperswitch-control-center:v1.36.0
     sdk:
       host: *web_sdk_host
       version: 0.103.1
@@ -98,6 +98,15 @@ hyperswitch-app:
       locker:
           locker_enabled: true
       run_env: sandbox
+      user:
+        force_two_factor_auth: true
+      email:
+        active_email_client: SMTP
+    controlCenter:
+      env:
+        default__features__email: "true"
+        default__features__totp: "true"
+        default__features__test_processors: "true"
   autoscaling:
     enabled: false
     minReplicas: 1

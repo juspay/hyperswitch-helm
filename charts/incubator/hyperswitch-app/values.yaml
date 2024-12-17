@@ -591,6 +591,7 @@ application:
       password_validity_in_days: '90'
       totp_issuer_name: Hyperswitch Sandbox
       two_factor_auth_expiry_in_secs: '300'
+      force_cookies: false
   # @ignored
   consumer:
     # -- Number of replicas to be used for the application
@@ -1029,6 +1030,7 @@ clickhouse:
   # -- Enable Bitnami Clickhouse sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
+  resourcesPreset: "none"
   # -- Name of the Clickhouse sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "clickhouse"
