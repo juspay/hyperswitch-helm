@@ -7,7 +7,6 @@ metadata:
     app: create-keymanager-db
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:

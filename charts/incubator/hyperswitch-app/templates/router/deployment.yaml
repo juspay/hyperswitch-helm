@@ -5,7 +5,7 @@ metadata:
     {{- with (default .Values.application.global.annotations .Values.application.server.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-server-v1o111o0
+  name: hyperswitch-server-v1o112o0
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.server.progressDeadlineSeconds }}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.application.server.labels.app }}
-      version: v1o111o0
+      version: v1o112o0
   strategy:
     {{- with (default .Values.application.global.strategy .Values.application.server.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -29,7 +29,7 @@ spec:
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.application.server.labels.app }}
-        version: v1o111o0
+        version: v1o112o0
     spec:
       affinity:
         nodeAffinity:
@@ -57,11 +57,6 @@ spec:
             {{/* TODO this env can be static ? */}}
             - name: BINARY
               value: {{ .Values.application.server.env.binary }}
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.name
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           envFrom:
@@ -72,29 +67,13 @@ spec:
             - secretRef:
                 name: hyperswitch-secrets
           livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 3
-            successThreshold: 1
-            timeoutSeconds: 1
+          {{- toYaml (default .Values.application.global.livenessProbe .Values.application.server.livenessProbe) | nindent 12 }}
+          readinessProbe:
+          {{- toYaml (default .Values.application.global.readinessProbe .Values.application.server.readinessProbe) | nindent 12 }}
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
           resources:
             requests:
               cpu: 200m

@@ -147,3 +147,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "externalPostgresql.secret.name" . -}}
   {{- end -}}
 {{- end -}}
+
+{{/* Define the clickhouse secret when enabled */}}
+{{- define "clickhouse.secret" -}}
+  {{- if .Values.clickhouse.enabled -}}
+    {{- printf "clickhouse" -}}
+  {{- else -}}
+    {{- printf "hyperswitch-secrets" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Define the clickhouse password when enabled */}}
+{{- define "clickhouse.secret.password" -}}
+  {{- if .Values.clickhouse.enabled -}}
+    {{- printf "admin-password" -}}
+  {{- else -}}
+    {{- printf "ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Define the HyperLoader js URL */}}
+{{- define "hyperswitchWeb.hyperloaderUrl" -}}
+  {{- printf "%s/web/%s/%s/HyperLoader.js" .Values.services.sdk.host .Values.services.sdk.version .Values.services.sdk.subversion -}}
+{{- end -}}

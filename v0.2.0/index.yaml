@@ -1,0 +1,64 @@
+apiVersion: v1
+entries:
+  hyperswitch-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-17T10:37:11.990961+05:30"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.6.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.27
+    - condition: hyperswitch-card-vault.enabled
+      name: hyperswitch-card-vault
+      repository: file://../hyperswitch-card-vault
+      version: 0.1.0
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 31.0.0
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.3
+    - condition: mailhog.enabled
+      name: mailhog
+      repository: https://codecentric.github.io/helm-charts
+      version: 4.0.0
+    - condition: loki.enabled
+      name: loki-stack
+      repository: https://grafana.github.io/helm-charts
+      version: 2.10.2
+    - condition: vector.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.37.0
+    description: A Helm chart for Kubernetes to deploy hyperswitch application
+    digest: a84b1766041693a3abbcc3064f46b035eecc0aa36534897054881605e20c54a1
+    name: hyperswitch-app
+    type: application
+    urls:
+    - https://juspay.github.io/hyperswitch-helm/v0.2.0/charts/hyperswitch-app-0.2.0.tgz
+    version: 0.2.0
+  hyperswitch-web:
+  - apiVersion: v2
+    appVersion: 0.15.8
+    created: "2024-12-17T10:37:11.991799+05:30"
+    description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
+      user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
+      with different way:   - prebuilt nginx static server (deployment - required
+      a specific docker build)    - autobuild nginx static server (statefulset and
+      assets saved in PVC)   The prebuilt image is suitable for production, no building
+      time. Autobuild is suitable to quick start, assets are built in initContainer
+      and saved in PVC. Nginx container will serve  assets'
+    digest: 682cf751b2f40c9daea3eb530098b197c40c0ce2dd91523b5e08fa726c3ea463
+    name: hyperswitch-web
+    type: application
+    urls:
+    - https://juspay.github.io/hyperswitch-helm/v0.2.0/charts/hyperswitch-web-0.2.0.tgz
+    version: 0.2.0
+generated: "2024-12-17T10:37:11.958341+05:30"

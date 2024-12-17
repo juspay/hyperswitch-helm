@@ -1,0 +1,73 @@
+{{- if .Values.sdkDemo.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations: 
+  {{- with .Values.sdkDemo.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  generation: 1
+  name: {{ .Values.sdkDemo.labels.app }}-v0o35o4
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: {{ .Values.sdkDemo.progressDeadlineSeconds}}
+  replicas: {{ .Values.sdkDemo.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Values.sdkDemo.labels.app }}
+      version: v0o35o4
+  strategy:
+  {{- with .Values.sdkDemo.strategy }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.sdkDemo.labels.app }}
+        version: v0o35o4
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            {{- with .Values.sdkDemo.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      containers:
+      - env:
+        - name: HYPERSWITCH_PUBLISHABLE_KEY
+          value: {{ .Values.services.sdkDemo.hyperswitchPublishableKey }}
+        - name: HYPERSWITCH_SECRET_KEY
+          value: {{ .Values.services.sdkDemo.hyperswitchSecretKey }}
+        - name: HYPERSWITCH_SERVER_URL
+          value: {{ .Values.autoBuild.buildParam.envBackendUrl }}
+        - name: HYPERSWITCH_CLIENT_URL
+          value: {{ include "hyperswitch-sdk.host" . }}/web/{{ include "hyperswitch-sdk.version" . }}/{{ include "hyperswitch-sdk.subversion" . }}
+        image: {{ .Values.services.sdkDemo.image }}
+        ports:
+        - containerPort: 5252
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - pkill -15 node
+        name: {{ .Values.sdkDemo.labels.app }}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccountName: {{ include "sdk.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.sdkDemo.terminationGracePeriodSeconds}}
+{{- end }}

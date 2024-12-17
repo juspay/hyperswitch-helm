@@ -1,127 +1,43 @@
-# Default values for hyperswitch-helm.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# loadbalancer security group
+# @ignored
+loadBalancer:
+  targetSecurityGroup: &lb_security_group lg-security-group
 
-replicaCount: 1
-
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-podAnnotations: {}
-podLabels: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
+# @ignored
 service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: 
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-# loadbalancer security group
-loadBalancer:
-  targetSecurityGroup: &lb_security_group lg-security-group
-
+# @ignored
 services:
   router:
     host: &router_host http://localhost:8080
   sdk:
     host: &web_sdk_host http://localhost:9090
 
-hyperswitchsdk:
+# @ignored
+hyperswitch-web:
+  fullnameOverride: "hyperswitch-web"
   enabled: true
+  sdkDemo:
+    enabled: false
+  image:
+    pullPolicy: IfNotPresent
   podAnnotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
   autoBuild:
+    enable: true
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.80.0
+      gitVersion: 0.103.1
     nginxConfig:
       extraPath: v0
     buildParam:
       envSdkUrl: *web_sdk_host
       envBackendUrl: *router_host
+      envLogsUrl: http://localhost:3103
   service:
     port: 9090
   loadBalancer:
@@ -151,7 +67,7 @@ hyperswitchsdk:
                 name: hyperswitch-web
                 port:
                   number: 80
-
+# @ignored
 hyperswitch-app:
   initDB:
     enable: true
@@ -159,19 +75,42 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.111.0
-      image: juspaydotin/hyperswitch-router:v1.111.0-standalone
+      version: v1.112.1
+      image: juspaydotin/hyperswitch-router:v1.112.1
       host: *router_host
     consumer:
-      image: juspaydotin/hyperswitch-consumer:v1.111.0-standalone
+      image: juspaydotin/hyperswitch-consumer:v1.112.1
     producer:
-      image: juspaydotin/hyperswitch-producer:v1.111.0-standalone
+      image: juspaydotin/hyperswitch-producer:v1.112.1
     controlCenter:
-      image: juspaydotin/hyperswitch-control-center:v1.33.0
+      image: juspaydotin/hyperswitch-control-center:v1.36.0
     sdk:
       host: *web_sdk_host
-      version: 0.80.0
+      version: 0.103.1
       subversion: v0
+  application:
+    server:
+      replicas: 1
+      secrets:
+        # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+        forex_api_key: forex_api_key
+        forex_fallback_api_key: forex_fallback_api_key
+      locker:
+          locker_enabled: true
+      run_env: sandbox
+      email:
+        active_email_client: SMTP
+    controlCenter:
+      env:
+        default__features__email: "true"
+        default__features__totp: "true"
+        default__features__test_processors: "true"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  
   hyperswitch-card-vault:
     enabled: true
     server:
@@ -179,4 +118,4 @@ hyperswitch-app:
       secrets: 
         master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
     initDB:
-      enable: false
+      enable: true

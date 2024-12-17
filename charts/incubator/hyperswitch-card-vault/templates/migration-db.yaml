@@ -2,12 +2,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-locker-db
+  name: hyperswitch-create-locker-db
   labels:
-    app: create-locker-db
+    app: hyperswitch-create-locker-db
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -25,16 +24,16 @@ spec:
       containers:
         - name: run-locker-db-migration
           image: {{ .Values.initDB.migration.image }}
+          imagePullPolicy: IfNotPresent
           command: [ '/bin/sh', '-c' ]
           #language=sh
           args:
             - |-
-              apt update
-              apt install -y git
-              git clone --single-branch --branch $VERSION https://github.com/juspay/hyperswitch-card-vault.git
+              curl -L -o hyperswitch-card-vault.tar.gz https://github.com/juspay/hyperswitch-card-vault/archive/refs/tags/$VERSION.tar.gz
+              tar -xzvf hyperswitch-card-vault.tar.gz --transform 's|[^/]*/|hyperswitch-card-vault/|'
               cd hyperswitch-card-vault
               diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
-              echo "Completed hyperswitch database migration"
+              echo "Completed hyperswitch card vault database migration"
           env:
             - name: POSTGRES_HOST
               value: {{ include "locker-psql.host" . }}
