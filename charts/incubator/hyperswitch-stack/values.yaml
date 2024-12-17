@@ -98,8 +98,6 @@ hyperswitch-app:
       locker:
           locker_enabled: true
       run_env: sandbox
-      user:
-        force_two_factor_auth: true
       email:
         active_email_client: SMTP
     controlCenter:
