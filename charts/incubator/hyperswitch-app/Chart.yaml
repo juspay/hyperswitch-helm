@@ -1,6 +1,6 @@
 apiVersion: v2
 appVersion: 1.16.0
-description: A Helm chart for Kubernetes to deploy hyperswitch application
+description: Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 name: hyperswitch-app
 type: application
 version: 0.2.0

@@ -37,7 +37,7 @@ entries:
       name: hyperswitch-web
       repository: file://../hyperswitch-web
       version: 0.1.0
-    description: A Helm chart for Kubernetes to deploy hyperswitch application
+    description: Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
     digest: 322d5d28cbbd9073d9b6fc026cf32560be05155f6b1169f9eee179a72f6ff93b
     name: hyperswitch-app
     type: application

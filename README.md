@@ -50,7 +50,7 @@ Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 Once Helm is set up properly, add the repo as follows:
 
 ```console
-helm repo add hyperswitch-helm https://juspay.github.io/hyperswitch-helm
+helm repo add hyperswitch https://juspay.github.io/hyperswitch-helm
 ```
 
 You can then run `helm search repo hyperswitch-stack` to see the charts.
