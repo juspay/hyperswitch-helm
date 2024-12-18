@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-17T10:37:11.990961+05:30"
+    created: "2024-12-18T15:14:13.975847+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -37,8 +37,10 @@ entries:
       name: vector
       repository: https://helm.vector.dev
       version: 0.37.0
-    description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: a84b1766041693a3abbcc3064f46b035eecc0aa36534897054881605e20c54a1
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: 2fa05ea21e7c3758200640538a3dc92e51688c17ddee1c4f58d196d601fbaeb9
     name: hyperswitch-app
     type: application
     urls:
@@ -47,7 +49,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2024-12-17T10:37:11.991799+05:30"
+    created: "2024-12-18T15:14:13.976652+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -55,10 +57,10 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 682cf751b2f40c9daea3eb530098b197c40c0ce2dd91523b5e08fa726c3ea463
+    digest: fca2e54972f35f181f76f47913b5664d6158455f16fc29ce7e911c9d76bfa45d
     name: hyperswitch-web
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.2.0/charts/hyperswitch-web-0.2.0.tgz
     version: 0.2.0
-generated: "2024-12-17T10:37:11.958341+05:30"
+generated: "2024-12-18T15:14:13.94126+05:30"

@@ -1,106 +1,78 @@
 apiVersion: v1
 entries:
-  hyperswitch-helm:
+  hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-01-10T12:56:54.710235+05:30"
+    created: "2024-12-18T15:14:14.118051+05:30"
     dependencies:
-    - condition: redis.enabled
-      name: redis
-      repository: https://charts.bitnami.com/bitnami
-      version: 18.6.1
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 13.2.27
-    description: A Helm chart for Kubernetes to deploy hyperswitch application
-    digest: 8fc77d41d8858a81d0a8a0548b473cd225090d0929eec4a8da873e3feb2262aa
-    name: hyperswitch-helm
+    - name: hyperswitch-app
+      repository: file://../hyperswitch-app
+      version: 0.2.0
+    - condition: hyperswitch-web.enabled
+      name: hyperswitch-web
+      repository: file://../hyperswitch-web
+      version: 0.2.0
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: a9227d46a3cef905989be33b7b55b545922906e1aa50d0e58b7315e935bc7632
+    name: hyperswitch-stack
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/hyperswitch-helm-0.1.0.tgz
-    version: 0.1.0
-  postgresql:
-  - annotations:
-      category: Database
-      images: |
-        - name: os-shell
-          image: docker.io/bitnami/os-shell:11-debian-11-r93
-        - name: postgres-exporter
-          image: docker.io/bitnami/postgres-exporter:0.15.0-debian-11-r4
-        - name: postgresql
-          image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
-      licenses: Apache-2.0
-    apiVersion: v2
-    appVersion: 16.1.0
-    created: "2024-01-10T12:56:54.71348+05:30"
+    - https://juspay.github.io/hyperswitch-helm/v0.2.0/hyperswitch-stack-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T15:14:14.083834+05:30"
     dependencies:
-    - name: common
-      repository: oci://registry-1.docker.io/bitnamicharts
-      tags:
-      - bitnami-common
-      version: 2.x.x
-    description: PostgreSQL (Postgres) is an open source object-relational database
-      known for reliability and data integrity. ACID-compliant, it supports foreign
-      keys, joins, views, triggers and stored procedures.
-    digest: 9e3ab42d8197aac72722a3557d1f8ed04adc0fd5768e1985569bc73eaddc3b9c
-    home: https://bitnami.com
-    icon: https://bitnami.com/assets/stacks/postgresql/img/postgresql-stack-220x234.png
-    keywords:
-    - postgresql
-    - postgres
-    - database
-    - sql
-    - replication
-    - cluster
-    maintainers:
-    - name: VMware, Inc.
-      url: https://github.com/bitnami/charts
-    name: postgresql
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+    - name: hyperswitch-app
+      repository: file://../hyperswitch-app
+      version: 0.1.0
+    - condition: hyperswitchsdk.enabled
+      name: hyperswitchsdk
+      repository: file://../hyperswitch-sdk
+      version: 0.1.0
+    description: Helm chart for Hyperswitch services
+    digest: 2ca2562b4c98de5ae036521007ea74d54293e39b9456f8b9ee36f54282ff7aca
+    name: hyperswitch-stack
+    type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/charts/postgresql-13.2.27.tgz
-    version: 13.2.27
-  redis:
-  - annotations:
-      category: Database
-      images: |
-        - name: os-shell
-          image: docker.io/bitnami/os-shell:11-debian-11-r92
-        - name: redis-exporter
-          image: docker.io/bitnami/redis-exporter:1.55.0-debian-11-r3
-        - name: redis-sentinel
-          image: docker.io/bitnami/redis-sentinel:7.2.3-debian-11-r2
-        - name: redis
-          image: docker.io/bitnami/redis:7.2.3-debian-11-r2
-      licenses: Apache-2.0
-    apiVersion: v2
-    appVersion: 7.2.3
-    created: "2024-01-10T12:56:54.717779+05:30"
+    - https://juspay.github.io/hyperswitch-helm/v0.1.3/hyperswitch-stack-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T15:14:14.061677+05:30"
     dependencies:
-    - name: common
-      repository: oci://registry-1.docker.io/bitnamicharts
-      tags:
-      - bitnami-common
-      version: 2.x.x
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 7069129ea36d50ec9c6b494aa4d7e85395f443e36c4ba8765506776dcae03f3a
-    home: https://bitnami.com
-    icon: https://bitnami.com/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: VMware, Inc.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
+    - name: hyperswitch-app
+      repository: file://../hyperswitch-app
+      version: 0.1.0
+    - condition: hyperswitchsdk.enabled
+      name: hyperswitchsdk
+      repository: file://../hyperswitch-sdk
+      version: 0.1.0
+    description: Helm chart for Hyperswitch services
+    digest: 41780e8e01307be4283f39fa1328744f33ae651996d5a3f18f8b28e0be2fb34d
+    name: hyperswitch-stack
+    type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/charts/redis-18.6.1.tgz
-    version: 18.6.1
-generated: "2024-01-10T12:56:54.70005+05:30"
+    - https://juspay.github.io/hyperswitch-helm/v0.1.2/hyperswitch-stack-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T15:14:14.047545+05:30"
+    dependencies:
+    - name: hyperswitch-app
+      repository: file://../hyperswitch-app
+      version: 0.1.0
+    - condition: hyperswitchsdk.enabled
+      name: hyperswitchsdk
+      repository: file://../hyperswitch-sdk
+      version: 0.1.0
+    description: Helm chart for Hyperswitch services
+    digest: 510db0f949bf5b0752120323c855879173427dadb48f8f4a8b961001f4528137
+    name: hyperswitch-stack
+    type: application
+    urls:
+    - https://juspay.github.io/hyperswitch-helm/v0.1.1/hyperswitch-stack-0.1.1.tgz
+    version: 0.1.1
+generated: "2024-12-18T15:14:14.031793+05:30"
