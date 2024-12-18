@@ -1064,7 +1064,7 @@ clickhouse:
   initContainers:
     - name: clone-sql-scripts
       image: alpine/git
-      command: ['sh', '-c', 'git clone --depth 1 --branch chore/hyperswitch-sdk-clickhouse-script-fix https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
+      command: ['sh', '-c', 'git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
       volumeMounts:
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
