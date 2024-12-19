@@ -2,12 +2,13 @@
 {{- define "postgresql.initContainer.check.ready" -}}
 - name: check-postgres
   image: {{ .Values.initDB.checkPGisUp.image }}
+  imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh
   args:
   - >
     MAX_ATTEMPTS={{ .Values.initDB.checkPGisUp.maxAttempt }};
-    SLEEP_SECONDS=10;
+    SLEEP_SECONDS=5;
     attempt=0;
     while ! pg_isready -U {{ include "postgresql.username" . }} -d {{ include "postgresql.database" . }} -h {{ include "postgresql.host" . }} -p 5432; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then
@@ -26,12 +27,13 @@
 {{- define "redis.initContainer.check.ready" -}}
 - name: check-redis
   image: {{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.image }}
+  imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh
   args:
   - >
     MAX_ATTEMPTS={{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt }};
-    SLEEP_SECONDS=10;
+    SLEEP_SECONDS=5;
     attempt=0;
     while ! redis-cli -h {{ include "redis.host" . }} -p 6379 ping; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then

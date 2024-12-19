@@ -820,6 +820,8 @@ redis:
   # -- - enable Bitnami redis sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
+  image:
+    tag: 7.2.3-debian-11-r2
   master:
     # -- Number of replicas to be used for master
     # @section -- Dependencies configuration
@@ -858,13 +860,15 @@ redisMiscConfig:
   checkRedisIsUp:
     initContainer:
       enable: true
-      image: redis:7.2.4
-      maxAttempt: 30
+      image: docker.io/bitnami/redis:7.2.3-debian-11-r2
+      maxAttempt: 60
 
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
+  image:
+    tag: 16.1.0-debian-11-r18
   global:
     postgresql:
       auth:
@@ -899,7 +903,7 @@ postgresql:
   readReplicas:
     # -- Number of read replicas
     # @section -- Dependencies configuration
-    replicaCount: 1
+    replicaCount: 0
     resources:
       requests:
         # -- CPU resource requests
@@ -951,8 +955,8 @@ externalPostgresql:
 initDB:
   enable: true
   checkPGisUp:
-    image: postgres:16-alpine3.19
-    maxAttempt: 30
+    image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
+    maxAttempt: 60
   refs: tags # tags or heads
   migration:
     image: christophwurst/diesel-cli:latest
@@ -968,6 +972,9 @@ autoscaling:
 
 hyperswitch-card-vault:
   enabled: true
+  initDB:
+    checkPGisUp:
+      image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
 
 kafka:
   # -- Enable Bitnami Kafka sub-chart helm installation
@@ -1064,7 +1071,7 @@ clickhouse:
   initContainers:
     - name: clone-sql-scripts
       image: alpine/git
-      command: ['sh', '-c', 'git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
+      command: ['sh', '-c', 'git clone --depth 1 --branch 2024.12.19.0 https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
       volumeMounts:
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
