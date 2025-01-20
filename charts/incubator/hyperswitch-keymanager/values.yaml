@@ -7,6 +7,15 @@ replicaCount: 1
 global:
   image: juspaydotin/hyperswitch-encryption-service:v0.1.3
   annotations: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - generic-compute
 
 autoscaling:
   enabled: false

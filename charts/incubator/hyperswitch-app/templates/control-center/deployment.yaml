@@ -25,12 +25,18 @@ spec:
         app: {{ .Values.application.controlCenter.labels.app }}
         version: v1o34o2
     spec:
+      {{- with (default .Values.application.global.tolerations .Values.application.controlCenter.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with (default .Values.application.global.affinity .Values.application.controlCenter.affinity) }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.controlCenter.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.nodeSelector .Values.application.controlCenter.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: hyperswitch-control-center
           image: {{ .Values.services.controlCenter.image }}

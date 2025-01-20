@@ -31,12 +31,18 @@ spec:
         app: {{ .Values.application.server.labels.app }}
         version: v1o112o0
     spec:
+      {{- with (default .Values.application.global.tolerations .Values.application.server.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with (default .Values.application.global.affinity .Values.application.server.affinity) }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.nodeSelector .Values.application.server.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
         {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
