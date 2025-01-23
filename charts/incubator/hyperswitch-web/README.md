@@ -41,7 +41,7 @@ assets
 | podSecurityContext | object | `{}` | pod security context |
 | replicaCount | int | `1` | deployment/statefulset replicas |
 | securityContext | object | `{}` | security context |
-| service.port | int | `9090` | service port |
+| service.port | int | `9050` | service port |
 | service.type | string | `"ClusterIP"` | service type |
 | services.router.host | string | `"http://localhost:8080"` |  |
 | services.sdkDemo.hyperswitchPublishableKey | string | `"pub_key"` |  |

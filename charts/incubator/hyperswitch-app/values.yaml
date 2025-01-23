@@ -24,7 +24,7 @@ services:
   sdk:
     # -- SDK host
     # @section -- Services
-    host: http://localhost:9090
+    host: http://localhost:9050
     # -- SDK version
     # @section -- Services
     version: 0.103.1

@@ -8,7 +8,7 @@
        # Port-forwarding commands
        kubectl port-forward service/hyperswitch-server 8080:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/hyperswitch-control-center 9000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
-       kubectl port-forward service/hyperswitch-web 9090:9090 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/hyperswitch-web 9050:9050 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/{{ .Release.Name }}-grafana 3000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/{{ .Release.Name }}-vector 3103:3103 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/mailhog 8025:8025 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
@@ -16,7 +16,7 @@
        echo "======================================================"
        echo " App server running on: http://localhost:8080      "
        echo " Control center running on: http://localhost:9000  "
-       echo " Hyperswitch Web running on: http://localhost:9090/web/0.103.1/v0/HyperLoader.js "
+       echo " Hyperswitch Web running on: http://localhost:9050/HyperLoader.js "
        echo " Grafana running on http://localhost:3000 to view logs "
        echo " Vector running on http://localhost:3103 to collect logs "
        echo " Mailhog running on http://localhost:8025 to receive mails "
@@ -24,7 +24,7 @@
        echo "======================================================"
 
        echo "\nTo close the exposed ports, run the following command:\n"
-       echo "lsof -i:8080,9090,9000,3000,3103,8025 -t | xargs kill"
+       echo "lsof -i:8080,9050,9000,3000,3103,8025 -t | xargs kill"
        echo "======================================================"
      else
        echo "Ingress available. Access the services using the following command:"

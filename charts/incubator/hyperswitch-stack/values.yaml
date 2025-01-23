@@ -13,7 +13,7 @@ services:
   router:
     host: &router_host http://localhost:8080
   sdk:
-    host: &web_sdk_host http://localhost:9090
+    host: &web_sdk_host http://localhost:9050
 
 # @ignored
 hyperswitch-web:
@@ -39,7 +39,7 @@ hyperswitch-web:
       envBackendUrl: *router_host
       envLogsUrl: http://localhost:3103
   service:
-    port: 9090
+    port: 9050
   loadBalancer:
     targetSecurityGroup: "loadbalancer-sg"
   ingress:

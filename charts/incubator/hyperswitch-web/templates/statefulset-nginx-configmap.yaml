@@ -22,6 +22,10 @@ data:
             index  index.html index.htm;
         }
 
+        location /HyperLoader.js {
+              alias /usr/share/nginx/html{{ include "nginx.sdk.path" . }}/HyperLoader.js;
+        }
+
         #error_page  404              /404.html;
 
         # redirect server error pages to the static page /50x.html
