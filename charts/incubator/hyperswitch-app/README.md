@@ -712,7 +712,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L27">services.sdk.host</a></div></td>
-    <td><div><code>"http://localhost:9090"</code></div></td>
+    <td><div><code>"http://localhost:9050"</code></div></td>
     <td>SDK host</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L33">services.sdk.subversion</a></div></td>

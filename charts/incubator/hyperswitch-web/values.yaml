@@ -129,7 +129,7 @@ service:
   # -- service type
   type: ClusterIP
   # -- service port
-  port: 9090
+  port: 9050
 
 
 ingress:
