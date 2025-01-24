@@ -32,7 +32,7 @@ spec:
     spec:
       {{- with (default .Values.application.global.tolerations .Values.application.consumer.tolerations) }}
       tolerations:
-        {{- toYaml . | nindent 6 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with (default .Values.application.global.affinity .Values.application.consumer.affinity) }}
       affinity:

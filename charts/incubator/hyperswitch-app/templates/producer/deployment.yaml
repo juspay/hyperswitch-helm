@@ -31,7 +31,7 @@ spec:
     spec:
       {{- with (default .Values.application.global.tolerations .Values.application.producer.tolerations) }}
       tolerations:
-        {{- toYaml . | nindent 6 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with (default .Values.application.global.affinity .Values.application.producer.affinity) }}
       affinity:

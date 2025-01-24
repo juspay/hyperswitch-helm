@@ -16,7 +16,7 @@ spec:
         {{- include "locker-psql.initContainer.check.ready" . | nindent 8 }}
       {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
       tolerations:
-        {{- toYaml . | nindent 6 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with (default .Values.global.affinity .Values.server.affinity) }}
       affinity:
