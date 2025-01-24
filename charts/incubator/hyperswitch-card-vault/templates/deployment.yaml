@@ -28,13 +28,19 @@ spec:
       labels:
         app: hyperswitch-card-vault
     spec:
+      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.affinity .Values.server.affinity) }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-              nodeSelectorTerms:
-              {{- toYaml . | nindent 18 }}
-            {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      
       containers:
         - env:
             - name: LOCKER__LOG__CONSOLE__ENABLED

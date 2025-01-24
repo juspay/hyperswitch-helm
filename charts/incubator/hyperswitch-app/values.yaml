@@ -45,16 +45,21 @@ application:
         maxSurge: 1
         maxUnavailable: 0
       type: RollingUpdate
+    # tolerations to be used by the application
+    tolerations: []
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-type
-                operator: In
-                values:
-                  - generic-compute
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
+    # nodeSelector to be used by the application
+    nodeSelector: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods
@@ -123,14 +128,15 @@ application:
       timeoutSeconds: 1
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-type
-                operator: In
-                values:
-                  - generic-compute
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
@@ -607,14 +613,15 @@ application:
       type: RollingUpdate
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-type
-                operator: In
-                values:
-                  - generic-compute
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
     # @ignored
     terminationGracePeriodSeconds: 30
@@ -651,14 +658,15 @@ application:
       type: RollingUpdate
     # -- Specify affinity for nodes to which the pods should start on
     # @ignored
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-type
-                operator: In
-                values:
-                  - generic-compute
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
@@ -692,14 +700,15 @@ application:
       type: RollingUpdate
     # -- Specify affinity for nodes to which the pods should start on
     # @ignored
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: node-type
-                operator: In
-                values:
-                  - generic-compute
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
     # -- The time kubernetes will wait after sending the termination signal to the pods
     # @ignored
     terminationGracePeriodSeconds: 30
@@ -816,6 +825,8 @@ application:
       default__features__compliance_certificate: "false"
       default__features__performance_monitor: "false"
       default__features__pm_authentication_processor: "false"
+
+# https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
   # @section -- Dependencies configuration
@@ -863,6 +874,7 @@ redisMiscConfig:
       image: docker.io/bitnami/redis:7.2.3-debian-11-r2
       maxAttempt: 60
 
+# https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
   # @section -- Dependencies configuration
@@ -972,10 +984,16 @@ autoscaling:
 
 hyperswitch-card-vault:
   enabled: true
+  global:
+    tolerations: []
+  postgresql:
+    primary:
+      tolerations: []
   initDB:
     checkPGisUp:
       image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
 
+# https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   # -- Enable Bitnami Kafka sub-chart helm installation
   # @section -- Dependencies configuration
@@ -1032,7 +1050,8 @@ kafka:
   extraConfig: |
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1
-  
+
+# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml 
 clickhouse:
   # -- Enable Bitnami Clickhouse sub-chart helm installation
   # @section -- Dependencies configuration
@@ -1071,7 +1090,7 @@ clickhouse:
   initContainers:
     - name: clone-sql-scripts
       image: alpine/git
-      command: ['sh', '-c', 'git clone --depth 1 --branch 2024.12.19.0 https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
+      command: ['sh', '-c', 'git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
       volumeMounts:
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
@@ -1084,6 +1103,7 @@ clickhouse:
     - name: initdb-scripts
       emptyDir: {}
 
+# https://artifacthub.io/packages/helm/codecentric/mailhog
 mailhog:
   # -- Enable Bitnami Mailhog sub-chart helm installation for email testing
   # @section -- Dependencies configuration
@@ -1092,6 +1112,7 @@ mailhog:
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
 
+# https://github.com/grafana/helm-charts/tree/main/charts/loki-stack
 loki-stack:
   loki:
     # -- Enable Bitnami Loki sub-chart helm installation
@@ -1125,6 +1146,7 @@ loki-stack:
       # @section -- Dependencies configuration
       tag: 10.0.1
 
+# https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation
   # @section -- Dependencies configuration

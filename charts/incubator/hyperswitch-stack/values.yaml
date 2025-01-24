@@ -42,6 +42,7 @@ hyperswitch-web:
     port: 9050
   loadBalancer:
     targetSecurityGroup: "loadbalancer-sg"
+  tolerations: []
   ingress:
     enabled: true
     className: "alb"
@@ -89,6 +90,8 @@ hyperswitch-app:
       version: 0.103.1
       subversion: v0
   application:
+    global:
+      tolerations: []
     server:
       replicas: 1
       secrets:
@@ -113,9 +116,46 @@ hyperswitch-app:
   
   hyperswitch-card-vault:
     enabled: true
+    global:
+      tolerations: []
     server:
       image: juspaydotin/hyperswitch-card-vault:v0.4.0
       secrets: 
         master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
     initDB:
       enable: true
+    postgresql:
+      primary:
+        tolerations: []
+  redis:
+    master:
+      tolerations: []
+  postgresql:
+    primary:
+      tolerations: []
+    readReplicas:
+      tolerations: []
+  kafka:
+    controller:
+      tolerations: []
+    broker:
+      tolerations: []
+    zookeeper:
+      tolerations: []
+    provisioning:
+      tolerations: []
+  clickhouse:
+    tolerations: []
+    zookeeper:
+      tolerations: []
+  mailhog:
+    tolerations: []
+  loki-stack:
+    loki:
+      tolerations: []
+    promtail:
+      tolerations: []
+    grafana:
+      tolerations: []
+  vector:
+    tolerations: []

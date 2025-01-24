@@ -12,6 +12,18 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
+      {{- with (default .Values.application.global.tolerations .Values.application.server.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.affinity .Values.application.server.affinity) }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.nodeSelector .Values.application.server.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:

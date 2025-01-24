@@ -2,10 +2,19 @@
 global:
   # Annotations to be added to all resources
   annotations: {}
+  tolerations: []
 
   # Node affinity to be added to all resources
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
+  
 
 # Values for hyperswitch-card-vault.
 server:
@@ -21,9 +30,15 @@ server:
     annotations: {}
 
   # Node affinity to be added to hyperswitch-card-vault.
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
       # matchExpression:
       # - key: spot-instance
       #   operator: NotIn
@@ -112,6 +127,7 @@ postgresql:
         architecture: standalone
   primary:
     name: ""
+    tolerations: []
     resources:
       requests:
         cpu: 100m

@@ -30,12 +30,18 @@ spec:
         app: {{ .Values.application.consumer.labels.app }}
         version: consumer-v1o112o0
     spec:
+      {{- with (default .Values.application.global.tolerations .Values.application.consumer.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.affinity .Values.application.consumer.affinity) }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.consumer.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.nodeSelector .Values.application.consumer.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
         {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}

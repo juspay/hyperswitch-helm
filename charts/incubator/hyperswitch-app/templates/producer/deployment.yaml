@@ -29,12 +29,18 @@ spec:
         checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
     spec:
+      {{- with (default .Values.application.global.tolerations .Values.application.producer.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.affinity .Values.application.producer.affinity) }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            {{- with (default .Values.application.global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution .Values.application.producer.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution) }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.application.global.nodeSelector .Values.application.producer.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
         {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}

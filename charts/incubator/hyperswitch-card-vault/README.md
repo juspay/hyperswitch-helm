@@ -20,8 +20,11 @@ A Helm chart for creating Hyperswitch Card Vault
 | external.postgresql.config.port | string | `nil` |  |
 | external.postgresql.config.username | string | `nil` |  |
 | external.postgresql.enabled | bool | `false` |  |
+| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
+| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
+| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
 | global.annotations | object | `{}` |  |
-| global.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution | list | `[]` |  |
+| global.tolerations | list | `[]` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
@@ -34,10 +37,13 @@ A Helm chart for creating Hyperswitch Card Vault
 | postgresql.nameOverride | string | `"locker-db"` |  |
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
+| postgresql.primary.tolerations | list | `[]` |  |
+| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
+| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
+| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
 | server.annotations | object | `{}` |  |
 | server.extra.env | object | `{}` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.4.0"` |  |
-| server.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution | list | `[]` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.secrets.locker_private_key | string | "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----" | To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem |
 | server.secrets.master_key | string | "master_key" | Optionally, you can run </br> <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre> |
