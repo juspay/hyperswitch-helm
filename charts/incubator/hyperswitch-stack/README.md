@@ -778,7 +778,7 @@ task ur
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L27">hyperswitch-app.services.sdk.host</a></div></td>
-    <td><div><code>"http://localhost:9090"</code></div></td>
+    <td><div><code>"http://localhost:9050"</code></div></td>
     <td>SDK host</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L33">hyperswitch-app.services.sdk.subversion</a></div></td>
@@ -1795,7 +1795,7 @@ task ur
     <td>security context</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L132">hyperswitch-web.service.port</a></div></td>
-    <td><div><code>9090</code></div></td>
+    <td><div><code>9050</code></div></td>
     <td>service port</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L130">hyperswitch-web.service.type</a></div></td>
