@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-02-05T13:06:06.010625+05:30"
+    created: "2025-02-05T18:35:12.997105+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -40,7 +40,7 @@ entries:
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: 7fabab384deaf7ff96660d249df0173464edf0f8cc81ebc458593b1dfef85f69
+    digest: ade6c05e993a1b58a6d93d4c37ac4b2bad282fb6d06ef9c61986333943d7b3fb
     name: hyperswitch-app
     type: application
     urls:
@@ -49,7 +49,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2025-02-05T13:06:06.011468+05:30"
+    created: "2025-02-05T18:35:12.99789+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -57,10 +57,10 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 47cf410acb9dda733e28f4130ed5747ccaec7a5fd112d940f1a4e54ca5302d11
+    digest: 0944fcaa8c34ec4403191a92dffa1c5b9e6c3fc25c7778981cc9600ca11227f0
     name: hyperswitch-web
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.2.1/charts/hyperswitch-web-0.2.1.tgz
     version: 0.2.1
-generated: "2025-02-05T13:06:05.977248+05:30"
+generated: "2025-02-05T18:35:12.963841+05:30"

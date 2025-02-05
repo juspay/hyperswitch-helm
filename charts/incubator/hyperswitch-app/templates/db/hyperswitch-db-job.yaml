@@ -12,15 +12,15 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
-      {{- with (default .Values.application.global.tolerations .Values.application.server.tolerations) }}
+      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.affinity .Values.application.server.affinity) }}
+      {{- with (default .Values.global.affinity .Values.server.affinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.nodeSelector .Values.application.server.nodeSelector) }}
+      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

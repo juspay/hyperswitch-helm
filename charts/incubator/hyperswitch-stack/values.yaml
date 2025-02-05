@@ -89,25 +89,24 @@ hyperswitch-app:
       host: *web_sdk_host
       version: 0.103.1
       subversion: v0
-  application:
-    global:
-      tolerations: []
-    server:
-      replicas: 1
-      secrets:
-        # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
-        forex_api_key: forex_api_key
-        forex_fallback_api_key: forex_fallback_api_key
-      locker:
-          locker_enabled: true
-      run_env: sandbox
-      email:
-        active_email_client: SMTP
-    controlCenter:
-      env:
-        default__features__email: "true"
-        default__features__totp: "true"
-        default__features__test_processors: "true"
+  global:
+    tolerations: []
+  server:
+    replicas: 1
+    secrets:
+      # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+      forex_api_key: forex_api_key
+      forex_fallback_api_key: forex_fallback_api_key
+    locker:
+        locker_enabled: true
+    run_env: sandbox
+    email:
+      active_email_client: SMTP
+  controlCenter:
+    env:
+      default__features__email: "true"
+      default__features__totp: "true"
+      default__features__test_processors: "true"
   autoscaling:
     enabled: false
     minReplicas: 1
