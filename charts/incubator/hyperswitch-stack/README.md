@@ -222,39 +222,39 @@ task ur
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1028">hyperswitch-app.clickhouse.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1023">hyperswitch-app.clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1025">hyperswitch-app.clickhouse.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1020">hyperswitch-app.clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1034">hyperswitch-app.clickhouse.config.TZ</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1029">hyperswitch-app.clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1017">hyperswitch-app.clickhouse.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1012">hyperswitch-app.clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1021">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1016">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1047">hyperswitch-app.clickhouse.logLevel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1042">hyperswitch-app.clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1040">hyperswitch-app.clickhouse.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1035">hyperswitch-app.clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1037">hyperswitch-app.clickhouse.shards</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1032">hyperswitch-app.clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1044">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1039">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
@@ -326,79 +326,79 @@ task ur
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L972">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L967">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L967">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L962">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L959">hyperswitch-app.kafka.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L954">hyperswitch-app.kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L962">hyperswitch-app.kafka.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L957">hyperswitch-app.kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L989">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L984">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1001">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L996">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L997">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L992">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L993">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L988">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1005">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1000">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L984">hyperswitch-app.kafka.service.ports.client</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L979">hyperswitch-app.kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L979">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L974">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1102">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1097">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td>Name of the Grafana sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1099">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1094">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Grafana sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1106">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1101">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
     <td><div><code>"10.0.1"</code></div></td>
     <td>Grafana image tag</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1079">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1074">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Loki sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1082">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1077">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td>Name of the Loki sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1086">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1081">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Promtail sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1069">hyperswitch-app.mailhog.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1064">hyperswitch-app.mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1072">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1067">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
@@ -466,11 +466,11 @@ task ur
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1112">hyperswitch-app.vector.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1107">hyperswitch-app.vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1116">hyperswitch-app.vector.env[0]</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1111">hyperswitch-app.vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -807,7 +807,7 @@ task ur
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L5">global.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L19">global.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -827,11 +827,11 @@ task ur
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1030">hyperswitch-app.clickhouse.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1025">hyperswitch-app.clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1018">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1013">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
@@ -899,16 +899,8 @@ task ur
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L947">hyperswitch-app.hyperswitch-card-vault.global.tolerations</a></div></td>
-    <td><div><code>[]</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L953">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L948">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L950">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
-    <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L929">hyperswitch-app.initDB.checkPGisUp.image</a></div></td>
@@ -931,15 +923,15 @@ task ur
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L973">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L968">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L968">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L963">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1009">hyperswitch-app.kafka.extraConfig</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1004">hyperswitch-app.kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>

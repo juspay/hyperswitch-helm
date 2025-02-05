@@ -15,6 +15,9 @@ services:
   sdk:
     host: &web_sdk_host http://localhost:9050
 
+global:
+  tolerations: []
+
 # @ignored
 hyperswitch-web:
   fullnameOverride: "hyperswitch-web"
@@ -89,8 +92,6 @@ hyperswitch-app:
       host: *web_sdk_host
       version: 0.103.1
       subversion: v0
-  global:
-    tolerations: []
   server:
     replicas: 1
     secrets:
@@ -115,8 +116,6 @@ hyperswitch-app:
   
   hyperswitch-card-vault:
     enabled: true
-    global:
-      tolerations: []
     server:
       image: juspaydotin/hyperswitch-card-vault:v0.4.0
       secrets: 
