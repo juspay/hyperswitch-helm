@@ -11,15 +11,6 @@ sdkDemo:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
-  # Specify affinity for nodes to which the pods should start on
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: node-type
-              operator: In
-              values:
-                - generic-compute
   # The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # Annotations that are to be added to the pods (extends global configuration)

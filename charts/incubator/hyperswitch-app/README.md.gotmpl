@@ -23,7 +23,6 @@ cd hyperswitch-helm/charts/incubator/hyperswitch-stack
 Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
 Note: minimum --memory 6000 --cpus 4 needed
 ```bash
-kubectl label nodes <your-node-name> node-type=generic-compute
 kubectl create namespace hyperswitch
 ```
 Use below command to install hyperswitch services with above configs
