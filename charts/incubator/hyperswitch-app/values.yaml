@@ -1145,6 +1145,20 @@ loki-stack:
       # -- Grafana image tag
       # @section -- Dependencies configuration
       tag: 10.0.1
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: dp1
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/dp1
+    dashboardsConfigMaps:
+      dp1: "rafana-dashboard-payments"
 
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
