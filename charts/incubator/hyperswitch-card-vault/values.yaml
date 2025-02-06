@@ -5,15 +5,7 @@ global:
   tolerations: []
 
   # Node affinity to be added to all resources
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+  affinity: {}
   
 
 # Values for hyperswitch-card-vault.
@@ -30,15 +22,7 @@ server:
     annotations: {}
 
   # Node affinity to be added to hyperswitch-card-vault.
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+  affinity: {}
       # matchExpression:
       # - key: spot-instance
       #   operator: NotIn
