@@ -17,6 +17,18 @@ services:
 
 global:
   tolerations: []
+  # @ignored
+  # Eg. 
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #         - matchExpressions:
+  #             - key: node-type
+  #               operator: In
+  #               values:
+  #                 - generic-compute
+  affinity: {}
 
 # @ignored
 hyperswitch-web:
