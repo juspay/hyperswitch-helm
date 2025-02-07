@@ -42,8 +42,8 @@ data:
             "panels": [
               {
                 "datasource": {
-                  "type": "loki",
-                  "uid": "loki"
+                  "type": "postgres",
+                  "uid": "postgres_uid"
                 },
                 "fieldConfig": {
                   "defaults": {
@@ -441,8 +441,8 @@ data:
             "panels": [
               {
                 "datasource": {
-                  "type": "loki",
-                  "uid": "loki"
+                  "type": "postgres",
+                  "uid": "postgres_uid"
                 },
                 "fieldConfig": {
                   "defaults": {
@@ -569,8 +569,8 @@ data:
               },
               {
                 "datasource": {
-                  "type": "loki",
-                  "uid": "loki"
+                  "type": "postgres",
+                  "uid": "postgres_uid"
                 },
                 "fieldConfig": {
                   "defaults": {
@@ -1179,8 +1179,8 @@ data:
           },
           {
             "datasource": {
-              "type": "loki",
-              "uid": "loki"
+              "type": "postgres",
+              "uid": "postgres_uid"
             },
             "fieldConfig": {
               "defaults": {
@@ -1309,8 +1309,8 @@ data:
           },
           {
             "datasource": {
-              "type": "loki",
-              "uid": "loki"
+              "type": "postgres",
+              "uid": "postgres_uid"
             },
             "fieldConfig": {
               "defaults": {
