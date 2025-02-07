@@ -20,9 +20,7 @@ A Helm chart for creating Hyperswitch Card Vault
 | external.postgresql.config.port | string | `nil` |  |
 | external.postgresql.config.username | string | `nil` |  |
 | external.postgresql.enabled | bool | `false` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
+| global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
 | global.tolerations | list | `[]` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
@@ -38,9 +36,7 @@ A Helm chart for creating Hyperswitch Card Vault
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
 | postgresql.primary.tolerations | list | `[]` |  |
-| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
-| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
-| server.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
+| server.affinity | object | `{}` |  |
 | server.annotations | object | `{}` |  |
 | server.extra.env | object | `{}` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.4.0"` |  |

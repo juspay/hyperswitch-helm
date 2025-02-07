@@ -5,7 +5,7 @@ metadata:
 data:
   producer.toml: |
     
-    {{- if eq .Values.application.server.run_env "production" -}}
+    {{- if eq .Values.server.run_env "production" -}}
     {{ .Files.Get "configs/producer.toml" | nindent 4 }}
     {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}

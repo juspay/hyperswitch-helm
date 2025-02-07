@@ -127,7 +127,7 @@
       key: ROUTER__EMAIL__SENDER_EMAIL
       name: hyperswitch-secrets
 - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
-  value: "{{ .Values.application.server.email.allowed_unverified_days }}"
+  value: "{{ .Values.server.email.allowed_unverified_days }}"
 - name: ROUTER__EMAIL__AWS_REGION
   valueFrom:
     secretKeyRef:
@@ -177,5 +177,5 @@
       key: ROUTER__EMAIL__AWS_SES__STS_ROLE_SESSION_NAME
       name: hyperswitch-secrets
 - name: RUN_ENV
-  value: {{ .Values.application.server.run_env }}
+  value: {{ .Values.server.run_env }}
 {{- end -}}
