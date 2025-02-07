@@ -15,9 +15,7 @@ A Helm chart for deploying Hyperswitch Keymanager
 | external.postgresql.config.port | string | `nil` |  |
 | external.postgresql.config.username | string | `nil` |  |
 | external.postgresql.enabled | bool | `false` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key | string | `"node-type"` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator | string | `"In"` |  |
-| global.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0] | string | `"generic-compute"` |  |
+| global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
 | global.image | string | `"juspaydotin/hyperswitch-encryption-service:v0.1.3"` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |

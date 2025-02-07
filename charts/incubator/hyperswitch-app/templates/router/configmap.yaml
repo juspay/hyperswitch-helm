@@ -4,7 +4,7 @@ metadata:
   name: router-cm-{{.Release.Name }}
 data:
   router.toml: |
-    {{- if eq .Values.application.server.run_env "production" -}}
+    {{- if eq .Values.server.run_env "production" -}}
     {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
     {{- else -}}

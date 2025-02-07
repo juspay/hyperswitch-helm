@@ -85,12 +85,12 @@ By default card vault and its dependencies are installed, however you need to cr
 
     # Update below values in hyperswitch-stack/values.yaml
     # The public key for the locker from locker-public-key.pem
-    hyperswitch-app.application.server.secrets.kms_jwekey_vault_encryption_key: |
+    hyperswitch-app.server.secrets.kms_jwekey_vault_encryption_key: |
       -----BEGIN PUBLIC KEY-----
       ...
       -----END PUBLIC KEY-----
     # The private key for the tenant from tenant-private-key.pem
-    hyperswitch-app.application.server.secrets.kms_jwekey_vault_private_key: |
+    hyperswitch-app.server.secrets.kms_jwekey_vault_private_key: |
       -----BEGIN RSA PRIVATE KEY-----
       ...
       -----END RSA PRIVATE KEY-----

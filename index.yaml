@@ -3,7 +3,7 @@ entries:
   hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-24T12:50:19.777285+05:30"
+    created: "2025-02-06T17:41:12.853734+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -15,7 +15,7 @@ entries:
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: e889b28e99c9ade3c0714b8ea6e3688d71c6700d91767337a6ec8807daa54b8c
+    digest: 5a2f94eff4cead01dc42c9c6cd26b284fb87816685ae16476135018f06959aa4
     name: hyperswitch-stack
     type: application
     urls:
@@ -23,7 +23,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-24T12:50:19.742943+05:30"
+    created: "2025-02-06T17:41:12.817054+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -43,7 +43,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-24T12:50:19.709678+05:30"
+    created: "2025-02-06T17:41:12.780626+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -61,7 +61,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-24T12:50:19.688235+05:30"
+    created: "2025-02-06T17:41:12.758669+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -79,7 +79,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-24T12:50:19.674491+05:30"
+    created: "2025-02-06T17:41:12.743637+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -95,4 +95,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.1.1/hyperswitch-stack-0.1.1.tgz
     version: 0.1.1
-generated: "2025-01-24T12:50:19.659849+05:30"
+generated: "2025-02-06T17:41:12.72833+05:30"

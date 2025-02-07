@@ -1,29 +1,39 @@
-1. Get the application URL by running these commands:
+1. Get the Application URL:
+   - If Ingress is not available, use port-forwarding:
+     ```shell
+     export ADDRESS_CREATED=$(kubectl get ingress -n {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+     if [ -z "$ADDRESS_CREATED" ]; then
+       echo "Using port-forwarding to access the services."
 
-export ADDRESS_CREATED=$(kubectl get ingress -n {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-if [ -z "$ADDRESS_CREATED" ]
-then
-    kubectl port-forward deployment/hyperswitch-server-v1o112o0 8080:8080 -n {{ .Release.Namespace }} & \
-    kubectl port-forward deployment/hyperswitch-control-center-v1o30o0 9000:9000 -n {{ .Release.Namespace }} & \
-    echo "======================================================"
-    echo "** App server running on: http://localhost:8080      **"
-    echo "** Control center running on: http://localhost:9000  **"
-    echo "======================================================"
-    echo "\nRun this command to close exposed ports kill\n"
-    echo "kill \$( lsof -i:8080 -t ) && kill \$( lsof -i:9000 -t )"
-    echo "======================================================"
-else
-    kubectl get ingress -n {{ .Release.Namespace }}
-fi
-========================================================
-Clickhouse Setup
---------------------------------------------------------
-# To run clickhouse init script after clickhouse is started
-CKH_PASS=$(kubectl get secret clickhouse -n {{ .Release.Namespace }} -o jsonpath="{.data.admin-password}" | base64 --decode)
-kubectl exec -it clickhouse-shard0-0 -n hyperswitch -- sh -c 'cat docker-entrypoint-initdb.d/*.sql | clickhouse-client --user default --password '${CKH_PASS}' --multiquery'
-========================================================
-Expose Mailhog for local email service
---------------------------------------------------------
-kubectl expose deployment mailhog --type=LoadBalancer --name=mailhog-service -n {{ .Release.Namespace }}
-you can see the email on http://localhost:8025/
+       # Port-forwarding commands
+       kubectl port-forward service/hyperswitch-server 8080:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/hyperswitch-control-center 9000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}-grafana 3000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}-vector 3103:3103 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/mailhog 8025:8025 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
+
+       echo "======================================================"
+       echo " App server running on: http://localhost:8080      "
+       echo " Control center running on: http://localhost:9000  "
+       echo " Grafana running on http://localhost:3000 to view logs "
+       echo " Vector running on http://localhost:3103 to collect logs "
+       echo " Mailhog running on http://localhost:8025 to receive mails "
+       echo "\n Test Payment: https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/test-a-payment"
+       echo "======================================================"
+
+       echo "\nTo close the exposed ports, run the following command:\n"
+       echo "lsof -i:8080,9000,3000,3103,8025 -t | xargs kill"
+       echo "======================================================"
+     else
+       echo "Ingress available. Access the services using the following command:"
+       kubectl get ingress -n {{ .Release.Namespace }}
+     fi
+     ```
+
+2. Clickhouse Setup:
+   - Run Clickhouse init script after Clickhouse is started:
+     ```shell
+     CKH_PASS=$(kubectl get secret clickhouse -n {{ .Release.Namespace }} -o jsonpath="{.data.admin-password}" | base64 --decode)
+     kubectl exec -it clickhouse-shard0-0 -n {{ .Release.Namespace }} -- sh -c 'cat docker-entrypoint-initdb.d/*.sql | clickhouse-client --user default --password '${CKH_PASS}' --multiquery'
+     ```
 ========================================================
