@@ -1887,7 +1887,7 @@ data:
                   {
                     "targetBlank": true,
                     "title": "Auto retries dashboard",
-                    "url": "https://grafana.internal.prod.hyperswitch.juspay.net/d/a2ba9921-ecb6-43f0-9178-a35ef1262604/auto-retries-metrics?orgId=1"
+                    "url": "dummy/dashboard/url"
                   }
                 ],
                 "mappings": [],
@@ -2024,7 +2024,7 @@ data:
                   {
                     "targetBlank": true,
                     "title": "Auto retries dashboard",
-                    "url": "https://grafana.internal.prod.hyperswitch.juspay.net/d/a2ba9921-ecb6-43f0-9178-a35ef1262604/auto-retries-metrics?orgId=1"
+                    "url": "dummy/dashboard/url"
                   }
                 ],
                 "mappings": [],

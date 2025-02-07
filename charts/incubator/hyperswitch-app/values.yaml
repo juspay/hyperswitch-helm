@@ -49,15 +49,7 @@ application:
     tolerations: []
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+    affinity: {}
     # nodeSelector to be used by the application
     nodeSelector: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
@@ -128,15 +120,7 @@ application:
       timeoutSeconds: 1
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+    affinity: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
@@ -613,15 +597,7 @@ application:
       type: RollingUpdate
     # Specify affinity for nodes to which the pods should start on
     # @ignored
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+    affinity: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
     # @ignored
     terminationGracePeriodSeconds: 30
@@ -658,15 +634,7 @@ application:
       type: RollingUpdate
     # -- Specify affinity for nodes to which the pods should start on
     # @ignored
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+    affinity: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
     terminationGracePeriodSeconds: 30
     # -- Annotations that are to be added to the pods (extends global configuration)
@@ -700,15 +668,7 @@ application:
       type: RollingUpdate
     # -- Specify affinity for nodes to which the pods should start on
     # @ignored
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-type
-                  operator: In
-                  values:
-                    - generic-compute
+    affinity: {}
     # -- The time kubernetes will wait after sending the termination signal to the pods
     # @ignored
     terminationGracePeriodSeconds: 30
@@ -1158,7 +1118,7 @@ loki-stack:
             options:
               path: /var/lib/grafana/dashboards/dp1
     dashboardsConfigMaps:
-      dp1: "rafana-dashboard-payments"
+      dp1: "grafana-dashboard-payments"
 
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
