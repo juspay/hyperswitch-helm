@@ -22,7 +22,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         {{- with (default .Values.global.annotations .Values.server.pod.annotations) }}
-        {{- toYaml . | nindent 10 }} 
+        {{- toYaml . | nindent 8 }} 
         {{- end }}
       creationTimestamp: null
       labels:

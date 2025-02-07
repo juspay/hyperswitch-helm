@@ -2,38 +2,38 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    {{- with (default .Values.application.global.annotations .Values.application.controlCenter.annotations) }}
+    {{- with (default .Values.global.annotations .Values.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   name: hyperswitch-control-center-v1o34o2
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.controlCenter.progressDeadlineSeconds }}
-  replicas: {{ default .Values.application.global.replicas .Values.application.controlCenter.replicas }}
+  progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
+  replicas: {{ default .Values.global.replicas .Values.controlCenter.replicas }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.application.controlCenter.labels.app }}
+      app: {{ .Values.controlCenter.labels.app }}
       version: v1o34o2
   strategy:
-    {{- with (default .Values.application.global.strategy .Values.application.controlCenter.strategy) }}
+    {{- with (default .Values.global.strategy .Values.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   template:
     metadata:
       labels:
-        app: {{ .Values.application.controlCenter.labels.app }}
+        app: {{ .Values.controlCenter.labels.app }}
         version: v1o34o2
     spec:
-      {{- with (default .Values.application.global.tolerations .Values.application.controlCenter.tolerations) }}
+      {{- with (default .Values.global.tolerations .Values.controlCenter.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.affinity .Values.application.controlCenter.affinity) }}
+      {{- with (default .Values.global.affinity .Values.controlCenter.affinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.nodeSelector .Values.application.controlCenter.nodeSelector) }}
+      {{- with (default .Values.global.nodeSelector .Values.controlCenter.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -49,7 +49,7 @@ spec:
                   - -c
                   - pkill -15 node
           env:
-            {{- range $key, $value := .Values.application.controlCenter.env }}
+            {{- range $key, $value := .Values.controlCenter.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
@@ -82,4 +82,4 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       serviceAccountName: hyperswitch-router-role
-      terminationGracePeriodSeconds: {{ .Values.application.controlCenter.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.controlCenter.terminationGracePeriodSeconds }}

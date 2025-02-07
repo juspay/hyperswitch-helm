@@ -2,42 +2,42 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    {{- with (default .Values.application.global.annotations .Values.application.producer.annotations) }}
+    {{- with (default .Values.global.annotations .Values.producer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   name: hyperswitch-producer-v1o112o0
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.application.global.progressDeadlineSeconds .Values.application.producer.progressDeadlineSeconds }}
-  replicas: {{ default .Values.application.global.replicas .Values.application.producer.replicas }}
+  progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.producer.progressDeadlineSeconds }}
+  replicas: {{ default .Values.global.replicas .Values.producer.replicas }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.application.producer.labels.app }}
+      app: {{ .Values.producer.labels.app }}
       version: v1o112o0
   strategy:
-    {{- with (default .Values.application.global.strategy .Values.application.producer.strategy) }}
+    {{- with (default .Values.global.strategy .Values.producer.strategy) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   template:
     metadata:
       labels:
-        app: {{ .Values.application.producer.labels.app }}
+        app: {{ .Values.producer.labels.app }}
         version: v1o112o0
       annotations:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
         checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
     spec:
-      {{- with (default .Values.application.global.tolerations .Values.application.producer.tolerations) }}
+      {{- with (default .Values.global.tolerations .Values.producer.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.affinity .Values.application.producer.affinity) }}
+      {{- with (default .Values.global.affinity .Values.producer.affinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.application.global.nodeSelector .Values.application.producer.nodeSelector) }}
+      {{- with (default .Values.global.nodeSelector .Values.producer.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -74,7 +74,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-            {{- if eq .Values.application.server.run_env "production" }}
+            {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
               name: hyperswitch-config
               subPath: producer.toml
@@ -88,7 +88,7 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       serviceAccountName: hyperswitch-router-role
-      terminationGracePeriodSeconds: {{ .Values.application.producer.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.producer.terminationGracePeriodSeconds }}
       volumes:
         - configMap:
             defaultMode: 420
