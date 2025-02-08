@@ -1,0 +1,2855 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-payments
+  labels:
+    grafana_dashboard: "1"
+data:
+  gafana-dashboard-payments.json: |
+      {
+        "annotations" : {
+          "list": [
+            {
+              "builtIn": 1,
+              "datasource": {
+                "type": "grafana",
+                "uid": "-- Grafana --"
+              },
+              "enable": true,
+              "hide": true,
+              "iconColor": "rgba(0, 211, 255, 1)",
+              "name": "Annotations & Alerts",
+              "type": "dashboard"
+            }
+          ]
+        },
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "graphTooltip": 0,
+        "id": 204,
+        "links": [],
+        "liveNow": false,
+        "panels": [
+          {
+            "collapsed": true,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 0
+            },
+            "id": 36,
+            "panels": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 4,
+                  "w": 24,
+                  "x": 0,
+                  "y": 1
+                },
+                "id": 35,
+                "options": {
+                  "autoScroll": false,
+                  "displayMode": "button",
+                  "favorites": false,
+                  "filter": false,
+                  "groupSelection": false,
+                  "header": true,
+                  "padding": 10,
+                  "showName": false,
+                  "statusSort": false,
+                  "sticky": false,
+                  "variable": "merchant_id"
+                },
+                "title": "Merchant ID",
+                "type": "volkovlabs-variable-panel"
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "Success Rate",
+                      "axisPlacement": "auto",
+                      "axisSoftMax": 100,
+                      "barAlignment": 0,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 24,
+                  "x": 0,
+                  "y": 5
+                },
+                "id": 33,
+                "options": {
+                  "legend": {
+                    "calcs": [
+                      "mean"
+                    ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    TO_CHAR(created_at, 'YYYY-MM-DD') AS created_date_string,\n    created_at::date AS created_date,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS confirmed_success_rate,\n    CASE WHEN COUNT(*) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / COUNT(*)) * 100 \n    ELSE \n        0 \n    END AS overall_success_rate,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS failure_rate\nFROM \n    payment_intent\nWHERE \n    merchant_id IN (${merchant_id:singlequote})\n    AND created_at >= $__timeFrom()\n   AND created_at < CURRENT_DATE::TIMESTAMP\nGROUP BY \ncreated_date_string,\n    created_date",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Day Wise Success Rate",
+                "type": "timeseries"
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "Success Rate",
+                      "axisPlacement": "auto",
+                      "axisSoftMax": 100,
+                      "barAlignment": 0,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 24,
+                  "x": 0,
+                  "y": 17
+                },
+                "id": 38,
+                "options": {
+                  "legend": {
+                    "calcs": [
+                      "mean"
+                    ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    TO_CHAR(DATE_TRUNC('week', created_at), 'YYYY-\"W\"IW') AS week_label,\n    DATE_TRUNC('week', created_at) AS created_week,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS confirmed_success_rate,\n    CASE WHEN COUNT(*) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / COUNT(*)) * 100 \n    ELSE \n        0 \n    END AS overall_success_rate,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS failure_rate\nFROM \n    payment_intent\nWHERE \n    merchant_id IN (${merchant_id:singlequote})\n    AND created_at >= $__timeFrom()\n    AND created_at < CURRENT_DATE::TIMESTAMP\nGROUP BY \n    week_label,\n    created_week\nORDER BY \n    created_week;",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Weekly Success Rate",
+                "type": "timeseries"
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "Success Rate",
+                      "axisPlacement": "auto",
+                      "axisSoftMax": 100,
+                      "barAlignment": 0,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 24,
+                  "x": 0,
+                  "y": 29
+                },
+                "id": 37,
+                "options": {
+                  "legend": {
+                    "calcs": [
+                      "mean"
+                    ],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    TO_CHAR(created_at, 'Month YYYY') AS month_label,\n    DATE_TRUNC('month', created_at) AS created_month,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS confirmed_success_rate,\n    CASE WHEN COUNT(*) > 0 THEN \n        (SUM(CASE WHEN status in ('succeeded', 'requires_capture') THEN 1 ELSE 0 END)::decimal / COUNT(*)) * 100 \n    ELSE \n        0 \n    END AS overall_success_rate,\n    CASE WHEN SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END) > 0 THEN \n        (SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)::decimal / SUM(CASE WHEN status != 'requires_payment_method' THEN 1 ELSE 0 END)) * 100 \n    ELSE \n        0 \n    END AS failure_rate\nFROM \n    payment_intent\nWHERE \n    merchant_id IN (${merchant_id:singlequote})\n    AND created_at >= $__timeFrom()\n   AND created_at < CURRENT_DATE::TIMESTAMP\nGROUP BY \nmonth_label, created_month\nORDER BY created_month",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Monthly Success Rate",
+                "type": "timeseries"
+              }
+            ],
+            "title": "Success Rate Trends",
+            "type": "row"
+          },
+          {
+            "collapsed": true,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 1
+            },
+            "id": 22,
+            "panels": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 4,
+                  "w": 24,
+                  "x": 0,
+                  "y": 2
+                },
+                "id": 42,
+                "options": {
+                  "autoScroll": false,
+                  "displayMode": "button",
+                  "favorites": false,
+                  "filter": false,
+                  "groupSelection": false,
+                  "header": true,
+                  "padding": 10,
+                  "showName": false,
+                  "statusSort": false,
+                  "sticky": false,
+                  "variable": "merchant_id"
+                },
+                "title": "Merchant ID",
+                "type": "volkovlabs-variable-panel"
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 4,
+                  "w": 24,
+                  "x": 0,
+                  "y": 6
+                },
+                "id": 43,
+                "options": {
+                  "autoScroll": false,
+                  "displayMode": "button",
+                  "favorites": false,
+                  "filter": false,
+                  "groupSelection": false,
+                  "header": true,
+                  "padding": 10,
+                  "showName": false,
+                  "statusSort": false,
+                  "sticky": false,
+                  "variable": "connector"
+                },
+                "pluginVersion": "10.0.1",
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "hide": false,
+                    "rawQuery": true,
+                    "rawSql": "",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Connector",
+                "transformations": [
+                  {
+                    "id": "filterByRefId",
+                    "options": {}
+                  }
+                ],
+                "type": "volkovlabs-variable-panel"
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  "overrides": []
+                },
+                "gridPos": {
+                  "h": 4,
+                  "w": 24,
+                  "x": 0,
+                  "y": 10
+                },
+                "id": 44,
+                "options": {
+                  "autoScroll": false,
+                  "displayMode": "button",
+                  "favorites": false,
+                  "filter": false,
+                  "groupSelection": false,
+                  "header": true,
+                  "padding": 10,
+                  "showName": false,
+                  "statusSort": false,
+                  "sticky": false,
+                  "variable": "payment_method_type"
+                },
+                "title": "Payment Method Type",
+                "type": "volkovlabs-variable-panel"
+              },
+              {
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "inspect": false
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "unit": "none"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "payment_success_rate"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "mode": "continuous-greens"
+                          }
+                        },
+                        {
+                          "id": "custom.cellOptions",
+                          "value": {
+                            "mode": "gradient",
+                            "type": "color-background"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 11,
+                  "x": 0,
+                  "y": 14
+                },
+                "id": 45,
+                "options": {
+                  "cellHeight": "sm",
+                  "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                      "sum"
+                    ],
+                    "show": false
+                  },
+                  "showHeader": true
+                },
+                "pluginVersion": "10.4.4",
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n    pa.merchant_id AS merchant_id,\n    COUNT(DISTINCT pi.id) AS total_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) AS successful_payments,\n    CASE\n        WHEN COUNT(DISTINCT pi.id) = 0 THEN 0.0  -- Handle division by zero\n        ELSE COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) * 100.0 / COUNT(DISTINCT pi.id)\n    END AS payment_success_rate\nFROM\n    payment_attempt AS pa\nLEFT JOIN\n    payment_intent AS pi\nON\n    pa.payment_id = pi.payment_id\nWHERE\n    pi.merchant_id IN (${merchant_id:singlequote})\n    AND (pa.payment_method_type IN (${payment_method_type:singlequote}) OR pa.payment_method IN (${payment_method_type:singlequote}))\n    AND pa.connector IN (${connector:singlequote})\n    AND pa.created_at >= $__timeFrom() \n    AND pa.created_at <= $__timeTo()\nGROUP BY\n    pa.merchant_id\nORDER BY\n    total_payments DESC;",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Merchant - SR",
+                "transformations": [
+                  {
+                    "id": "filterByValue",
+                    "options": {
+                      "filters": [
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "testt398"
+                            }
+                          },
+                          "fieldName": "merchant_id"
+                        },
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "sdk_hyperswitch"
+                            }
+                          },
+                          "fieldName": "merchant_id"
+                        }
+                      ],
+                      "match": "any",
+                      "type": "exclude"
+                    }
+                  }
+                ],
+                "type": "table"
+              },
+              {
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "inspect": false
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "unit": "none"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "payment_success_rate"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "mode": "continuous-greens"
+                          }
+                        },
+                        {
+                          "id": "custom.cellOptions",
+                          "value": {
+                            "mode": "gradient",
+                            "type": "color-background"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 13,
+                  "x": 11,
+                  "y": 14
+                },
+                "id": 18,
+                "options": {
+                  "cellHeight": "sm",
+                  "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                      "sum"
+                    ],
+                    "show": false
+                  },
+                  "showHeader": true
+                },
+                "pluginVersion": "10.4.4",
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n    pa.connector AS connector_id,\n    COUNT(DISTINCT pi.id) AS total_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) AS successful_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) * 100.0 / COUNT(DISTINCT pi.id) AS payment_success_rate\nFROM\n    payment_attempt AS pa\nLEFT JOIN\n    payment_intent AS pi\nON\n    pa.payment_id = pi.payment_id\nWHERE\n    pi.merchant_id IN (${merchant_id:singlequote})\n    AND (pa.payment_method_type IN (${payment_method_type:singlequote}) OR pa.payment_method IN (${payment_method_type:singlequote}))\n    AND pa.connector IN (${connector:singlequote})\n    AND pi.created_at >= $__timeFrom() \n    AND pi.created_at <= $__timeTo()\nGROUP BY\n    pa.connector\nORDER BY\n    total_payments DESC;\n",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Connector - SR",
+                "transformations": [
+                  {
+                    "id": "filterByValue",
+                    "options": {
+                      "filters": [
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "paypal_test"
+                            }
+                          },
+                          "fieldName": "connector_id"
+                        },
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "stripe_test"
+                            }
+                          },
+                          "fieldName": "connector_id"
+                        }
+                      ],
+                      "match": "any",
+                      "type": "exclude"
+                    }
+                  }
+                ],
+                "type": "table"
+              },
+              {
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "inspect": false
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "unit": "none"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "payment_success_rate"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "mode": "continuous-greens"
+                          }
+                        },
+                        {
+                          "id": "custom.cellOptions",
+                          "value": {
+                            "mode": "gradient",
+                            "type": "color-background"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 11,
+                  "x": 0,
+                  "y": 26
+                },
+                "id": 20,
+                "options": {
+                  "cellHeight": "sm",
+                  "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                      "sum"
+                    ],
+                    "show": false
+                  },
+                  "showHeader": true
+                },
+                "pluginVersion": "10.4.4",
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n    pa.payment_method_type AS payment_method_type,\n    COUNT(DISTINCT pi.id) AS total_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) AS successful_payments,\n    CASE\n        WHEN COUNT(DISTINCT pi.id) = 0 THEN 0.0  -- Handle division by zero\n        ELSE COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) * 100.0 / COUNT(DISTINCT pi.id)\n    END AS payment_success_rate\nFROM\n    payment_attempt AS pa\nLEFT JOIN\n    payment_intent AS pi\nON\n    pa.payment_id = pi.payment_id\nWHERE\n    pi.merchant_id IN (${merchant_id:singlequote})\n    AND (pa.payment_method_type IN (${payment_method_type:singlequote}) OR pa.payment_method IN (${payment_method_type:singlequote}))\n    AND pa.connector IN (${connector:singlequote})\n    AND pa.created_at >= $__timeFrom() \n    AND pa.created_at <= $__timeTo()\nGROUP BY\n    pa.payment_method_type\nORDER BY\n    total_payments DESC;",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "Payment Method Type - SR",
+                "transformations": [
+                  {
+                    "id": "filterByValue",
+                    "options": {
+                      "filters": [
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "testt398"
+                            }
+                          },
+                          "fieldName": "merchant_id"
+                        },
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "sdk_hyperswitch"
+                            }
+                          },
+                          "fieldName": "merchant_id"
+                        }
+                      ],
+                      "match": "any",
+                      "type": "exclude"
+                    }
+                  }
+                ],
+                "type": "table"
+              },
+              {
+                "datasource": {
+                  "type": "grafana-postgresql-datasource",
+                  "uid": "postgres_uid"
+                },
+                "description": "",
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "inspect": false
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "unit": "none"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "payment_success_rate"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "mode": "continuous-greens"
+                          }
+                        },
+                        {
+                          "id": "custom.cellOptions",
+                          "value": {
+                            "mode": "gradient",
+                            "type": "color-background"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "gridPos": {
+                  "h": 12,
+                  "w": 24,
+                  "x": 0,
+                  "y": 38
+                },
+                "id": 46,
+                "options": {
+                  "cellHeight": "sm",
+                  "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                      "sum"
+                    ],
+                    "show": false
+                  },
+                  "showHeader": true
+                },
+                "pluginVersion": "10.4.4",
+                "targets": [
+                  {
+                    "datasource": {
+                      "type": "postgres",
+                      "uid": "postgres_uid"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\n    pa.merchant_id AS merchant_id,\n    pa.connector AS connector_id,\n    pa.payment_method_type AS payment_method_type,\n    COUNT(DISTINCT pi.id) AS total_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) AS successful_payments,\n    COUNT(DISTINCT CASE WHEN pi.status = 'succeeded' THEN pi.id END) * 100.0 / COUNT(DISTINCT pi.id) AS payment_success_rate\nFROM\n    payment_attempt AS pa\nLEFT JOIN\n    payment_intent AS pi\nON\n    pa.payment_id = pi.payment_id\nWHERE\n    pi.merchant_id IN (${merchant_id:singlequote})\n    AND (pa.payment_method_type IN (${payment_method_type:singlequote}) OR pa.payment_method IN (${payment_method_type:singlequote}))\n    AND pa.connector IN (${connector:singlequote})\n    AND pi.created_at >= $__timeFrom() \n    AND pi.created_at <= $__timeTo()\nGROUP BY\n    pa.merchant_id,\n    pa.connector,\n    pa.payment_method_type\nORDER BY\n    total_payments DESC;\n",
+                    "refId": "A",
+                    "sql": {
+                      "columns": [
+                        {
+                          "parameters": [],
+                          "type": "function"
+                        }
+                      ],
+                      "groupBy": [
+                        {
+                          "property": {
+                            "type": "string"
+                          },
+                          "type": "groupBy"
+                        }
+                      ],
+                      "limit": 50
+                    }
+                  }
+                ],
+                "title": "MID <> Connector <> PMT - SR",
+                "transformations": [
+                  {
+                    "id": "filterByValue",
+                    "options": {
+                      "filters": [
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "paypal_test"
+                            }
+                          },
+                          "fieldName": "connector_id"
+                        },
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": "stripe_test"
+                            }
+                          },
+                          "fieldName": "connector_id"
+                        }
+                      ],
+                      "match": "any",
+                      "type": "exclude"
+                    }
+                  }
+                ],
+                "type": "table"
+              }
+            ],
+            "title": "Success Rate Analytics",
+            "type": "row"
+          },
+          {
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 2
+            },
+            "id": 21,
+            "panels": [],
+            "title": "Merchant Success Rate",
+            "type": "row"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 24,
+              "x": 0,
+              "y": 3
+            },
+            "id": 31,
+            "options": {
+              "autoScroll": false,
+              "displayMode": "button",
+              "favorites": false,
+              "filter": false,
+              "groupSelection": false,
+              "header": true,
+              "padding": 10,
+              "showName": false,
+              "statusSort": false,
+              "sticky": false,
+              "variable": "merchant_id"
+            },
+            "title": "Merchant ID",
+            "type": "volkovlabs-variable-panel"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 24,
+              "x": 0,
+              "y": 7
+            },
+            "id": 32,
+            "options": {
+              "autoScroll": false,
+              "displayMode": "button",
+              "favorites": false,
+              "filter": false,
+              "groupSelection": false,
+              "header": true,
+              "padding": 10,
+              "showName": false,
+              "statusSort": false,
+              "sticky": false,
+              "variable": "connector"
+            },
+            "pluginVersion": "10.0.1",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": false,
+                "rawQuery": true,
+                "rawSql": "",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "Connector",
+            "transformations": [
+              {
+                "id": "filterByRefId",
+                "options": {}
+              }
+            ],
+            "type": "volkovlabs-variable-panel"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 24,
+              "x": 0,
+              "y": 11
+            },
+            "id": 40,
+            "options": {
+              "autoScroll": false,
+              "displayMode": "button",
+              "favorites": false,
+              "filter": false,
+              "groupSelection": false,
+              "header": true,
+              "padding": 10,
+              "showName": false,
+              "statusSort": false,
+              "sticky": false,
+              "variable": "payment_method_type"
+            },
+            "title": "Payment Method Type",
+            "type": "volkovlabs-variable-panel"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "displayName": "Success Rate",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "green",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 0,
+              "y": 15
+            },
+            "id": 1,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status in ('succeeded', 'requires_capture')\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Confirmed Payments Success Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "displayName": "Success Rate",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "green",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 6,
+              "y": 15
+            },
+            "id": 39,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status in ('succeeded', 'requires_capture')\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Overall Payments Success Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "displayName": "Failure Rate",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 12,
+              "y": 15
+            },
+            "id": 2,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status = 'failed'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Payments Failure Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 18,
+              "y": 15
+            },
+            "id": 5,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method' AND payment_intent.status != 'failed' AND payment_intent.status != 'succeeded' AND payment_intent.status != 'requires_capture'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Non Terminal Payments Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "displayName": "Success Rate",
+                "links": [
+                  {
+                    "targetBlank": true,
+                    "title": "Auto retries dashboard",
+                    "url": "dummy/dashboard/url"
+                  }
+                ],
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "green",
+                      "value": 70
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 0,
+              "y": 23
+            },
+            "id": 29,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})\n  AND payment_intent.attempt_count > 1",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status = 'succeeded'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})\n  AND payment_intent.attempt_count > 1",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Retried Payments Success Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "displayName": "Failure Rate",
+                "links": [
+                  {
+                    "targetBlank": true,
+                    "title": "Auto retries dashboard",
+                    "url": "dummy/dashboard/url"
+                  }
+                ],
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 6,
+              "x": 6,
+              "y": 23
+            },
+            "id": 30,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status != 'requires_payment_method'\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND connector IN (${connector:singlequote})\n  AND payment_intent.attempt_count > 1",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "hide": true,
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status = 'failed'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})\n  AND payment_intent.attempt_count > 1",
+                "refId": "B",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($B/$A) *100",
+                "hide": false,
+                "refId": "C",
+                "type": "math"
+              }
+            ],
+            "title": "Retried Payments Failure Rate",
+            "type": "gauge"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                },
+                "unit": "Txns"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 12,
+              "x": 12,
+              "y": 23
+            },
+            "id": 3,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (\n    payment_intent.status = 'requires_payment_method'\n    OR (payment_intent.status != 'requires_payment_method' AND connector IN (${connector:singlequote}) AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote})))\n  )\n",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "Total transactions",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                },
+                "unit": "Txns"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 6,
+              "x": 12,
+              "y": 27
+            },
+            "id": 17,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status  = 'succeeded'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  AND connector IN (${connector:singlequote})\n  ",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "Successful Transactions",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    }
+                  ]
+                },
+                "unit": "Txns"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 6,
+              "x": 18,
+              "y": 27
+            },
+            "id": 34,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT COUNT(1) from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.status  = 'requires_payment_method'\n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "User Dropouts",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "filterable": true,
+                  "inspect": false
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Error reason"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.inspect",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 24,
+              "x": 0,
+              "y": 31
+            },
+            "id": 8,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true,
+              "sortBy": [
+                {
+                  "desc": true,
+                  "displayName": "Txns"
+                }
+              ]
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT connector as \"Connector\", error_code as \"Error code\", error_reason as \"Error reason\", COUNT(1) AS \"Txns\" from payment_attempt\n  WHERE created_at >= $__timeFrom() \n  AND created_at <= $__timeTo() \n  AND status = 'failure'\n  AND merchant_id IN (${merchant_id:singlequote})\n  AND connector IN (${connector:singlequote})\n  AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote}))\n  GROUP BY connector, status, error_code, error_reason\n  ORDER BY \"Txns\" DESC",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "Top Error codes and messages for Merchant <> Connector",
+            "type": "table"
+          },
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "filterable": true,
+                  "inspect": false
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Txns"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "mode": "continuous-greens"
+                      }
+                    },
+                    {
+                      "id": "custom.cellOptions",
+                      "value": {
+                        "mode": "gradient",
+                        "type": "color-background"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 43
+            },
+            "id": 6,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true,
+              "sortBy": [
+                {
+                  "desc": true,
+                  "displayName": "Txns"
+                }
+              ]
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT payment_intent.merchant_id as \"Merchant ID\", payment_attempt.connector as \"Connector\", payment_attempt.payment_method_type as \"Payment Method Type\", payment_attempt.payment_method as \"Payment Method\", payment_intent.status as \"Status\", COUNT(1) AS \"Txns\" from payment_intent\n  INNER JOIN payment_attempt ON payment_intent.active_attempt_id = payment_attempt.attempt_id\n  WHERE payment_intent.created_at >= $__timeFrom() \n  AND payment_intent.created_at <= $__timeTo() \n  AND payment_intent.merchant_id IN (${merchant_id:singlequote})\n  AND payment_intent.status NOT IN ('succeeded', 'failed', 'requires_payment_method', 'cancelled', 'requires_capture')\n   AND (\n    payment_intent.status = 'requires_payment_method'\n    OR (payment_intent.status != 'requires_payment_method' AND connector IN (${connector:singlequote}) AND (payment_method_type IN (${payment_method_type:singlequote}) OR payment_method IN (${payment_method_type:singlequote})))\n  )\n  GROUP BY payment_intent.merchant_id, payment_intent.status, payment_attempt.connector, payment_attempt.payment_method, payment_attempt.payment_method_type",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "parameters": [],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "property": {
+                        "type": "string"
+                      },
+                      "type": "groupBy"
+                    }
+                  ],
+                  "limit": 50
+                }
+              }
+            ],
+            "title": "Non Terminal Payment Details excluding Dropouts",
+            "type": "table"
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "postgres_uid"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "filterable": true,
+                  "inspect": false,
+                  "minWidth": 50
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 14,
+              "w": 12,
+              "x": 0,
+              "y": 52
+            },
+            "id": 41,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true
+            },
+            "pluginVersion": "10.4.4",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "postgres_uid"
+                },
+                "editorMode": "code",
+                "format": "table",
+                "rawQuery": true,
+                "rawSql": "SELECT payment_intent.merchant_id,payment_attempt.payment_id,payment_attempt.connector,payment_intent.status as intent_status,payment_attempt.status as attempt_status,payment_intent.created_at, payment_attempt.payment_method,payment_attempt.payment_method_type\nFROM payment_attempt\n\nINNER JOIN payment_intent\nON payment_attempt.payment_id=payment_intent.payment_id\n\nand payment_attempt.merchant_id NOT LIKE ('hyperswitch%') \nand payment_attempt.created_at >= $__timeFrom() AND payment_attempt.created_at <= $__timeTo() \nand payment_attempt.status IN ('pending')\nand payment_attempt.connector NOT IN ('trustpay')\nAND payment_attempt.merchant_id IN (${merchant_id:singlequote})\nAND payment_attempt.connector IN (${connector:singlequote})\nAND (payment_attempt.payment_method_type IN (${payment_method_type:singlequote}) OR payment_attempt.payment_method IN (${payment_method_type:singlequote}))\n\nGROUP BY payment_intent.merchant_id,payment_intent.status,payment_attempt.status,payment_attempt.payment_id,payment_attempt.connector,payment_intent.created_at,payment_attempt.payment_method,payment_attempt.payment_method_type\nORDER BY payment_attempt.status,payment_intent.created_at DESC",
+                "refId": "A",
+                "sql": {
+                  "columns": [
+                    {
+                      "name": "COUNT",
+                      "parameters": [
+                        {
+                          "name": "payment_id",
+                          "type": "functionParameter"
+                        }
+                      ],
+                      "type": "function"
+                    }
+                  ],
+                  "groupBy": [],
+                  "limit": 50,
+                  "whereJsonTree": {
+                    "children1": [
+                      {
+                        "id": "aa989b88-cdef-4012-b456-7188ba3ae241",
+                        "properties": {
+                          "field": "status",
+                          "operator": "equal",
+                          "value": [
+                            "succeeded"
+                          ],
+                          "valueSrc": [
+                            "value"
+                          ],
+                          "valueType": [
+                            "text"
+                          ]
+                        },
+                        "type": "rule"
+                      },
+                      {
+                        "id": "89ab9ab8-0123-4456-b89a-b188ba49bf9e",
+                        "properties": {
+                          "field": "created_at",
+                          "operator": "greater_or_equal",
+                          "value": [
+                            null
+                          ],
+                          "valueSrc": [
+                            "value"
+                          ],
+                          "valueType": [
+                            "datetime"
+                          ]
+                        },
+                        "type": "rule"
+                      },
+                      {
+                        "id": "a998baba-cdef-4012-b456-7188ba4a1f04",
+                        "properties": {
+                          "field": "created_at",
+                          "operator": "less_or_equal",
+                          "value": [
+                            null
+                          ],
+                          "valueSrc": [
+                            "value"
+                          ],
+                          "valueType": [
+                            "datetime"
+                          ]
+                        },
+                        "type": "rule"
+                      }
+                    ],
+                    "id": "aa88988b-89ab-4cde-b012-3188ba35735b",
+                    "properties": {
+                      "conjunction": "AND"
+                    },
+                    "type": "group"
+                  },
+                  "whereString": "status = 'succeeded'"
+                },
+                "table": "payment_intent"
+              }
+            ],
+            "title": "Payments Stuck in Pending State",
+            "type": "table"
+          }
+        ],
+        "refresh": "",
+        "schemaVersion": 39,
+        "tags": [],
+        "templating": {
+          "list": [
+            {
+              "current": {
+                "selected": true,
+                "text": [
+                  "All"
+                ],
+                "value": [
+                  "$__all"
+                ]
+              },
+              "datasource": {
+                "type": "postgres",
+                "uid": "postgres_uid"
+              },
+              "definition": "select distinct(merchant_id) from payment_intent",
+              "description": "Merchant ID",
+              "hide": 2,
+              "includeAll": true,
+              "label": "merchant_id",
+              "multi": false,
+              "name": "merchant_id",
+              "options": [],
+              "query": "select distinct(merchant_id) from payment_intent",
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "sort": 0,
+              "type": "query"
+            },
+            {
+              "current": {
+                "selected": true,
+                "text": [
+                  "All"
+                ],
+                "value": [
+                  "$__all"
+                ]
+              },
+              "datasource": {
+                "type": "postgres",
+                "uid": "postgres_uid"
+              },
+              "definition": "select connector from payment_attempt where connector != ''",
+              "description": "connector name",
+              "hide": 2,
+              "includeAll": true,
+              "label": "connector",
+              "multi": false,
+              "name": "connector",
+              "options": [],
+              "query": "select connector from payment_attempt where connector != ''",
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "sort": 0,
+              "type": "query"
+            },
+            {
+              "current": {
+                "selected": false,
+                "text": "All",
+                "value": "$__all"
+              },
+              "datasource": {
+                "type": "postgres",
+                "uid": "postgres_uid"
+              },
+              "definition": "SELECT \n    CASE \n        WHEN payment_method_type IS NULL \n             OR payment_method_type = 'credit' \n             OR payment_method_type = 'debit' \n        THEN 'card'\n        ELSE payment_method_type\n    END AS payment_method_type\nFROM payment_attempt;",
+              "description": "Payment Method Type",
+              "hide": 2,
+              "includeAll": true,
+              "label": "Payment Method Type",
+              "multi": false,
+              "name": "payment_method_type",
+              "options": [],
+              "query": "SELECT \n    CASE \n        WHEN payment_method_type IS NULL \n             OR payment_method_type = 'credit' \n             OR payment_method_type = 'debit' \n        THEN 'card'\n        ELSE payment_method_type\n    END AS payment_method_type\nFROM payment_attempt;",
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "sort": 0,
+              "type": "query"
+            }
+          ]
+        },
+        "time": {
+          "from": "now-24h",
+          "to": "now"
+        },
+        "timepicker": {},
+        "timezone": "",
+        "title": "Payments Success Rate Monitoring",
+        "uid": "dd98058c-8a6e-4ea4-8a18-f3d13d603f07",
+        "version": 1,
+        "weekStart": ""
+      }
+
