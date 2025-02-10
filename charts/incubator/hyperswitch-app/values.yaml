@@ -652,138 +652,154 @@ producer:
   env:
     binary: producer
 
-controlCenter:
-  # -- Number of replicas to be used for the application
-  replicas: 1
-  # -- Wait time allowed for the deployment before the deployment is marked as failed
-  # @ignored
-  progressDeadlineSeconds: 600
-  # -- The strategy that can be used to replace the old pods by new ones
-  # @ignored
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-    type: RollingUpdate
-  # -- Specify affinity for nodes to which the pods should start on
-  # @ignored
-  affinity: {}
-  # -- The time kubernetes will wait after sending the termination signal to the pods
-  # @ignored
-  terminationGracePeriodSeconds: 30
-  # -- Annotations that are to be added to the pods (extends global configuration)
-  # @ignored
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
-  # -- Annotations that are to be added the the deployments (extends global configuration)
-  # @ignored
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
-  # @ignored
-  labels:
-    app: hyperswitch-control-center
-  # -- service account annotations to be used
-  # @ignored
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
-  env:
-    # -- 
-    binary: dashboard
-    host: hyperswitch-control-center
-    # -- Mix panel token
-    # @section -- Control Center configs
-    mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
-    # -- Primary color for the theme
-    # @section -- Control Center configs
-    default__theme__primary_color: "#006DF9"
-    # -- Primary hover color for the theme
-    # @section -- Control Center configs
-    default__theme__primary_hover_color: "#005ED6"
-    # -- Secondary color for the theme
-    # @section -- Control Center configs
-    default__theme__sidebar_color: "#242F48"
-    # -- Endpoints logo url
-    # @section -- Control Center configs
-    default__endpoints__logo_url: ""
-    # -- Endpoints favicon url
-    # @section -- Control Center configs
-    default__endpoints__favicon_url: ""
-    # -- Mixpanel token
-    # @section -- Control Center configs
-    default__endpoints__mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
-    # -- Hyperswitch terms and conditions url
-    # @section -- Control Center configs
-    default__endpoints__agreement_url: "https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"
-    # -- PCI DSS certificate url
-    # @section -- Control Center configs
-    default__endpoints__dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
-    # -- Agreement version
-    # @section -- Control Center configs
-    default__endpoints__agreement_version: "1.0.0"
-    # -- Enables users to toggle between test and live modes when signing in. When enabled, users will see an option during sign-in to actively switch between test and live environments.
-    # @section -- Control Center configs
-    default__features__test_live_toggle: "false"
-    # -- Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.
-    # @section -- Control Center configs
-    default__features__is_live_mode: "false"
-    # -- Enables user sign-in and sign-up using magic links instead of passwords. When enabled, users can request a magic link via email that logs them into their account or creates a new account if they are signing up.
-    # @section -- Control Center configs
-    default__features__email: "false"
-    # -- Enables the simplified onboarding flow for new users, where they connect to processors, configure payment routing and test a payment, all in one flow.
-    # @section -- Control Center configs
-    default__features__quick_start: "false"
-    # -- Unlocks access to system monitoring and metrics pages within the dashboard. When enabled, users can view technical performance data like payment latency, uptime, API response times, error rates, and more.
-    # @section -- Control Center configs
-    default__features__system_metrics: "false"
-    # -- Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.
-    # @section -- Control Center configs
-    default__features__sample_data: "false"
-    # -- Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management
-    # @section -- Control Center configs
-    default__features__frm: "false"
-    # -- Enables the payout functionality in the dashboard. When enabled, this allows users to configure payout profiles, manage recipient details, schedule disbursements, and process payout batches to pay out funds to third parties.
-    # @section -- Control Center configs
-    default__features__payout: "false"
-    # -- Enables access to reconciliation capabilities in the Hyperswitch dashboard. When turned on, this unlocks the Reconciliation module that allows users to match payment transactions with bank/ledger entries for accounting purposes.
-    # @section -- Control Center configs
-    default__features__recon: "false"
-    # -- Allows enabling sandbox/test payment processors for testing purposes. When enabled, developers and testers can add test payment processors like Stripe Test or PayPal Test to trial payment flows without touching live transactions or making processor API calls.
-    # @section -- Control Center configs
-    default__features__test_processors: "false"
-    # -- Enables the ability for users to provide direct product feedback from within the dashboard. When enabled, a feedback modal will be available in the UI that allows users to rate features, report bugs, and suggest improvements. Disabling this flag will remove the feedback modal and prevent collection of any user data.
-    # @section -- Control Center configs
-    default__features__feedback: "false"
-    # -- Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.
-    # @section -- Control Center configs
-    default__features__mixpanel: "false"
-    # -- Controls the ability to generate detailed reports on payments, refunds, and disputes. When enabled, this allows users to pull reports covering the previous 6 months of transaction data. The reports can provide insights into trends, identify issues, and inform business decisions.
-    # @section -- Control Center configs
-    default__features__generate_report: "false"
-    # -- Grants access to the user journey module within the analytics section of the dashboard. This feature provides comprehensive graphical representations of payment analytics, facilitating a deeper understanding of user behavior and usage patterns.
-    # @section -- Control Center configs
-    default__features__user_journey_analytics: "false"
-    # -- Enables the ability to apply surcharges to payments. When enabled, you can create advanced rules based on payment parameters like amount, currency, and payment method to enforce surcharges as needed.
-    # @section -- Control Center configs
-    default__features__surcharge: "false"
-    default__features__dispute_evidence_upload: "false"
-    default__features__paypal_automatic_flow: "false"
-    default__features__threeds_authenticator: "false"
-    default__features__global_search: "false"
-    default__features__dispute_analytics: "false"
-    default__features__configure_pmts: "false"
-    # -- Enables customization of branding elements like logos, colors.
-    # @section -- Control Center configs
-    default__features__branding: "false"
-    default__features__authentication_analytics: "false"
-    # -- Enables totp will mandate 2fa for all users
-    # @section -- Control Center configs
-    default__features__totp: "false"
-    default__features__live_users_counter: "false"
-    default__features__custom_webhook_headers: "false"
-    default__features__compliance_certificate: "false"
-    default__features__performance_monitor: "false"
-    default__features__pm_authentication_processor: "false"
+  controlCenter:
+    # -- Number of replicas to be used for the application
+    replicas: 1
+    # -- Wait time allowed for the deployment before the deployment is marked as failed
+    # @ignored
+    progressDeadlineSeconds: 600
+    # -- The strategy that can be used to replace the old pods by new ones
+    # @ignored
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    # -- Specify affinity for nodes to which the pods should start on
+    # @ignored
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-type
+                  operator: In
+                  values:
+                    - generic-compute
+    # -- The time kubernetes will wait after sending the termination signal to the pods
+    # @ignored
+    terminationGracePeriodSeconds: 30
+    # -- Annotations that are to be added to the pods (extends global configuration)
+    # @ignored
+    podAnnotations:
+      traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+    # -- Annotations that are to be added the the deployments (extends global configuration)
+    # @ignored
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+    # @ignored
+    labels:
+      app: hyperswitch-control-center
+    # -- service account annotations to be used
+    # @ignored
+    serviceAccountAnnotations:
+      eks.amazonaws.com/role-arn:
+    env:
+      # --
+      binary: dashboard
+      host: hyperswitch-control-center
+      # -- Mix panel token
+      # @section -- Control Center configs
+      mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
+      # -- Primary color for the theme
+      # @section -- Control Center configs
+      default__theme__primary_color: "#006DF9"
+      # -- Primary hover color for the theme
+      # @section -- Control Center configs
+      default__theme__primary_hover_color: "#005ED6"
+      # -- Secondary color for the theme
+      # @section -- Control Center configs
+      default__theme__sidebar_color: "#242F48"
+      # -- Endpoints logo url
+      # @section -- Control Center configs
+      default__endpoints__logo_url: ""
+      # -- Endpoints favicon url
+      # @section -- Control Center configs
+      default__endpoints__favicon_url: ""
+      # -- Mixpanel token
+      # @section -- Control Center configs
+      default__endpoints__mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
+      # -- Hyperswitch terms and conditions url
+      # @section -- Control Center configs
+      default__endpoints__agreement_url: "https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"
+      # -- PCI DSS certificate url
+      # @section -- Control Center configs
+      default__endpoints__dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
+      # -- Agreement version
+      # @section -- Control Center configs
+      default__endpoints__agreement_version: "1.0.0"
+      # -- Enables users to toggle between test and live modes when signing in. When enabled, users will see an option during sign-in to actively switch between test and live environments.
+      # @section -- Control Center configs
+      default__features__test_live_toggle: "false"
+      # -- Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.
+      # @section -- Control Center configs
+      default__features__dev_click_to_pay: "true"
+      default__features__is_live_mode: "false"
+      # -- Enables user sign-in and sign-up using magic links instead of passwords. When enabled, users can request a magic link via email that logs them into their account or creates a new account if they are signing up.
+      # @section -- Control Center configs
+      default__features__email: "true"
+      # -- Enables the simplified onboarding flow for new users, where they connect to processors, configure payment routing and test a payment, all in one flow.
+      # @section -- Control Center configs
+      default__features__quick_start: "true"
+      # -- Unlocks access to system monitoring and metrics pages within the dashboard. When enabled, users can view technical performance data like payment latency, uptime, API response times, error rates, and more.
+      # @section -- Control Center configs
+      default__features__system_metrics: "false"
+      # -- Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.
+      # @section -- Control Center configs
+      default__features__sample_data: "true"
+      # -- Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management
+      # @section -- Control Center configs
+      default__features__frm: "true"
+      # -- Enables the payout functionality in the dashboard. When enabled, this allows users to configure payout profiles, manage recipient details, schedule disbursements, and process payout batches to pay out funds to third parties.
+      # @section -- Control Center configs
+      default_features_tax_processor: "true"
+      default__features__payout: "true"
+      # -- Enables access to reconciliation capabilities in the Hyperswitch dashboard. When turned on, this unlocks the Reconciliation module that allows users to match payment transactions with bank/ledger entries for accounting purposes.
+      # @section -- Control Center configs
+      default__features__recon: "true"
+      # -- Allows enabling sandbox/test payment processors for testing purposes. When enabled, developers and testers can add test payment processors like Stripe Test or PayPal Test to trial payment flows without touching live transactions or making processor API calls.
+      # @section -- Control Center configs
+      default__features__test_processors: "true"
+      # -- Enables the ability for users to provide direct product feedback from within the dashboard. When enabled, a feedback modal will be available in the UI that allows users to rate features, report bugs, and suggest improvements. Disabling this flag will remove the feedback modal and prevent collection of any user data.
+      # @section -- Control Center configs
+      default__features__feedback: "false"
+      # -- Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.
+      # @section -- Control Center configs
+      default__features__mixpanel: "true"
+      # -- Controls the ability to generate detailed reports on payments, refunds, and disputes. When enabled, this allows users to pull reports covering the previous 6 months of transaction data. The reports can provide insights into trends, identify issues, and inform business decisions.
+      # @section -- Control Center configs
+      default__features__generate_report: "true"
+      # -- Grants access to the user journey module within the analytics section of the dashboard. This feature provides comprehensive graphical representations of payment analytics, facilitating a deeper understanding of user behavior and usage patterns.
+      # @section -- Control Center configs
+      default__features__user_journey_analytics: "false"
+      # -- Enables the ability to apply surcharges to payments. When enabled, you can create advanced rules based on payment parameters like amount, currency, and payment method to enforce surcharges as needed.
+      # @section -- Control Center configs
+      default__features__surcharge: "true"
+      default__features__dispute_evidence_upload: "false"
+      default__features__paypal_automatic_flow: "false"
+      default__features__threeds_authenticator: "true"
+      default__features__new_analytics: "true"
+      default__features__new_analytics_filters: "true"
+      default__features__new_analytics_refunds: "true"
+      default__features__new_analytics_smart_retries: "true"
+      default__features__global_search: "true"
+      default__features__dispute_analytics: "false"
+      default__features__configure_pmts: "true"
+      default__features__tenant_user: "true"
+      default__features__x_feature_route: "true"
+      # -- Enables customization of branding elements like logos, colors.
+      # @section -- Control Center configs
+      default__features__branding: "false"
+      default__features__authentication_analytics: "false"
+      # -- Enables totp will mandate 2fa for all users
+      # @section -- Control Center configs
+      default__features__totp: "false"
+      default__features__live_users_counter: "false"
+      default__features__custom_webhook_headers: "false"
+      default__features__compliance_certificate: "true"
+      default__features__performance_monitor: "true"
+      default__features__pm_authentication_processor: "true"
 
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
@@ -898,7 +914,7 @@ externalPostgresql:
       password: "hyperswitch"
       # -- master DB plainpassword
       # @section -- Dependencies configuration
-      plainpassword: 
+      plainpassword:
       # -- master DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
@@ -918,7 +934,7 @@ externalPostgresql:
       password: "hyperswitch"
       # -- replica DB plainpassword
       # @section -- Dependencies configuration
-      plainpassword: 
+      plainpassword:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
@@ -1005,7 +1021,7 @@ kafka:
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1
 
-# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml 
+# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml
 clickhouse:
   # -- Enable Bitnami Clickhouse sub-chart helm installation
   # @section -- Dependencies configuration
@@ -1044,7 +1060,12 @@ clickhouse:
   initContainers:
     - name: clone-sql-scripts
       image: alpine/git
-      command: ['sh', '-c', 'git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
+      command:
+        [
+          "sh",
+          "-c",
+          "git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/",
+        ]
       volumeMounts:
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
@@ -1095,7 +1116,7 @@ loki-stack:
     # -- Name of the Grafana sub-chart
     # @section -- Dependencies configuration
     adminPassword: "admin"
-    image: 
+    image:
       # -- Grafana image tag
       # @section -- Dependencies configuration
       tag: 10.0.1
@@ -1121,14 +1142,13 @@ vector:
   # -- Enable Bitnami Vector sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
-  env: 
+  env:
     # -- Vector environment variables
     # @section -- Dependencies configuration
     - name: KAFKA_HOST
       value: "kafka0:29092"
   # @ignored
   customConfig:
-  
     acknowledgements:
       enabled: true
     # enrichment_tables:
@@ -1141,7 +1161,6 @@ vector:
     #     schema:
     #       publishable_key: string
     #       merchant_id: string
-
 
     api:
       enabled: true
@@ -1188,7 +1207,7 @@ vector:
     transforms:
       events_create_ts:
         inputs:
-        - kafka_tx_events
+          - kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
@@ -1217,7 +1236,7 @@ vector:
       sessionized_events_create_ts:
         type: remap
         inputs:
-        - sessionized_kafka_tx_events
+          - sessionized_kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
@@ -1229,7 +1248,7 @@ vector:
         key_field: "{{ .payment_id }}{{ .merchant_id }}"
         threshold: 1000
         window_secs: 60
-      
+
       amend_sdk_logs:
         type: remap
         inputs:
@@ -1242,8 +1261,6 @@ vector:
           # .merchant_id = row.merchant_id
 
           .after_transform = now()
-
-      
 
     sinks:
       opensearch_events_1:
@@ -1391,5 +1408,3 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
-
-  
