@@ -1005,8 +1005,13 @@ kafka:
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1
 
+initCH:
+  checkCHisUp:
+    image: "docker.io/bitnami/clickhouse:24.3"
+    maxAttempt: 30
 # https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml 
 clickhouse:
+  host: "clickhouse"
   # -- Enable Bitnami Clickhouse sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
@@ -1042,12 +1047,6 @@ clickhouse:
   logLevel: "error"
   # @ignored
   initContainers:
-    - name: clone-sql-scripts
-      image: alpine/git
-      command: ['sh', '-c', 'git clone --depth 1 --branch main https://github.com/juspay/hyperswitch.git /scripts && cp /scripts/crates/analytics/docs/clickhouse/scripts/*.sql /docker-entrypoint-initdb.d/']
-      volumeMounts:
-        - name: initdb-scripts
-          mountPath: /docker-entrypoint-initdb.d
   # @ignored
   extraVolumeMounts:
     - name: initdb-scripts

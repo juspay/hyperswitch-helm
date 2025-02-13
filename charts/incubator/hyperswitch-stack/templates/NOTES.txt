@@ -31,11 +31,4 @@
        kubectl get ingress -n {{ .Release.Namespace }}
      fi
      ```
-
-2. Clickhouse Setup:
-   - Run Clickhouse init script after Clickhouse is started:
-     ```shell
-     CKH_PASS=$(kubectl get secret clickhouse -n {{ .Release.Namespace }} -o jsonpath="{.data.admin-password}" | base64 --decode)
-     kubectl exec -it clickhouse-shard0-0 -n {{ .Release.Namespace }} -- sh -c 'cat docker-entrypoint-initdb.d/*.sql | clickhouse-client --user default --password '${CKH_PASS}' --multiquery'
-     ```
 ========================================================
