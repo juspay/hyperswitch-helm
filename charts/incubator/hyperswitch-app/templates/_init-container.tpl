@@ -46,3 +46,37 @@
     done;
     echo "Redis is ready.";
 {{- end -}}
+
+{{/* Ensure ClickHouse is up and running */}}
+{{- define "clickhouse.initContainer.check.ready" -}}
+- name: check-clickhouse
+  image: {{ .Values.initCH.checkCHisUp.image }}
+  imagePullPolicy: IfNotPresent
+  command: [ "/bin/sh", "-c" ]
+  #language=sh
+  env:
+    - name: CLICKHOUSE_ADMIN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: clickhouse
+          key: admin-password
+  args:
+  - >
+    MAX_ATTEMPTS={{ .Values.initCH.checkCHisUp.maxAttempt }};
+    SLEEP_SECONDS=5;
+    attempt=0;
+    while ! clickhouse-client --host={{ include "clickhouse.host" . }} \
+                              --port=9000 \
+                              --user={{ .Values.clickhouse.auth.username }} \
+                              --password=$CLICKHOUSE_ADMIN_PASSWORD \
+                              --query="SELECT 1"; do
+      if [ $attempt -ge $MAX_ATTEMPTS ]; then
+        echo "ClickHouse did not become ready in time";
+        exit 1;
+      fi;
+      attempt=$((attempt+1));
+      echo "Waiting for ClickHouse to be ready... Attempt: $attempt";
+      sleep $SLEEP_SECONDS;
+    done;
+    echo "ClickHouse is ready.";
+{{- end -}}
