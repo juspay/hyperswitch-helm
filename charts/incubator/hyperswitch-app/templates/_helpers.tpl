@@ -170,3 +170,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "hyperswitchWeb.hyperloaderUrl" -}}
   {{- printf "%s/web/%s/%s/HyperLoader.js" .Values.services.sdk.host .Values.services.sdk.version .Values.services.sdk.subversion -}}
 {{- end -}}
+
+{{/* Define the ClickHouse host */}}
+{{- define "clickhouse.host" -}}
+{{ .Values.clickhouse.host | default "clickhouse" }}
+{{- end -}}
