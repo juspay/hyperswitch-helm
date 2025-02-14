@@ -1400,4 +1400,177 @@ vector:
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
 
-  
+prometheus:
+  enabled: true
+
+  global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+  scrape_configs:
+    # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+    - job_name: "router"
+
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+
+      static_configs:
+        - targets: ["hyperswitch-app-opentelemetry-collector.hyperswitch.svc.cluster.local:8889"]
+
+    - job_name: "otel-collector"
+
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+
+      static_configs:
+        - targets: ["hyperswitch-app-opentelemetry-collector.hyperswitch.svc.cluster.local:8888"]
+
+    - job_name: "vector"
+
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+
+      static_configs:
+        - targets: ["hyperswitch-app-vector.hyperswitch.svc.cluster.local:9598"]
+  alertmanager:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  kube-state-metrics:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+ 
+opentelemetry-collector:
+  enabled: true
+  mode: "deployment"
+
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+
+    exporters:
+      otlp:
+        endpoint: tempo:4317
+        tls:
+          insecure: true
+
+      debug:
+        verbosity: detailed
+
+      prometheus:
+        endpoint: 0.0.0.0:8889
+        namespace: router
+        const_labels:
+          app_name: router-api
+
+    service:
+      telemetry:
+        logs:
+          level: DEBUG
+        metrics:
+          level: detailed
+          address: 0.0.0.0:8888
+
+      pipelines:
+        metrics:
+          receivers: [otlp]
+          exporters: [prometheus]
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+  #   receivers:
+  #     otlp:
+  #       protocols:
+  #         grpc:
+  #           endpoint: 0.0.0.0:4317
+  #         # http:
+  #         #   endpoint: 0.0.0.0:4318
+  #   processors:
+  #     # Adds resource attributes (added by k8sattributes processor) as metrics labels
+  #     transform:
+  #       metric_statements:
+  #         - context: datapoint
+  #           statements:
+  #             - set(attributes["source_namespace"], resource.attributes["k8s.namespace.name"])
+  #             - set(attributes["source_pod"], resource.attributes["k8s.pod.name"])
+  #             - set(attributes["source_app"], resource.attributes["app"])
+  #             - set(attributes["source_version"], resource.attributes["version"])
+  #   exporters:
+  #     logging:
+  #       loglevel: debug
+  #     # otlp:
+  #     #   endpoint: "tempo.router.svc.cluster.local:4317"
+  #     #   tls:
+  #     #     insecure: true
+  #     prometheus:
+  #       endpoint: 0.0.0.0:8889
+  #   service:
+  #     telemetry:
+  #       logs:
+  #         level: "debug"
+  #         encoding: json
+  #       metrics:
+  #         level: detailed
+  #         address: 0.0.0.0:8888
+  #     pipelines:
+  #       metrics:
+  #         receivers: [otlp]
+  #         processors: [transform]
+  #         exporters: [prometheus]
+  #
+  # serviceMonitor:
+  #   enabled: true
+  #   extraLabels:
+  #     k8s-app: otel-collector-operator
+  #   metricsEndpoints:
+  #     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  #       honorLabels: true
+  #       interval: 30s
+  #       path: /metrics
+  #       port: otel-metrics
+  #     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  #       honorLabels: true
+  #       interval: 15s
+  #       path: /metrics
+  #       port: hs-metrics
+  #     - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  #       honorLabels: true
+  #       interval: 15s
+  #       path: /metrics
+  #       port: hs-metrics-old
+  # # Configuration for ports
+  # # nodePort is also allowed
+  # ports:
+  #   otlp:
+  #     enabled: true
+  #     containerPort: 4317
+  #     servicePort: 4317
+  #     hostPort: 4317
+  #     protocol: TCP
+  #     # nodePort: 30317
+  #     appProtocol: grpc
+  #   otel-metrics:
+  #     # The metrics port is disabled by default. However you need to enable the port
+  #     # in order to use the ServiceMonitor (serviceMonitor.enabled) or PodMonitor (podMonitor.enabled).
+  #     enabled: true
+  #     containerPort: 8888
+  #     servicePort: 8888
+  #     protocol: TCP
+  #   hs-metrics:
+  #     enabled: true
+  #     containerPort: 8889
+  #     servicePort: 8889
+  #     protocol: TCP
+  #   otlp-http:
+  #     enabled: false
+  #   jaeger-compact:
+  #     enabled: false
+  #   jaeger-thrift:
+  #     enabled: false
+  #   jaeger-grpc:
+  #     enabled: false
+  #   zipkin:
+  #     enabled: false

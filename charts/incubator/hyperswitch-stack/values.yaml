@@ -168,4 +168,3 @@ hyperswitch-app:
     grafana:
       tolerations: []
   vector:
-    tolerations: []
