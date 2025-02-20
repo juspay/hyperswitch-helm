@@ -26,7 +26,13 @@ Before you run the load test, ensure you have the following installed:
     ```
     Replace the path with the actual location of your script
 
-2. Run the Locust test: To start the load test, run the following command:
+2. Provide connector API key: Pass the connector API key as an environment variable:
+    ```sh
+    export CONNECTOR_API_KEY="your_api_key"
+    ```
+    Replace "your_api_key" with the connector API key
+
+3. Run the Locust test: To start the load test, run the following command:
     ```sh
     locust -f your_locust_script.py
     ```

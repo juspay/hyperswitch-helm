@@ -4,6 +4,7 @@ from uuid import uuid4 as u4
 from random import choice
 import json
 import time
+import os
 
 '''
 curl 'http://192.168.194.86/payments/pay_juk8r4trQIMHkQoyUaIO/confirm'
@@ -90,13 +91,18 @@ def api_key_create(client, m_id):
     api_key = json.loads(response.text)["api_key"]
     return api_key
 
-def connector_create(client, api_key): 
+def get_api_key_from_env():
+    return os.getenv('CONNECTOR_API_KEY')
+
+def connector_create(client): 
+    api_key_from_env = get_api_key_from_env()
+
     payload = json.dumps({
          "connector_type": "payment_processor",
         "connector_name": "stripe",
         "connector_account_details": {
             "auth_type": "HeaderKey",
-            "api_key": api_key
+            "api_key": api_key_from_env
         },
         "test_mode": True,
         "disabled": False,
@@ -337,7 +343,7 @@ class WebsiteUser(HttpUser):
         global merchant_id, api_key
         merchant_id = merchant_account_create(self.client)
         api_key = api_key_create(self.client, merchant_id)
-        connector_create(self.client, api_key)
+        connector_create(self.client)
     wait_time = between(0, 2)
     #host = 'https://api.hyperswitch.io'
     # host = 'https://api.hyperswitch.io'
