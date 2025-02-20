@@ -37,4 +37,7 @@ dependencies:
     version: 0.37.0
     repository: https://helm.vector.dev
     condition: vector.enabled
-  
+  - name: prometheus
+    version: "27.x.x"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
