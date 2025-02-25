@@ -17,7 +17,7 @@ A Helm chart for deploying Hyperswitch Keymanager
 | external.postgresql.enabled | bool | `false` |  |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
-| global.image | string | `"juspaydotin/hyperswitch-encryption-service:v0.1.3"` |  |
+| global.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.3"` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
@@ -32,7 +32,7 @@ A Helm chart for deploying Hyperswitch Keymanager
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
 | replicaCount | int | `1` |  |
 | server.annotations | object | `{}` |  |
-| server.image | string | `"juspaydotin/hyperswitch-encryption-service:v0.1.3"` |  |
+| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.3"` |  |
 | server.secrets.ca_cert | string | `"sample_cert"` |  |
 | server.secrets.iam_role | string | `"iam_role"` |  |
 | server.secrets.key_id | string | `"sample_key_id"` |  |

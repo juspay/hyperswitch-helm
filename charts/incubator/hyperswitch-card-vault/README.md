@@ -39,7 +39,7 @@ A Helm chart for creating Hyperswitch Card Vault
 | server.affinity | object | `{}` |  |
 | server.annotations | object | `{}` |  |
 | server.extra.env | object | `{}` |  |
-| server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.4.0"` |  |
+| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0"` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.secrets.locker_private_key | string | "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----" | To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem |
 | server.secrets.master_key | string | "master_key" | Optionally, you can run </br> <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre> |

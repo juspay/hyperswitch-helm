@@ -14,7 +14,7 @@ server:
   annotations: {}
 
   # Image to be used for hyperswitch-card-vault.
-  image: juspaydotin/hyperswitch-card-vault:v0.4.0
+  image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0
 
   # values to be used in pod template.
   pod:
