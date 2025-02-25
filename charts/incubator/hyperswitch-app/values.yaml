@@ -5,22 +5,22 @@ services:
     version: v1.112.0
     # -- Router image
     # @section -- Services
-    image: juspaydotin/hyperswitch-router:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
     # -- Consumer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-consumer:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0
   producer:
     # -- Producer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-producer:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0
   controlCenter:
     # -- Control Center image
     # @section -- Services
-    image: juspaydotin/hyperswitch-control-center:v1.34.2
+    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.34.2
   sdk:
     # -- SDK host
     # @section -- Services
