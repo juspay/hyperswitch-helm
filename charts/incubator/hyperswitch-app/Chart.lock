@@ -23,8 +23,5 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-- name: prometheus
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 27.3.1
-digest: sha256:138cc6fa0f118d0db6bf8747f4128c686632aa88685e46583386daee6b5613f4
-generated: "2025-02-20T23:04:29.040493+05:30"
+digest: sha256:b1eea34b88633ace4b132ad8b465433df70c46ac6454a8d3709afecb1321f4d1
+generated: "2025-02-25T12:39:53.393702+05:30"

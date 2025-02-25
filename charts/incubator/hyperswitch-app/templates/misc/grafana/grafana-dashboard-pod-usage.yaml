@@ -26,7 +26,7 @@ data:
         "editable": true,
         "fiscalYearStartMonth": 0,
         "graphTooltip": 0,
-        "id": 7,
+        "id": 2,
         "links": [],
         "liveNow": false,
         "panels": [
@@ -113,7 +113,7 @@ data:
                   "uid": "my-prometheus"
                 },
                 "editorMode": "builder",
-                "expr": "sum(container_memory_usage_bytes{namespace=\"hyperswitch\", container!=\"POD\", pod!=\"\"}) by (pod, namespace)",
+                "expr": "sum(container_memory_usage_bytes{container!=\"\", pod!=\"\"}) by (pod)",
                 "range": true,
                 "refId": "A"
               }
@@ -204,7 +204,7 @@ data:
                   "uid": "my-prometheus"
                 },
                 "editorMode": "builder",
-                "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"POD\", pod!=\"\", namespace=~\"hyperswitch\"}[5m])) by (pod, namespace)",
+                "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\", pod!=\"\"}[5m])) by (pod)",
                 "range": true,
                 "refId": "A"
               }
@@ -228,6 +228,6 @@ data:
         "timezone": "",
         "title": "CPU and Memory Usage of Pods",
         "uid": "pod-cpu-memory-usage",
-        "version": 4,
+        "version": 1,
         "weekStart": ""
-      }   
+      }      

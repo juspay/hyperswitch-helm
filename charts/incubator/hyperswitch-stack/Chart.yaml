@@ -30,3 +30,7 @@ dependencies:
     version: 0.2.1
     repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
+  - name: prometheus
+    version: "27.x.x"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
