@@ -687,6 +687,24 @@ controlCenter:
   # @ignored
   serviceAccountAnnotations:
     eks.amazonaws.com/role-arn:
+  ingress:
+    # -- Enable ingress for control center
+    enabled: true
+    # -- Ingress annotations
+    annotations:
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+      alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+      alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
+      alb.ingress.kubernetes.io/ip-address-type: ipv4
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+    # -- Ingress class name
+    className: alb
+    # -- Service port number
+    servicePort: 80
   env:
     # -- 
     binary: dashboard
