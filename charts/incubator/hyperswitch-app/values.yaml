@@ -2,25 +2,25 @@ services:
   router:
     # -- Router version
     # @section -- Services
-    version: v1.112.0
+    version: v1.112.1
     # -- Router image
     # @section -- Services
-    image: juspaydotin/hyperswitch-router:v1.112.0
+    image: juspaydotin/hyperswitch-router:v1.112.1
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
     # -- Consumer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-consumer:v1.112.0
+    image: juspaydotin/hyperswitch-consumer:v1.112.1
   producer:
     # -- Producer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-producer:v1.112.0
+    image: juspaydotin/hyperswitch-producer:v1.112.1
   controlCenter:
     # -- Control Center image
     # @section -- Services
-    image: juspaydotin/hyperswitch-control-center:v1.34.2
+    image: juspaydotin/hyperswitch-control-center:v1.36.0
   sdk:
     # -- SDK host
     # @section -- Services
@@ -296,7 +296,7 @@ server:
     wildcard_origin: true
   email:
     # -- The currently active email client
-    active_email_client: SES
+    active_email_client: SMTP
     # -- Number of days the api calls ( with jwt token ) can be made without verifying the email
     allowed_unverified_days: 1
     # -- AWS region used by AWS SES

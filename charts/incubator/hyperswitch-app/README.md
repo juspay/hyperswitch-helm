@@ -687,15 +687,15 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 </thead>
 <tbody><tr>
     <td><div><a href="./values.yaml#L15">services.consumer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
+    <td><div><code>"juspaydotin/hyperswitch-consumer:v1.112.1"</code></div></td>
     <td>Consumer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L23">services.controlCenter.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-control-center:v1.34.2"</code></div></td>
+    <td><div><code>"juspaydotin/hyperswitch-control-center:v1.36.0"</code></div></td>
     <td>Control Center image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L19">services.producer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
+    <td><div><code>"juspaydotin/hyperswitch-producer:v1.112.1"</code></div></td>
     <td>Producer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L11">services.router.host</a></div></td>
@@ -703,11 +703,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Router host</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L8">services.router.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
+    <td><div><code>"juspaydotin/hyperswitch-router:v1.112.1"</code></div></td>
     <td>Router image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L5">services.router.version</a></div></td>
-    <td><div><code>"v1.112.0"</code></div></td>
+    <td><div><code>"v1.112.1"</code></div></td>
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L27">services.sdk.host</a></div></td>
