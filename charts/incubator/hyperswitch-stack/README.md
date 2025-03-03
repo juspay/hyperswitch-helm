@@ -753,15 +753,15 @@ task ur
 </thead>
 <tbody><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L15">hyperswitch-app.services.consumer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
     <td>Consumer image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L23">hyperswitch-app.services.controlCenter.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-control-center:v1.34.2"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.34.2"</code></div></td>
     <td>Control Center image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L19">hyperswitch-app.services.producer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
     <td>Producer image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L11">hyperswitch-app.services.router.host</a></div></td>
@@ -769,7 +769,7 @@ task ur
     <td>Router host</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L8">hyperswitch-app.services.router.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
     <td>Router image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L5">hyperswitch-app.services.router.version</a></div></td>
@@ -1680,7 +1680,7 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-card-vault/values.yaml#L17">hyperswitch-app.hyperswitch-card-vault.server.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-card-vault:v0.4.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-card-vault/values.yaml#L22">hyperswitch-app.hyperswitch-card-vault.server.pod.annotations</a></div></td>
@@ -1700,7 +1700,7 @@ task ur
     <td>The public key for the tenant from tenant-public-key.pem</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L46">hyperswitch-web.autoBuild.buildImage</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-web"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-web"</code></div></td>
     <td>docker image to use for the build</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L56">hyperswitch-web.autoBuild.buildParam.envBackendUrl</a></div></td>
@@ -1834,7 +1834,7 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L209">hyperswitch-web.services.sdkDemo.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-web:v1.0.10"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-web:v1.0.10"</code></div></td>
     <td></td>
   </tr>
 </tbody>

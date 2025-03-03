@@ -43,7 +43,7 @@ autoBuild:
   # -- force rebuild assets even these files exist
   forceBuild: false
   # -- docker image to use for the build
-  buildImage: juspaydotin/hyperswitch-web
+  buildImage: docker.juspay.io/juspaydotin/hyperswitch-web
   gitCloneParam:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
@@ -206,6 +206,6 @@ services:
   router:
     host: http://localhost:8080
   sdkDemo:
-    image: juspaydotin/hyperswitch-web:v1.0.10
+    image: docker.juspay.io/juspaydotin/hyperswitch-web:v1.0.10
     hyperswitchPublishableKey: pub_key
     hyperswitchSecretKey: secret_key

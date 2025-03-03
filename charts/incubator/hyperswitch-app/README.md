@@ -687,15 +687,15 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 </thead>
 <tbody><tr>
     <td><div><a href="./values.yaml#L15">services.consumer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
     <td>Consumer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L23">services.controlCenter.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-control-center:v1.34.2"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.34.2"</code></div></td>
     <td>Control Center image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L19">services.producer.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
     <td>Producer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L11">services.router.host</a></div></td>
@@ -703,7 +703,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Router host</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L8">services.router.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
     <td>Router image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L5">services.router.version</a></div></td>
@@ -1614,7 +1614,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-card-vault/values.yaml#L17">hyperswitch-card-vault.server.image</a></div></td>
-    <td><div><code>"juspaydotin/hyperswitch-card-vault:v0.4.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-card-vault/values.yaml#L22">hyperswitch-card-vault.server.pod.annotations</a></div></td>
