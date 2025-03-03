@@ -1121,8 +1121,23 @@ loki-stack:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/dp1
+          - name: dp2
+            orgId: 1
+            folder: ''
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/dp2
     dashboardsConfigMaps:
       dp1: "grafana-dashboard-payments"
+      dp2: "grafana-dashboard-pod-usage"
+    extraVolumes:
+      - name: dashboards
+        emptyDir: {}
+    extraVolumeMounts:
+      - name: dashboards
+        mountPath: /var/lib/grafana/dashboards
 
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
@@ -1400,4 +1415,6 @@ vector:
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
 
-  
+prometheus:
+  host: "prometheus-server"
+  port: 80

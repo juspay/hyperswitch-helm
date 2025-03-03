@@ -169,3 +169,40 @@ hyperswitch-app:
       tolerations: []
   vector:
     tolerations: []
+
+prometheus:
+  host: "prometheus-server"
+  port: 80
+  enabled: true
+  global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+
+  scrape_configs:
+  # Scrape Kubernetes pods for CPU and Memory usage
+  - job_name: "kubernetes-pods"
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: "$1:$2"
+
+  - job_name: "kubernetes-nodes"
+    kubernetes_sd_configs:
+      - role: node
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+    static_configs:
+      - targets:
+          - "node-exporter:9100"

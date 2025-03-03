@@ -20,5 +20,14 @@ data:
           sslmode: "disable"
         secureJsonData:
           password: {{ .Values.postgresql.global.postgresql.auth.password }}
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://{{ .Release.Name }}-{{ .Values.prometheus.host }}:{{ .Values.prometheus.port }}
+        isDefault: true
+        uid: "my-prometheus"
+        jsonData:
+            timeInterval: "5s"
+
 
 
