@@ -22,7 +22,7 @@ tasks:
     cmds:
       - >-
         helm install postgresql-ext bitnami/postgresql 
-        --version 16.4.16 
+        --version 15.5.38 
         -f dev/bitnami-pg.values.yaml 
         -n hyperswitch 
         --debug
@@ -91,7 +91,7 @@ tasks:
         --install 
         {{ .RELEASE_NAME }} 
         bitnami/postgresql 
-        --version 16.4.16 
+        --version 15.5.38 
         -n {{ .NAMESPACE }} 
         --debug
         -f dev/bitnami-pg.values.yaml
