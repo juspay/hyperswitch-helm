@@ -5,7 +5,7 @@
 replicaCount: 1
 
 global:
-  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.3
+  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.7
   annotations: {}
   affinity: {}
 
@@ -13,7 +13,7 @@ autoscaling:
   enabled: false
 
 server:
-  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.3
+  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.7
   secrets:
     key_id: sample_key_id
     iam_role: iam_role
@@ -22,6 +22,7 @@ server:
     tls_key: sample_cert
     tls_cert: sample_cert
   annotations: {}
+
 
 # Values for database (postgresql).
 postgresql:
@@ -49,7 +50,19 @@ external:
       username: # <value for the secret>
       password: # <value for the secret>
       database: # <value for the secret>
+    enable_ssl: false
 
+multitenancy:
+  tenants:
+    public:
+      cache_prefix: public
+      schema: public
+    global:
+      cache_prefix: global
+      schema: global
+      access_token: secret123
+      hash_context: keymanager:hyperswitch
+      
 # Values for the database migration job
 initDB:
   # Should we run the migrations on the database

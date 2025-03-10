@@ -2,21 +2,21 @@ services:
   router:
     # -- Router version
     # @section -- Services
-    version: v1.112.0
+    version: v1.113.0
     # -- Router image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.113.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
     # -- Consumer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.113.0
   producer:
     # -- Producer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.113.0
   controlCenter:
     # -- Control Center image
     # @section -- Services
@@ -27,7 +27,7 @@ services:
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.103.1
+    version: 0.109.2
     # -- SDK subversion
     # @section -- Services
     subversion: v0
@@ -275,6 +275,7 @@ server:
       pool_size: 5
       # -- Add the queue strategy used by the database bb8 client
       queue_strategy: Fifo
+    forex_enabled: false
   applepay_merchant_configs:
     # -- Apple pay gateway merchant endpoint
     applepay_endpoint: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
@@ -368,14 +369,9 @@ server:
   forex_api:
     # -- Api calls are made after every 6 hrs
     call_delay: 21601
-    # -- Fetch from Local cache has retry count as 5
-    local_fetch_retry_count: 5
-    # -- Retry delay for checking write condition
-    local_fetch_retry_delay: 1010
-    # -- Api timeouts once it crosses 20000 ms
-    api_timeout: 20001
-    # -- Redis remains write locked for 26000 ms once the acquire_redis_lock is called
-    redis_lock_timeout: 260001
+    api_key: ""
+    fallback_api_key: ""
+    redis_lock_timeout: 100
   generic_link:
     payment_method_collect:
       ui_config:
@@ -401,6 +397,31 @@ server:
       port: 7000
       # -- Client Service Name
       service: "dynamo"
+  theme:
+    storage:
+      # -- Theme storage backend to be used
+      file_storage_backend: "aws_s3"
+      aws_s3:
+        # -- AWS region where the S3 bucket for theme storage is located
+        region: "bucket_region"
+        # -- AWS S3 bucket name for theme storage
+        bucket_name: "bucket"
+    email_config:
+      # -- Name of the entity to be showed in emails
+      entity_name: "HyperSwitch"
+      # -- Logo URL of the entity to be used in emails
+      entity_logo: "https://example.com/logo.png"
+      # -- Foreground color of email text
+      foreground_color: "#000000"
+      # -- Primary color of email body
+      primary_color: "#006DF9"
+      # -- Background color of email body
+      background_color: "#FFFFFF"
+  connectors:
+    # -- Unified Authentication Service Configuration
+    unified_authentication_service:
+      # -- base url to call unified authentication service  
+      base_url: "http://localhost:8080"    
 
   lock_settings:
     # -- Delay between retries in milliseconds
@@ -463,14 +484,18 @@ server:
     enabled: false
     global_tenant:
       clickhouse_database: default
-      redis_key_prefix: ''
+      redis_key_prefix: ""
       schema: public
+      tenant_id : "global"
     tenants:
       public:
-        base_url: *router_host
-        clickhouse_database: default
-        redis_key_prefix: ''
+        base_url : "http://localhost:8080"
         schema: public
+        accounts_schema: "public"
+        redis_key_prefix: ""
+        clickhouse_database: "default"
+        user:
+          control_center_url :  "http://localhost:9000"
   opensearch:
     auth:
       auth: basic
@@ -497,9 +522,11 @@ server:
     # -- PEM Passphrase used for generating Private Key File cakey.pem
     # @section -- App Server Secrets
     paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
+  google_pay_decrypt_keys:
+    google_pay_root_signing_keys: GOOGLE_PAY_ROOT_SIGNING_KEYS
   proxy:
-    # -- A list of URLs that should bypass the proxy
-    bypass_proxy_urls: []
+    # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
+    bypass_proxy_hosts: "localhost, cluster.local"
     enabled: false
     # -- Outgoing proxy http URL to proxy the HTTP traffic
     http_url: http://proxy_http_url

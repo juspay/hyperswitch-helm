@@ -24,6 +24,17 @@ data:
     dbname = {{ quote .Values.external.postgresql.config.database }}
     pool_size = 5
     min_idle = 2
+    enable_ssl = {{ .Values.external.postgresql.enable_ssl}}
+
+    [multitenancy.tenants.public]
+    cache_prefix = "{{ .Values.multitenancy.tenants.public.cache_prefix}}"
+    schema = "{{ .Values.multitenancy.tenants.public.schema }}"
+    
+    [multitenancy.tenants.global]
+    cache_prefix = "{{ .Values.multitenancy.tenants.global.cache_prefix}}"
+    schema = "{{ .Values.multitenancy.tenants.global.schema }}"
+    access_token = "{{ .Values.multitenancy.tenants.global.access_token}}"
+    hash_context = "{{ .Values.multitenancy.tenants.global.hast_context }}"
 
 
 kind: ConfigMap
