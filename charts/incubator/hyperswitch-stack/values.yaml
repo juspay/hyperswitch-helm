@@ -46,9 +46,9 @@ hyperswitch-web:
     enable: true
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.103.1
+      gitVersion: 0.109.2
     nginxConfig:
-      extraPath: v0
+      extraPath: v1
     buildParam:
       envSdkUrl: *web_sdk_host
       envBackendUrl: *router_host
@@ -91,19 +91,19 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.112.1
-      image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.1
+      version: v1.113.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.113.0
       host: *router_host
     consumer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.113.0
     producer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.113.0
     controlCenter:
-      image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.36.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.36.1
     sdk:
       host: *web_sdk_host
-      version: 0.103.1
-      subversion: v0
+      version: 0.109.2
+      subversion: v1
   server:
     replicas: 1
     secrets:
@@ -130,8 +130,12 @@ hyperswitch-app:
     enabled: true
     server:
       image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0
-      secrets: 
-        master_key: 7fe40608201400da9db95bb5cc090b2280405617a5ab42f2f6f94e6213d773e95585bf685f79bdc6368fc1e3aa7df984e3dafc6516bcee35bf64b52f
+      tenant_secrets: 
+        hyperswitch :  
+          master_key : "feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308" 
+          public_key : "" 
+          schema : "public" 
+                  
     initDB:
       enable: true
     postgresql:

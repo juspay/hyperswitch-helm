@@ -141,7 +141,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 | file://../hyperswitch-card-vault | hyperswitch-card-vault | 0.1.0 |
 | https://charts.bitnami.com/bitnami | clickhouse | 6.3.3 |
 | https://charts.bitnami.com/bitnami | kafka | 31.0.0 |
-| https://charts.bitnami.com/bitnami | postgresql | 13.2.27 |
+| https://charts.bitnami.com/bitnami | postgresql | 16.4.16 |
 | https://charts.bitnami.com/bitnami | redis | 18.6.1 |
 | https://codecentric.github.io/helm-charts | mailhog | 4.0.0 |
 | https://grafana.github.io/helm-charts | loki-stack | 2.10.2 |
@@ -687,7 +687,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 </thead>
 <tbody><tr>
     <td><div><a href="./values.yaml#L15">services.consumer.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.113.0"</code></div></td>
     <td>Consumer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L23">services.controlCenter.image</a></div></td>
@@ -695,7 +695,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Control Center image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L19">services.producer.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.113.0"</code></div></td>
     <td>Producer image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L11">services.router.host</a></div></td>
@@ -703,11 +703,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Router host</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L8">services.router.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.113.0"</code></div></td>
     <td>Router image</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L5">services.router.version</a></div></td>
-    <td><div><code>"v1.112.0"</code></div></td>
+    <td><div><code>"v1.113.0"</code></div></td>
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L27">services.sdk.host</a></div></td>
@@ -719,7 +719,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>SDK subversion</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L30">services.sdk.version</a></div></td>
-    <td><div><code>"0.103.1"</code></div></td>
+    <td><div><code>"0.109.2"</code></div></td>
     <td>SDK version</td>
   </tr></tbody>
 </table>

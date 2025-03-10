@@ -8,7 +8,7 @@ entries:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
-      version: 13.2.27
+      version: 16.4.16
     description: A Helm chart for creating Hyperswitch Card Vault
     digest: 1a05802985fd9063e49ab587e4385495866f9c649680a9da5421af02f5272d07
     name: hyperswitch-card-vault
@@ -28,7 +28,7 @@ entries:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
-      version: 13.2.27
+      version: 16.4.16
     - condition: hyperswitch-card-vault.enabled
       name: hyperswitch-card-vault
       repository: file://../hyperswitch-card-vault
@@ -101,8 +101,8 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     urls:
-    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/postgresql-13.2.27.tgz
-    version: 13.2.27
+    - https://juspay.github.io/charts/incubator/hyperswitch-app/charts/postgresql-16.4.16.tgz
+    version: 16.4.16
   redis:
   - annotations:
       category: Database

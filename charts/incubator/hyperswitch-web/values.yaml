@@ -48,7 +48,7 @@ autoBuild:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
     # -- hyperswitch-web repository tag
-    gitVersion: 0.71.11
+    gitVersion: 0.109.2
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
     envSdkUrl: https://hyperswitch-sdk
@@ -58,7 +58,7 @@ autoBuild:
     envLogsUrl: https://hyperswitch-sdk-logs
   nginxConfig:
     # -- nginx static server extra path ( like https://<host>/0.15.8/v0 )
-    extraPath: v0
+    extraPath: v1
     # -- nginx static server image
     image: nginx
     # -- nginx static server tag
@@ -74,7 +74,7 @@ image:
   tag: 0.35.4
   nginxConfig:
     # -- nginx extra path used to set liveness and readiness probe /0.80.0/v0
-    extraPath: v0
+    extraPath: v1
 
 # -- image pull secret
 # @ignored

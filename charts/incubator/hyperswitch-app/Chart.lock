@@ -4,7 +4,7 @@ dependencies:
   version: 18.6.1
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 13.2.27
+  version: 15.5.38
 - name: hyperswitch-card-vault
   repository: file://../hyperswitch-card-vault
   version: 0.1.0
@@ -23,5 +23,5 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-digest: sha256:b1eea34b88633ace4b132ad8b465433df70c46ac6454a8d3709afecb1321f4d1
-generated: "2025-02-25T12:39:53.393702+05:30"
+digest: sha256:e8f5a2d16903bca0017404c92ed2cc9c14f0423e9d0e62c99cd34b372d2fb675
+generated: "2025-03-10T18:37:20.782338+05:30"

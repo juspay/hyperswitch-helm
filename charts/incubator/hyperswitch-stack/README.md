@@ -210,8 +210,8 @@ task ur
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../hyperswitch-app | hyperswitch-app | 0.2.1 |
-| file://../hyperswitch-web | hyperswitch-web | 0.2.1 |
+| file://../hyperswitch-app | hyperswitch-app | 0.2.2 |
+| file://../hyperswitch-web | hyperswitch-web | 0.2.2 |
 
 ## Values
 <h3>Dependencies configuration</h3>
@@ -753,7 +753,7 @@ task ur
 </thead>
 <tbody><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L15">hyperswitch-app.services.consumer.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.113.0"</code></div></td>
     <td>Consumer image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L23">hyperswitch-app.services.controlCenter.image</a></div></td>
@@ -761,7 +761,7 @@ task ur
     <td>Control Center image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L19">hyperswitch-app.services.producer.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-producer:v1.113.0"</code></div></td>
     <td>Producer image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L11">hyperswitch-app.services.router.host</a></div></td>
@@ -769,11 +769,11 @@ task ur
     <td>Router host</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L8">hyperswitch-app.services.router.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.112.0"</code></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-router:v1.113.0"</code></div></td>
     <td>Router image</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L5">hyperswitch-app.services.router.version</a></div></td>
-    <td><div><code>"v1.112.0"</code></div></td>
+    <td><div><code>"v1.113.0"</code></div></td>
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L27">hyperswitch-app.services.sdk.host</a></div></td>
@@ -781,11 +781,11 @@ task ur
     <td>SDK host</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L33">hyperswitch-app.services.sdk.subversion</a></div></td>
-    <td><div><code>"v0"</code></div></td>
+    <td><div><code>"v1"</code></div></td>
     <td>SDK subversion</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L30">hyperswitch-app.services.sdk.version</a></div></td>
-    <td><div><code>"0.103.1"</code></div></td>
+    <td><div><code>"0.109.2"</code></div></td>
     <td>SDK version</td>
   </tr></tbody>
 </table>
