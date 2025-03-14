@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hyperswitch-stack-application
+spec:
+  destination:
+  # providing 
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: charts/incubator/hyperswitch-stack
+    repoURL: https://github.com/Shubh-k04/hyperswitch-helm.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        env: {{ env }}
+        ## USING AN EXAMPLE ENVIRONMENT CONFIGURATION
+        {% if env == "dev" %}
+        image: "redis:7.3"
+        {%else if env =="stg" %}
+        image: "redis:7.4"
+        {% else %}
+        image: "redis:7.2"
+        {%endif%}
+  syncPolicy:
+    automated:
+      prune: true         #This tells Argo CD to remove any Kubernetes resources that are no longer declared in the Helm chart.
+      selfHeal: true      #This will help Argo CD to recoincile the changes automatically which were made to the resources managed by the Helm chart
+  # since no values file has been provided, it will take the values from the values.yaml present in the helm chart 
