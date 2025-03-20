@@ -27,7 +27,12 @@ data:
         isDefault: true
         uid: "my-prometheus"
         jsonData:
-            timeInterval: "5s"
+          timeInterval: "5s"
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://{{ .Values.loki.host }}:{{ .Values.loki.port }}
+        uid: "loki"
 
 
 

@@ -1101,6 +1101,10 @@ mailhog:
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
 
+loki: 
+  host: "loki"
+  port: 3100
+
 # https://github.com/grafana/helm-charts/tree/main/charts/loki-stack
 loki-stack:
   loki:
