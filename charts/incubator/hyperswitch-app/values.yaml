@@ -1111,6 +1111,7 @@ loki-stack:
     # -- Enable Bitnami Loki sub-chart helm installation
     # @section -- Dependencies configuration
     enabled: true
+    isDefault: false
     # -- Name of the Loki sub-chart
     # @section -- Dependencies configuration
     fullnameOverride: "loki"
@@ -1169,6 +1170,11 @@ loki-stack:
     extraVolumeMounts:
       - name: dashboards
         mountPath: /var/lib/grafana/dashboards
+  prometheus:
+    enabled: false 
+    prometheus-pushgateway:
+      enabled: false
+      tolerations: []
 
 # https://artifacthub.io/packages/helm/vector/vector
 vector:

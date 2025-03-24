@@ -171,8 +171,12 @@ hyperswitch-app:
       tolerations: []
     grafana:
       tolerations: []
+    prometheus: 
+      prometheus-pushgateway:
+        tolerations: []
   vector:
     tolerations: []
+
 
 prometheus:
   host: "prometheus-server"
@@ -181,6 +185,8 @@ prometheus:
   global:
     scrape_interval: 15s
     evaluation_interval: 15s
+  prometheus-pushgateway:
+    tolerations: []
 
   scrape_configs:
   # Scrape Kubernetes pods for CPU and Memory usage
