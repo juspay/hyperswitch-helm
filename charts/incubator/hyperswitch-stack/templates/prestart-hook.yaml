@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prestart-hook
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: prestart-hook
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              PLATFORM="helm"
+              URL="https://hyperswitch.gateway.scarf.sh/$PLATFORM"
+              VERSION="0.2.2"
+              STATUS="initiated"
+
+              # Send the GET request
+              curl -G "$URL" --data-urlencode "version=$VERSION" --data-urlencode "status=$STATUS"
+
+              # Print confirmation
+              echo "Request sent to $URL with version=$VERSION and status=$STATUS"
+
+              exit 0
