@@ -16,9 +16,9 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              PLATFORM="helm"
-              URL="https://hyperswitch.gateway.scarf.sh/$PLATFORM"
-              VERSION="0.2.2"
+              PLATFORM="{{- if .Release.IsInstall }}helm{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
+              URL="https://hyperswitch.gateway.scarf.sh/${PLATFORM}"
+              VERSION="{{ .Chart.Version }}"
               STATUS="initiated"
 
               # Send the GET request
