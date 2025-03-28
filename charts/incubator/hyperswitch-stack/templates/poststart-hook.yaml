@@ -53,7 +53,7 @@ spec:
               echo "Raw response: $HEALTH_RESPONSE"
 
               # Initialize parameters
-              PARAMS="version=$VERSION&status=$STATUS"
+              PARAMS="version=$VERSION"
 
               # Check if the response contains an error
               if echo "$HEALTH_RESPONSE" | grep -q '"error"'; then
