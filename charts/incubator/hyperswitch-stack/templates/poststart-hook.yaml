@@ -34,7 +34,7 @@ spec:
                   ATTEMPT=$((ATTEMPT + 1))
                   if [ "$ATTEMPT" -ge "$MAX_RETRIES" ]; then
                       echo "Max retries reached."
-                      PARAMS="version=$VERSION&status=$STATUS"
+                      PARAMS="version=$VERSION"
                       STATUS="error"
                       ERROR_MESSAGE=$(echo "404 response" | jq -sRr @uri)
                       PARAMS="$PARAMS&status=$STATUS"
