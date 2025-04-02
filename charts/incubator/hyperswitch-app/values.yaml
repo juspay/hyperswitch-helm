@@ -461,9 +461,11 @@ server:
       # -- boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
       ignore_errors: false
       # -- boolean [true or false], whether metrics are enabled
-      metrics_enabled: false
-      # -- endpoint to send metrics and traces to, can include port number
-      otel_exporter_otlp_endpoint: http://localhost:4317
+      metrics_enabled: true
+      # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
+      # The OpenTelemetry Collector must have an OTLP receiver listening at this endpoint.
+      # The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.
+      external_otel_collector_endpoint: ""
       # -- timeout (in milliseconds) for sending metrics and traces
       otel_exporter_otlp_timeout: 5000
       route_to_trace: "['*/confirm']"
@@ -1455,3 +1457,131 @@ vector:
 prometheus:
   host: "prometheus-server"
   port: 80
+
+opentelemetry-collector:
+  enabled: true
+
+  mode: "deployment"
+
+  # Specify which namespace should be used to deploy the resources into
+  namespaceOverride: "monitoring"
+
+  presets:
+    kubernetesAttributes:
+      enabled: true
+      extractAllPodLabels: true
+      extractAllPodAnnotations: false
+
+  alternateConfig:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: ${env:MY_POD_IP}:4317
+
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      # Adds resource attributes (added by k8sattributes processor) as metrics labels
+      transform:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - set(attributes["source_namespace"], resource.attributes["k8s.namespace.name"])
+              - set(attributes["source_pod"], resource.attributes["k8s.pod.name"])
+              - set(attributes["source_app"], resource.attributes["app"])
+              - set(attributes["source_version"], resource.attributes["version"])
+
+    exporters:
+      debug:
+        verbosity: detailed
+      prometheus:
+        endpoint: ${env:MY_POD_IP}:9898
+
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+
+    service:
+      telemetry:
+        logs:
+          level: DEBUG
+          encoding: json
+        metrics:
+          level: detailed
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+        - health_check
+      pipelines:
+        metrics:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - transform
+            - batch
+          exporters:
+            - prometheus
+
+  image:
+    repository: docker.io/otel/opentelemetry-collector-contrib
+    tag: 0.122.1
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  ports:
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+      appProtocol: grpc
+    otel-metrics:
+      enabled: false
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
+    hs-metrics:
+      enabled: true
+      containerPort: 9898
+      servicePort: 9898
+      protocol: TCP
+    otlp-http:
+      enabled: false
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+
+  resources:
+    # Due to the `k8sattributes` processor, the collector uses more than 2 GiB of RAM and 1000+m vCPU  at startup,
+    # and later drops to ~300 MiB of RAM and ~200m vCPU.
+    limits:
+      cpu: 1500m
+      memory: 4Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+  replicaCount: 1
+
+  serviceMonitor:
+    enabled: true
+    metricsEndpoints:
+      - port: otel-metrics
+        honorLabels: true
+        interval: 30s
+        path: /metrics
+      - port: hs-metrics
+        honorLabels: true
+        interval: 15s
+        path: /metrics

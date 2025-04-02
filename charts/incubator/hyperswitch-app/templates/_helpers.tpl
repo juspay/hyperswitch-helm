@@ -175,3 +175,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "clickhouse.host" -}}
 {{ .Values.clickhouse.host | default "clickhouse" }}
 {{- end -}}
+
+{{/* Define the OpenTelemetry Collector endpoint when metrics or traces are enabled */}}
+{{- define "opentelemetry-collector.url" -}}
+  {{- $telemetryConfig := .Values.server.log.telemetry -}}
+  {{- $otelCollectorValues := (index .Values "opentelemetry-collector") -}}
+  {{- $otelCollectorCtx := (index .Subcharts "opentelemetry-collector") -}}
+
+  {{- if or $telemetryConfig.metrics_enabled $telemetryConfig.traces_enabled -}}
+    {{- if $telemetryConfig.external_otel_collector_endpoint -}}
+      {{- $telemetryConfig.external_otel_collector_endpoint -}}
+    {{- else if $otelCollectorValues.enabled -}}
+      {{- printf "http://%s.%s.svc.cluster.local:%d" (include "opentelemetry-collector.fullname" $otelCollectorCtx) (include "opentelemetry-collector.namespace" $otelCollectorCtx) ($otelCollectorValues.ports.otlp.servicePort | int) -}}
+    {{- else -}}
+      {{- fail "Could not obtain OpenTelemetry Collector URL. Please specify either `external_otel_collector_endpoint` or enable the `opentelemetry-collector` subchart." -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "" -}}
+  {{- end -}}
+{{- end -}}
