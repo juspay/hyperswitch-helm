@@ -1780,7 +1780,7 @@ task ur
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L468">hyperswitch-app.server.log.telemetry.external_otel_collector_endpoint</a></div></td>
     <td><div><code>""</code></div></td>
-    <td>URL for external OpenTelemetry Collector endpoint to send metrics and traces to. The OpenTelemetry Collector must have an OTLP receiver listening at this endpoint. The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.</td>
+    <td>URL for external OpenTelemetry Collector endpoint to send metrics and traces to. The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint. The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L462">hyperswitch-app.server.log.telemetry.ignore_errors</a></div></td>
     <td><div><code>false</code></div></td>

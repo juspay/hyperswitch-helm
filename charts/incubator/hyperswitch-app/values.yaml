@@ -463,7 +463,7 @@ server:
       # -- boolean [true or false], whether metrics are enabled
       metrics_enabled: true
       # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
-      # The OpenTelemetry Collector must have an OTLP receiver listening at this endpoint.
+      # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
       # The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.
       external_otel_collector_endpoint: ""
       # -- timeout (in milliseconds) for sending metrics and traces
