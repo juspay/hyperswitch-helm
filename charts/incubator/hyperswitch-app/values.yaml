@@ -1464,7 +1464,7 @@ opentelemetry-collector:
   mode: "deployment"
 
   # Specify which namespace should be used to deploy the resources into
-  namespaceOverride: "monitoring"
+  namespaceOverride: ""
 
   presets:
     kubernetesAttributes:
