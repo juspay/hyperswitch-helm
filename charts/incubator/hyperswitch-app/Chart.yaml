@@ -37,4 +37,7 @@ dependencies:
     version: 0.37.0
     repository: https://helm.vector.dev
     condition: vector.enabled
-  
+  - name: opentelemetry-collector
+    version: 0.120.0
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    condition: opentelemetry-collector.enabled

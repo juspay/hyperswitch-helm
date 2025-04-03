@@ -23,5 +23,8 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-digest: sha256:e8f5a2d16903bca0017404c92ed2cc9c14f0423e9d0e62c99cd34b372d2fb675
-generated: "2025-03-10T18:37:20.782338+05:30"
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.120.0
+digest: sha256:bfe3a9f680e7c0babcc6e0f8fac5281252c6a615c5efd7180e9dda49b22cd26c
+generated: "2025-04-01T22:20:08.722288189+05:30"
