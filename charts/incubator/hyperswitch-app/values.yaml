@@ -48,7 +48,6 @@ global:
   tolerations: []
   # Specify affinity for nodes to which the pods should start on
   # @ignored
-  storageClass: gp2
   affinity: {}
   # nodeSelector to be used by the application
   nodeSelector: {}
@@ -1075,8 +1074,6 @@ clickhouse:
   # -- Clickhouse replica count
   # @section -- Dependencies configuration
   replicaCount: 1
-  alertmanager:
-        enabled: false
   zookeeper:
     # -- Zookerper replica count
     # @section -- Dependencies configuration
