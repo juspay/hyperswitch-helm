@@ -49,18 +49,6 @@ global:
   # Specify affinity for nodes to which the pods should start on
   # @ignored
   storageClass: gp2
-  tolerations: []
-  # @ignored
-  # Eg. 
-  # affinity:
-  #   nodeAffinity:
-  #     # requiredDuringSchedulingIgnoredDuringExecution:
-  #     #   nodeSelectorTerms:
-  #     #     - matchExpressions:
-  #     #         - key: node-type
-  #     #           operator: In
-  #     #           values:
-  #     #             - generic-compute 
   affinity: {}
   # nodeSelector to be used by the application
   nodeSelector: {}
