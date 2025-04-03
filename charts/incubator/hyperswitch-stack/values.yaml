@@ -16,6 +16,7 @@ services:
     host: &web_sdk_host http://localhost:9050
 
 global:
+  storageClass: gp2
   tolerations: []
   # @ignored
   # Eg. 
@@ -181,7 +182,7 @@ hyperswitch-app:
 prometheus:
   host: "prometheus-server"
   port: 80
-  enabled: true
+  enabled: false
   global:
     scrape_interval: 15s
     evaluation_interval: 15s
