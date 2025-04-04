@@ -223,255 +223,255 @@ task ur
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1064">hyperswitch-app.clickhouse.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1066">hyperswitch-app.clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1061">hyperswitch-app.clickhouse.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1063">hyperswitch-app.clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1070">hyperswitch-app.clickhouse.config.TZ</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1072">hyperswitch-app.clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1053">hyperswitch-app.clickhouse.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1055">hyperswitch-app.clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1057">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1059">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1083">hyperswitch-app.clickhouse.logLevel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1085">hyperswitch-app.clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1076">hyperswitch-app.clickhouse.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1078">hyperswitch-app.clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1073">hyperswitch-app.clickhouse.shards</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1075">hyperswitch-app.clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1080">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1082">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L923">hyperswitch-app.externalPostgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L925">hyperswitch-app.externalPostgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Postgres server</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L940">hyperswitch-app.externalPostgresql.primary.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L942">hyperswitch-app.externalPostgresql.primary.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L934">hyperswitch-app.externalPostgresql.primary.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L936">hyperswitch-app.externalPostgresql.primary.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L937">hyperswitch-app.externalPostgresql.primary.auth.plainpassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L939">hyperswitch-app.externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>master DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L931">hyperswitch-app.externalPostgresql.primary.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L933">hyperswitch-app.externalPostgresql.primary.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L927">hyperswitch-app.externalPostgresql.primary.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L929">hyperswitch-app.externalPostgresql.primary.host</a></div></td>
     <td><div><code>"postgresql-ext"</code></div></td>
     <td>External postgres host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L960">hyperswitch-app.externalPostgresql.readOnly.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L962">hyperswitch-app.externalPostgresql.readOnly.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L954">hyperswitch-app.externalPostgresql.readOnly.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L956">hyperswitch-app.externalPostgresql.readOnly.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L957">hyperswitch-app.externalPostgresql.readOnly.auth.plainpassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L959">hyperswitch-app.externalPostgresql.readOnly.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>replica DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L951">hyperswitch-app.externalPostgresql.readOnly.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L953">hyperswitch-app.externalPostgresql.readOnly.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L944">hyperswitch-app.externalPostgresql.readOnly.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L946">hyperswitch-app.externalPostgresql.readOnly.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>External postgres read only host enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L947">hyperswitch-app.externalPostgresql.readOnly.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L949">hyperswitch-app.externalPostgresql.readOnly.host</a></div></td>
     <td><div><code>"postgres-service"</code></div></td>
     <td>External postgres read only host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L857">hyperswitch-app.externalRedis.auth.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L859">hyperswitch-app.externalRedis.auth.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>auth enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L863">hyperswitch-app.externalRedis.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L865">hyperswitch-app.externalRedis.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L860">hyperswitch-app.externalRedis.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L862">hyperswitch-app.externalRedis.auth.username</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L850">hyperswitch-app.externalRedis.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L852">hyperswitch-app.externalRedis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Redis server</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L853">hyperswitch-app.externalRedis.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L855">hyperswitch-app.externalRedis.host</a></div></td>
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1003">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1005">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L998">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1000">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L990">hyperswitch-app.kafka.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L992">hyperswitch-app.kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L993">hyperswitch-app.kafka.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L995">hyperswitch-app.kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1020">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1022">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1032">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1034">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1028">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1030">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1024">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1026">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1036">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1038">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1015">hyperswitch-app.kafka.service.ports.client</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1017">hyperswitch-app.kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1010">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1012">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1132">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1139">hyperswitch-app.loki-stack.grafana.adminPassword</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td>Name of the Grafana sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1129">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1136">hyperswitch-app.loki-stack.grafana.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Grafana sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1136">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1143">hyperswitch-app.loki-stack.grafana.image.tag</a></div></td>
     <td><div><code>"10.0.1"</code></div></td>
     <td>Grafana image tag</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1109">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1115">hyperswitch-app.loki-stack.loki.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Loki sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1112">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1119">hyperswitch-app.loki-stack.loki.fullnameOverride</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td>Name of the Loki sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1116">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1123">hyperswitch-app.loki-stack.promtail.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Promtail sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1099">hyperswitch-app.mailhog.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1101">hyperswitch-app.mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1102">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1104">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L893">hyperswitch-app.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L895">hyperswitch-app.postgresql.architecture</a></div></td>
     <td><div><code>"replication"</code></div></td>
     <td>Postgresql architecture: replication or standalone</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L876">hyperswitch-app.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L878">hyperswitch-app.postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable Bitnami postgresql sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L890">hyperswitch-app.postgresql.global.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L892">hyperswitch-app.postgresql.global.postgresql.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql database</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L887">hyperswitch-app.postgresql.global.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L889">hyperswitch-app.postgresql.global.postgresql.auth.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td>Postgresql password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L884">hyperswitch-app.postgresql.global.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L886">hyperswitch-app.postgresql.global.postgresql.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L904">hyperswitch-app.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L906">hyperswitch-app.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>postgres primary name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L909">hyperswitch-app.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L911">hyperswitch-app.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"150m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L913">hyperswitch-app.postgresql.readReplicas.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L915">hyperswitch-app.postgresql.readReplicas.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of read replicas</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L918">hyperswitch-app.postgresql.readReplicas.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L920">hyperswitch-app.postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L900">hyperswitch-app.postgresql.replication.numSynchronousReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L902">hyperswitch-app.postgresql.replication.numSynchronousReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of synchronous replicas</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L897">hyperswitch-app.postgresql.replication.synchronousCommit</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L899">hyperswitch-app.postgresql.replication.synchronousCommit</a></div></td>
     <td><div><code>"off"</code></div></td>
     <td>synchronous_commit parameter</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L842">hyperswitch-app.redis.auth.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L844">hyperswitch-app.redis.auth.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable redis auth</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L845">hyperswitch-app.redis.auth.sentinel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L847">hyperswitch-app.redis.auth.sentinel</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable sentinel</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L828">hyperswitch-app.redis.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L830">hyperswitch-app.redis.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>- enable Bitnami redis sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L834">hyperswitch-app.redis.master.count</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L836">hyperswitch-app.redis.master.count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for master</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L838">hyperswitch-app.redis.replica.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L840">hyperswitch-app.redis.replica.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1173">hyperswitch-app.vector.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1185">hyperswitch-app.vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1177">hyperswitch-app.vector.env[0]</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1189">hyperswitch-app.vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -487,111 +487,111 @@ task ur
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L744">hyperswitch-app.controlCenter.env.default__endpoints__agreement_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L746">hyperswitch-app.controlCenter.env.default__endpoints__agreement_url</a></div></td>
     <td><div><code>"https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"</code></div></td>
     <td>Hyperswitch terms and conditions url</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L750">hyperswitch-app.controlCenter.env.default__endpoints__agreement_version</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L752">hyperswitch-app.controlCenter.env.default__endpoints__agreement_version</a></div></td>
     <td><div><code>"1.0.0"</code></div></td>
     <td>Agreement version</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L747">hyperswitch-app.controlCenter.env.default__endpoints__dss_certificate_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L749">hyperswitch-app.controlCenter.env.default__endpoints__dss_certificate_url</a></div></td>
     <td><div><code>"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"</code></div></td>
     <td>PCI DSS certificate url</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L738">hyperswitch-app.controlCenter.env.default__endpoints__favicon_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L740">hyperswitch-app.controlCenter.env.default__endpoints__favicon_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Endpoints favicon url</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L735">hyperswitch-app.controlCenter.env.default__endpoints__logo_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L737">hyperswitch-app.controlCenter.env.default__endpoints__logo_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Endpoints logo url</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L741">hyperswitch-app.controlCenter.env.default__endpoints__mixpanel_token</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L743">hyperswitch-app.controlCenter.env.default__endpoints__mixpanel_token</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mixpanel token</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L813">hyperswitch-app.controlCenter.env.default__features__branding</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L815">hyperswitch-app.controlCenter.env.default__features__branding</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables customization of branding elements like logos, colors.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L759">hyperswitch-app.controlCenter.env.default__features__email</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L761">hyperswitch-app.controlCenter.env.default__features__email</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables user sign-in and sign-up using magic links instead of passwords. When enabled, users can request a magic link via email that logs them into their account or creates a new account if they are signing up.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L783">hyperswitch-app.controlCenter.env.default__features__feedback</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L785">hyperswitch-app.controlCenter.env.default__features__feedback</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables the ability for users to provide direct product feedback from within the dashboard. When enabled, a feedback modal will be available in the UI that allows users to rate features, report bugs, and suggest improvements. Disabling this flag will remove the feedback modal and prevent collection of any user data.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L771">hyperswitch-app.controlCenter.env.default__features__frm</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L773">hyperswitch-app.controlCenter.env.default__features__frm</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L789">hyperswitch-app.controlCenter.env.default__features__generate_report</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L791">hyperswitch-app.controlCenter.env.default__features__generate_report</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Controls the ability to generate detailed reports on payments, refunds, and disputes. When enabled, this allows users to pull reports covering the previous 6 months of transaction data. The reports can provide insights into trends, identify issues, and inform business decisions.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L756">hyperswitch-app.controlCenter.env.default__features__is_live_mode</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L758">hyperswitch-app.controlCenter.env.default__features__is_live_mode</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L786">hyperswitch-app.controlCenter.env.default__features__mixpanel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L788">hyperswitch-app.controlCenter.env.default__features__mixpanel</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L774">hyperswitch-app.controlCenter.env.default__features__payout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L776">hyperswitch-app.controlCenter.env.default__features__payout</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the payout functionality in the dashboard. When enabled, this allows users to configure payout profiles, manage recipient details, schedule disbursements, and process payout batches to pay out funds to third parties.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L762">hyperswitch-app.controlCenter.env.default__features__quick_start</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L764">hyperswitch-app.controlCenter.env.default__features__quick_start</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the simplified onboarding flow for new users, where they connect to processors, configure payment routing and test a payment, all in one flow.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L777">hyperswitch-app.controlCenter.env.default__features__recon</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L779">hyperswitch-app.controlCenter.env.default__features__recon</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables access to reconciliation capabilities in the Hyperswitch dashboard. When turned on, this unlocks the Reconciliation module that allows users to match payment transactions with bank/ledger entries for accounting purposes.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L768">hyperswitch-app.controlCenter.env.default__features__sample_data</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L770">hyperswitch-app.controlCenter.env.default__features__sample_data</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L795">hyperswitch-app.controlCenter.env.default__features__surcharge</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L797">hyperswitch-app.controlCenter.env.default__features__surcharge</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to apply surcharges to payments. When enabled, you can create advanced rules based on payment parameters like amount, currency, and payment method to enforce surcharges as needed.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L765">hyperswitch-app.controlCenter.env.default__features__system_metrics</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L767">hyperswitch-app.controlCenter.env.default__features__system_metrics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Unlocks access to system monitoring and metrics pages within the dashboard. When enabled, users can view technical performance data like payment latency, uptime, API response times, error rates, and more.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L753">hyperswitch-app.controlCenter.env.default__features__test_live_toggle</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L755">hyperswitch-app.controlCenter.env.default__features__test_live_toggle</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables users to toggle between test and live modes when signing in. When enabled, users will see an option during sign-in to actively switch between test and live environments.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L780">hyperswitch-app.controlCenter.env.default__features__test_processors</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L782">hyperswitch-app.controlCenter.env.default__features__test_processors</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Allows enabling sandbox/test payment processors for testing purposes. When enabled, developers and testers can add test payment processors like Stripe Test or PayPal Test to trial payment flows without touching live transactions or making processor API calls.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L817">hyperswitch-app.controlCenter.env.default__features__totp</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L819">hyperswitch-app.controlCenter.env.default__features__totp</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables totp will mandate 2fa for all users</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L792">hyperswitch-app.controlCenter.env.default__features__user_journey_analytics</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L794">hyperswitch-app.controlCenter.env.default__features__user_journey_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Grants access to the user journey module within the analytics section of the dashboard. This feature provides comprehensive graphical representations of payment analytics, facilitating a deeper understanding of user behavior and usage patterns.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L726">hyperswitch-app.controlCenter.env.default__theme__primary_color</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L728">hyperswitch-app.controlCenter.env.default__theme__primary_color</a></div></td>
     <td><div><code>"#006DF9"</code></div></td>
     <td>Primary color for the theme</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L729">hyperswitch-app.controlCenter.env.default__theme__primary_hover_color</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L731">hyperswitch-app.controlCenter.env.default__theme__primary_hover_color</a></div></td>
     <td><div><code>"#005ED6"</code></div></td>
     <td>Primary hover color for the theme</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L732">hyperswitch-app.controlCenter.env.default__theme__sidebar_color</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L734">hyperswitch-app.controlCenter.env.default__theme__sidebar_color</a></div></td>
     <td><div><code>"#242F48"</code></div></td>
     <td>Secondary color for the theme</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L723">hyperswitch-app.controlCenter.env.mixpanelToken</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L725">hyperswitch-app.controlCenter.env.mixpanelToken</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mix panel token</td>
   </tr></tbody>
@@ -652,11 +652,11 @@ task ur
     <td><div><code>""</code></div></td>
     <td>Password for the smtp server</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L521">hyperswitch-app.server.paze_decrypt_keys.paze_private_key</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L523">hyperswitch-app.server.paze_decrypt_keys.paze_private_key</a></div></td>
     <td><div><code>"PAZE_PRIVATE_KEY"</code></div></td>
     <td>Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L524">hyperswitch-app.server.paze_decrypt_keys.paze_private_key_passphrase</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L526">hyperswitch-app.server.paze_decrypt_keys.paze_private_key_passphrase</a></div></td>
     <td><div><code>"PAZE_PRIVATE_KEY_PASSPHRASE"</code></div></td>
     <td>PEM Passphrase used for generating Private Key File cakey.pem</td>
   </tr><tr>
@@ -812,391 +812,683 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L180">prometheus.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L184">prometheus.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L183">prometheus.global.evaluation_interval</a></div></td>
+    <td><div><a href="./values.yaml#L187">prometheus.global.evaluation_interval</a></div></td>
     <td><div><code>"15s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L182">prometheus.global.scrape_interval</a></div></td>
+    <td><div><a href="./values.yaml#L186">prometheus.global.scrape_interval</a></div></td>
     <td><div><code>"15s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L178">prometheus.host</a></div></td>
+    <td><div><a href="./values.yaml#L182">prometheus.host</a></div></td>
     <td><div><code>"prometheus-server"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L179">prometheus.port</a></div></td>
+    <td><div><a href="./values.yaml#L183">prometheus.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L187">prometheus.scrape_configs[0].job_name</a></div></td>
+    <td><div><a href="./values.yaml#L189">prometheus.prometheus-pushgateway.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L193">prometheus.scrape_configs[0].job_name</a></div></td>
     <td><div><code>"kubernetes-pods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L189">prometheus.scrape_configs[0].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="./values.yaml#L195">prometheus.scrape_configs[0].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"pod"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L192">prometheus.scrape_configs[0].relabel_configs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L198">prometheus.scrape_configs[0].relabel_configs[0].action</a></div></td>
     <td><div><code>"keep"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L193">prometheus.scrape_configs[0].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L199">prometheus.scrape_configs[0].relabel_configs[0].regex</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L191">prometheus.scrape_configs[0].relabel_configs[0].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L197">prometheus.scrape_configs[0].relabel_configs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_scrape"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L195">prometheus.scrape_configs[0].relabel_configs[1].action</a></div></td>
+    <td><div><a href="./values.yaml#L201">prometheus.scrape_configs[0].relabel_configs[1].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L197">prometheus.scrape_configs[0].relabel_configs[1].regex</a></div></td>
+    <td><div><a href="./values.yaml#L203">prometheus.scrape_configs[0].relabel_configs[1].regex</a></div></td>
     <td><div><code>"(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L194">prometheus.scrape_configs[0].relabel_configs[1].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L200">prometheus.scrape_configs[0].relabel_configs[1].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_path"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L196">prometheus.scrape_configs[0].relabel_configs[1].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L202">prometheus.scrape_configs[0].relabel_configs[1].target_label</a></div></td>
     <td><div><code>"__metrics_path__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L199">prometheus.scrape_configs[0].relabel_configs[2].action</a></div></td>
+    <td><div><a href="./values.yaml#L205">prometheus.scrape_configs[0].relabel_configs[2].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L201">prometheus.scrape_configs[0].relabel_configs[2].regex</a></div></td>
+    <td><div><a href="./values.yaml#L207">prometheus.scrape_configs[0].relabel_configs[2].regex</a></div></td>
     <td><div><code>"([^:]+)(?::\\d+)?;(\\d+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L202">prometheus.scrape_configs[0].relabel_configs[2].replacement</a></div></td>
+    <td><div><a href="./values.yaml#L208">prometheus.scrape_configs[0].relabel_configs[2].replacement</a></div></td>
     <td><div><code>"$1:$2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L198">prometheus.scrape_configs[0].relabel_configs[2].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L204">prometheus.scrape_configs[0].relabel_configs[2].source_labels[0]</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L198">prometheus.scrape_configs[0].relabel_configs[2].source_labels[1]</a></div></td>
+    <td><div><a href="./values.yaml#L204">prometheus.scrape_configs[0].relabel_configs[2].source_labels[1]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_port"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L200">prometheus.scrape_configs[0].relabel_configs[2].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L206">prometheus.scrape_configs[0].relabel_configs[2].target_label</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L204">prometheus.scrape_configs[1].job_name</a></div></td>
+    <td><div><a href="./values.yaml#L210">prometheus.scrape_configs[1].job_name</a></div></td>
     <td><div><code>"kubernetes-nodes"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L206">prometheus.scrape_configs[1].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="./values.yaml#L212">prometheus.scrape_configs[1].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"node"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L208">prometheus.scrape_configs[1].relabel_configs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L214">prometheus.scrape_configs[1].relabel_configs[0].action</a></div></td>
     <td><div><code>"labelmap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L209">prometheus.scrape_configs[1].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L215">prometheus.scrape_configs[1].relabel_configs[0].regex</a></div></td>
     <td><div><code>"__meta_kubernetes_node_label_(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L212">prometheus.scrape_configs[1].static_configs[0].targets[0]</a></div></td>
+    <td><div><a href="./values.yaml#L218">prometheus.scrape_configs[1].static_configs[0].targets[0]</a></div></td>
     <td><div><code>"node-exporter:9100"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L975">hyperswitch-app.autoscaling.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L977">hyperswitch-app.autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L977">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L979">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L976">hyperswitch-app.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L978">hyperswitch-app.autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L978">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L980">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1050">hyperswitch-app.clickhouse.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1052">hyperswitch-app.clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1066">hyperswitch-app.clickhouse.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1068">hyperswitch-app.clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1054">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1056">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L719">hyperswitch-app.controlCenter.env.binary</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L721">hyperswitch-app.controlCenter.env.binary</a></div></td>
     <td><div><code>"dashboard"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L807">hyperswitch-app.controlCenter.env.default__features__audit_trail</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L809">hyperswitch-app.controlCenter.env.default__features__audit_trail</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L814">hyperswitch-app.controlCenter.env.default__features__authentication_analytics</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L816">hyperswitch-app.controlCenter.env.default__features__authentication_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L820">hyperswitch-app.controlCenter.env.default__features__compliance_certificate</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L822">hyperswitch-app.controlCenter.env.default__features__compliance_certificate</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L801">hyperswitch-app.controlCenter.env.default__features__configure_pmts</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L803">hyperswitch-app.controlCenter.env.default__features__configure_pmts</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L819">hyperswitch-app.controlCenter.env.default__features__custom_webhook_headers</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L821">hyperswitch-app.controlCenter.env.default__features__custom_webhook_headers</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L808">hyperswitch-app.controlCenter.env.default__features__dev_click_to_pay</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L810">hyperswitch-app.controlCenter.env.default__features__dev_click_to_pay</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L800">hyperswitch-app.controlCenter.env.default__features__dispute_analytics</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L802">hyperswitch-app.controlCenter.env.default__features__dispute_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L796">hyperswitch-app.controlCenter.env.default__features__dispute_evidence_upload</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L798">hyperswitch-app.controlCenter.env.default__features__dispute_evidence_upload</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L799">hyperswitch-app.controlCenter.env.default__features__global_search</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L801">hyperswitch-app.controlCenter.env.default__features__global_search</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L818">hyperswitch-app.controlCenter.env.default__features__live_users_counter</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L820">hyperswitch-app.controlCenter.env.default__features__live_users_counter</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L802">hyperswitch-app.controlCenter.env.default__features__new_analytics</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L804">hyperswitch-app.controlCenter.env.default__features__new_analytics</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L803">hyperswitch-app.controlCenter.env.default__features__new_analytics_filters</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L805">hyperswitch-app.controlCenter.env.default__features__new_analytics_filters</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L804">hyperswitch-app.controlCenter.env.default__features__new_analytics_refunds</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L806">hyperswitch-app.controlCenter.env.default__features__new_analytics_refunds</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L805">hyperswitch-app.controlCenter.env.default__features__new_analytics_smart_retries</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L807">hyperswitch-app.controlCenter.env.default__features__new_analytics_smart_retries</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L797">hyperswitch-app.controlCenter.env.default__features__paypal_automatic_flow</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L799">hyperswitch-app.controlCenter.env.default__features__paypal_automatic_flow</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L821">hyperswitch-app.controlCenter.env.default__features__performance_monitor</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L823">hyperswitch-app.controlCenter.env.default__features__performance_monitor</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L822">hyperswitch-app.controlCenter.env.default__features__pm_authentication_processor</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L824">hyperswitch-app.controlCenter.env.default__features__pm_authentication_processor</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L809">hyperswitch-app.controlCenter.env.default__features__tax_processors</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L811">hyperswitch-app.controlCenter.env.default__features__tax_processors</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L806">hyperswitch-app.controlCenter.env.default__features__tenant_user</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L808">hyperswitch-app.controlCenter.env.default__features__tenant_user</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L798">hyperswitch-app.controlCenter.env.default__features__threeds_authenticator</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L800">hyperswitch-app.controlCenter.env.default__features__threeds_authenticator</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L720">hyperswitch-app.controlCenter.env.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L722">hyperswitch-app.controlCenter.env.host</a></div></td>
     <td><div><code>"hyperswitch-control-center"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L684">hyperswitch-app.controlCenter.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L686">hyperswitch-app.controlCenter.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for the application</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L981">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L983">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L984">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L986">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1046">hyperswitch-app.initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1048">hyperswitch-app.initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1047">hyperswitch-app.initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1049">hyperswitch-app.initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L965">hyperswitch-app.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L967">hyperswitch-app.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L966">hyperswitch-app.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L968">hyperswitch-app.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L963">hyperswitch-app.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L965">hyperswitch-app.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L969">hyperswitch-app.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L971">hyperswitch-app.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L967">hyperswitch-app.initDB.refs</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L969">hyperswitch-app.initDB.refs</a></div></td>
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1004">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1006">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L999">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1001">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1040">hyperswitch-app.kafka.extraConfig</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1042">hyperswitch-app.kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L972">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L974">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1141">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".apiVersion</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1148">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".apiVersion</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1147">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].disableDeletion</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1154">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].disableDeletion</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1148">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].editable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1155">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].editable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1145">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].folder</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1152">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].folder</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1143">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1150">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].name</a></div></td>
     <td><div><code>"dp1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1150">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].options.path</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1157">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].options.path</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards/dp1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1144">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].orgId</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1151">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].orgId</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1146">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].type</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1153">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].type</a></div></td>
     <td><div><code>"file"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1155">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].disableDeletion</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1162">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].disableDeletion</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1156">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].editable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1163">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].editable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1153">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].folder</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1160">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].folder</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1151">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1158">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].name</a></div></td>
     <td><div><code>"dp2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1158">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].options.path</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1165">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].options.path</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards/dp2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1152">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].orgId</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1159">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].orgId</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1154">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].type</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1161">hyperswitch-app.loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].type</a></div></td>
     <td><div><code>"file"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1160">hyperswitch-app.loki-stack.grafana.dashboardsConfigMaps.dp1</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1167">hyperswitch-app.loki-stack.grafana.dashboardsConfigMaps.dp1</a></div></td>
     <td><div><code>"grafana-dashboard-payments"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1161">hyperswitch-app.loki-stack.grafana.dashboardsConfigMaps.dp2</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1168">hyperswitch-app.loki-stack.grafana.dashboardsConfigMaps.dp2</a></div></td>
     <td><div><code>"grafana-dashboard-pod-usage"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1167">hyperswitch-app.loki-stack.grafana.extraVolumeMounts[0].mountPath</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1174">hyperswitch-app.loki-stack.grafana.extraVolumeMounts[0].mountPath</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1166">hyperswitch-app.loki-stack.grafana.extraVolumeMounts[0].name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1173">hyperswitch-app.loki-stack.grafana.extraVolumeMounts[0].name</a></div></td>
     <td><div><code>"dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1164">hyperswitch-app.loki-stack.grafana.extraVolumes[0].emptyDir</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1171">hyperswitch-app.loki-stack.grafana.extraVolumes[0].emptyDir</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1163">hyperswitch-app.loki-stack.grafana.extraVolumes[0].name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1170">hyperswitch-app.loki-stack.grafana.extraVolumes[0].name</a></div></td>
     <td><div><code>"dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1138">hyperswitch-app.loki-stack.grafana.plugins[0]</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1145">hyperswitch-app.loki-stack.grafana.plugins[0]</a></div></td>
     <td><div><code>"volkovlabs-variable-panel"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L878">hyperswitch-app.postgresql.image.tag</a></div></td>
-    <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1116">hyperswitch-app.loki-stack.loki.isDefault</a></div></td>
+    <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1446">hyperswitch-app.prometheus.host</a></div></td>
-    <td><div><code>"prometheus-server"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1176">hyperswitch-app.loki-stack.prometheus.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1447">hyperswitch-app.prometheus.port</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1178">hyperswitch-app.loki-stack.prometheus.prometheus-pushgateway.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1179">hyperswitch-app.loki-stack.prometheus.prometheus-pushgateway.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1107">hyperswitch-app.loki.host</a></div></td>
+    <td><div><code>"loki"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1108">hyperswitch-app.loki.port</a></div></td>
+    <td><div><code>3100</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1535">hyperswitch-app.opentelemetry-collector.affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1500">hyperswitch-app.opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
+    <td><div><code>"detailed"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1502">hyperswitch-app.opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
+    <td><div><code>"${env:MY_POD_IP}:9898"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1506">hyperswitch-app.opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
+    <td><div><code>"${env:MY_POD_IP}:13133"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1483">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1485">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
+    <td><div><code>"5s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1486">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L830">hyperswitch-app.redis.image.tag</a></div></td>
-    <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1487">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
+    <td><div><code>25</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L868">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1491">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
+    <td><div><code>"datapoint"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1493">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
+    <td><div><code>"set(attributes[\"source_namespace\"], resource.attributes[\"k8s.namespace.name\"])"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1494">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
+    <td><div><code>"set(attributes[\"source_pod\"], resource.attributes[\"k8s.pod.name\"])"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1495">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
+    <td><div><code>"set(attributes[\"source_app\"], resource.attributes[\"app\"])"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1496">hyperswitch-app.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
+    <td><div><code>"set(attributes[\"source_version\"], resource.attributes[\"version\"])"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1480">hyperswitch-app.opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
+    <td><div><code>"${env:MY_POD_IP}:4317"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1517">hyperswitch-app.opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
+    <td><div><code>"health_check"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1527">hyperswitch-app.opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
+    <td><div><code>"prometheus"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1523">hyperswitch-app.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
+    <td><div><code>"memory_limiter"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1524">hyperswitch-app.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
+    <td><div><code>"transform"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1525">hyperswitch-app.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
+    <td><div><code>"batch"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1521">hyperswitch-app.opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
+    <td><div><code>"otlp"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1512">hyperswitch-app.opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
+    <td><div><code>"json"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1511">hyperswitch-app.opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
+    <td><div><code>"DEBUG"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1515">hyperswitch-app.opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
+    <td><div><code>"${env:MY_POD_IP}:8888"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1514">hyperswitch-app.opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
+    <td><div><code>"detailed"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1462">hyperswitch-app.opentelemetry-collector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L869">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1530">hyperswitch-app.opentelemetry-collector.image.repository</a></div></td>
+    <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1531">hyperswitch-app.opentelemetry-collector.image.tag</a></div></td>
+    <td><div><code>"0.122.1"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1464">hyperswitch-app.opentelemetry-collector.mode</a></div></td>
+    <td><div><code>"deployment"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1467">hyperswitch-app.opentelemetry-collector.namespaceOverride</a></div></td>
+    <td><div><code>"monitoring"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1533">hyperswitch-app.opentelemetry-collector.nodeSelector</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1551">hyperswitch-app.opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
+    <td><div><code>9898</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1550">hyperswitch-app.opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1553">hyperswitch-app.opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
+    <td><div><code>"TCP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1552">hyperswitch-app.opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
+    <td><div><code>9898</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1557">hyperswitch-app.opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1561">hyperswitch-app.opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1559">hyperswitch-app.opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1546">hyperswitch-app.opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
+    <td><div><code>8888</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1545">hyperswitch-app.opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1548">hyperswitch-app.opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
+    <td><div><code>"TCP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1547">hyperswitch-app.opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
+    <td><div><code>8888</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1555">hyperswitch-app.opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1543">hyperswitch-app.opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
+    <td><div><code>"grpc"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1540">hyperswitch-app.opentelemetry-collector.ports.otlp.containerPort</a></div></td>
+    <td><div><code>4317</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1539">hyperswitch-app.opentelemetry-collector.ports.otlp.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1542">hyperswitch-app.opentelemetry-collector.ports.otlp.protocol</a></div></td>
+    <td><div><code>"TCP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1541">hyperswitch-app.opentelemetry-collector.ports.otlp.servicePort</a></div></td>
+    <td><div><code>4317</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1563">hyperswitch-app.opentelemetry-collector.ports.zipkin.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1471">hyperswitch-app.opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1473">hyperswitch-app.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1472">hyperswitch-app.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1575">hyperswitch-app.opentelemetry-collector.replicaCount</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1569">hyperswitch-app.opentelemetry-collector.resources.limits.cpu</a></div></td>
+    <td><div><code>"1500m"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1570">hyperswitch-app.opentelemetry-collector.resources.limits.memory</a></div></td>
+    <td><div><code>"4Gi"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1572">hyperswitch-app.opentelemetry-collector.resources.requests.cpu</a></div></td>
+    <td><div><code>"250m"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1573">hyperswitch-app.opentelemetry-collector.resources.requests.memory</a></div></td>
+    <td><div><code>"512Mi"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1578">hyperswitch-app.opentelemetry-collector.serviceMonitor.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1581">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1582">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
+    <td><div><code>"30s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1583">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
+    <td><div><code>"/metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1580">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
+    <td><div><code>"otel-metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1585">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1586">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
+    <td><div><code>"15s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1587">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
+    <td><div><code>"/metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1584">hyperswitch-app.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
+    <td><div><code>"hs-metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1534">hyperswitch-app.opentelemetry-collector.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L880">hyperswitch-app.postgresql.image.tag</a></div></td>
+    <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1458">hyperswitch-app.prometheus.host</a></div></td>
+    <td><div><code>"prometheus-server"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1459">hyperswitch-app.prometheus.port</a></div></td>
+    <td><div><code>80</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L832">hyperswitch-app.redis.image.tag</a></div></td>
+    <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L870">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L871">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
     <td><div><code>"docker.io/bitnami/redis:7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L870">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L872">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
@@ -1404,7 +1696,7 @@ task ur
     <td><div><code>"#4285F4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L526">hyperswitch-app.server.google_pay_decrypt_keys.google_pay_root_signing_keys</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L528">hyperswitch-app.server.google_pay_decrypt_keys.google_pay_root_signing_keys</a></div></td>
     <td><div><code>"GOOGLE_PAY_ROOT_SIGNING_KEYS"</code></div></td>
     <td></td>
   </tr><tr>
@@ -1486,147 +1778,147 @@ task ur
     <td><div><code>15</code></div></td>
     <td>Interval for collecting the metrics in background thread</td>
   </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L468">hyperswitch-app.server.log.telemetry.external_otel_collector_endpoint</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>URL for external OpenTelemetry Collector endpoint to send metrics and traces to. The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint. The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.</td>
+  </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L462">hyperswitch-app.server.log.telemetry.ignore_errors</a></div></td>
     <td><div><code>false</code></div></td>
     <td>boolean [true or false], whether to ignore errors during traces or metrics pipeline setup</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L464">hyperswitch-app.server.log.telemetry.metrics_enabled</a></div></td>
-    <td><div><code>false</code></div></td>
+    <td><div><code>true</code></div></td>
     <td>boolean [true or false], whether metrics are enabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L466">hyperswitch-app.server.log.telemetry.otel_exporter_otlp_endpoint</a></div></td>
-    <td><div><code>"http://localhost:4317"</code></div></td>
-    <td>endpoint to send metrics and traces to, can include port number</td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L468">hyperswitch-app.server.log.telemetry.otel_exporter_otlp_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L470">hyperswitch-app.server.log.telemetry.otel_exporter_otlp_timeout</a></div></td>
     <td><div><code>5000</code></div></td>
     <td>timeout (in milliseconds) for sending metrics and traces</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L469">hyperswitch-app.server.log.telemetry.route_to_trace</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L471">hyperswitch-app.server.log.telemetry.route_to_trace</a></div></td>
     <td><div><code>"['*/confirm']"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L470">hyperswitch-app.server.log.telemetry.sampling_rate</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L472">hyperswitch-app.server.log.telemetry.sampling_rate</a></div></td>
     <td><div><code>0.1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L472">hyperswitch-app.server.log.telemetry.traces_enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L474">hyperswitch-app.server.log.telemetry.traces_enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>boolean [true or false], whether traces are enabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L474">hyperswitch-app.server.log.telemetry.use_xray_generator</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L476">hyperswitch-app.server.log.telemetry.use_xray_generator</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Set this to true for AWS X-ray compatible traces</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L478">hyperswitch-app.server.master_database.connection_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L480">hyperswitch-app.server.master_database.connection_timeout</a></div></td>
     <td><div><code>10</code></div></td>
     <td>Timeout for database connection in seconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L480">hyperswitch-app.server.master_database.pool_size</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L482">hyperswitch-app.server.master_database.pool_size</a></div></td>
     <td><div><code>"20"</code></div></td>
     <td>Number of connections to keep open</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L482">hyperswitch-app.server.master_database.queue_strategy</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L484">hyperswitch-app.server.master_database.queue_strategy</a></div></td>
     <td><div><code>"Fifo"</code></div></td>
     <td>Add the queue strategy used by the database bb8 client</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L484">hyperswitch-app.server.multitenancy.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L486">hyperswitch-app.server.multitenancy.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L486">hyperswitch-app.server.multitenancy.global_tenant.clickhouse_database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L488">hyperswitch-app.server.multitenancy.global_tenant.clickhouse_database</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L487">hyperswitch-app.server.multitenancy.global_tenant.redis_key_prefix</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L489">hyperswitch-app.server.multitenancy.global_tenant.redis_key_prefix</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L488">hyperswitch-app.server.multitenancy.global_tenant.schema</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L490">hyperswitch-app.server.multitenancy.global_tenant.schema</a></div></td>
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L489">hyperswitch-app.server.multitenancy.global_tenant.tenant_id</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L491">hyperswitch-app.server.multitenancy.global_tenant.tenant_id</a></div></td>
     <td><div><code>"global"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L494">hyperswitch-app.server.multitenancy.tenants.public.accounts_schema</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L496">hyperswitch-app.server.multitenancy.tenants.public.accounts_schema</a></div></td>
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L492">hyperswitch-app.server.multitenancy.tenants.public.base_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L494">hyperswitch-app.server.multitenancy.tenants.public.base_url</a></div></td>
     <td><div><code>"http://localhost:8080"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L496">hyperswitch-app.server.multitenancy.tenants.public.clickhouse_database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L498">hyperswitch-app.server.multitenancy.tenants.public.clickhouse_database</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L495">hyperswitch-app.server.multitenancy.tenants.public.redis_key_prefix</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L497">hyperswitch-app.server.multitenancy.tenants.public.redis_key_prefix</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L493">hyperswitch-app.server.multitenancy.tenants.public.schema</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L495">hyperswitch-app.server.multitenancy.tenants.public.schema</a></div></td>
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L498">hyperswitch-app.server.multitenancy.tenants.public.user.control_center_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L500">hyperswitch-app.server.multitenancy.tenants.public.user.control_center_url</a></div></td>
     <td><div><code>"http://localhost:9000"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L501">hyperswitch-app.server.opensearch.auth.auth</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L503">hyperswitch-app.server.opensearch.auth.auth</a></div></td>
     <td><div><code>"basic"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L503">hyperswitch-app.server.opensearch.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L505">hyperswitch-app.server.opensearch.auth.password</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L504">hyperswitch-app.server.opensearch.auth.region</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L506">hyperswitch-app.server.opensearch.auth.region</a></div></td>
     <td><div><code>"eu-central-1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L502">hyperswitch-app.server.opensearch.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L504">hyperswitch-app.server.opensearch.auth.username</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L505">hyperswitch-app.server.opensearch.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L507">hyperswitch-app.server.opensearch.host</a></div></td>
     <td><div><code>"https://localhost:9200"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L507">hyperswitch-app.server.opensearch.indexes.disputes</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L509">hyperswitch-app.server.opensearch.indexes.disputes</a></div></td>
     <td><div><code>"hyperswitch-dispute-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L508">hyperswitch-app.server.opensearch.indexes.payment_attempts</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L510">hyperswitch-app.server.opensearch.indexes.payment_attempts</a></div></td>
     <td><div><code>"hyperswitch-payment-attempt-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L509">hyperswitch-app.server.opensearch.indexes.payment_intents</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L511">hyperswitch-app.server.opensearch.indexes.payment_intents</a></div></td>
     <td><div><code>"hyperswitch-payment-intent-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L510">hyperswitch-app.server.opensearch.indexes.refunds</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L512">hyperswitch-app.server.opensearch.indexes.refunds</a></div></td>
     <td><div><code>"hyperswitch-refund-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L511">hyperswitch-app.server.opensearch.indexes.sessionizer_disputes</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L513">hyperswitch-app.server.opensearch.indexes.sessionizer_disputes</a></div></td>
     <td><div><code>"sessionizer-dispute-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L512">hyperswitch-app.server.opensearch.indexes.sessionizer_payment_attempts</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L514">hyperswitch-app.server.opensearch.indexes.sessionizer_payment_attempts</a></div></td>
     <td><div><code>"sessionizer-payment-attempt-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L513">hyperswitch-app.server.opensearch.indexes.sessionizer_payment_intents</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L515">hyperswitch-app.server.opensearch.indexes.sessionizer_payment_intents</a></div></td>
     <td><div><code>"sessionizer-payment-intent-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L514">hyperswitch-app.server.opensearch.indexes.sessionizer_refunds</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L516">hyperswitch-app.server.opensearch.indexes.sessionizer_refunds</a></div></td>
     <td><div><code>"sessionizer-refund-events"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L517">hyperswitch-app.server.payment_method_auth.redis_expiry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L519">hyperswitch-app.server.payment_method_auth.redis_expiry</a></div></td>
     <td><div><code>900</code></div></td>
     <td>Redis expiry time in milliseconds</td>
   </tr><tr>
@@ -1640,99 +1932,99 @@ task ur
     <td><div><code>600</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L529">hyperswitch-app.server.proxy.bypass_proxy_hosts</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L531">hyperswitch-app.server.proxy.bypass_proxy_hosts</a></div></td>
     <td><div><code>"localhost, cluster.local"</code></div></td>
     <td>A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L530">hyperswitch-app.server.proxy.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L532">hyperswitch-app.server.proxy.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L532">hyperswitch-app.server.proxy.http_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L534">hyperswitch-app.server.proxy.http_url</a></div></td>
     <td><div><code>"http://proxy_http_url"</code></div></td>
     <td>Outgoing proxy http URL to proxy the HTTP traffic</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L534">hyperswitch-app.server.proxy.https_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L536">hyperswitch-app.server.proxy.https_url</a></div></td>
     <td><div><code>"https://proxy_https_url"</code></div></td>
     <td>Outgoing proxy https URL to proxy the HTTPS traffic</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L538">hyperswitch-app.server.redis.auto_pipeline</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L540">hyperswitch-app.server.redis.auto_pipeline</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Whether or not the client should automatically pipeline commands across tasks when possible.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L540">hyperswitch-app.server.redis.cluster_enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L542">hyperswitch-app.server.redis.cluster_enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>boolean</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L542">hyperswitch-app.server.redis.cluster_urls</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L544">hyperswitch-app.server.redis.cluster_urls</a></div></td>
     <td><div><code>"['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']"</code></div></td>
     <td>List of redis cluster urls</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L544">hyperswitch-app.server.redis.default_command_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L546">hyperswitch-app.server.redis.default_command_timeout</a></div></td>
     <td><div><code>30</code></div></td>
     <td>An optional timeout to apply to all commands. In seconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L546">hyperswitch-app.server.redis.default_hash_ttl</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L548">hyperswitch-app.server.redis.default_hash_ttl</a></div></td>
     <td><div><code>900</code></div></td>
     <td>Default TTL for hashes entries, in seconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L548">hyperswitch-app.server.redis.default_ttl</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L550">hyperswitch-app.server.redis.default_ttl</a></div></td>
     <td><div><code>300</code></div></td>
     <td>Default TTL for entries, in seconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L550">hyperswitch-app.server.redis.disable_auto_backpressure</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L552">hyperswitch-app.server.redis.disable_auto_backpressure</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Whether or not to disable the automatic backpressure features when pipelining is enabled.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L551">hyperswitch-app.server.redis.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L553">hyperswitch-app.server.redis.host</a></div></td>
     <td><div><code>"127.0.0.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L553">hyperswitch-app.server.redis.max_feed_count</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L555">hyperswitch-app.server.redis.max_feed_count</a></div></td>
     <td><div><code>200</code></div></td>
     <td>The maximum number of frames that will be fed to a socket before flushing.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L555">hyperswitch-app.server.redis.max_in_flight_commands</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L557">hyperswitch-app.server.redis.max_in_flight_commands</a></div></td>
     <td><div><code>5000</code></div></td>
     <td>The maximum number of in-flight commands (per connection) before backpressure will be applied.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L557">hyperswitch-app.server.redis.pool_size</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L559">hyperswitch-app.server.redis.pool_size</a></div></td>
     <td><div><code>5</code></div></td>
     <td>Number of connections to keep open</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L558">hyperswitch-app.server.redis.port</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L560">hyperswitch-app.server.redis.port</a></div></td>
     <td><div><code>6379</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L560">hyperswitch-app.server.redis.reconnect_delay</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L562">hyperswitch-app.server.redis.reconnect_delay</a></div></td>
     <td><div><code>5</code></div></td>
     <td>Delay between reconnection attempts, in milliseconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L562">hyperswitch-app.server.redis.reconnect_max_attempts</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L564">hyperswitch-app.server.redis.reconnect_max_attempts</a></div></td>
     <td><div><code>5</code></div></td>
     <td>Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L564">hyperswitch-app.server.redis.stream_read_count</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L566">hyperswitch-app.server.redis.stream_read_count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Default number of entries to read from stream if not provided in stream read options</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L566">hyperswitch-app.server.redis.unresponsive_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L568">hyperswitch-app.server.redis.unresponsive_timeout</a></div></td>
     <td><div><code>10</code></div></td>
     <td>An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L568">hyperswitch-app.server.redis.use_legacy_version</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L570">hyperswitch-app.server.redis.use_legacy_version</a></div></td>
     <td><div><code>false</code></div></td>
     <td>RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L572">hyperswitch-app.server.replica_database.connection_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L574">hyperswitch-app.server.replica_database.connection_timeout</a></div></td>
     <td><div><code>10</code></div></td>
     <td>Timeout for database connection in seconds</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L574">hyperswitch-app.server.replica_database.pool_size</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L576">hyperswitch-app.server.replica_database.pool_size</a></div></td>
     <td><div><code>"20"</code></div></td>
     <td>Number of connections to keep open</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L576">hyperswitch-app.server.replica_database.queue_strategy</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L578">hyperswitch-app.server.replica_database.queue_strategy</a></div></td>
     <td><div><code>"Fifo"</code></div></td>
     <td>Add the queue strategy used by the database bb8 client</td>
   </tr><tr>
@@ -1740,23 +2032,23 @@ task ur
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for the application</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L579">hyperswitch-app.server.report_download_config.dispute_function</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L581">hyperswitch-app.server.report_download_config.dispute_function</a></div></td>
     <td><div><code>"report_download_config_dispute_function"</code></div></td>
     <td>Config to download dispute report</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L581">hyperswitch-app.server.report_download_config.payment_function</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L583">hyperswitch-app.server.report_download_config.payment_function</a></div></td>
     <td><div><code>"report_download_config_payment_function"</code></div></td>
     <td>Config to download payment report</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L583">hyperswitch-app.server.report_download_config.refund_function</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L585">hyperswitch-app.server.report_download_config.refund_function</a></div></td>
     <td><div><code>"report_download_config_refund_function"</code></div></td>
     <td>Config to download refund report</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L585">hyperswitch-app.server.report_download_config.region</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L587">hyperswitch-app.server.report_download_config.region</a></div></td>
     <td><div><code>"report_download_config_region"</code></div></td>
     <td>Region of the bucket</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L587">hyperswitch-app.server.run_env</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L589">hyperswitch-app.server.run_env</a></div></td>
     <td><div><code>"sandbox"</code></div></td>
     <td>Processor URLs will be decided based on this config, Eg: sandbox or production</td>
   </tr><tr>
@@ -1780,35 +2072,35 @@ task ur
     <td><div><code>"dummy_val"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L593">hyperswitch-app.server.secrets_management.hc_vault.token</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L595">hyperswitch-app.server.secrets_management.hc_vault.token</a></div></td>
     <td><div><code>"vault_token"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L592">hyperswitch-app.server.secrets_management.hc_vault.url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L594">hyperswitch-app.server.secrets_management.hc_vault.url</a></div></td>
     <td><div><code>"http://vault:8200"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L590">hyperswitch-app.server.secrets_management.secrets_manager</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L592">hyperswitch-app.server.secrets_management.secrets_manager</a></div></td>
     <td><div><code>"no_encryption"</code></div></td>
     <td>Secrets manager client to be used</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L596">hyperswitch-app.server.server.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L598">hyperswitch-app.server.server.host</a></div></td>
     <td><div><code>"0.0.0.0"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L597">hyperswitch-app.server.server.port</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L599">hyperswitch-app.server.server.port</a></div></td>
     <td><div><code>8080</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L599">hyperswitch-app.server.server.request_body_limit</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L601">hyperswitch-app.server.server.request_body_limit</a></div></td>
     <td><div><code>32768</code></div></td>
     <td>HTTP Request body limit. Defaults to 32kB</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L602">hyperswitch-app.server.server.shutdown_timeout</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L604">hyperswitch-app.server.server.shutdown_timeout</a></div></td>
     <td><div><code>30</code></div></td>
     <td>For more details: https://actix.rs/docs/server/#graceful-shutdown</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L603">hyperswitch-app.server.server.workers</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L605">hyperswitch-app.server.server.workers</a></div></td>
     <td><div><code>8</code></div></td>
     <td></td>
   </tr><tr>
@@ -1866,27 +2158,27 @@ task ur
     <td><div><code>"aws_s3"</code></div></td>
     <td>Theme storage backend to be used</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L605">hyperswitch-app.server.user.base_url</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L607">hyperswitch-app.server.user.base_url</a></div></td>
     <td><div><code>"http://localhost:9000"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L610">hyperswitch-app.server.user.force_cookies</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L612">hyperswitch-app.server.user.force_cookies</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L606">hyperswitch-app.server.user.force_two_factor_auth</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L608">hyperswitch-app.server.user.force_two_factor_auth</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L607">hyperswitch-app.server.user.password_validity_in_days</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L609">hyperswitch-app.server.user.password_validity_in_days</a></div></td>
     <td><div><code>"90"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L608">hyperswitch-app.server.user.totp_issuer_name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L610">hyperswitch-app.server.user.totp_issuer_name</a></div></td>
     <td><div><code>"Hyperswitch Sandbox"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L609">hyperswitch-app.server.user.two_factor_auth_expiry_in_secs</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L611">hyperswitch-app.server.user.two_factor_auth_expiry_in_secs</a></div></td>
     <td><div><code>"300"</code></div></td>
     <td></td>
   </tr><tr>
