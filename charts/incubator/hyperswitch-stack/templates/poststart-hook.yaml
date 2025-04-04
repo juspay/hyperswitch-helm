@@ -12,7 +12,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: poststart-hook
-          image: alpine:latest
+          image: curlimages/curl-base:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -23,11 +23,10 @@ spec:
               VERSION="{{ .Chart.Version }}"
               STATUS=""
               SERVER_HEALTH_URL="http://hyperswitch-server:80/health"
-              HYPERSWITCH_URL="http://hyperswitch-server:80/health/ready"
+              HYPERSWITCH_DEEP_HEALTH_URL="http://hyperswitch-server:80/health/ready"
               WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/$PLATFORM"
 
               MAX_RETRIES=30  # Maximum attempts before exiting
-              SLEEP_INTERVAL=2  # Wait time in seconds
               ATTEMPT=0
 
               until curl -sSf $SERVER_HEALTH_URL > /dev/null; do
@@ -48,7 +47,7 @@ spec:
 
               # Fetch health status
               echo "Fetching Hyperswitch health status..."
-              HEALTH_RESPONSE=$(curl -s "$HYPERSWITCH_URL")
+              HEALTH_RESPONSE=$(curl -s "$HYPERSWITCH_DEEP_HEALTH_URL")
 
               echo "Raw response: $HEALTH_RESPONSE"
 

@@ -12,17 +12,17 @@ spec:
       restartPolicy: Never
       containers:
         - name: prestart-hook
-          image: curlimages/curl:latest
+          image: curlimages/curl-base:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
               PLATFORM="{{- if .Release.IsInstall }}helm{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
-              URL="https://hyperswitch.gateway.scarf.sh/${PLATFORM}"
+              WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/${PLATFORM}"
               VERSION="{{ .Chart.Version }}"
               STATUS="initiated"
 
               # Send the GET request
-              curl -G "$URL" --data-urlencode "version=$VERSION" --data-urlencode "status=$STATUS"
+              curl -G "$WEBHOOK_URL" --data-urlencode "version=$VERSION" --data-urlencode "status=$STATUS"
 
               # Print confirmation
               echo "Request sent to $URL with version=$VERSION and status=$STATUS"
