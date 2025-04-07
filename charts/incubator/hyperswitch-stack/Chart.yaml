@@ -30,7 +30,7 @@ dependencies:
     version: 0.2.2
     repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
-  - name: prometheus
-    version: "27.x.x"
+  - name: kube-prometheus-stack
+    version: "70.3.0"
     repository: https://prometheus-community.github.io/helm-charts
-    condition: prometheus.enabled
+    condition: kube-prometheus-stack.enabled
