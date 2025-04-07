@@ -1143,7 +1143,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1467">opentelemetry-collector.namespaceOverride</a></div></td>
-    <td><div><code>"monitoring"</code></div></td>
+    <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1533">opentelemetry-collector.nodeSelector</a></div></td>
@@ -1299,11 +1299,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1458">prometheus.host</a></div></td>
-    <td><div><code>"prometheus-server"</code></div></td>
+    <td><div><code>"kube-prometheus-prometheus"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1459">prometheus.port</a></div></td>
-    <td><div><code>80</code></div></td>
+    <td><div><code>9090</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L832">redis.image.tag</a></div></td>

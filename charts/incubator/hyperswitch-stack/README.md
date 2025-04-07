@@ -212,7 +212,7 @@ task ur
 |------------|------|---------|
 | file://../hyperswitch-app | hyperswitch-app | 0.2.2 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.2 |
-| https://prometheus-community.github.io/helm-charts | prometheus | 27.x.x |
+| https://prometheus-community.github.io/helm-charts | kube-prometheus-stack | 70.3.0 |
 
 ## Values
 <h3>Dependencies configuration</h3>
@@ -812,108 +812,128 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L184">prometheus.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L225">kube-prometheus-stack.alertmanager.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L181">kube-prometheus-stack.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L187">prometheus.global.evaluation_interval</a></div></td>
-    <td><div><code>"15s"</code></div></td>
+    <td><div><a href="./values.yaml#L227">kube-prometheus-stack.grafana.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L186">prometheus.global.scrape_interval</a></div></td>
-    <td><div><code>"15s"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L182">prometheus.host</a></div></td>
-    <td><div><code>"prometheus-server"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L183">prometheus.port</a></div></td>
-    <td><div><code>80</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L189">prometheus.prometheus-pushgateway.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L228">kube-prometheus-stack.grafana.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L193">prometheus.scrape_configs[0].job_name</a></div></td>
-    <td><div><code>"kubernetes-pods"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L195">prometheus.scrape_configs[0].kubernetes_sd_configs[0].role</a></div></td>
-    <td><div><code>"pod"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L198">prometheus.scrape_configs[0].relabel_configs[0].action</a></div></td>
-    <td><div><code>"keep"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L199">prometheus.scrape_configs[0].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L186">kube-prometheus-stack.prometheus.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L197">prometheus.scrape_configs[0].relabel_configs[0].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L189">kube-prometheus-stack.prometheus.global.evaluation_interval</a></div></td>
+    <td><div><code>"15s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L188">kube-prometheus-stack.prometheus.global.scrape_interval</a></div></td>
+    <td><div><code>"15s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L191">kube-prometheus-stack.prometheus.prometheus-pushgateway.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L195">kube-prometheus-stack.prometheus.scrape_configs[0].job_name</a></div></td>
+    <td><div><code>"kubernetes-pods"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L197">kube-prometheus-stack.prometheus.scrape_configs[0].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><code>"pod"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L200">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[0].action</a></div></td>
+    <td><div><code>"keep"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L201">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[0].regex</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L199">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_scrape"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L201">prometheus.scrape_configs[0].relabel_configs[1].action</a></div></td>
+    <td><div><a href="./values.yaml#L203">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[1].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L203">prometheus.scrape_configs[0].relabel_configs[1].regex</a></div></td>
+    <td><div><a href="./values.yaml#L205">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[1].regex</a></div></td>
     <td><div><code>"(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L200">prometheus.scrape_configs[0].relabel_configs[1].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L202">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[1].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_path"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L202">prometheus.scrape_configs[0].relabel_configs[1].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L204">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[1].target_label</a></div></td>
     <td><div><code>"__metrics_path__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L205">prometheus.scrape_configs[0].relabel_configs[2].action</a></div></td>
+    <td><div><a href="./values.yaml#L207">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L207">prometheus.scrape_configs[0].relabel_configs[2].regex</a></div></td>
+    <td><div><a href="./values.yaml#L209">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].regex</a></div></td>
     <td><div><code>"([^:]+)(?::\\d+)?;(\\d+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L208">prometheus.scrape_configs[0].relabel_configs[2].replacement</a></div></td>
+    <td><div><a href="./values.yaml#L210">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].replacement</a></div></td>
     <td><div><code>"$1:$2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L204">prometheus.scrape_configs[0].relabel_configs[2].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L206">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].source_labels[0]</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L204">prometheus.scrape_configs[0].relabel_configs[2].source_labels[1]</a></div></td>
+    <td><div><a href="./values.yaml#L206">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].source_labels[1]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_port"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L206">prometheus.scrape_configs[0].relabel_configs[2].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L208">kube-prometheus-stack.prometheus.scrape_configs[0].relabel_configs[2].target_label</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L210">prometheus.scrape_configs[1].job_name</a></div></td>
+    <td><div><a href="./values.yaml#L212">kube-prometheus-stack.prometheus.scrape_configs[1].job_name</a></div></td>
     <td><div><code>"kubernetes-nodes"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L212">prometheus.scrape_configs[1].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="./values.yaml#L214">kube-prometheus-stack.prometheus.scrape_configs[1].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"node"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L214">prometheus.scrape_configs[1].relabel_configs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L216">kube-prometheus-stack.prometheus.scrape_configs[1].relabel_configs[0].action</a></div></td>
     <td><div><code>"labelmap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L215">prometheus.scrape_configs[1].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L217">kube-prometheus-stack.prometheus.scrape_configs[1].relabel_configs[0].regex</a></div></td>
     <td><div><code>"__meta_kubernetes_node_label_(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L218">prometheus.scrape_configs[1].static_configs[0].targets[0]</a></div></td>
+    <td><div><a href="./values.yaml#L220">kube-prometheus-stack.prometheus.scrape_configs[1].static_configs[0].targets[0]</a></div></td>
     <td><div><code>"node-exporter:9100"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L222">kube-prometheus-stack.prometheus.service.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L184">kube-prometheus-stack.service.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L183">kube-prometheus-stack.service.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L977">hyperswitch-app.autoscaling.enabled</a></div></td>
@@ -1313,7 +1333,7 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L1467">hyperswitch-app.opentelemetry-collector.namespaceOverride</a></div></td>
-    <td><div><code>"monitoring"</code></div></td>
+    <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L1533">hyperswitch-app.opentelemetry-collector.nodeSelector</a></div></td>
@@ -1469,11 +1489,11 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L1458">hyperswitch-app.prometheus.host</a></div></td>
-    <td><div><code>"prometheus-server"</code></div></td>
+    <td><div><code>"kube-prometheus-prometheus"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L1459">hyperswitch-app.prometheus.port</a></div></td>
-    <td><div><code>80</code></div></td>
+    <td><div><code>9090</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L832">hyperswitch-app.redis.image.tag</a></div></td>
