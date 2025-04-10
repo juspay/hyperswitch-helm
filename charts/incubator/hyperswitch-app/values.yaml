@@ -250,7 +250,7 @@ server:
     api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
     # -- Encryption key used for encrypting data in user_authentication_methods table
     # @section -- App Server Secrets
-    user_auth_encryption_key: dummy_val
+  
   
   analytics:
     clickhouse:
@@ -461,7 +461,7 @@ server:
       # -- boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
       ignore_errors: false
       # -- boolean [true or false], whether metrics are enabled
-      metrics_enabled: true
+      metrics_enabled: false
       # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
       # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
       # The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.
@@ -610,6 +610,8 @@ server:
     totp_issuer_name: Hyperswitch Sandbox
     two_factor_auth_expiry_in_secs: '300'
     force_cookies: false
+  user_auth_methods:
+    encryption_key: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application
@@ -1575,7 +1577,7 @@ opentelemetry-collector:
   replicaCount: 1
 
   serviceMonitor:
-    enabled: true
+    enabled: false
     metricsEndpoints:
       - port: otel-metrics
         honorLabels: true
