@@ -16,15 +16,20 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              PLATFORM="{{- if .Release.IsInstall }}helm{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
-              WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/${PLATFORM}"
-              VERSION="{{ .Chart.Version }}"
-              STATUS="initiated"
+              # Install dependencies
+              apk add --no-cache bash && \
+              /bin/bash -c '
+                set -euo pipefail
+                INSTALLATION_METHOD="{{- if .Release.IsInstall }}helm-install{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
+                WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/helm-chart"
+                VERSION="{{ .Chart.Version }}"
+                STATUS="initiated"
 
-              # Send the GET request
-              curl -G "$WEBHOOK_URL" --data-urlencode "version=$VERSION" --data-urlencode "status=$STATUS"
+                # Send the GET request
+                curl --get "${WEBHOOK_URL}" --data-urlencode "method=${INSTALLATION_METHOD}" --data-urlencode "version=${VERSION}" --data-urlencode "status=${STATUS}"
 
-              # Print confirmation
-              echo "Request sent to $URL with version=$VERSION and status=$STATUS"
+                # Print confirmation
+                echo "Request sent to ${WEBHOOK_URL} with method=${INSTALLATION_METHOD}, version=${VERSION} and status=${STATUS}"
 
-              exit 0
+                exit 0
+              '

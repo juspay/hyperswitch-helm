@@ -17,72 +17,69 @@ spec:
           args:
             - |
               # Install dependencies
-              apk add --no-cache curl jq
-              # URLs
-              PLATFORM="{{- if .Release.IsInstall }}helm{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
-              VERSION="{{ .Chart.Version }}"
-              STATUS=""
-              SERVER_HEALTH_URL="http://hyperswitch-server:80/health"
-              HYPERSWITCH_DEEP_HEALTH_URL="http://hyperswitch-server:80/health/ready"
-              WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/$PLATFORM"
+              apk add --no-cache bash jq && \
+              /bin/bash -c '
+                # URLs
+                INSTALLATION_METHOD="{{- if .Release.IsInstall }}helm-install{{- else if .Release.IsUpgrade }}helm-upgrade{{- end }}"
+                VERSION="{{ .Chart.Version }}"
+                STATUS=""
+                SERVER_BASE_URL="http://hyperswitch-server:80"
+                HYPERSWITCH_HEALTH_URL="${SERVER_BASE_URL}/health"
+                HYPERSWITCH_DEEP_HEALTH_URL="${SERVER_BASE_URL}/health/ready"
+                WEBHOOK_URL="https://hyperswitch.gateway.scarf.sh/helm-chart"
 
-              MAX_RETRIES=30  # Maximum attempts before exiting
-              ATTEMPT=0
+                MAX_RETRIES=30  # Maximum attempts before exiting
+                ATTEMPT=0
 
-              until curl -sSf $SERVER_HEALTH_URL > /dev/null; do
-                  ATTEMPT=$((ATTEMPT + 1))
-                  if [ "$ATTEMPT" -ge "$MAX_RETRIES" ]; then
-                      echo "Max retries reached."
-                      PARAMS="version=$VERSION"
-                      STATUS="error"
-                      ERROR_MESSAGE=$(echo "404 response" | jq -sRr @uri)
-                      PARAMS="$PARAMS&status=$STATUS"
-                      PARAMS="$PARAMS&error_message=$ERROR_MESSAGE"
-                      curl -G "$WEBHOOK_URL?$PARAMS"
-                      echo "Webhook notification sent."
-                      exit 0
-                  fi
-                  sleep 2
-              done
+                until curl --silent --show-error --fail ${HYPERSWITCH_HEALTH_URL} > /dev/null; do
+                    ATTEMPT=$((ATTEMPT + 1))
+                    if [ "${ATTEMPT}" -ge "${MAX_RETRIES}" ]; then
+                        echo "Max retries reached."
+                        STATUS="error"
+                        ERROR_MESSAGE="404 response"
+                        curl --get "${WEBHOOK_URL}" --data-urlencode "method=${INSTALLATION_METHOD}" --data-urlencode "version=${VERSION}" --data-urlencode "status=${STATUS}" --data-urlencode "error_message=${ERROR_MESSAGE}"
+                        echo "Webhook notification sent."
+                        exit 0
+                    fi
+                    sleep 2
+                done
 
-              # Fetch health status
-              echo "Fetching Hyperswitch health status..."
-              HEALTH_RESPONSE=$(curl -s "$HYPERSWITCH_DEEP_HEALTH_URL")
+                # Fetch health status
+                echo "Fetching Hyperswitch health status..."
+                HEALTH_RESPONSE=$(curl --silent "${HYPERSWITCH_DEEP_HEALTH_URL}")
 
-              echo "Raw response: $HEALTH_RESPONSE"
+                echo "Raw response: ${HEALTH_RESPONSE}"
 
-              # Initialize parameters
-              PARAMS="version=$VERSION"
+                # Prepare curl command
+                CURL_COMMAND=("curl" "--get" "${WEBHOOK_URL}" "--data-urlencode" "method=${INSTALLATION_METHOD}" "--data-urlencode" "version=${VERSION}")
 
-              # Check if the response contains an error
-              if echo "$HEALTH_RESPONSE" | grep -q '"error"'; then
-                  STATUS="error"
-                  ERROR_TYPE=$(echo "$HEALTH_RESPONSE" | jq -r '.error.type' | jq -sRr @uri)
-                  ERROR_MESSAGE=$(echo "$HEALTH_RESPONSE" | jq -r '.error.message' | jq -sRr @uri)
-                  ERROR_CODE=$(echo "$HEALTH_RESPONSE" | jq -r '.error.code' | jq -sRr @uri)
+                # Check if the response contains an error
+                if [[ "$(echo "${HEALTH_RESPONSE}" | jq --raw-output '.error')" != 'null' ]]; then
+                    STATUS="error"
+                    ERROR_TYPE=$(echo "${HEALTH_RESPONSE}" | jq --raw-output '.error.type')
+                    ERROR_MESSAGE=$(echo "${HEALTH_RESPONSE}" | jq --raw-output '.error.message')
+                    ERROR_CODE=$(echo "${HEALTH_RESPONSE}" | jq --raw-output '.error.code')
 
-                  echo "Extracted error details:"
-                  echo "ERROR_TYPE: '$ERROR_TYPE'"
-                  echo "ERROR_MESSAGE: '$ERROR_MESSAGE'"
-                  echo "ERROR_CODE: '$ERROR_CODE'"
+                    CURL_COMMAND+=(
+                        "--data-urlencode" "status=${STATUS}"
+                        "--data-urlencode" "error_type=${ERROR_TYPE}"
+                        "--data-urlencode" "error_message=${ERROR_MESSAGE}"
+                        "--data-urlencode" "error_code=${ERROR_CODE}"
+                    )
+                else
+                    STATUS="success"
+                    CURL_COMMAND+=("--data-urlencode" "status=${STATUS}")
 
-                  PARAMS="$PARAMS&status=$STATUS"
-                  PARAMS="$PARAMS&error_type=$ERROR_TYPE"
-                  PARAMS="$PARAMS&error_message=$ERROR_MESSAGE"
-                  PARAMS="$PARAMS&error_code=$ERROR_CODE"
-              else
-                  STATUS="success"
-                  for key in $(echo "$HEALTH_RESPONSE" | jq -r 'keys_unsorted[]'); do
-                      value=$(echo "$HEALTH_RESPONSE" | jq -r --arg key "$key" '.[$key]' | jq -sRr @uri)
-                      PARAMS="$PARAMS&$key=$value"
-                  done
-              fi
+                    for key in $(echo "${HEALTH_RESPONSE}" | jq --raw-output 'keys_unsorted[]'); do
+                        value=$(echo "${HEALTH_RESPONSE}" | jq --raw-output --arg key "${key}" '.[$key]')
+                        CURL_COMMAND+=("--data-urlencode" "'${key}=${value}'")
+                    done
+                fi
 
-              echo "Final URL Parameters: $PARAMS"
+                # Send the webhook request
+                bash -c "${CURL_COMMAND[*]}"
 
-              # Send GET request to the webhook
-              curl -G "$WEBHOOK_URL?$PARAMS"
+                echo "Webhook notification sent."
 
-              echo "Webhook notification sent."
-
-              exit 0
+                exit 0
+              '
