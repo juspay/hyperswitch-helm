@@ -51,7 +51,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Service account name
 */}}
 {{- define "hyperswitch-card-vault.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
@@ -61,68 +61,110 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-
-
-{{/*  validation */}}
+{{/*
+Validation
+*/}}
 {{- define "validate.locker-psql.config" -}}
-    {{- if not (or  .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
-        {{-  fail
-        "Both postgresql.enabled and external.postgresql.enabled cannot be 'false' at the same time. Please, onfigure at least one Redis."
-         }}
-    {{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
-        {{-  fail
-        "Both postgresql.enabled and external.postgresql.enabled cannot be 'true' at the same time. Select only once please"
-         }}
-    {{- end }}
+{{- if not (or .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
+{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'false'" }}
+{{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
+{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'true'" }}
+{{- end }}
+{{- end }}
+
+{{/*
+PostgreSQL host
+*/}}
+{{- define "locker-psql.host" -}}
+{{- include "validate.locker-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "%s-locker-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- .Values.external.postgresql.config.host | quote }}
+{{- end }}
 {{- end }}
 
 
-{{/* Select PostgreSQL host Internal or External */}}
-{{- define "locker-psql.host" -}}
-{{- $test_db := include "validate.locker-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-    {{- printf "%s-locker-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.host -}}
-  {{- end -}}
-{{- end -}}
-
-
-{{/* Select PostgreSQL port Internal or External */}}
+{{/*
+PostgreSQL port
+*/}}
 {{- define "locker-psql.port" -}}
-{{- $test_db := include "validate.locker-psql.config" . }}
-  {{- printf "\"5432\"" }}
-{{- end -}}
+{{- include "validate.locker-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "\"5432\"" }}
+{{- else }}
+{{- .Values.external.postgresql.config.port | quote }}
+{{- end }}
+{{- end }}
 
 
-{{/* Select PostgreSQL host Internal or External */}}
+{{/*
+PostgreSQL username
+*/}}
 {{- define "locker-psql.username" -}}
-{{- $test_db := include "validate.locker-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-    {{- printf "%s" .Values.postgresql.global.postgresql.auth.username -}}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.username -}}
-  {{- end -}}
-{{- end -}}
+{{- include "validate.locker-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.username | quote }}
+{{- else }}
+{{- .Values.external.postgresql.config.username | quote }}
+{{- end }}
+{{- end }}
 
-
-{{/* Select PostgreSQL host Internal or External */}}
+{{/*
+PostgreSQL database name
+*/}}
 {{- define "locker-psql.name" -}}
-{{- $test_db := include "validate.locker-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-      {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
-  {{- else if .Values.external.enabled -}}
-      {{- printf "%s" .Values.external.postgresql.config.database -}}
-  {{- end -}}
+{{- include "validate.locker-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.database | quote }}
+{{- else }}
+{{- .Values.external.postgresql.config.database | quote }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+PostgreSQL password
+*/}}
+{{- define "locker-psql.password" -}}
+{{- include "validate.locker-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
+{{- else }}
+{{- .Values.external.postgresql.config.password | quote }}
+{{- end }}
+{{- end }}
+
+{{/*
+LOCKER server host
+*/}}
+{{- define "locker.server.host" -}}
+{{- default "0.0.0.0" .Values.server.host | quote }}
+{{- end }}
+
+{{/*
+LOCKER server port
+*/}}
+{{- define "locker.server.port" -}}
+{{- default "8080" .Values.server.port | quote }}
+{{- end }}
+
+{{- define "locker.externalKeyManager.url" -}}
+{{- default "http://localhost:5000" .Values.server.externalKeyManager.url -}}
 {{- end -}}
 
+{{- define "locker.externalKeyManager.cert" -}}
+{{- default "dummyCert" .Values.server.externalKeyManager.cert -}}
+{{- end -}}
 
-{{/* Select PostgreSQL host Internal or External */}}
-{{- define "locker-psql.password" -}}
-{{- $test_db := include "validate.locker-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-      {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
-  {{- else if .Values.external.enabled -}}
-      {{- printf "%s" .Values.external.postgresql.config.password -}}
-  {{- end -}}
+{{- define "locker.apiClient.identity" -}}
+{{- default "dummyCert" .Values.server.apiClient.identity -}}
+{{- end -}}
+
+{{- define "locker.awsKms.keyId" -}}
+{{- default "key_id" .Values.server.awsKms.keyId -}}
+{{- end -}}
+
+{{- define "locker.awsKms.region" -}}
+{{- default "us-east-1" .Values.server.awsKms.region -}}
 {{- end -}}
