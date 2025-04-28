@@ -118,12 +118,6 @@ server:
 postgresql:
   enabled: true
   nameOverride: locker-db
-  # global:
-  #   postgresql:
-  #     auth:
-  #       username: db_user
-  #       password: dummyPassword 
-  #       database: locker-db
   auth:             
     username: db_user
     password: dummyPassword
@@ -159,9 +153,9 @@ initDB:
 vaultKeysJob:
   enabled: true
   checkVaultService:
-    image: curlimages/curl:8.7.1 # ✅ using official curl image for /health checking
+    image: curlimages/curl:8.7.1 
     maxAttempt: 30
-    host: ""  # default to hyperswitch-vault.namespace.svc.cluster.local
+    host: ""  
     port: 80
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"
