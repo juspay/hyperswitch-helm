@@ -1,0 +1,45 @@
+{{- if .Values.vaultKeysJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hyperswitch-vault-keys-config-{{ .Release.Name }}
+  labels:
+    app: hyperswitch-vault-keys
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        {{- include "locker-vault.initContainer.check.ready" . | nindent 8 }}
+
+      containers:
+        - name: run-vault-key-setup
+          image: {{ .Values.vaultKeysJob.checkVaultService.image }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |-
+              set -e
+              echo "Posting key1..."
+              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key1 \
+                -H "Content-Type: application/json" \
+                -H "x-tenant-id: public" \
+                -d '{"key": "{{ .Values.vaultKeysJob.keys.key1 }}"}'
+              
+              echo "Posting key2..."
+              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key2 \
+                -H "Content-Type: application/json" \
+                -H "x-tenant-id: public" \
+                -d '{"key": "{{ .Values.vaultKeysJob.keys.key2 }}"}'
+              
+              echo "Calling decrypt endpoint..."
+              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/decrypt \
+                -H "Content-Type: application/json" \
+                -H "x-tenant-id: public"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+{{- end }}

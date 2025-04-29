@@ -163,49 +163,59 @@ server:
     # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
     kms_jwekey_vault_encryption_key: |
       -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsgwEJaGbRA1DNMzubq4M
-      7d+i6TSrFPiqrqnNkO0Dct58jGbJ36xIOxfsf7qa03kP+idEZnh0w9kWcVmx4aL+
-      nqeDzQtZ8RQdBMg2lJl4srDjxdKTABdeMq3c6W+tyXG1E/vz2qik0ROp65JkxlTS
-      T1e4wWC9IwpmaNAFtjW9oFc48K6Ou7SZOl/hAm5QJPUxsY1lFbbVwQD6pbRRhLas
-      zrGRFqczQVhtCz6ZsJWSpSwfpZAhNKlBHatkuojY4yLw/Qey3xaCR83fn2hCaoXO
-      ++9ffcbPIwxb7XTkbc25kJT+bOuN5ttnmAPRDV1l5hR432fiSqNIo015gTy83Nv2
-      LwIDAQAB
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+      YQIDAQAB
       -----END PUBLIC KEY-----
     # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
     # @section -- App Server Secrets
     # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
     kms_jwekey_vault_private_key: |
-      -----BEGIN RSA PRIVATE KEY-----
-      MIIEpAIBAAKCAQEAsSnWltGc6kjcDAhtUoad0xlLJZCwLc6P80j8k3dgo92nqocU
-      KD7tsY61dgm3gKFr8sZPLbTaDV1SJ+jAeZNP476aonJVPottQvGduB5DqDCMcHDQ
-      krYkBtOb+/ID5qOi8ATVVMfJASjVbw/D0R/AEuiG0vmddl+8676xWIT8TZTmzowI
-      vvUIYEuaUS8DRpmTAWPXYdv72fDZtuyhpU0YGAdHGyQrHXwGdGe31N65vmqMyWoi
-      IXGMuJKqP/EZEqmVkkfWXuDioa57YrPUU07oD7KsS00L4QGBB3MeJxEpQjhmNybj
-      QeDejl4YPj3dboFyf6468skKS91+wV0ExghyTwIDAQABAoIBAGG7G8a9QVu477Kv
-      n2csHbpLNLo3VAkg7yYdOEA9VZFwAENBGuyMsmEFwbKo75LE+aDGpv0mzDcdKOod
-      KrimfCa9id5dRgsnrRGF6iSchWQty/tnMJgOZFdjuqPEwUQlNwhDElAfmhHKrdsD
-      jlk5s6J6pY2S57taWwSNgJW9XtWIiCvI+VXxSqK7KDjGwDko8Kv86/Gck87IBxa5
-      5OqDlvOsPSqTQpqT3BqFu7PSh/dPGZ90u2Yyvsns4EnBpVkxmxPKDddv/b2PkwnC
-      /gVoctmrZ+YRkXN/07L34TSJzdWVZis0+w7DydhIz/n1ueYIX7D1Ef7uHWi709AJ
-      HLnBvDkCgYEA5N3RG6993ef/zH7Ir+k4iwlUTkXI8YAEY2Vavpk21cG60kTwzhUN
-      KbjsLJRuX5N3soWxhlrXX+V7ihTSCXbO0mFpOQwW66XBKZyV3i5NllpS3+ldiyfO
-      FxjYgJVZsnXpJX3c4R4HwZ6qja4oKZabsqypg7BaIgGJMArkZUHJDYsCgYEAxirQ
-      kmN6MUZMa52gBZLGnAiXNVZj0yUmaDU5hLJlLHu00Ut80hOC9d4Ekv6R0Y/aSC3h
-      eVzPkrkFOSySytifyGK0cU+3ielJncIGJHraIYkWdM0aex1jX0Ms77hfMlCYcagJ
-      5uwiwFSNNboOWnm9P3M/1enJAsuw1MzFFBtBDs0CgYEA4N1MIh6H1Wqnur1q4uOL
-      iZft/EW2jAlSxnID+bbB2L3Sl9vimSi32SF28soXs9JJTd7rsG06pV7sxZt1TpUr
-      2iqZXtKRBpDCO+c8nKLz2mD+gj9giGPgqnLf7V5QVfZhz1NdnNWLm2IQgsn1bf8r
-      FR9uIhQ4Sqclqk1ZYF+FcccCgYAYeitfGZh7Q6Km3EZqydFsboc22F/mMb2Hu6NK
-      J7rlfrY77+YQEMbpVa4c9gLO7sTYi4pBMlyVU/M4N7A+C/nYh5CgOmeCSmWEbfXS
-      RbZx0/wJG1h9AolGuAZx6cUgcuIRj98BPgOg3BDBJSUmucjNcI/e/UyN4tkJv+1L
-      6X3ktQKBgQDMa06pjBgpRq8BJhcxs1mluPgHGad1lBzU5IcVX1oRFyux8PtsfSoA
-      kIYrGckStjrvfOD2VnTIQWAuujOTtxjP0yR+cHlmwWXZrrj5+x8kNAOqgN7gU1nt
-      KYpNT2+Sc7wxwAWIucVSN3eRNzRGTysxUWYKFUlpGRKP6NwJDEz9ew==
-      -----END RSA PRIVATE KEY-----
+      -----BEGIN PRIVATE KEY-----
+      MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
+      +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
+      W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
+      PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
+      dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
+      1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
+      t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
+      dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
+      qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
+      WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
+      ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
+      9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
+      yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
+      R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
+      3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
+      gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
+      mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
+      kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
+      FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
+      z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
+      BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
+      vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
+      XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
+      KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
+      3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
+      49IwF6OHTk+8yjEF1c5ngQ==
+      -----END PRIVATE KEY-----
     # @section -- App Server Secrets
     kms_jwekey_tunnel_private_key: dummy_val
     # @section -- App Server Secrets
-    kms_jwekey_rust_locker_encryption_key: dummy_val
+    kms_jwekey_rust_locker_encryption_key:  |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+      YQIDAQAB
+      -----END PUBLIC KEY-----
     # @section -- App Server Secrets
     kms_connector_onboarding_paypal_client_id: dummy_val
     # @section -- App Server Secrets
@@ -250,8 +260,10 @@ server:
     api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
     # -- Encryption key used for encrypting data in user_authentication_methods table
     # @section -- App Server Secrets
-  
-  
+    keymanager: 
+      ca: "sample_ca"
+      cert: "sample_cert"
+
   analytics:
     clickhouse:
       # -- Clickhouse database name
@@ -808,7 +820,6 @@ controlCenter:
     default__features__new_analytics_refunds: "true"
     default__features__new_analytics_smart_retries: "true"
     default__features__tenant_user: "true"
-    default__features__audit_trail: "true"
     default__features__dev_click_to_pay: "true"
     default__features__tax_processors: "true"
     

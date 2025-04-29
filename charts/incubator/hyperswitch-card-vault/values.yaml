@@ -12,9 +12,12 @@ global:
 server:
   # Annotations to be added to hyperswitch-card-vault.
   annotations: {}
-
+  
+  host: "0.0.0.0"
+  port: "8080"
+  version: v0.6.5
   # Image to be used for hyperswitch-card-vault.
-  image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0
+  image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
 
   # values to be used in pod template.
   pod:
@@ -38,9 +41,6 @@ server:
   secrets:
     # -- Optionally, you can run </br>
     # <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre>
-    # @default -- "master_key"
-    master_key: a164665dd3a545c194aa297e4d2cdbd19aa3c59865907e9ffffb7b8d9fcb476208f84fe53bbc7801f2b8eb1aab633fb24ad0bb99b275066fb56516ef
-
     # -- To create this key pairs, follow the instructions provided here: </br>
     # # Generating the private keys
     # <pre>openssl genrsa -out locker-private-key.pem 2048</pre>
@@ -52,63 +52,77 @@ server:
     # The private key for the locker from locker-private-key.pem
     # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
     locker_private_key: |
-      -----BEGIN RSA PRIVATE KEY-----
-      MIIEpAIBAAKCAQEAsgwEJaGbRA1DNMzubq4M7d+i6TSrFPiqrqnNkO0Dct58jGbJ
-      36xIOxfsf7qa03kP+idEZnh0w9kWcVmx4aL+nqeDzQtZ8RQdBMg2lJl4srDjxdKT
-      ABdeMq3c6W+tyXG1E/vz2qik0ROp65JkxlTST1e4wWC9IwpmaNAFtjW9oFc48K6O
-      u7SZOl/hAm5QJPUxsY1lFbbVwQD6pbRRhLaszrGRFqczQVhtCz6ZsJWSpSwfpZAh
-      NKlBHatkuojY4yLw/Qey3xaCR83fn2hCaoXO++9ffcbPIwxb7XTkbc25kJT+bOuN
-      5ttnmAPRDV1l5hR432fiSqNIo015gTy83Nv2LwIDAQABAoIBAGCpXWcAwcbEXIRB
-      7gBwxdwu2cc6LNeJ2UBSN6RCyOiIGZ4v/9FLOzu51U/TA1NkGmR5BQ2Mv/fD2AdZ
-      5tTVJN8FmuyrCP11Kfv6pocuevSoTECN/fjCtwVUlua1FuiSrvhWhSFlBXXs8wdN
-      xyBV1If22/tAhe6MKuUkarVtn7F4QTa+vWbdbEI5cC4Y4k3h6W8h065ZHW8CLV2V
-      Fk9WtqDf+e7K4E04R0k6CvO5fK3PvxRBB5/foObG28ut/8el+2SmP809aYQnYy8j
-      8uVbOIYEb2GTPWBxNk/gvIX5o3Kk6DT2RpUuu6RMwaMk2GWWoIjJBz17bACelMiG
-      S36xaKECgYEA2itL446mYkQYhJM1AwEojxs8O3/MysDJfiOZY0vFoXTk+Xv9Ae15
-      n7VNPdwrQy8YMsB3kpXjU3W6gKXlpW7bnFp4h2/V4VuLaEhSknF+hYNPk1V2y1iq
-      XcUlgqDi3N43o0Z0sS7D1IA1hzeI63YQ9FPP/kYF61SELtT9U8OH110CgYEA0Oup
-      11A0YjFEF3OemtOWXExi0DFocn5c+/o+tIPZX3MUCISOSEslT1qYe++NRoQBIB+p
-      slR30DJRZrl6R4fsP4Upr/iclyBYZsX7KonOdhmzPiuTG+khVSb22ejY81hAUzjl
-      AeDV3QlMN3lmHAVcfavJgfIeYCC/hm1P32hEJvsCgYAMbUzsUFLP5BsVaiEp46YA
-      yMdciEINBoAzrClvi4BdWwAz6ckWlAVKgJQ+wszADe2t7mKhOeJx/ZG7BDgZfUAL
-      HuggptEi/gjpzrzNVKOlTT56IPMcUBecMb+aOjnR5OJ8bWX2Nbi34PmrkxE8gEQk
-      9qUxUaHCrtS8qisn20pgjQKBgQC4fTMZKQFpKJo5n2cSz//6d5XWxZq3aHESLpTK
-      8Ze2Gzg4oV3H51wGLDl1UEBQYedgh7Vh/gdjudt6PBYILrZoDV6Xv5IAPpbyAqje
-      kpzYW6+WGgKpZgCCYosgOOfEVE1RcG+CbhpNO5Wrcy/BVNatP1MNxlIejyyyN7uN
-      zFRKmwKBgQCOdAQ57htPHkpcXzYreRlwjKiDqaN8rvxqMEu1WyW9Y18T+hcPw8r+
-      deYMmUHKvQBUaPG0Q2uu2n+mYKFQK6XucRFeHcPSzElk15nki/DAYaxOLzBEi8hI
-      0vCnCqm+d6KBKsS5i0pMgvPdC07VrWKnyzdX4goP0CaAhI0A1OGlsA==
-      -----END RSA PRIVATE KEY-----
-    
-    # -- The public key for the tenant from tenant-public-key.pem
-    # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
-    tenant_public_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsSnWltGc6kjcDAhtUoad
-      0xlLJZCwLc6P80j8k3dgo92nqocUKD7tsY61dgm3gKFr8sZPLbTaDV1SJ+jAeZNP
-      476aonJVPottQvGduB5DqDCMcHDQkrYkBtOb+/ID5qOi8ATVVMfJASjVbw/D0R/A
-      EuiG0vmddl+8676xWIT8TZTmzowIvvUIYEuaUS8DRpmTAWPXYdv72fDZtuyhpU0Y
-      GAdHGyQrHXwGdGe31N65vmqMyWoiIXGMuJKqP/EZEqmVkkfWXuDioa57YrPUU07o
-      D7KsS00L4QGBB3MeJxEpQjhmNybjQeDejl4YPj3dboFyf6468skKS91+wV0Exghy
-      TwIDAQAB
-      -----END PUBLIC KEY-----
+      -----BEGIN PRIVATE KEY-----
+      MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyfiCWauKEAbtW
+      mmp3ceZFdmIaa5lbQn41C3vbjnehKcZzpLDUWT+9jRaFAifr8inVe3p2czKisjdv
+      1G19A08MU0Pf+DufYj24yoSvppjGDSkrD1Rbe4GXNHknO8xWfMSMhF9226pKWmF2
+      kBW5k8QUQ32QT9VqwEh5oqZtgVnGbPgA3YgEG+pYJqohBk6tNHN8Y2FUGVf875K/
+      n1zLqfpAShgn9bDdHtxSVKu55A2VK5uShryKEFyb1UDsF2SWumzsHXvLMxMCCqFk
+      +QswhBAMEjW8UOVIqtYc1d+bhbIBcnwxc6X5OE0l0CgPDbA0mZ86uBo9AWIx89li
+      AqX/Ya5hAgMBAAECggEAFU5m922U0msegKz4DoADG8GQ3lR/vtwGErDnPQMZlpxU
+      +xLqpL5ulGLWEFR8jXaftcMCkEcaAT/CzE+QLj8J3Y/G52JLQ7BHa9qI0irRy7pg
+      cqpmyHDKvFDgMWW684v7LkbS2m5IOo3lWnDClx9jZYPU5jgRYqfHPvXCZgntvHis
+      YHAfzaB427FNQ9u5gVZ24rcbzWd0zBd4y6JSuES58JIFZs6zieC/wOYWulYGoa4b
+      ijB9mtHRDGqSrZJdn6EWU1VR9p+ZWt6c7rcr8+7puJBS/vD7CNcvkJXvjrwXko8t
+      KaoPWG0CyqFBujpDeVfTry8woq18mnBiBPSZsh2YUQKBgQDfg1y4v558NHIL0qPu
+      vUWReaSSgHMTzaTdreonENeY0k2sLZ3SSR4bFjGMcVh8bV51E6Qg1T569tv+2620
+      dzdX+sIayDMbG/gvnkJm2wihB4PRuEDoTsMWZ2BT7Kdxr8mjT64VzMsrPsPSf5it
+      jMbC4M/MJVQxpex/cy/4XoqphQKBgQDMb5yd/km13Xl8yqNBLLPfx5ScFnaldI9M
+      8Bit595AqcYqkXWasIdkvFKEz+ZYMUzEUFnDW5FSPXrf8+immb7nHYvEoB9JM9ur
+      wJ+VFMIpXZBmuShvDtdoBBQfHZXB6uGyqlzYk24KpcMeb/Gy2sPfS8ZX6f1jE0cM
+      ypPC6H76LQKBgQCcyJV61pcCQvuYxXnOlp+9CtnhFg8i3gZ+pWbxXkQNY7+uPhVN
+      k5J1p5y8CinqpgEzGMLxcQOx14W8ATaYt2Nv6GrNxI7svjLanCWx5oToB9B0hM2q
+      5sy742nTlNZjzc4gK11O12fQfud3uZ9MZcpqmq3IYorrhJsfT5pfm1mizQKBgQCy
+      mRc0F8EBdtj5onX5LDqAV3WG30ELzsaaKm8FDrnlt+v9qFIbr/i4kqVsjcvoZDly
+      j9e7ibVtKXS9TfKECXDzq6Y9Qr3ST9GrPH6t2RK+3JSYiU2/qDGbF2UUwd3hKXe/
+      hIHUWwgZmTLa1mVLIT9ZRnOivjK1aVP64scv0bmMiQKBgA5E4YEqQDJwqmcZC6Vv
+      PypXLUBTWr87S7eQqPgqZYn308k+z+MiLKgJwcV3jaAwDkcvXfGAgvht7ZqYv9JQ
+      CPrr1VIA3cwgZnVQqlwYPTKGqq6woqP6ksVgFnYwuT5Gt/EViq8pdGfvk3jU8lri
+      4tidgA0ErmcnysggrNg2W3De
+      -----END PRIVATE KEY-----
+  
+  tenant_secrets:
+    public:
+      master_key: 8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df
+      # -- The public key for the tenant from tenant_secrets-public-public_key.pem
+      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+      public_key:  |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJtfZxG6ohl/Mvk0DOiU
+        KvPLK1Wsuvd/dzLWBhKAObZc8AqvE/RiTL73HOt1S5rXyT/TwDfpcEI8oVuSWikM
+        2tygxughqtA/mK/Fo0GXazR+5fczQBvVvlUPpEA4ZaUkpLkDlYlTLgjGCz6mBOWt
+        eChc0+iFv2YzyAdIOaA7s4luklASxL5UZq20EEHXL4wIKKv5fQLoaViBv3QeNEPh
+        a4LocldUfkoLl0ON15TWrDT/gEgl3anp8f4tySgyeuBNOfsiVVYqqngKqNVtcRHS
+        YGcxBmxBV3mThIH/YnPnSoM/f+eDAtrIuguti5B+oJfVW1WU6v53aQeOLrd2+XR2
+        PQIDAQAB
+        -----END PUBLIC KEY-----
+      schema: public
 
   # Extra values to be added to hyperswitch-card-vault.
   extra:
     # extra env variables to be added to hyperswitch-card-vault.
     env: {}
+  
+  externalKeyManager:
+    url: "http://localhost:5000"
+    cert: ""
+  
+  apiClient:
+    identity: ""
+
+  awsKms:
+    keyId: ""
+    region: ""
 
 # Values for database (postgresql).
 postgresql:
   enabled: true
   nameOverride: locker-db
-  global:
-    postgresql:
-      auth:
-        username: db_user
-        password: V2tkS1ptTkhSbnBqZDI4OUNnPT0K
-        database: locker-db
-        architecture: standalone
+  auth:             
+    username: db_user
+    password: dummyPassword
+    database: locker-db
+  architecture: standalone
   primary:
     name: ""
     tolerations: []
@@ -135,3 +149,14 @@ initDB:
     maxAttempt: 30
   migration:
     image: christophwurst/diesel-cli:latest
+
+vaultKeysJob:
+  enabled: true
+  checkVaultService:
+    image: curlimages/curl:8.7.1 
+    maxAttempt: 30
+    host: ""  
+    port: 80
+  keys:
+    key1: "3c82773a6621feee3d5e0ce96654bf1f"
+    key2: "7de95dbbd5d020e6b2a44847b8942bf5"

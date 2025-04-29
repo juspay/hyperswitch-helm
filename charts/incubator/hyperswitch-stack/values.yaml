@@ -129,10 +129,10 @@ hyperswitch-app:
   hyperswitch-card-vault:
     enabled: true
     server:
-      image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.4.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
       tenant_secrets: 
         hyperswitch :  
-          master_key : "feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308" 
+          master_key : "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df" 
           public_key : "" 
           schema : "public" 
                   
