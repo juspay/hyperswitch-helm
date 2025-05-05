@@ -46,7 +46,7 @@ hyperswitch-web:
     enable: true
     forceBuild: true
     gitCloneParam: 
-      gitVersion: 0.109.2
+      gitVersion: 0.121.2
     nginxConfig:
       extraPath: v1
     buildParam:
@@ -91,18 +91,18 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: v1.113.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.113.0
+      version: v1.114.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.114.0
       host: *router_host
     consumer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.113.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.114.0
     producer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.113.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.114.0
     controlCenter:
-      image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.36.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.1
     sdk:
       host: *web_sdk_host
-      version: 0.109.2
+      version: 0.121.2
       subversion: v1
   server:
     replicas: 1

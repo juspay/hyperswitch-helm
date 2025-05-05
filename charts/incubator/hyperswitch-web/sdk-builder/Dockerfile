@@ -22,24 +22,27 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 ARG sdkVersion
 ARG port=80
-ARG nginxPath=/usr/share/nginx/html/web/$sdkVersion/v0
+ARG nginxPath=/usr/share/nginx/html/web/$sdkVersion
 COPY --from=builder /app/dist/sandbox $nginxPath
-WORKDIR $nginxPath
+WORKDIR $nginxPath/v1
 
 # Add the embedded entrypoint script
-RUN printf '\
-echo "Starting build modifications..."\n\
-if [ -n "$envSdkUrl" ]; then\n\
-  sed -i'' -e "s|https://beta.hyperswitch.io/web|${envSdkUrl}/web|g" app.js HyperLoader.js\n\
-fi\n\
-if [ -n "$envBackendUrl" ]; then\n\
-  sed -i'' -e "s|https://beta.hyperswitch.io/api|${envBackendUrl}|g" app.js HyperLoader.js\n\
-fi\n\
-if [ -n "$envLogsUrl" ]; then\n\
-  sed -i'' -e "s|https://sandbox.hyperswitch.io/logs/sdk|${envLogsUrl}|g" app.js HyperLoader.js\n\
-fi\n\
-echo "Build modifications completed."\n\
-exec "$@"' > /docker-entrypoint.d/change_urls.sh && chmod +x /docker-entrypoint.d/change_urls.sh
+RUN printf '%s\n' \
+'#!/bin/sh' \
+'echo "Starting build modifications..."' \
+'if [ -n "$envSdkUrl" ]; then' \
+'  sed -i -e "s|https://beta.hyperswitch.io/web|${envSdkUrl}/web|g" app.js HyperLoader.js' \
+'fi' \
+'if [ -n "$envBackendUrl" ]; then' \
+'  sed -i -e "s|https://beta.hyperswitch.io/api|${envBackendUrl}|g" app.js HyperLoader.js' \
+'fi' \
+'if [ -n "$envLogsUrl" ]; then' \
+'  sed -i -e "s|https://sandbox.hyperswitch.io/logs/sdk|${envLogsUrl}|g" app.js HyperLoader.js' \
+'fi' \
+'echo "Build modifications completed."' \
+'exec "$@"' \
+> /docker-entrypoint.d/change_urls.sh && chmod +x /docker-entrypoint.d/change_urls.sh
+
 
 # Use the embedded entrypoint script and run Nginx
 CMD ["nginx", "-g", "daemon off;"]
