@@ -10,7 +10,7 @@ import os
 curl 'http://192.168.194.86/payments/pay_juk8r4trQIMHkQoyUaIO/confirm'
 -X POST -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5'
 -H 'Accept-Encoding: gzip, deflate' -H 'Referer: http://hyperswitch-schema-225681119357-us-east-2.s3.amazonaws.com/' -H 'Content-Type: application/json'
--H 'sdk-version: 0.5.6' -H 'api-key: pk_snd_21976dc3aea941c59e0ce195fcf613d0'
+-H 'sdk-version: 0.5.6' -H 'api-key: pk_snd_21976dc3aea941c59e0ce*****'
 -H 'Origin: http://hyperswitch-schema-225681119357-us-east-2.s3.amazonaws.com'
 -H 'Connection: keep-alive'
 --data-raw '{"client_secret":"pay_SyKOVP56WtiypInweMde_secret_lox6KduPNJDpUovYTzrW","return_url":"http://hyperswitch-sdk-970350076.us-east-2.elb.amazonaws.com"
@@ -269,12 +269,7 @@ class UserBehavior(SequentialTaskSet):
                          headers={
                              'Content-Type': 'application/json',
                              'Accept': 'application/json',
-                            #'api-key': 'snd_pI7HsgjxHngzEHWAlT00LxR5pyp0OqbuoyTWmLAk3cyDrHfnzQPbp4hn4VxQ88aL' # shakthi'bros
-                            #'api-key' : 'prd_kWSnitZTXvIPHAQhZQI4MIlMDOmXxnyvyq3QJIYH6wkKQS161I2J7RXgmxz9878U',
-                            #'api-key': 'prd_kWSnitZTXvIPHAQhZQI4MIlMDOmXxnyvyq3QJIYH6wkKQS161I2J7RXgmxz9878U' # venky
                             #'x-feature' : 'router-custom'
-                            #'api-key' : 'snd_KkQouF5R7UZTi5gRKPrNfPiIAwEr42FqkAiEMoPq9GivRYuLbD6KOvfsPxt0qkNI' # ec2
-                            #'api-key' : 'snd_AC0EC8D1lmaifIAlk0PvmOeDxotpMkN4sU3WShVfgjTSDyO441iEcXV172pRiHsh'
                             'api-key' : api_key #c3
                          })
 
@@ -324,12 +319,7 @@ class UserBehavior(SequentialTaskSet):
                          headers={
                              'Content-Type': 'application/json',
                              'Accept': 'application/json',
-                            #'api-key': 'snd_pI7HsgjxHngzEHWAlT00LxR5pyp0OqbuoyTWmLAk3cyDrHfnzQPbp4hn4VxQ88aL' # shakthi'bros
-                            #'api-key': 'prd_kWSnitZTXvIPHAQhZQI4MIlMDOmXxnyvyq3QJIYH6wkKQS161I2J7RXgmxz9878U' # venky
-                            #'api-key' : 'prd_kWSnitZTXvIPHAQhZQI4MIlMDOmXxnyvyq3QJIYH6wkKQS161I2J7RXgmxz9878U',
                             #'x-feature' : 'router-custom'
-                            #'api-key' : 'snd_KkQouF5R7UZTi5gRKPrNfPiIAwEr42FqkAiEMoPq9GivRYuLbD6KOvfsPxt0qkNI' # ec2
-                            #'api-key' : 'snd_AC0EC8D1lmaifIAlk0PvmOeDxotpMkN4sU3WShVfgjTSDyO441iEcXV172pRiHsh',
                             'api-key' : api_key,
                             'x-hs-latency' : 'True'
                          })
