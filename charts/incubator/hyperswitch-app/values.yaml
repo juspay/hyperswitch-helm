@@ -836,8 +836,6 @@ controlCenter:
     # -- Agreement version
     # @section -- Control Center configs
     default__endpoints__agreement_version: "1.0.0"
-    default__endpoints__api_url: "http://localhost:9000/api"
-    default__endpoints__apple_pay_certificate_url: ""
     default__endpoints__hypersense_url: ""
     # -- Mixpanel token
     # @section -- Control Center configs
@@ -845,7 +843,6 @@ controlCenter:
     # -- Endpoints logo url
     default__endpoints__logo_url: ""
     default__endpoints__recon_iframe_url: ""
-    default__endpoints__sdk_url: "http://localhost:9050/HyperLoader.js"
     # -- Primary color for the theme
     # @section -- Control Center configs
     default__theme__primary_color: "#006DF9"
