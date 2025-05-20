@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-02T18:45:05.167339+05:30"
+    created: "2025-05-20T14:11:30.07843+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -44,7 +44,7 @@ entries:
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: 5862914f667aa0f0cf001b03636b6e24eadf2bb98f8b48340f127d33f80593d8
+    digest: 9026de42ab580be9cd97f7793c2c92cd8ab13e8bafffda8e51521eb47567fe79
     name: hyperswitch-app
     type: application
     urls:
@@ -53,7 +53,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2025-05-02T18:45:05.169224+05:30"
+    created: "2025-05-20T14:11:30.079837+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -61,7 +61,7 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 6ac92460fab4bdbfe6e275a02bd875afec649751b9b721fa8b2291e333bfe4e2
+    digest: eebde2597daa56a259915ee826ffcef82c1859625a96bc5956aea822d6374c8c
     name: hyperswitch-web
     type: application
     urls:
@@ -77,7 +77,7 @@ entries:
           url: https://github.com/prometheus/prometheus
     apiVersion: v2
     appVersion: v3.2.1
-    created: "2025-05-02T18:45:05.177211+05:30"
+    created: "2025-05-20T14:11:30.086476+05:30"
     dependencies:
     - condition: alertmanager.enabled
       name: alertmanager
@@ -130,4 +130,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.2.3/charts/prometheus-27.8.0.tgz
     version: 27.8.0
-generated: "2025-05-02T18:45:05.106968+05:30"
+generated: "2025-05-20T14:11:30.01546+05:30"
