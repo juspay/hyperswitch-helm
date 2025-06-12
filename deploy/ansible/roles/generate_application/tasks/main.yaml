@@ -1,0 +1,20 @@
+- name: Generate argo application
+  template:
+    src: "hyperswitch-stack-argo-application.j2"
+    dest: "hyperswitch-stack-argo-application.yaml"
+
+- name: Generate argo application
+  template:
+    src: "hyperswitch-stack-rollout.j2"
+    dest: "hyperswitch-stack-rollout.yaml"
+
+- name: Clone gitops repo
+## clones the hyperswitch-gitops repo
+
+- name: Add generated files to gitops repo
+## adds the application and rollout files to the {{ env }}/sources folder of the gitops repo
+
+- name: Commit changes to gitops repo
+
+- name: Push changes to gitops repo
+## pushes the changes to the gitops repo's main branch -> Argocd picks up the changes and syncs it to the cluster
