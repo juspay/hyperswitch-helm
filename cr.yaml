@@ -1,0 +1,9 @@
+# cr.yaml
+owner: shailesh-714
+git-repo: mature-helm-charts
+charts-repo: https://shailesh-714.github.io/mature-helm-charts
+package-path: .cr-release-packages
+generate-release-notes: true
+make-release-latest: true
+pages-branch: gh-pages
+pages-index-path: index.yaml

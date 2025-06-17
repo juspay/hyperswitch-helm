@@ -1,0 +1,219 @@
+name: CI-PR
+
+on:
+  pull_request:
+    paths:
+      - "charts/**"
+  workflow_dispatch: # Allow manual triggering
+
+# Cancel previous runs on new pushes to the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  CT_CONFIGFILE: ct.yaml
+  CT_CHECK_VERSION_INCREMENT: true
+  HELM_VERSION: v3.14.0 # Updated to latest stable version
+  KUBECTL_VERSION: v1.30.3 # Updated to latest stable version
+  KIND_VERSION: v0.24.0 # Pinned kind version
+  PYTHON_VERSION: "3.12"
+
+# Define default shell for consistency
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    name: Lint Charts
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.list-changed.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Detect changed charts
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config "${CT_CONFIGFILE}")
+          echo "changed=$([[ -n \"$changed\" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Run Lint
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --config "${CT_CONFIGFILE}"
+
+  version-check:
+    name: Chart Version Check
+    needs: lint
+    runs-on: ubuntu-latest
+    if: needs.lint.outputs.changed == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Check chart version increment
+        run: |
+          changed_charts=$(ct list-changed --config "${CT_CONFIGFILE}")
+          if [[ -z "$changed_charts" ]]; then
+            echo "No changed charts to check."
+            exit 0
+          fi
+
+          for chart in $changed_charts; do
+            chart_yaml="${chart}/Chart.yaml"
+            old_version=$(git show origin/main:"${chart_yaml}" | yq '.version')
+            new_version=$(yq '.version' "${chart_yaml}")
+
+            # Check if chart exists in target branch
+            if git show "origin/${target_branch}:${chart_yaml}" >/dev/null 2>&1; then
+              old_version=$(git show "origin/${target_branch}:${chart_yaml}" | yq '.version')
+
+              echo "  Old version: $old_version"
+              echo "  New version: $new_version"
+
+              # Version comparison using sort -V for semantic versioning
+              if [[ "$old_version" == "$new_version" ]]; then
+                echo "::error::$chart version was not incremented (still $new_version)"
+                exit 1
+              elif ! printf '%s\n%s\n' "$old_version" "$new_version" | sort -V -C; then
+                echo "::error::$chart version $new_version is not greater than $old_version"
+                exit 1
+              else
+                echo "::notice::✓ $chart version correctly incremented: $old_version → $new_version"
+              fi
+            else
+              echo "::notice::$chart is new, skipping version check"
+            fi
+          done
+          echo "::endgroup::"
+
+  # install-test:
+  #   name: Install and Test Charts
+  #   runs-on: ubuntu-latest
+  #   needs: [lint, version-check]
+  #   if: needs.lint.outputs.changed == 'true'
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Set up Helm
+  #       uses: azure/setup-helm@v4
+  #       with:
+  #         version: ${{ env.HELM_VERSION }}
+
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: ${{ env.PYTHON_VERSION }}
+
+  #     - name: Set up chart-testing
+  #       uses: helm/chart-testing-action@v2.1.0
+
+  #     - name: Create kind cluster
+  #       uses: helm/kind-action@v1.8.0
+  #       with:
+  #         kubectl_version: v1.29.0
+  #         node_image: kindest/node:v1.29.0
+
+  #     - name: Run Install Test
+  #       run: |
+  #         echo "::group::Determine changed charts"
+  #         git fetch origin main
+  #         changed=$(ct list-changed --config "${CT_CONFIGFILE}")
+
+  #         charts=(
+  #           "charts/incubator/hyperswitch-card-vault"
+  #           "charts/incubator/hyperswitch-keymanager"
+  #           "charts/incubator/hyperswitch-istio"
+  #           "charts/incubator/hyperswitch-app"
+  #           "charts/incubator/hyperswitch-web"
+  #           "charts/incubator/hyperswitch-stack"
+  #         )
+
+  #         # Define charts to skip
+  #         skip_charts=(
+  #           "charts/incubator/hyperswitch-istio"
+  #           "charts/incubator/hyperswitch-keymanager"
+  #           "charts/incubator/hyperswitch-web"
+  #         )
+
+  #         # Filter charts
+  #         filtered_charts=()
+  #         for chart in $changed; do
+  #           skip=false
+  #           for skip_chart in "${skip_charts[@]}"; do
+  #             if [[ "$chart" == "$skip_chart" ]]; then
+  #               echo "Skipping $chart"
+  #               skip=true
+  #               break
+  #             fi
+  #           done
+  #           if ! $skip; then
+  #             filtered_charts+=("$chart")
+  #           fi
+  #         done
+  #         echo "::endgroup::"
+
+  #         if [ ${#filtered_charts[@]} -eq 0 ]; then
+  #           echo "No charts to install after filtering."
+  #           exit 0
+  #         fi
+
+  #         echo "::group::Running helm dependency build"
+  #         for chart in "${charts[@]}"; do
+  #           echo "Building dependencies for $chart"
+  #           helm dependency build "$chart"
+  #         done
+  #         echo "::endgroup::"
+
+  #         echo "::group::Creating namespace"
+  #         kubectl create namespace hyperswitch || true
+  #         echo "::endgroup::"
+
+  #         echo "::group::Running chart installation tests"
+  #         ct install \
+  #           --config "${CT_CONFIGFILE}" \
+  #           --charts "${filtered_charts[@]}" \
+  #           --namespace="hyperswitch" \
+  #           --debug || {
+  #             echo "::error::Chart installation tests failed"
+  #             echo "::group::Kubernetes cluster state"
+  #             kubectl get pods --all-namespaces
+  #             kubectl get events --all-namespaces --sort-by='.lastTimestamp'
+  #             echo "::endgroup::"
+  #             exit 1
+  #           }
+  #         echo "::endgroup::"

@@ -1,0 +1,46 @@
+name: Lint Code Base
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check-helm-docs:
+    name: Update Helm Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check Helm-Docs updated
+        run: |
+          docker run --rm \
+            --volume "$(pwd):/helm-docs" \
+            -u "$(id -u):$(id -g)" \
+            jnorwood/helm-docs:latest
+
+          # Check for uncommitted changes after helm-docs
+          if ! git diff --exit-code; then
+            echo "Documentation not up to date. Please run helm-docs and commit changes!" >&2
+            exit 1
+          fi
+
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v3.12.0
+        env:
+          FILTER_REGEX_EXCLUDE: .*(README\.md|Chart\.yaml|NOTES\.txt).*
+          FILTER_REGEX_INCLUDE: .*
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_KUBERNETES_KUBEVAL: false
+          VALIDATE_YAML: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
