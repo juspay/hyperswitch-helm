@@ -109,7 +109,7 @@ Create the name of the service account to use
 {{- $test_db := include "validate.keymanager-psql.config" . }}
   {{- if .Values.postgresql.enabled }}
       {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
-  {{- else if .Values.external.enabled -}}
+  {{- else if .Values.external.postgresql.enabled -}}
       {{- printf "%s" .Values.external.postgresql.config.database -}}
   {{- end -}}
 {{- end -}}
@@ -120,7 +120,7 @@ Create the name of the service account to use
 {{- $test_db := include "validate.keymanager-psql.config" . }}
   {{- if .Values.postgresql.enabled }}
       {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
-  {{- else if .Values.external.enabled -}}
+  {{- else if .Values.external.postgresql.enabled -}}
       {{- printf "%s" .Values.external.postgresql.config.password -}}
   {{- end -}}
 {{- end -}}
