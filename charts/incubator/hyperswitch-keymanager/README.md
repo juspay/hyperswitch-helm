@@ -312,15 +312,39 @@ openssl rand -base64 32
 ```
 
 ### Generate TLS Certificates
+
 ```bash
-# Generate private key
-openssl genrsa -out keymanager.key 2048
+# Generate CA certificate
+openssl genrsa -out ca_key.pem 2048
+openssl req -new -x509 -days 3650 -key ca_key.pem \
+  -subj "/C=US/ST=CA/O=Cripta CA/CN=Cripta CA" -out ca_cert.pem
 
-# Generate certificate signing request
-openssl req -new -key keymanager.key -out keymanager.csr
+# Generate server certificate
+openssl req -newkey rsa:2048 -nodes -sha256 -keyout rsa_sha256_key.pem \
+  -subj "/C=US/ST=CA/O=Cripta/CN=localhost" -out server.csr
 
-# Generate self-signed certificate (for development)
-openssl x509 -req -days 365 -in keymanager.csr -signkey keymanager.key -out keymanager.crt
+openssl x509 -req -sha256 -extfile <(printf "subjectAltName=DNS:localhost") -days 3650 \
+  -CA ca_cert.pem -CAkey ca_key.pem -CAcreateserial \
+  -in server.csr -out rsa_sha256_cert.pem
+
+# Generate client certificate (for mTLS)
+cat rsa_sha256_cert.pem rsa_sha256_key.pem > client.pem
+
+# Clean up
+rm ca_cert.srl server.csr
+```
+
+
+#### Using the certificates in values.yaml
+```yaml
+secrets:
+  tls:
+    cert: |
+      # Contents of rsa_sha256_cert.pem
+    key: |
+      # Contents of rsa_sha256_key.pem
+    ca: |
+      # Contents of ca_cert.pem
 ```
 
 ## Integration with Card Vault
