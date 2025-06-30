@@ -17,20 +17,20 @@ data:
     {{- if eq (include "locker.tlsEnabled" .) "true" }}
     
     [tls]
-    certificate = "/path/to/cert.pem"
-    private_key = "/path/to/key.pem"
+    certificate = "{{ .Values.server.tls.certificate }}"
+    private_key = "{{ .Values.server.tls.privateKey }}"
     {{- end }}
     
     {{- if eq (include "locker.externalKeyManagerMtlsEnabled" .) "true" }}
     
     [external_key_manager]
     url = "{{ .Values.server.externalKeyManager.url }}"
-    cert = "/path/to/external_key_manager_cert.pem"
+    cert = "{{ .Values.server.externalKeyManager.cert }}"
     
     [api_client]
     client_idle_timeout = 90
     pool_max_idle_per_host = 10
-    identity = "/path/to/client_identity.pem"
+    identity = "{{ .Values.server.apiClient.identity }}"
     {{- else }}
     
     [external_key_manager]
