@@ -51,7 +51,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Service account name
 */}}
 {{- define "hyperswitch-keymanager.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
@@ -61,67 +61,85 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*  validation */}}
+{{/*
+PostgreSQL configuration validation
+*/}}
 {{- define "validate.keymanager-psql.config" -}}
-    {{- if not (or  .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
-        {{-  fail
-        "Both postgresql.enabled and external.postgresql.enabled cannot be 'false' at the same time. Please, onfigure at least one Redis."
-         }}
-    {{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
-        {{-  fail
-        "Both postgresql.enabled and external.postgresql.enabled cannot be 'true' at the same time. Select only once please"
-         }}
-    {{- end }}
+{{- if not (or .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
+{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'false'" }}
+{{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
+{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'true'" }}
+{{- end }}
 {{- end }}
 
-
-{{/* Select PostgreSQL host Internal or External */}}
+{{/*
+PostgreSQL host
+*/}}
 {{- define "keymanager-psql.host" -}}
-{{- $test_db := include "validate.keymanager-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-    {{- printf "%s-keymanager-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.host -}}
-  {{- end -}}
-{{- end -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "%s-keymanager-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" | quote }}
+{{- else }}
+{{- .Values.external.postgresql.config.host | trim | quote }}
+{{- end }}
+{{- end }}
 
-
-{{/* Select PostgreSQL port Internal or External */}}
+{{/*
+PostgreSQL port
+*/}}
 {{- define "keymanager-psql.port" -}}
-{{- $test_db := include "validate.keymanager-psql.config" . }}
-  {{- printf "\"5432\"" }}
-{{- end -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "5432" }}
+{{- else }}
+{{- .Values.external.postgresql.config.port | default 5432 }}
+{{- end }}
+{{- end }}
 
-
-{{/* Select PostgreSQL host Internal or External */}}
+{{/*
+PostgreSQL username
+*/}}
 {{- define "keymanager-psql.username" -}}
-{{- $test_db := include "validate.keymanager-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-    {{- printf "%s" .Values.postgresql.global.postgresql.auth.username -}}
-  {{- else -}}
-    {{- printf "%s" .Values.external.postgresql.config.username -}}
-  {{- end -}}
-{{- end -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.username | quote }}
+{{- else }}
+{{- .Values.external.postgresql.config.username | trim | quote }}
+{{- end }}
+{{- end }}
 
+{{/*
+PostgreSQL database name
+*/}}
+{{- define "keymanager-psql.database" -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.database | quote }}
+{{- else }}
+{{- .Values.external.postgresql.config.database | trim | quote }}
+{{- end }}
+{{- end }}
 
-{{/* Select PostgreSQL host Internal or External */}}
-{{- define "keymanager-psql.name" -}}
-{{- $test_db := include "validate.keymanager-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-      {{- printf "%s" .Values.postgresql.global.postgresql.auth.database -}}
-  {{- else if .Values.external.enabled -}}
-      {{- printf "%s" .Values.external.postgresql.config.database -}}
-  {{- end -}}
-{{- end -}}
-
-
-{{/* Select PostgreSQL host Internal or External */}}
+{{/*
+PostgreSQL password
+*/}}
 {{- define "keymanager-psql.password" -}}
-{{- $test_db := include "validate.keymanager-psql.config" . }}
-  {{- if .Values.postgresql.enabled }}
-      {{- printf "%s" .Values.postgresql.global.postgresql.auth.password -}}
-  {{- else if .Values.external.enabled -}}
-      {{- printf "%s" .Values.external.postgresql.config.password -}}
-  {{- end -}}
-{{- end -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
+{{- else }}
+{{- .Values.external.postgresql.config.password | trim }}
+{{- end }}
+{{- end }}
 
+{{/*
+PostgreSQL enable SSL
+*/}}
+{{- define "keymanager-psql.enable_ssl" -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "false" }}
+{{- else }}
+{{- .Values.external.postgresql.enable_ssl | default false }}
+{{- end }}
+{{- end }}

@@ -17,14 +17,13 @@ data:
     log_level = "debug"
 
     [database]
-    user = {{ quote .Values.external.postgresql.config.username }}
-    password = {{ quote .Values.external.postgresql.config.password }}
-    host = {{ quote .Values.external.postgresql.config.host }}
-    port = 5432
-    dbname = {{ quote .Values.external.postgresql.config.database }}
+    user = {{ include "keymanager-psql.username" . }}
+    host = {{ include "keymanager-psql.host" . }}
+    port = {{ include "keymanager-psql.port" . }}
+    dbname = {{ include "keymanager-psql.database" . }}
     pool_size = 5
     min_idle = 2
-    enable_ssl = {{ .Values.external.postgresql.enable_ssl}}
+    enable_ssl = {{ include "keymanager-psql.enable_ssl" . }}
 
     [multitenancy.tenants.public]
     cache_prefix = "{{ .Values.multitenancy.tenants.public.cache_prefix}}"
@@ -33,8 +32,6 @@ data:
     [multitenancy.tenants.global]
     cache_prefix = "{{ .Values.multitenancy.tenants.global.cache_prefix}}"
     schema = "{{ .Values.multitenancy.tenants.global.schema }}"
-    access_token = "{{ .Values.multitenancy.tenants.global.access_token}}"
-    hash_context = "{{ .Values.multitenancy.tenants.global.hast_context }}"
 
 
 kind: ConfigMap

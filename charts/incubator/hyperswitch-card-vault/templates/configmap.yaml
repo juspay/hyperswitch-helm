@@ -7,6 +7,39 @@ data:
 
     [secrets]
     tenant = "hyperswitch"
+    
+    {{- if ne .Values.backend "local" }}
+    
+    [secrets_management]
+    {{ include "locker.secretsManagement" . | indent 4 }}
+    {{- end }}
+    
+    {{- if eq (include "locker.tlsEnabled" .) "true" }}
+    
+    [tls]
+    certificate = "/path/to/cert.pem"
+    private_key = "/path/to/key.pem"
+    {{- end }}
+    
+    {{- if eq (include "locker.externalKeyManagerMtlsEnabled" .) "true" }}
+    
+    [external_key_manager]
+    url = "{{ .Values.server.externalKeyManager.url }}"
+    cert = "/path/to/external_key_manager_cert.pem"
+    
+    [api_client]
+    client_idle_timeout = 90
+    pool_max_idle_per_host = 10
+    identity = "/path/to/client_identity.pem"
+    {{- else }}
+    
+    [external_key_manager]
+    url = "{{ .Values.server.externalKeyManager.url }}"
+    
+    [api_client]
+    client_idle_timeout = 90
+    pool_max_idle_per_host = 10
+    {{- end }}
 kind: ConfigMap
 metadata:
   name: hyperswitch-vault-config-{{ .Release.Name }}
