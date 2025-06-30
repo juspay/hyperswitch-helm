@@ -23,9 +23,7 @@ A Helm chart for deploying Hyperswitch Keymanager
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
-| multitenancy.tenants.global.access_token | string | `"secret123"` |  |
 | multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
-| multitenancy.tenants.global.hash_context | string | `"keymanager:hyperswitch"` |  |
 | multitenancy.tenants.global.schema | string | `"global"` |  |
 | multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
 | multitenancy.tenants.public.schema | string | `"public"` |  |
@@ -40,7 +38,9 @@ A Helm chart for deploying Hyperswitch Keymanager
 | replicaCount | int | `1` |  |
 | server.annotations | object | `{}` |  |
 | server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.7"` |  |
+| server.secrets.access_token | string | `"secret123"` |  |
 | server.secrets.ca_cert | string | `"sample_cert"` |  |
+| server.secrets.hash_context | string | `"keymanager:hyperswitch"` |  |
 | server.secrets.iam_role | string | `"iam_role"` |  |
 | server.secrets.key_id | string | `"sample_key_id"` |  |
 | server.secrets.region | string | `"us-east-1"` |  |

@@ -33,8 +33,6 @@ data:
     [multitenancy.tenants.global]
     cache_prefix = "{{ .Values.multitenancy.tenants.global.cache_prefix}}"
     schema = "{{ .Values.multitenancy.tenants.global.schema }}"
-    access_token = "{{ .Values.multitenancy.tenants.global.access_token}}"
-    hash_context = "{{ .Values.multitenancy.tenants.global.hast_context }}"
 
 
 kind: ConfigMap
