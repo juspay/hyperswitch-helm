@@ -60,6 +60,7 @@ spec:
           env:
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - secretRef:
                 name: producer-secret-{{.Release.Name }}

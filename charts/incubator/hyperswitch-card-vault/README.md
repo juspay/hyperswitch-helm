@@ -2,6 +2,7 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
+"application"
 A Helm chart for creating Hyperswitch Card Vault
 
 ## Requirements
@@ -126,58 +127,62 @@ external:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| backend | string | `"local"` | Backend selection for secrets management: local, aws, or vault |
-| external.postgresql.config.database | string | `nil` | External PostgreSQL database name |
-| external.postgresql.config.host | string | `nil` | External PostgreSQL host |
-| external.postgresql.config.password | string | `nil` | External PostgreSQL password |
-| external.postgresql.config.port | string | `nil` | External PostgreSQL port |
-| external.postgresql.config.username | string | `nil` | External PostgreSQL username |
-| external.postgresql.enabled | bool | `false` | Enable external PostgreSQL |
-| global.affinity | object | `{}` | Global node affinity |
-| global.annotations | object | `{}` | Global annotations |
-| global.tolerations | list | `[]` | Global tolerations |
-| initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` | Image for PostgreSQL readiness check |
-| initDB.checkPGisUp.maxAttempt | int | `30` | Maximum attempts for PostgreSQL readiness |
-| initDB.enable | bool | `true` | Enable database migrations |
-| initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` | Image for database migrations |
-| postgresql.architecture | string | `"standalone"` | PostgreSQL architecture |
-| postgresql.auth.database | string | `"locker-db"` | PostgreSQL database name |
-| postgresql.auth.password | string | `"dummyPassword"` | PostgreSQL password |
-| postgresql.auth.username | string | `"db_user"` | PostgreSQL username |
-| postgresql.enabled | bool | `true` | Enable internal PostgreSQL |
-| postgresql.nameOverride | string | `"locker-db"` | PostgreSQL name override |
-| postgresql.primary.name | string | `""` | PostgreSQL primary name |
-| postgresql.primary.resources.requests.cpu | string | `"100m"` | PostgreSQL CPU request |
-| postgresql.primary.tolerations | list | `[]` | PostgreSQL tolerations |
-| secrets.api_client.identity | string | `""` | API client mTLS identity certificate |
-| secrets.aws.key_id | string | `""` | AWS KMS key ID (required when backend is 'aws') |
-| secrets.aws.region | string | `"us-east-1"` | AWS KMS region |
-| secrets.database.password | string | `"dummyPassword"` | Database password |
-| secrets.external_key_manager.cert | string | `""` | External key manager mTLS certificate |
-| secrets.locker_private_key | string | See values.yaml | Locker private key for JWE/JWS |
-| secrets.tls.certificate | string | `""` | TLS certificate for the server |
-| secrets.tls.private_key | string | `""` | TLS private key for the server |
-| secrets.vault.token | string | `""` | HashiCorp Vault token (required when backend is 'vault') |
-| server.affinity | object | `{}` | Server node affinity |
-| server.annotations | object | `{}` | Server annotations |
-| server.externalKeyManager.url | string | `"http://localhost:5000"` | External key manager URL |
-| server.extra.env | object | `{}` | Extra environment variables |
-| server.host | string | `"0.0.0.0"` | Server host |
-| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` | Server image |
-| server.pod.annotations | object | `{}` | Pod annotations |
-| server.port | string | `"8080"` | Server port |
-| server.vault.url | string | `"http://127.0.0.1:8200"` | HashiCorp Vault URL |
-| server.version | string | `"v0.6.5"` | Server version |
-| tenant_secrets.public.master_key | string | See values.yaml | Master encryption key for tenant |
-| tenant_secrets.public.public_key | string | See values.yaml | Tenant's public key |
-| tenant_secrets.public.schema | string | `"public"` | Database schema for tenant |
-| vaultKeysJob.checkVaultService.host | string | `""` | Vault service host for readiness check |
-| vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` | Image for vault readiness check |
-| vaultKeysJob.checkVaultService.maxAttempt | int | `30` | Maximum attempts for vault readiness |
-| vaultKeysJob.checkVaultService.port | int | `80` | Vault service port |
-| vaultKeysJob.enabled | bool | `true` | Enable vault keys initialization job |
-| vaultKeysJob.keys.key1 | string | `"3c82773a6621feee3d5e0ce96654bf1f"` | First vault key |
-| vaultKeysJob.keys.key2 | string | `"7de95dbbd5d020e6b2a44847b8942bf5"` | Second vault key |
+| backend | string | `"local"` |  |
+| external.postgresql.config.database | string | `nil` |  |
+| external.postgresql.config.host | string | `nil` |  |
+| external.postgresql.config.password | string | `nil` |  |
+| external.postgresql.config.port | string | `nil` |  |
+| external.postgresql.config.username | string | `nil` |  |
+| external.postgresql.enabled | bool | `false` |  |
+| global.affinity | object | `{}` |  |
+| global.annotations | object | `{}` |  |
+| global.tolerations | list | `[]` |  |
+| initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
+| initDB.checkPGisUp.maxAttempt | int | `30` |  |
+| initDB.enable | bool | `true` |  |
+| initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
+| postgresql.architecture | string | `"standalone"` |  |
+| postgresql.auth.database | string | `"locker-db"` |  |
+| postgresql.auth.password | string | `"dummyPassword"` |  |
+| postgresql.auth.username | string | `"db_user"` |  |
+| postgresql.enabled | bool | `true` |  |
+| postgresql.nameOverride | string | `"locker-db"` |  |
+| postgresql.primary.name | string | `""` |  |
+| postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
+| postgresql.primary.tolerations | list | `[]` |  |
+| secrets.api_client.identity | string | `""` |  |
+| secrets.aws.key_id | string | `""` |  |
+| secrets.aws.region | string | `"us-east-1"` |  |
+| secrets.database.password | string | `"dummyPassword"` |  |
+| secrets.external_key_manager.cert | string | `""` |  |
+| secrets.locker_private_key | string | "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----" | To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem |
+| secrets.tls.certificate | string | `""` |  |
+| secrets.tls.private_key | string | `""` |  |
+| secrets.vault.token | string | `""` |  |
+| server.affinity | object | `{}` |  |
+| server.annotations | object | `{}` |  |
+| server.apiClient.identity | string | `""` |  |
+| server.awsKms.keyId | string | `""` |  |
+| server.awsKms.region | string | `""` |  |
+| server.externalKeyManager.cert | string | `""` |  |
+| server.externalKeyManager.url | string | `"http://localhost:5000"` |  |
+| server.extra.env | object | `{}` |  |
+| server.host | string | `"0.0.0.0"` |  |
+| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
+| server.pod.annotations | object | `{}` |  |
+| server.port | string | `"8080"` |  |
+| server.vault.url | string | `"http://127.0.0.1:8200"` |  |
+| server.version | string | `"v0.6.5"` |  |
+| tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
+| tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
+| tenant_secrets.public.schema | string | `"public"` |  |
+| vaultKeysJob.checkVaultService.host | string | `""` |  |
+| vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
+| vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |
+| vaultKeysJob.checkVaultService.port | int | `80` |  |
+| vaultKeysJob.enabled | bool | `true` |  |
+| vaultKeysJob.keys.key1 | string | `"3c82773a6621feee3d5e0ce96654bf1f"` |  |
+| vaultKeysJob.keys.key2 | string | `"7de95dbbd5d020e6b2a44847b8942bf5"` |  |
 
 ## Examples
 

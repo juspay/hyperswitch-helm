@@ -3,7 +3,31 @@ entries:
   hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.247671+05:30"
+    created: "2025-06-30T22:53:24.508559+05:30"
+    dependencies:
+    - name: hyperswitch-app
+      repository: file://../hyperswitch-app
+      version: 0.2.5
+    - condition: hyperswitch-web.enabled
+      name: hyperswitch-web
+      repository: file://../hyperswitch-web
+      version: 0.2.5
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.8.0
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: ecb96baf10097e57d1573297c63acecf0038e943e0c21b416c2348e31e9472dc
+    name: hyperswitch-stack
+    type: application
+    urls:
+    - https://juspay.github.io/hyperswitch-helm/v0.2.5/hyperswitch-stack-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-06-30T22:53:24.455965+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -27,7 +51,7 @@ entries:
     version: 0.2.4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.196553+05:30"
+    created: "2025-06-30T22:53:24.404027+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -51,7 +75,7 @@ entries:
     version: 0.2.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.145744+05:30"
+    created: "2025-06-30T22:53:24.353188+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -75,7 +99,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.093238+05:30"
+    created: "2025-06-30T22:53:24.301246+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -95,7 +119,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.050544+05:30"
+    created: "2025-06-30T22:53:24.258872+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -115,7 +139,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:52.005116+05:30"
+    created: "2025-06-30T22:53:24.213825+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -133,7 +157,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:51.938833+05:30"
+    created: "2025-06-30T22:53:24.145816+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -151,7 +175,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-22T12:38:51.919459+05:30"
+    created: "2025-06-30T22:53:24.125025+05:30"
     dependencies:
     - name: hyperswitch-app
       repository: file://../hyperswitch-app
@@ -167,4 +191,4 @@ entries:
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.1.1/hyperswitch-stack-0.1.1.tgz
     version: 0.1.1
-generated: "2025-05-22T12:38:51.891159+05:30"
+generated: "2025-06-30T22:53:24.093054+05:30"

@@ -628,6 +628,12 @@ server:
     force_cookies: false
   user_auth_methods:
     encryption_key: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+  # KeyManager configuration
+  keymanager:
+    # -- Enable or disable keymanager
+    enabled: false
+    # -- KeyManager service URL
+    url: ""
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application

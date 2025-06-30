@@ -2,6 +2,7 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
 
+"application"
 A Helm chart for deploying Hyperswitch Keymanager
 
 ## Requirements
@@ -150,48 +151,48 @@ secrets:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoscaling.enabled | bool | `false` | Enable autoscaling |
-| backend | string | `"local"` | Backend selection: aws, vault, or local |
-| external.postgresql.config.database | string | `"encryption_db"` | External PostgreSQL database name |
-| external.postgresql.config.host | string | `"localhost"` | External PostgreSQL host |
-| external.postgresql.config.password | string | `"db_pass"` | External PostgreSQL password |
-| external.postgresql.config.port | int | `5432` | External PostgreSQL port |
-| external.postgresql.config.username | string | `"db_user"` | External PostgreSQL username |
-| external.postgresql.enable_ssl | bool | `false` | Enable SSL for external PostgreSQL |
-| external.postgresql.enabled | bool | `false` | Enable external PostgreSQL |
-| global.affinity | object | `{}` | Global node affinity |
-| global.annotations | object | `{}` | Global annotations |
-| global.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` | Global image |
-| initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` | Image for PostgreSQL readiness check |
-| initDB.checkPGisUp.maxAttempt | int | `30` | Maximum attempts for PostgreSQL readiness |
-| initDB.enable | bool | `true` | Enable database migrations |
-| initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` | Image for database migrations |
-| multitenancy.tenants.global.cache_prefix | string | `"global"` | Cache prefix for global tenant |
-| multitenancy.tenants.global.schema | string | `"global"` | Database schema for global tenant |
-| multitenancy.tenants.public.cache_prefix | string | `"public"` | Cache prefix for public tenant |
-| multitenancy.tenants.public.schema | string | `"public"` | Database schema for public tenant |
-| postgresql.architecture | string | `"standalone"` | PostgreSQL architecture |
-| postgresql.auth.database | string | `"encryption_db"` | PostgreSQL database name |
-| postgresql.auth.password | string | `"db_pass"` | PostgreSQL password |
-| postgresql.auth.username | string | `"db_user"` | PostgreSQL username |
-| postgresql.enabled | bool | `true` | Enable internal PostgreSQL |
-| postgresql.nameOverride | string | `"keymanager-db"` | PostgreSQL name override |
-| postgresql.primary.name | string | `""` | PostgreSQL primary name |
-| postgresql.primary.resources.requests.cpu | string | `"100m"` | PostgreSQL CPU request |
-| replicaCount | int | `1` | Number of replicas |
-| secrets.access_token | string | `"secret123"` | Access token for API authentication |
-| secrets.aws.key_id | string | `"sample_key_id"` | AWS KMS key ID (required when backend is 'aws') |
-| secrets.aws.region | string | `"us-east-1"` | AWS KMS region |
-| secrets.database.password | string | `"db_pass"` | Database password |
-| secrets.database.root_ca | string | `""` | PostgreSQL SSL root certificate |
-| secrets.hash_context | string | `"keymanager:hyperswitch"` | Hash context for key derivation |
-| secrets.master_key | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` | Master encryption key (required when backend is 'local') |
-| secrets.tls.ca | string | `"sample_cert"` | TLS CA certificate |
-| secrets.tls.cert | string | `"sample_cert"` | TLS certificate |
-| secrets.tls.key | string | `"sample_cert"` | TLS private key |
-| secrets.vault.token | string | `""` | HashiCorp Vault token (required when backend is 'vault') |
-| server.annotations | object | `{}` | Server annotations |
-| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` | Server image |
+| autoscaling.enabled | bool | `false` |  |
+| backend | string | `"local"` |  |
+| external.postgresql.config.database | string | `"encryption_db"` |  |
+| external.postgresql.config.host | string | `"localhost"` |  |
+| external.postgresql.config.password | string | `"db_pass"` |  |
+| external.postgresql.config.port | int | `5432` |  |
+| external.postgresql.config.username | string | `"db_user"` |  |
+| external.postgresql.enable_ssl | bool | `false` |  |
+| external.postgresql.enabled | bool | `false` |  |
+| global.affinity | object | `{}` |  |
+| global.annotations | object | `{}` |  |
+| global.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
+| initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
+| initDB.checkPGisUp.maxAttempt | int | `30` |  |
+| initDB.enable | bool | `true` |  |
+| initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
+| multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
+| multitenancy.tenants.global.schema | string | `"global"` |  |
+| multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
+| multitenancy.tenants.public.schema | string | `"public"` |  |
+| postgresql.architecture | string | `"standalone"` |  |
+| postgresql.auth.database | string | `"encryption_db"` |  |
+| postgresql.auth.password | string | `"db_pass"` |  |
+| postgresql.auth.username | string | `"db_user"` |  |
+| postgresql.enabled | bool | `true` |  |
+| postgresql.nameOverride | string | `"keymanager-db"` |  |
+| postgresql.primary.name | string | `""` |  |
+| postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
+| replicaCount | int | `1` |  |
+| secrets.access_token | string | `"secret123"` |  |
+| secrets.aws.key_id | string | `"sample_key_id"` |  |
+| secrets.aws.region | string | `"us-east-1"` |  |
+| secrets.database.password | string | `"db_pass"` |  |
+| secrets.database.root_ca | string | `""` |  |
+| secrets.hash_context | string | `"keymanager:hyperswitch"` |  |
+| secrets.master_key | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
+| secrets.tls.ca | string | `"sample_cert"` |  |
+| secrets.tls.cert | string | `"sample_cert"` |  |
+| secrets.tls.key | string | `"sample_cert"` |  |
+| secrets.vault.token | string | `""` |  |
+| server.annotations | object | `{}` |  |
+| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
 
 ## Examples
 
@@ -333,7 +334,6 @@ cat rsa_sha256_cert.pem rsa_sha256_key.pem > client.pem
 # Clean up
 rm ca_cert.srl server.csr
 ```
-
 
 #### Using the certificates in values.yaml
 ```yaml

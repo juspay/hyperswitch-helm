@@ -65,6 +65,7 @@ spec:
               value: {{ .Values.server.env.binary }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: router-cm-{{ .Release.Name }}
