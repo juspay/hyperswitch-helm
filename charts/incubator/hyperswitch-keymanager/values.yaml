@@ -21,6 +21,8 @@ server:
     ca_cert: sample_cert
     tls_key: sample_cert
     tls_cert: sample_cert
+    access_token: secret123
+    hash_context: keymanager:hyperswitch
   annotations: {}
 
 
@@ -60,9 +62,7 @@ multitenancy:
     global:
       cache_prefix: global
       schema: global
-      access_token: secret123
-      hash_context: keymanager:hyperswitch
-      
+
 # Values for the database migration job
 initDB:
   # Should we run the migrations on the database
