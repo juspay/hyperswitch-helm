@@ -41,3 +41,15 @@
 - name: RUN_ENV
   value: {{ .Values.server.run_env }}
 {{- end -}}
+
+{{/* Define environment variables for KeyManager configuration */}}
+{{- define "keymanager.envs" -}}
+{{- if .Values.server.keymanager }}
+- name: ROUTER__KEY_MANAGER__ENABLED
+  value: "{{ .Values.server.keymanager.enabled | default false }}"
+{{- if .Values.server.keymanager.url }}
+- name: ROUTER__KEY_MANAGER__URL
+  value: "{{ .Values.server.keymanager.url }}"
+{{- end }}
+{{- end }}
+{{- end -}}

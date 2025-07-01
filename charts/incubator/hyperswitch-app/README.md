@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.2.5](https://img.shields.io/badge/Version-0.2.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -157,255 +157,255 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1105">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1111">clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1102">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1108">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1111">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1117">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1094">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1100">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1098">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1104">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1124">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L1130">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1117">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1123">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1114">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1120">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1121">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1127">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L964">externalPostgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L970">externalPostgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Postgres server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L981">externalPostgresql.primary.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L987">externalPostgresql.primary.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L975">externalPostgresql.primary.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L981">externalPostgresql.primary.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L978">externalPostgresql.primary.auth.plainpassword</a></div></td>
+    <td><div><a href="./values.yaml#L984">externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>master DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L972">externalPostgresql.primary.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L978">externalPostgresql.primary.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L968">externalPostgresql.primary.host</a></div></td>
+    <td><div><a href="./values.yaml#L974">externalPostgresql.primary.host</a></div></td>
     <td><div><code>"postgresql-ext"</code></div></td>
     <td>External postgres host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1001">externalPostgresql.readOnly.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1007">externalPostgresql.readOnly.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L995">externalPostgresql.readOnly.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1001">externalPostgresql.readOnly.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L998">externalPostgresql.readOnly.auth.plainpassword</a></div></td>
+    <td><div><a href="./values.yaml#L1004">externalPostgresql.readOnly.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>replica DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L992">externalPostgresql.readOnly.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L998">externalPostgresql.readOnly.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L985">externalPostgresql.readOnly.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L991">externalPostgresql.readOnly.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>External postgres read only host enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L988">externalPostgresql.readOnly.host</a></div></td>
+    <td><div><a href="./values.yaml#L994">externalPostgresql.readOnly.host</a></div></td>
     <td><div><code>"postgres-service"</code></div></td>
     <td>External postgres read only host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L898">externalRedis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L904">externalRedis.auth.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>auth enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L904">externalRedis.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L910">externalRedis.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L901">externalRedis.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L907">externalRedis.auth.username</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L891">externalRedis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L897">externalRedis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Redis server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L894">externalRedis.host</a></div></td>
+    <td><div><a href="./values.yaml#L900">externalRedis.host</a></div></td>
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1044">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1050">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1039">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1045">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1031">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1037">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1034">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1040">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1061">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1067">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1073">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1079">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1069">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1075">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1065">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1071">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1077">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1083">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1056">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1062">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1051">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1057">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1178">loki-stack.grafana.adminPassword</a></div></td>
+    <td><div><a href="./values.yaml#L1184">loki-stack.grafana.adminPassword</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td>Name of the Grafana sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1175">loki-stack.grafana.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1181">loki-stack.grafana.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Grafana sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1182">loki-stack.grafana.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1188">loki-stack.grafana.image.tag</a></div></td>
     <td><div><code>"10.0.1"</code></div></td>
     <td>Grafana image tag</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1154">loki-stack.loki.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1160">loki-stack.loki.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Loki sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1158">loki-stack.loki.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1164">loki-stack.loki.fullnameOverride</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td>Name of the Loki sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1162">loki-stack.promtail.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1168">loki-stack.promtail.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Promtail sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1140">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1146">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1143">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1149">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L934">postgresql.architecture</a></div></td>
+    <td><div><a href="./values.yaml#L940">postgresql.architecture</a></div></td>
     <td><div><code>"replication"</code></div></td>
     <td>Postgresql architecture: replication or standalone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L917">postgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L923">postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable Bitnami postgresql sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L931">postgresql.global.postgresql.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L937">postgresql.global.postgresql.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql database</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L928">postgresql.global.postgresql.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L934">postgresql.global.postgresql.auth.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td>Postgresql password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L925">postgresql.global.postgresql.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L931">postgresql.global.postgresql.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L945">postgresql.primary.name</a></div></td>
+    <td><div><a href="./values.yaml#L951">postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>postgres primary name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L950">postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L956">postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"150m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L954">postgresql.readReplicas.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L960">postgresql.readReplicas.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of read replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L959">postgresql.readReplicas.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L965">postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L941">postgresql.replication.numSynchronousReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L947">postgresql.replication.numSynchronousReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of synchronous replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L938">postgresql.replication.synchronousCommit</a></div></td>
+    <td><div><a href="./values.yaml#L944">postgresql.replication.synchronousCommit</a></div></td>
     <td><div><code>"off"</code></div></td>
     <td>synchronous_commit parameter</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L883">redis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L889">redis.auth.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable redis auth</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L886">redis.auth.sentinel</a></div></td>
+    <td><div><a href="./values.yaml#L892">redis.auth.sentinel</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable sentinel</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L869">redis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L875">redis.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>- enable Bitnami redis sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L875">redis.master.count</a></div></td>
+    <td><div><a href="./values.yaml#L881">redis.master.count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for master</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L879">redis.replica.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L885">redis.replica.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1224">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1230">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1228">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1234">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -421,99 +421,99 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L835">controlCenter.env.default__endpoints__agreement_url</a></div></td>
+    <td><div><a href="./values.yaml#L841">controlCenter.env.default__endpoints__agreement_url</a></div></td>
     <td><div><code>"https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"</code></div></td>
     <td>Hyperswitch terms and conditions url</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L838">controlCenter.env.default__endpoints__agreement_version</a></div></td>
+    <td><div><a href="./values.yaml#L844">controlCenter.env.default__endpoints__agreement_version</a></div></td>
     <td><div><code>"1.0.0"</code></div></td>
     <td>Agreement version</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L829">controlCenter.env.default__endpoints__dss_certificate_url</a></div></td>
+    <td><div><a href="./values.yaml#L835">controlCenter.env.default__endpoints__dss_certificate_url</a></div></td>
     <td><div><code>"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"</code></div></td>
     <td>PCI DSS certificate url</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L832">controlCenter.env.default__endpoints__favicon_url</a></div></td>
+    <td><div><a href="./values.yaml#L838">controlCenter.env.default__endpoints__favicon_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Endpoints favicon url</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L842">controlCenter.env.default__endpoints__mixpanel_token</a></div></td>
+    <td><div><a href="./values.yaml#L848">controlCenter.env.default__endpoints__mixpanel_token</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mixpanel token</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L745">controlCenter.env.default__features__branding</a></div></td>
+    <td><div><a href="./values.yaml#L751">controlCenter.env.default__features__branding</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables customization of branding elements like logos, colors.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L742">controlCenter.env.default__features__email</a></div></td>
+    <td><div><a href="./values.yaml#L748">controlCenter.env.default__features__email</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables user sign-in and sign-up using magic links instead of passwords. When enabled, users can request a magic link via email that logs them into their account or creates a new account if they are signing up.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L772">controlCenter.env.default__features__feedback</a></div></td>
+    <td><div><a href="./values.yaml#L778">controlCenter.env.default__features__feedback</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables the ability for users to provide direct product feedback from within the dashboard. When enabled, a feedback modal will be available in the UI that allows users to rate features, report bugs, and suggest improvements. Disabling this flag will remove the feedback modal and prevent collection of any user data.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L775">controlCenter.env.default__features__generate_report</a></div></td>
+    <td><div><a href="./values.yaml#L781">controlCenter.env.default__features__generate_report</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to generate detailed reports on payments, refunds, and disputes. When enabled, this allows users to pull reports covering the previous 6 months of transaction data. The reports can provide insights into trends, identify issues, and inform business decisions.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L769">controlCenter.env.default__features__is_live_mode</a></div></td>
+    <td><div><a href="./values.yaml#L775">controlCenter.env.default__features__is_live_mode</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L763">controlCenter.env.default__features__mixpanel</a></div></td>
+    <td><div><a href="./values.yaml#L769">controlCenter.env.default__features__mixpanel</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L757">controlCenter.env.default__features__payout</a></div></td>
+    <td><div><a href="./values.yaml#L763">controlCenter.env.default__features__payout</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the payout functionality in the dashboard. When enabled, this allows users to configure payout profiles, manage recipient details, schedule disbursements, and process payout batches to pay out funds to third parties.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L751">controlCenter.env.default__features__quick_start</a></div></td>
+    <td><div><a href="./values.yaml#L757">controlCenter.env.default__features__quick_start</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the simplified onboarding flow for new users, where they connect to processors, configure payment routing and test a payment, all in one flow.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L754">controlCenter.env.default__features__recon</a></div></td>
+    <td><div><a href="./values.yaml#L760">controlCenter.env.default__features__recon</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables access to reconciliation capabilities in the Hyperswitch dashboard. When turned on, this unlocks the Reconciliation module that allows users to match payment transactions with bank/ledger entries for accounting purposes.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L766">controlCenter.env.default__features__sample_data</a></div></td>
+    <td><div><a href="./values.yaml#L772">controlCenter.env.default__features__sample_data</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L748">controlCenter.env.default__features__surcharge</a></div></td>
+    <td><div><a href="./values.yaml#L754">controlCenter.env.default__features__surcharge</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to apply surcharges to payments. When enabled, you can create advanced rules based on payment parameters like amount, currency, and payment method to enforce surcharges as needed.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L780">controlCenter.env.default__features__test_live_toggle</a></div></td>
+    <td><div><a href="./values.yaml#L786">controlCenter.env.default__features__test_live_toggle</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables users to toggle between test and live modes when signing in. When enabled, users will see an option during sign-in to actively switch between test and live environments.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L783">controlCenter.env.default__features__test_processors</a></div></td>
+    <td><div><a href="./values.yaml#L789">controlCenter.env.default__features__test_processors</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Allows enabling sandbox/test payment processors for testing purposes. When enabled, developers and testers can add test payment processors like Stripe Test or PayPal Test to trial payment flows without touching live transactions or making processor API calls.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L789">controlCenter.env.default__features__totp</a></div></td>
+    <td><div><a href="./values.yaml#L795">controlCenter.env.default__features__totp</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables totp will mandate 2fa for all users</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L786">controlCenter.env.default__features__user_journey_analytics</a></div></td>
+    <td><div><a href="./values.yaml#L792">controlCenter.env.default__features__user_journey_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Grants access to the user journey module within the analytics section of the dashboard. This feature provides comprehensive graphical representations of payment analytics, facilitating a deeper understanding of user behavior and usage patterns.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L848">controlCenter.env.default__theme__primary_color</a></div></td>
+    <td><div><a href="./values.yaml#L854">controlCenter.env.default__theme__primary_color</a></div></td>
     <td><div><code>"#006DF9"</code></div></td>
     <td>Primary color for the theme</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L851">controlCenter.env.default__theme__primary_hover_color</a></div></td>
+    <td><div><a href="./values.yaml#L857">controlCenter.env.default__theme__primary_hover_color</a></div></td>
     <td><div><code>"#005ED6"</code></div></td>
     <td>Primary hover color for the theme</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L854">controlCenter.env.default__theme__sidebar_color</a></div></td>
+    <td><div><a href="./values.yaml#L860">controlCenter.env.default__theme__sidebar_color</a></div></td>
     <td><div><code>"#242F48"</code></div></td>
     <td>Secondary color for the theme</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L863">controlCenter.env.mixpanelToken</a></div></td>
+    <td><div><a href="./values.yaml#L869">controlCenter.env.mixpanelToken</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mix panel token</td>
   </tr></tbody>
@@ -526,7 +526,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L760">controlCenter.env.default__features__frm</a></div></td>
+    <td><div><a href="./values.yaml#L766">controlCenter.env.default__features__frm</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management</td>
   </tr></tbody>
@@ -750,683 +750,683 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1016">autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1022">autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1018">autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1024">autoscaling.maxReplicas</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1017">autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1023">autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1019">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L1025">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1091">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1097">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1107">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1113">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1095">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1101">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L739">controlCenter.env.binary</a></div></td>
+    <td><div><a href="./values.yaml#L745">controlCenter.env.binary</a></div></td>
     <td><div><code>"dashboard"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L839">controlCenter.env.default__endpoints__hypersense_url</a></div></td>
+    <td><div><a href="./values.yaml#L845">controlCenter.env.default__endpoints__hypersense_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L844">controlCenter.env.default__endpoints__logo_url</a></div></td>
+    <td><div><a href="./values.yaml#L850">controlCenter.env.default__endpoints__logo_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Endpoints logo url</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L845">controlCenter.env.default__endpoints__recon_iframe_url</a></div></td>
+    <td><div><a href="./values.yaml#L851">controlCenter.env.default__endpoints__recon_iframe_url</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L790">controlCenter.env.default__features__authentication_analytics</a></div></td>
+    <td><div><a href="./values.yaml#L796">controlCenter.env.default__features__authentication_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L791">controlCenter.env.default__features__compliance_certificate</a></div></td>
+    <td><div><a href="./values.yaml#L797">controlCenter.env.default__features__compliance_certificate</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L792">controlCenter.env.default__features__configure_pmts</a></div></td>
+    <td><div><a href="./values.yaml#L798">controlCenter.env.default__features__configure_pmts</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L793">controlCenter.env.default__features__custom_webhook_headers</a></div></td>
+    <td><div><a href="./values.yaml#L799">controlCenter.env.default__features__custom_webhook_headers</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L794">controlCenter.env.default__features__dev_alt_payment_methods</a></div></td>
+    <td><div><a href="./values.yaml#L800">controlCenter.env.default__features__dev_alt_payment_methods</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L795">controlCenter.env.default__features__dev_click_to_pay</a></div></td>
+    <td><div><a href="./values.yaml#L801">controlCenter.env.default__features__dev_click_to_pay</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L796">controlCenter.env.default__features__dev_debit_routing</a></div></td>
+    <td><div><a href="./values.yaml#L802">controlCenter.env.default__features__dev_debit_routing</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L797">controlCenter.env.default__features__dev_hypersense_v2_product</a></div></td>
+    <td><div><a href="./values.yaml#L803">controlCenter.env.default__features__dev_hypersense_v2_product</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L798">controlCenter.env.default__features__dev_intelligent_routing_v2</a></div></td>
+    <td><div><a href="./values.yaml#L804">controlCenter.env.default__features__dev_intelligent_routing_v2</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L799">controlCenter.env.default__features__dev_modularity_v2</a></div></td>
+    <td><div><a href="./values.yaml#L805">controlCenter.env.default__features__dev_modularity_v2</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L800">controlCenter.env.default__features__dev_recon_v2_product</a></div></td>
+    <td><div><a href="./values.yaml#L806">controlCenter.env.default__features__dev_recon_v2_product</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L801">controlCenter.env.default__features__dev_recovery_v2_product</a></div></td>
+    <td><div><a href="./values.yaml#L807">controlCenter.env.default__features__dev_recovery_v2_product</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L802">controlCenter.env.default__features__dev_vault_v2_product</a></div></td>
+    <td><div><a href="./values.yaml#L808">controlCenter.env.default__features__dev_vault_v2_product</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L803">controlCenter.env.default__features__dev_webhooks</a></div></td>
+    <td><div><a href="./values.yaml#L809">controlCenter.env.default__features__dev_webhooks</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L804">controlCenter.env.default__features__dispute_analytics</a></div></td>
+    <td><div><a href="./values.yaml#L810">controlCenter.env.default__features__dispute_analytics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L805">controlCenter.env.default__features__dispute_evidence_upload</a></div></td>
+    <td><div><a href="./values.yaml#L811">controlCenter.env.default__features__dispute_evidence_upload</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L806">controlCenter.env.default__features__down_time</a></div></td>
+    <td><div><a href="./values.yaml#L812">controlCenter.env.default__features__down_time</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L807">controlCenter.env.default__features__force_cookies</a></div></td>
+    <td><div><a href="./values.yaml#L813">controlCenter.env.default__features__force_cookies</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L808">controlCenter.env.default__features__global_search</a></div></td>
+    <td><div><a href="./values.yaml#L814">controlCenter.env.default__features__global_search</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L809">controlCenter.env.default__features__global_search_filters</a></div></td>
+    <td><div><a href="./values.yaml#L815">controlCenter.env.default__features__global_search_filters</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L810">controlCenter.env.default__features__granularity</a></div></td>
+    <td><div><a href="./values.yaml#L816">controlCenter.env.default__features__granularity</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L811">controlCenter.env.default__features__live_users_counter</a></div></td>
+    <td><div><a href="./values.yaml#L817">controlCenter.env.default__features__live_users_counter</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L812">controlCenter.env.default__features__maintainence_alert</a></div></td>
+    <td><div><a href="./values.yaml#L818">controlCenter.env.default__features__maintainence_alert</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L813">controlCenter.env.default__features__new_analytics</a></div></td>
+    <td><div><a href="./values.yaml#L819">controlCenter.env.default__features__new_analytics</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L814">controlCenter.env.default__features__new_analytics_filters</a></div></td>
+    <td><div><a href="./values.yaml#L820">controlCenter.env.default__features__new_analytics_filters</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L815">controlCenter.env.default__features__new_analytics_refunds</a></div></td>
+    <td><div><a href="./values.yaml#L821">controlCenter.env.default__features__new_analytics_refunds</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L816">controlCenter.env.default__features__new_analytics_smart_retries</a></div></td>
+    <td><div><a href="./values.yaml#L822">controlCenter.env.default__features__new_analytics_smart_retries</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L817">controlCenter.env.default__features__performance_monitor</a></div></td>
+    <td><div><a href="./values.yaml#L823">controlCenter.env.default__features__performance_monitor</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L818">controlCenter.env.default__features__pm_authentication_processor</a></div></td>
+    <td><div><a href="./values.yaml#L824">controlCenter.env.default__features__pm_authentication_processor</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L819">controlCenter.env.default__features__recon_v2</a></div></td>
+    <td><div><a href="./values.yaml#L825">controlCenter.env.default__features__recon_v2</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L777">controlCenter.env.default__features__system_metrics</a></div></td>
+    <td><div><a href="./values.yaml#L783">controlCenter.env.default__features__system_metrics</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enables the ability to load simulated sample data into the dashboard for preview purposes.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L820">controlCenter.env.default__features__tax_processors</a></div></td>
+    <td><div><a href="./values.yaml#L826">controlCenter.env.default__features__tax_processors</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L823">controlCenter.env.default__features__tenant_user</a></div></td>
+    <td><div><a href="./values.yaml#L829">controlCenter.env.default__features__tenant_user</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L821">controlCenter.env.default__features__threeds_authenticator</a></div></td>
+    <td><div><a href="./values.yaml#L827">controlCenter.env.default__features__threeds_authenticator</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L822">controlCenter.env.default__features__transaction_view</a></div></td>
+    <td><div><a href="./values.yaml#L828">controlCenter.env.default__features__transaction_view</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L824">controlCenter.env.default__merchant_config__new_analytics__merchant_ids</a></div></td>
+    <td><div><a href="./values.yaml#L830">controlCenter.env.default__merchant_config__new_analytics__merchant_ids</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L825">controlCenter.env.default__merchant_config__new_analytics__org_ids</a></div></td>
+    <td><div><a href="./values.yaml#L831">controlCenter.env.default__merchant_config__new_analytics__org_ids</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L826">controlCenter.env.default__merchant_config__new_analytics__profile_ids</a></div></td>
+    <td><div><a href="./values.yaml#L832">controlCenter.env.default__merchant_config__new_analytics__profile_ids</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L855">controlCenter.env.default__theme__sidebar_border_color</a></div></td>
+    <td><div><a href="./values.yaml#L861">controlCenter.env.default__theme__sidebar_border_color</a></div></td>
     <td><div><code>"#ECEFF3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L856">controlCenter.env.default__theme__sidebar_primary</a></div></td>
+    <td><div><a href="./values.yaml#L862">controlCenter.env.default__theme__sidebar_primary</a></div></td>
     <td><div><code>"#FCFCFD"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L857">controlCenter.env.default__theme__sidebar_primary_text_color</a></div></td>
+    <td><div><a href="./values.yaml#L863">controlCenter.env.default__theme__sidebar_primary_text_color</a></div></td>
     <td><div><code>"#1C6DEA"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L858">controlCenter.env.default__theme__sidebar_secondary</a></div></td>
+    <td><div><a href="./values.yaml#L864">controlCenter.env.default__theme__sidebar_secondary</a></div></td>
     <td><div><code>"#FFFFFF"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L859">controlCenter.env.default__theme__sidebar_secondary_text_color</a></div></td>
+    <td><div><a href="./values.yaml#L865">controlCenter.env.default__theme__sidebar_secondary_text_color</a></div></td>
     <td><div><code>"#525866"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L860">controlCenter.env.host</a></div></td>
+    <td><div><a href="./values.yaml#L866">controlCenter.env.host</a></div></td>
     <td><div><code>"hyperswitch-control-center"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L704">controlCenter.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L710">controlCenter.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for the application</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1022">hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1028">hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1025">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1031">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1087">initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1093">initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1088">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1094">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1006">initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1012">initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"docker.io/bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1007">initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1013">initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1004">initDB.enable</a></div></td>
+    <td><div><a href="./values.yaml#L1010">initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1010">initDB.migration.image</a></div></td>
+    <td><div><a href="./values.yaml#L1016">initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1008">initDB.refs</a></div></td>
+    <td><div><a href="./values.yaml#L1014">initDB.refs</a></div></td>
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1045">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1051">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1040">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1046">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1081">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1087">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1013">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L1019">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1187">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".apiVersion</a></div></td>
+    <td><div><a href="./values.yaml#L1193">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".apiVersion</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1193">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].disableDeletion</a></div></td>
+    <td><div><a href="./values.yaml#L1199">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].disableDeletion</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1194">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].editable</a></div></td>
+    <td><div><a href="./values.yaml#L1200">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].editable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1191">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].folder</a></div></td>
+    <td><div><a href="./values.yaml#L1197">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].folder</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1189">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L1195">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].name</a></div></td>
     <td><div><code>"dp1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1196">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].options.path</a></div></td>
+    <td><div><a href="./values.yaml#L1202">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].options.path</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards/dp1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1190">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].orgId</a></div></td>
+    <td><div><a href="./values.yaml#L1196">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].orgId</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1192">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].type</a></div></td>
+    <td><div><a href="./values.yaml#L1198">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[0].type</a></div></td>
     <td><div><code>"file"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1201">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].disableDeletion</a></div></td>
+    <td><div><a href="./values.yaml#L1207">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].disableDeletion</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1202">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].editable</a></div></td>
+    <td><div><a href="./values.yaml#L1208">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].editable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1199">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].folder</a></div></td>
+    <td><div><a href="./values.yaml#L1205">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].folder</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1197">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].name</a></div></td>
+    <td><div><a href="./values.yaml#L1203">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].name</a></div></td>
     <td><div><code>"dp2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1204">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].options.path</a></div></td>
+    <td><div><a href="./values.yaml#L1210">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].options.path</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards/dp2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1198">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].orgId</a></div></td>
+    <td><div><a href="./values.yaml#L1204">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].orgId</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1200">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].type</a></div></td>
+    <td><div><a href="./values.yaml#L1206">loki-stack.grafana.dashboardProviders."dashboardproviders.yaml".providers[1].type</a></div></td>
     <td><div><code>"file"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1206">loki-stack.grafana.dashboardsConfigMaps.dp1</a></div></td>
+    <td><div><a href="./values.yaml#L1212">loki-stack.grafana.dashboardsConfigMaps.dp1</a></div></td>
     <td><div><code>"grafana-dashboard-payments"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1207">loki-stack.grafana.dashboardsConfigMaps.dp2</a></div></td>
+    <td><div><a href="./values.yaml#L1213">loki-stack.grafana.dashboardsConfigMaps.dp2</a></div></td>
     <td><div><code>"grafana-dashboard-pod-usage"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1213">loki-stack.grafana.extraVolumeMounts[0].mountPath</a></div></td>
+    <td><div><a href="./values.yaml#L1219">loki-stack.grafana.extraVolumeMounts[0].mountPath</a></div></td>
     <td><div><code>"/var/lib/grafana/dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1212">loki-stack.grafana.extraVolumeMounts[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L1218">loki-stack.grafana.extraVolumeMounts[0].name</a></div></td>
     <td><div><code>"dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1210">loki-stack.grafana.extraVolumes[0].emptyDir</a></div></td>
+    <td><div><a href="./values.yaml#L1216">loki-stack.grafana.extraVolumes[0].emptyDir</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1209">loki-stack.grafana.extraVolumes[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L1215">loki-stack.grafana.extraVolumes[0].name</a></div></td>
     <td><div><code>"dashboards"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1184">loki-stack.grafana.plugins[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1190">loki-stack.grafana.plugins[0]</a></div></td>
     <td><div><code>"volkovlabs-variable-panel"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1155">loki-stack.loki.isDefault</a></div></td>
+    <td><div><a href="./values.yaml#L1161">loki-stack.loki.isDefault</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1215">loki-stack.prometheus.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1221">loki-stack.prometheus.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1217">loki-stack.prometheus.prometheus-pushgateway.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1223">loki-stack.prometheus.prometheus-pushgateway.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1218">loki-stack.prometheus.prometheus-pushgateway.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L1224">loki-stack.prometheus.prometheus-pushgateway.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1146">loki.host</a></div></td>
+    <td><div><a href="./values.yaml#L1152">loki.host</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1147">loki.port</a></div></td>
+    <td><div><a href="./values.yaml#L1153">loki.port</a></div></td>
     <td><div><code>3100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1574">opentelemetry-collector.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L1580">opentelemetry-collector.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1539">opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
+    <td><div><a href="./values.yaml#L1545">opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1541">opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L1547">opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:9898"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1545">opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L1551">opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:13133"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1522">opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
+    <td><div><a href="./values.yaml#L1528">opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1524">opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
+    <td><div><a href="./values.yaml#L1530">opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
     <td><div><code>"5s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1525">opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
+    <td><div><a href="./values.yaml#L1531">opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1526">opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
+    <td><div><a href="./values.yaml#L1532">opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
     <td><div><code>25</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1530">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
+    <td><div><a href="./values.yaml#L1536">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
     <td><div><code>"datapoint"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1532">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1538">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
     <td><div><code>"set(attributes[\"source_namespace\"], resource.attributes[\"k8s.namespace.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1533">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
+    <td><div><a href="./values.yaml#L1539">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
     <td><div><code>"set(attributes[\"source_pod\"], resource.attributes[\"k8s.pod.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1534">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
+    <td><div><a href="./values.yaml#L1540">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
     <td><div><code>"set(attributes[\"source_app\"], resource.attributes[\"app\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1535">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
+    <td><div><a href="./values.yaml#L1541">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
     <td><div><code>"set(attributes[\"source_version\"], resource.attributes[\"version\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1519">opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L1525">opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:4317"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1556">opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1562">opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
     <td><div><code>"health_check"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1566">opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1572">opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
     <td><div><code>"prometheus"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1562">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1568">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
     <td><div><code>"memory_limiter"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1563">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
+    <td><div><a href="./values.yaml#L1569">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
     <td><div><code>"transform"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1564">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
+    <td><div><a href="./values.yaml#L1570">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
     <td><div><code>"batch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1560">opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1566">opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
     <td><div><code>"otlp"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1551">opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
+    <td><div><a href="./values.yaml#L1557">opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
     <td><div><code>"json"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1550">opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
+    <td><div><a href="./values.yaml#L1556">opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
     <td><div><code>"DEBUG"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1554">opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
+    <td><div><a href="./values.yaml#L1560">opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:8888"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1553">opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
+    <td><div><a href="./values.yaml#L1559">opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1501">opentelemetry-collector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1507">opentelemetry-collector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1569">opentelemetry-collector.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1575">opentelemetry-collector.image.repository</a></div></td>
     <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1570">opentelemetry-collector.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1576">opentelemetry-collector.image.tag</a></div></td>
     <td><div><code>"0.122.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1503">opentelemetry-collector.mode</a></div></td>
+    <td><div><a href="./values.yaml#L1509">opentelemetry-collector.mode</a></div></td>
     <td><div><code>"deployment"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1506">opentelemetry-collector.namespaceOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1512">opentelemetry-collector.namespaceOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1572">opentelemetry-collector.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L1578">opentelemetry-collector.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1590">opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L1596">opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1589">opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1595">opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1592">opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1598">opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1591">opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L1597">opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1596">opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1602">opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1600">opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1606">opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1598">opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1604">opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1585">opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L1591">opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1584">opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1590">opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1587">opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1593">opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1586">opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L1592">opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1594">opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1600">opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1582">opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
+    <td><div><a href="./values.yaml#L1588">opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
     <td><div><code>"grpc"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1579">opentelemetry-collector.ports.otlp.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L1585">opentelemetry-collector.ports.otlp.containerPort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1578">opentelemetry-collector.ports.otlp.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1584">opentelemetry-collector.ports.otlp.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1581">opentelemetry-collector.ports.otlp.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1587">opentelemetry-collector.ports.otlp.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1580">opentelemetry-collector.ports.otlp.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L1586">opentelemetry-collector.ports.otlp.servicePort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1602">opentelemetry-collector.ports.zipkin.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1608">opentelemetry-collector.ports.zipkin.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1510">opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1516">opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1512">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L1518">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1511">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1517">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1614">opentelemetry-collector.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1620">opentelemetry-collector.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1608">opentelemetry-collector.resources.limits.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1614">opentelemetry-collector.resources.limits.cpu</a></div></td>
     <td><div><code>"1500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1609">opentelemetry-collector.resources.limits.memory</a></div></td>
+    <td><div><a href="./values.yaml#L1615">opentelemetry-collector.resources.limits.memory</a></div></td>
     <td><div><code>"4Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1611">opentelemetry-collector.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1617">opentelemetry-collector.resources.requests.cpu</a></div></td>
     <td><div><code>"250m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1612">opentelemetry-collector.resources.requests.memory</a></div></td>
+    <td><div><a href="./values.yaml#L1618">opentelemetry-collector.resources.requests.memory</a></div></td>
     <td><div><code>"512Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1617">opentelemetry-collector.serviceMonitor.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1623">opentelemetry-collector.serviceMonitor.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1620">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1626">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1621">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
+    <td><div><a href="./values.yaml#L1627">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
     <td><div><code>"30s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1622">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
+    <td><div><a href="./values.yaml#L1628">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1619">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
+    <td><div><a href="./values.yaml#L1625">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
     <td><div><code>"otel-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1624">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1630">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1625">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
+    <td><div><a href="./values.yaml#L1631">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
     <td><div><code>"15s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1626">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
+    <td><div><a href="./values.yaml#L1632">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1623">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
+    <td><div><a href="./values.yaml#L1629">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
     <td><div><code>"hs-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1573">opentelemetry-collector.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L1579">opentelemetry-collector.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L919">postgresql.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L925">postgresql.image.tag</a></div></td>
     <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1497">prometheus.host</a></div></td>
+    <td><div><a href="./values.yaml#L1503">prometheus.host</a></div></td>
     <td><div><code>"prometheus-server"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1498">prometheus.port</a></div></td>
+    <td><div><a href="./values.yaml#L1504">prometheus.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L871">redis.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L877">redis.image.tag</a></div></td>
     <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L909">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><a href="./values.yaml#L915">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L910">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
+    <td><div><a href="./values.yaml#L916">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
     <td><div><code>"docker.io/bitnami/redis:7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L911">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L917">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
@@ -1645,6 +1645,14 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><a href="./values.yaml#L412">server.grpc_client.dynamic_routing_client.service</a></div></td>
     <td><div><code>"dynamo"</code></div></td>
     <td>Client Service Name</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L634">server.keymanager.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable or disable keymanager</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L636">server.keymanager.url</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>KeyManager service URL</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L132">server.labels</a></div></td>
     <td><div><code>{
@@ -2128,175 +2136,215 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L141">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L12">hyperswitch-card-vault.backend</a></div></td>
+    <td><div><code>"local"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L137">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L175">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L140">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L178">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L138">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L176">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L139">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L177">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L135">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L173">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L148">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L186">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"postgres:16-alpine3.19"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L149">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L187">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L146">hyperswitch-card-vault.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L184">hyperswitch-card-vault.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L151">hyperswitch-card-vault.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L189">hyperswitch-card-vault.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L125">hyperswitch-card-vault.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-card-vault.postgresql.architecture</a></div></td>
     <td><div><code>"standalone"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L124">hyperswitch-card-vault.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L162">hyperswitch-card-vault.postgresql.auth.database</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L123">hyperswitch-card-vault.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-card-vault.postgresql.auth.password</a></div></td>
     <td><div><code>"dummyPassword"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L122">hyperswitch-card-vault.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L160">hyperswitch-card-vault.postgresql.auth.username</a></div></td>
     <td><div><code>"db_user"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L119">hyperswitch-card-vault.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L157">hyperswitch-card-vault.postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L120">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L158">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L127">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L165">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L131">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L128">hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L28">hyperswitch-card-vault.server.affinity</a></div></td>
-    <td><div><code>{}</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L14">hyperswitch-card-vault.server.annotations</a></div></td>
-    <td><div><code>{}</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L111">hyperswitch-card-vault.server.apiClient.identity</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L135">hyperswitch-card-vault.secrets.api_client.identity</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L114">hyperswitch-card-vault.server.awsKms.keyId</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L117">hyperswitch-card-vault.secrets.aws.key_id</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L115">hyperswitch-card-vault.server.awsKms.region</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L118">hyperswitch-card-vault.secrets.aws.region</a></div></td>
+    <td><div><code>"us-east-1"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L112">hyperswitch-card-vault.secrets.database.password</a></div></td>
+    <td><div><code>"dummyPassword"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L131">hyperswitch-card-vault.secrets.external_key_manager.cert</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L108">hyperswitch-card-vault.server.externalKeyManager.cert</a></div></td>
-    <td><div><code>""</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L107">hyperswitch-card-vault.server.externalKeyManager.url</a></div></td>
-    <td><div><code>"http://localhost:5000"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L104">hyperswitch-card-vault.server.extra.env</a></div></td>
-    <td><div><code>{}</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L16">hyperswitch-card-vault.server.host</a></div></td>
-    <td><div><code>"0.0.0.0"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L20">hyperswitch-card-vault.server.image</a></div></td>
-    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L25">hyperswitch-card-vault.server.pod.annotations</a></div></td>
-    <td><div><code>{}</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L17">hyperswitch-card-vault.server.port</a></div></td>
-    <td><div><code>"8080"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L54">hyperswitch-card-vault.server.secrets.locker_private_key</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L80">hyperswitch-card-vault.secrets.locker_private_key</a></div></td>
     <td><div><code>"-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"</code></div></td>
     <td>To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L86">hyperswitch-card-vault.server.tenant_secrets.public.master_key</a></div></td>
-    <td><div><code>"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L89">hyperswitch-card-vault.server.tenant_secrets.public.public_key</a></div></td>
-    <td><div><code>"-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"</code></div></td>
-    <td>The public key for the tenant from tenant_secrets-public-public_key.pem</td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L99">hyperswitch-card-vault.server.tenant_secrets.public.schema</a></div></td>
-    <td><div><code>"public"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L18">hyperswitch-card-vault.server.version</a></div></td>
-    <td><div><code>"v0.6.5"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L158">hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L126">hyperswitch-card-vault.secrets.tls.certificate</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L156">hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L127">hyperswitch-card-vault.secrets.tls.private_key</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L122">hyperswitch-card-vault.secrets.vault.token</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L34">hyperswitch-card-vault.server.affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L17">hyperswitch-card-vault.server.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L55">hyperswitch-card-vault.server.apiClient.identity</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L58">hyperswitch-card-vault.server.awsKms.keyId</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L59">hyperswitch-card-vault.server.awsKms.region</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L52">hyperswitch-card-vault.server.externalKeyManager.cert</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L51">hyperswitch-card-vault.server.externalKeyManager.url</a></div></td>
+    <td><div><code>"http://localhost:5000"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L48">hyperswitch-card-vault.server.extra.env</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L22">hyperswitch-card-vault.server.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L26">hyperswitch-card-vault.server.image</a></div></td>
+    <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L31">hyperswitch-card-vault.server.pod.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L23">hyperswitch-card-vault.server.port</a></div></td>
+    <td><div><code>"8080"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L62">hyperswitch-card-vault.server.vault.url</a></div></td>
+    <td><div><code>"http://127.0.0.1:8200"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L24">hyperswitch-card-vault.server.version</a></div></td>
+    <td><div><code>"v0.6.5"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L140">hyperswitch-card-vault.tenant_secrets.public.master_key</a></div></td>
+    <td><div><code>"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L143">hyperswitch-card-vault.tenant_secrets.public.public_key</a></div></td>
+    <td><div><code>"-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"</code></div></td>
+    <td>The public key for the tenant from tenant_secrets-public-public_key.pem</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L153">hyperswitch-card-vault.tenant_secrets.public.schema</a></div></td>
+    <td><div><code>"public"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L196">hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
     <td><div><code>"curlimages/curl:8.7.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L157">hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L195">hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L159">hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L154">hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L192">hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L199">hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
     <td><div><code>"3c82773a6621feee3d5e0ce96654bf1f"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L162">hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr>
