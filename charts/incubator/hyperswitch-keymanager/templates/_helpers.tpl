@@ -133,6 +133,30 @@ PostgreSQL password
 {{- end }}
 
 {{/*
+PostgreSQL plain password for external PostgreSQL
+*/}}
+{{- define "keymanager-psql.plainpassword" -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
+{{- else }}
+{{- default .Values.external.postgresql.config.password .Values.external.postgresql.config.plainpassword | trim }}
+{{- end }}
+{{- end }}
+
+{{/*
+PostgreSQL secret name
+*/}}
+{{- define "keymanager-psql.secret" -}}
+{{- include "validate.keymanager-psql.config" . }}
+{{- if .Values.postgresql.enabled }}
+{{- printf "%s-keymanager-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "keymanager-secrets-%s" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{/*
 PostgreSQL enable SSL
 */}}
 {{- define "keymanager-psql.enable_ssl" -}}

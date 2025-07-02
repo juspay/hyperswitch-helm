@@ -47,5 +47,12 @@ spec:
             - name: POSTGRES_USER
               value: {{ include "keymanager-psql.username" . }}
             - name: POSTGRES_PASSWORD
-              value: {{ include "keymanager-psql.password" . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "keymanager-psql.secret" . }}
+                  {{- if .Values.postgresql.enabled }}
+                  key: password
+                  {{- else if .Values.external.postgresql.enabled }}
+                  key: primaryPlainPassword
+                  {{- end }}
 {{- end }}
