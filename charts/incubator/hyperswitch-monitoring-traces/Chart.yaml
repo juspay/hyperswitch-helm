@@ -1,0 +1,24 @@
+apiVersion: v2
+name: hyperswitch-monitoring-traces
+description: Distributed tracing for Hyperswitch (OpenTelemetry)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - hyperswitch
+  - monitoring
+  - tracing
+  - opentelemetry
+  - observability
+home: https://hyperswitch.io
+sources:
+  - https://github.com/juspay/hyperswitch
+maintainers:
+  - name: Hyperswitch Team
+    email: hyperswitch@juspay.in
+
+dependencies:
+  - name: opentelemetry-collector
+    version: 0.120.0
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    condition: opentelemetry.enabled

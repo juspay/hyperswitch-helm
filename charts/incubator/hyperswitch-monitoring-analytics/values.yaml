@@ -1,0 +1,224 @@
+# Default values for hyperswitch-monitoring-analytics
+
+vector:
+  enabled: true
+
+clickhouse:
+  enabled: true
+
+kafka:
+  enabled: true
+
+# Vector Configuration
+vector:
+  role: Agent
+  
+  customConfig:
+    data_dir: /vector-data-dir
+    api:
+      enabled: true
+      address: 0.0.0.0:8686
+      playground: false
+    
+    sources:
+      kafka_analytics:
+        type: kafka
+        bootstrap_servers: "{{ .Release.Name }}-kafka:9092"
+        group_id: vector-analytics
+        topics:
+          - payment-intent-events
+          - payment-attempt-events
+          - refund-events
+          - dispute-events
+        decoding:
+          codec: json
+      
+      kafka_audit:
+        type: kafka
+        bootstrap_servers: "{{ .Release.Name }}-kafka:9092"
+        group_id: vector-audit
+        topics:
+          - api-logs
+          - connector-logs
+          - webhook-logs
+          - audit-events
+        decoding:
+          codec: json
+      
+      docker_logs:
+        type: docker_logs
+        docker_host: /var/run/docker.sock
+        include_containers:
+          - hyperswitch
+      
+      sdk_logs:
+        type: http_server
+        address: 0.0.0.0:7000
+        encoding: json
+        headers:
+          - X-API-KEY
+        query_parameters:
+          - MerchantId
+    
+    transforms:
+      dedupe_payment_intent_events:
+        type: dedupe
+        inputs:
+          - kafka_analytics
+        cache:
+          num_events: 10000
+        fields:
+          match:
+            - payment_id
+            - merchant_id
+      
+      filter_sdk_logs:
+        type: filter
+        inputs:
+          - sdk_logs
+        condition:
+          type: vrl
+          source: |
+            .headers."X-API-KEY" == env!("VECTOR_AUTH_TOKEN")
+      
+      throttle_sdk_logs:
+        type: throttle
+        inputs:
+          - filter_sdk_logs
+        window_secs: 5
+        threshold: 100
+        key_field: .MerchantId
+    
+    sinks:
+      clickhouse_analytics:
+        type: clickhouse
+        inputs:
+          - dedupe_payment_intent_events
+        endpoint: "http://{{ .Release.Name }}-clickhouse:8123"
+        database: hyperswitch
+        table: payment_events
+        skip_unknown_fields: true
+        auth:
+          strategy: basic
+          user: "{{ .Values.clickhouse.auth.username }}"
+          password: "{{ .Values.clickhouse.auth.password }}"
+      
+      loki_logs:
+        type: loki
+        inputs:
+          - docker_logs
+          - throttle_sdk_logs
+        endpoint: http://loki:3100
+        labels:
+          app: hyperswitch
+          environment: "{{ .Values.environment }}"
+      
+      kafka_processed:
+        type: kafka
+        inputs:
+          - dedupe_payment_intent_events
+        bootstrap_servers: "{{ .Release.Name }}-kafka:9092"
+        topic: processed-events
+        encoding:
+          codec: json
+      
+      prometheus_exporter:
+        type: prometheus_exporter
+        inputs:
+          - internal_metrics
+        address: 0.0.0.0:9100
+        namespace: vector
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+# Clickhouse Configuration
+clickhouse:
+  auth:
+    username: hyperswitch
+    password: changeme
+    database: hyperswitch
+  
+  persistence:
+    enabled: true
+    size: 100Gi
+  
+  resources:
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
+
+# Kafka Configuration
+kafka:
+  listeners:
+    client:
+      protocol: PLAINTEXT
+    controller:
+      protocol: PLAINTEXT
+    interbroker:
+      protocol: PLAINTEXT
+    external:
+      protocol: PLAINTEXT
+  
+  kraft:
+    enabled: true
+  
+  controller:
+    replicaCount: 1
+    persistence:
+      enabled: true
+      size: 10Gi
+  
+  broker:
+    replicaCount: 1
+    persistence:
+      enabled: true
+      size: 50Gi
+  
+  provisioning:
+    enabled: true
+    topics:
+      - name: payment-intent-events
+        partitions: 3
+        replicationFactor: 1
+      - name: payment-attempt-events
+        partitions: 3
+        replicationFactor: 1
+      - name: refund-events
+        partitions: 3
+        replicationFactor: 1
+      - name: dispute-events
+        partitions: 3
+        replicationFactor: 1
+      - name: api-logs
+        partitions: 3
+        replicationFactor: 1
+      - name: connector-logs
+        partitions: 3
+        replicationFactor: 1
+      - name: webhook-logs
+        partitions: 3
+        replicationFactor: 1
+      - name: audit-events
+        partitions: 3
+        replicationFactor: 1
+      - name: processed-events
+        partitions: 3
+        replicationFactor: 1
+  
+  metrics:
+    jmx:
+      enabled: true
+    serviceMonitor:
+      enabled: false
+
+# Common settings
+environment: production

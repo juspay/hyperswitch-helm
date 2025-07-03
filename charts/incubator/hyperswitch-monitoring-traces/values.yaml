@@ -1,0 +1,107 @@
+# Default values for hyperswitch-monitoring-traces
+
+opentelemetry:
+  enabled: true
+
+# OpenTelemetry Collector Configuration
+opentelemetry-collector:
+  mode: deployment
+  
+  image:
+    repository: otel/opentelemetry-collector-contrib
+    tag: 0.120.0
+  
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1024
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 512
+      k8sattributes:
+        extract:
+          metadata:
+            - k8s.pod.name
+            - k8s.namespace.name
+            - k8s.deployment.name
+            - k8s.node.name
+      transform:
+        metric_statements:
+          - context: metric
+            statements:
+              - set(attributes["cluster_name"], "hyperswitch")
+              - set(attributes["job"], "opentelemetry")
+              - set(attributes["environment"], resource.attributes["deployment.environment"])
+    
+    exporters:
+      prometheus:
+        endpoint: 0.0.0.0:9898
+        namespace: hyperswitch
+      otlp:
+        endpoint: "tempo:4317"
+        tls:
+          insecure: true
+      debug:
+        verbosity: detailed
+        sampling_initial: 5
+        sampling_thereafter: 200
+    
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [debug, otlp]
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, transform, batch]
+          exporters: [prometheus]
+  
+  ports:
+    otlp:
+      enabled: true
+      containerPort: 4317
+      servicePort: 4317
+      protocol: TCP
+    otlp-http:
+      enabled: true
+      containerPort: 4318
+      servicePort: 4318
+      protocol: TCP
+    metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
+    prometheus:
+      enabled: true
+      containerPort: 9898
+      servicePort: 9898
+      protocol: TCP
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    scrapeTimeout: 10s
+
+# Service configuration
+service:
+  type: ClusterIP
+  annotations: {}
