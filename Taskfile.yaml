@@ -35,3 +35,20 @@ tasks:
     cmds:
       - >
         helm repo index repo 
+
+  package-incubator-chart:
+    desc: Package either of the two incubator charts not included in the 'hyperswitch-stack' chart (istio, keymanager)
+    requires:
+      vars:
+        - name: CHART
+          enum: [istio, keymanager]
+    #language=sh
+    cmds:
+      - >
+        CHART="hyperswitch-{{.CHART}}" &&
+        STACK=charts/incubator/$CHART &&
+        version=$(grep '^version:' $STACK/Chart.yaml | awk '{print $2}') &&
+        helm package $STACK --dependency-update &&
+        helm repo index $STACK --url https://juspay.github.io/hyperswitch-helm/$STACK &&
+        mv $CHART-$version.tgz $STACK
+
