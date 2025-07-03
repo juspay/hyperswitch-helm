@@ -30,7 +30,15 @@ dependencies:
     version: 0.2.5
     repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
-  - name: kube-prometheus-stack
-    version: "70.3.0"
-    repository: https://prometheus-community.github.io/helm-charts
-    condition: kube-prometheus-stack.enabled
+  - name: hyperswitch-monitoring-core
+    version: 0.1.0
+    repository: "file://../hyperswitch-monitoring-core"
+    condition: monitoring.core.enabled
+  - name: hyperswitch-monitoring-traces
+    version: 0.1.0
+    repository: "file://../hyperswitch-monitoring-traces"
+    condition: monitoring.traces.enabled
+  - name: hyperswitch-monitoring-analytics
+    version: 0.1.0
+    repository: "file://../hyperswitch-monitoring-analytics"
+    condition: monitoring.analytics.enabled

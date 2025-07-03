@@ -1,0 +1,14 @@
+{{- if .Values.grafana.dashboards.enabled }}
+{{- if .Values.grafana.dashboards.paymentDashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hyperswitch-monitoring-core.fullname" . }}-grafana-dashboard-payments
+  labels:
+    {{- include "hyperswitch-monitoring-core.labels" . | nindent 4 }}
+    grafana_dashboard: "1"
+data:
+  gafana-dashboard-payments.json: |
+{{ .Files.Get "dashboards/payment-success-rate.json" | indent 4 }}
+{{- end }}
+{{- end }}

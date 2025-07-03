@@ -1500,8 +1500,8 @@ vector:
         key_field: ".merchant_id"
 
 prometheus:
-  host: "prometheus-server"
-  port: 80
+  host: "kube-prometheus-prometheus"
+  port: 9090
 
 opentelemetry-collector:
   enabled: true

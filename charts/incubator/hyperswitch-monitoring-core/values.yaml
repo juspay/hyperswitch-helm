@@ -1,0 +1,118 @@
+# Default values for hyperswitch-monitoring-core
+
+prometheus:
+  enabled: true
+
+loki:
+  enabled: true
+
+# Prometheus Stack Configuration
+kube-prometheus-stack:
+  prometheus:
+    enabled: true
+    prometheusSpec:
+      ruleSelectorNilUsesHelmValues: false
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      probeSelectorNilUsesHelmValues: false
+      additionalScrapeConfigs:
+        - job_name: 'kubernetes-pods'
+          scrape_interval: 15s
+          scrape_timeout: 10s
+          kubernetes_sd_configs:
+            - role: pod
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+              action: keep
+              regex: true
+            - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+              action: replace
+              target_label: __metrics_path__
+              regex: (.+)
+            - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              action: replace
+              regex: ([^:]+)(?::\d+)?;(\d+)
+              replacement: $1:$2
+              target_label: __address__
+            - action: labelmap
+              regex: __meta_kubernetes_pod_label_(.+)
+            - source_labels: [__meta_kubernetes_namespace]
+              action: replace
+              target_label: kubernetes_namespace
+            - source_labels: [__meta_kubernetes_pod_name]
+              action: replace
+              target_label: kubernetes_pod_name
+  alertmanager:
+    enabled: false
+  grafana:
+    enabled: false  # We use the one from loki-stack
+
+# Loki Stack Configuration
+loki-stack:
+  loki:
+    enabled: true
+    persistence:
+      enabled: true
+      size: 10Gi
+  promtail:
+    enabled: true
+  grafana:
+    enabled: true
+    persistence:
+      enabled: true
+      size: 5Gi
+    rbac:
+      pspEnabled: false
+    adminUser: admin
+    adminPassword: admin  # Should be overridden in production
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            url: http://{{ .Release.Name }}-kube-prometheus-stack-prometheus:9090
+            access: proxy
+            isDefault: true
+          - name: Loki
+            type: loki
+            url: http://{{ .Release.Name }}-loki:3100
+            access: proxy
+
+# Grafana Dashboards Configuration
+grafana:
+  dashboards:
+    enabled: true
+    # Payment metrics dashboard
+    paymentDashboard:
+      enabled: true
+    # Pod usage dashboard
+    podUsageDashboard:
+      enabled: true
+  
+  # PostgreSQL datasource for business metrics
+  postgresql:
+    enabled: false
+    host: ""
+    port: 5432
+    database: ""
+    user: ""
+    password: ""
+    sslMode: "disable"
+
+# Ingress Configuration
+ingress:
+  enabled: false
+  className: "alb"
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  host: ""
+  path: /
+  pathType: Prefix

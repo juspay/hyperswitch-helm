@@ -1,0 +1,14 @@
+{{- if .Values.grafana.dashboards.enabled }}
+{{- if .Values.grafana.dashboards.podUsageDashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hyperswitch-monitoring-core.fullname" . }}-grafana-dashboard-pod-usage
+  labels:
+    {{- include "hyperswitch-monitoring-core.labels" . | nindent 4 }}
+    grafana_dashboard: "2"
+data:
+  grafana-dashboard-pod-cpu-and-memory-usage.json: |
+{{ .Files.Get "dashboards/pod-usage.json" | indent 4 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,271 @@
+# loadbalancer security group
+# @ignored
+loadBalancer:
+  targetSecurityGroup: &lb_security_group lg-security-group
+
+# @ignored
+service:
+  type: ClusterIP
+  port: 80
+
+# @ignored
+services:
+  router:
+    host: &router_host http://localhost:8080
+  sdk:
+    host: &web_sdk_host http://localhost:9050
+
+global:
+  tolerations: []
+  # @ignored
+  # Eg. 
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #         - matchExpressions:
+  #             - key: node-type
+  #               operator: In
+  #               values:
+  #                 - generic-compute
+  affinity: {}
+
+# @ignored
+hyperswitch-web:
+  fullnameOverride: "hyperswitch-web"
+  enabled: true
+  sdkDemo:
+    enabled: false
+  image:
+    pullPolicy: IfNotPresent
+  podAnnotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+  autoBuild:
+    enable: true
+    forceBuild: true
+    gitCloneParam: 
+      gitVersion: 0.121.2
+    nginxConfig:
+      server:
+        listen: 9050
+        root:
+          dir: /usr/share/nginx/html
+        location:
+          - path: /
+            directives: |
+              add_header 'Access-Control-Allow-Origin' '*';
+              add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+              add_header 'Access-Control-Allow-Headers' 'Origin, X-Requested-With, Content-Type, Accept';
+              if ($request_method = 'OPTIONS') {
+                  return 204;
+              }
+              try_files $uri $uri/ /index.html;
+  service:
+    type: ClusterIP
+    port: 9050
+  application:
+    env:
+      sdkUrl: http://localhost:9050
+      backendUrl: *router_host
+      confirmEndpoint: /payments/:param/confirm
+  sdkDemo:
+    enabled: false
+  loadBalancer:
+    targetSecurityGroup: *lb_security_group
+
+# @ignored
+hyperswitch-app:
+  ## This is the name of the deployment
+  fullnameOverride: "hyperswitch-app"
+
+  ## Hyperswitch application config
+  ## https://github.com/juspay/hyperswitch/tree/main/config
+  ## @skip 
+  application:
+    server:
+      # -- Host of the server
+      host: 0.0.0.0
+      # -- Port of the server
+      port: 8080
+      workers: 8
+
+    database:
+      # -- Database host
+      host: hyperswitch-pg-cluster-postgresql-ha-pgpool
+      # -- Database port
+      port: 5432
+      # -- Database name
+      dbname: hyperswitch_db
+      # -- Database username
+      username: hyperswitch
+      # -- Database password
+      password: cNBNH4v9mJUl2i0E3vFHcw==
+      # -- Database password. You can use this to override existing password. This will be decrypted and then used by the hyperswitch application. You can use either database.password or database.aws_rds_iam_auth
+      passwordPlain: hyperswitch
+
+  ## Hyperswitch services 
+  ## -- You can update the resources, nodeSelector, toleration, affinity, and more for each of the below hyperswitch services.
+  ## Use the above hyperswitch application config to configure the hyperswitch application server, master_database, redis and many more.
+  services:
+    # -- Router is the main service of hyperswitch
+    router:
+      # @ignored
+      host: hyperswitch
+      tolerations: []
+      affinity: {}
+  
+    # -- Consumer is the service that consumes the messages from the message broker
+    consumer:
+      tolerations: []
+      affinity: {}
+      
+    # -- Producer is the service that produces the messages to the message broker
+    producer:
+      tolerations: []
+      affinity: {}
+      
+    # -- Drainer is the service that drains the messages from the message broker
+    drainer:
+      tolerations: []
+      affinity: {}
+
+  redis:
+    # -- Enable or disable the creation of Redis
+    enabled: true
+    architecture: standalone
+    auth:
+      enabled: false
+
+  ## This includes the postgresql and postgresql-ha dependency chart, you can choose either
+  ## https://artifacthub.io/packages/helm/bitnami/postgresql-ha
+  ## https://artifacthub.io/packages/helm/bitnami/postgresql
+  postgresql:
+    enabled: true
+    global:
+      postgresql:
+        auth:
+          # -- Database name
+          database: hyperswitch_db
+          # -- Database username
+          username: hyperswitch
+          # -- Database password
+          password: hyperswitch
+  
+  ## Load balancer config. Do not alter the below config unless you are aware of what you are doing. The following config can be used to set load balancer configs.
+  loadBalancer:
+    targetSecurityGroup: *lb_security_group
+
+  ## HPA config
+  # @ignored
+  autoscaling:
+    enabled: false
+
+# Monitoring Configuration
+monitoring:
+  # Core monitoring (Prometheus, Loki, Grafana)
+  core:
+    enabled: true
+  # Distributed tracing (OpenTelemetry)
+  traces:
+    enabled: true
+  # Analytics and event processing (Vector, Clickhouse, Kafka)
+  analytics:
+    enabled: true
+
+# Legacy monitoring configuration (will be deprecated)
+kube-prometheus-stack:
+  enabled: false
+  service:
+    enabled: true
+    annotations: {}
+  prometheus:
+    enabled: true
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    prometheus-pushgateway:
+      tolerations: []
+  
+    scrape_configs:
+    # Scrape Kubernetes pods for CPU and Memory usage
+    - job_name: "kubernetes-pods"
+      kubernetes_sd_configs:
+        - role: pod
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+        - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          target_label: __address__
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: "$1:$2"
+  
+    - job_name: "kubernetes-nodes"
+      kubernetes_sd_configs:
+        - role: node
+      relabel_configs:
+        - action: labelmap
+          regex: __meta_kubernetes_node_label_(.+)
+      static_configs:
+        - targets:
+            - "node-exporter:9100"
+    service:
+      annotations: {}
+
+  alertmanager:
+    enabled: false
+  grafana: 
+    enabled: false
+    tolerations: []
+
+# Monitoring Core Chart Configuration
+hyperswitch-monitoring-core:
+  prometheus:
+    enabled: true
+  loki:
+    enabled: true
+  grafana:
+    dashboards:
+      enabled: true
+      paymentDashboard:
+        enabled: true
+      podUsageDashboard:
+        enabled: true
+    postgresql:
+      enabled: true
+      host: "{{ .Values.hyperswitch-app.application.database.host }}"
+      port: "{{ .Values.hyperswitch-app.application.database.port }}"
+      database: "{{ .Values.hyperswitch-app.application.database.dbname }}"
+      user: "{{ .Values.hyperswitch-app.application.database.username }}"
+      password: "{{ .Values.hyperswitch-app.application.database.passwordPlain }}"
+      sslMode: "disable"
+  ingress:
+    enabled: false
+    className: "alb"
+    host: ""
+
+# Monitoring Traces Chart Configuration
+hyperswitch-monitoring-traces:
+  opentelemetry:
+    enabled: true
+
+# Monitoring Analytics Chart Configuration
+hyperswitch-monitoring-analytics:
+  vector:
+    enabled: true
+  clickhouse:
+    enabled: true
+    auth:
+      username: hyperswitch
+      password: changeme
+      database: hyperswitch
+  kafka:
+    enabled: true
+  environment: production
