@@ -73,5 +73,5 @@ jobs:
               break
             fi
             REPO_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-            helm push "${pkg}" "oci://ghcr.io/${REPO_OWNER}/mature-helm-charts"
+            helm push "${pkg}" "oci://ghcr.io/${REPO_OWNER}/hyperswitch-helm"
           done

@@ -1,7 +1,7 @@
 # cr.yaml
-owner: shailesh-714
-git-repo: mature-helm-charts
-charts-repo: https://shailesh-714.github.io/mature-helm-charts
+owner: juspay
+git-repo: hyperswitch-helm
+charts-repo: https://juspay.github.io/hyperswitch-helm
 package-path: .cr-release-packages
 generate-release-notes: true
 make-release-latest: true
