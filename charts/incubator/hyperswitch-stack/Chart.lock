@@ -1,10 +1,10 @@
 dependencies:
 - name: hyperswitch-app
   repository: file://../hyperswitch-app
-  version: 0.2.2
+  version: 0.2.5
 - name: hyperswitch-web
   repository: file://../hyperswitch-web
-  version: 0.2.2
+  version: 0.2.5
 - name: kube-prometheus-stack
   repository: https://prometheus-community.github.io/helm-charts
   version: 70.3.0

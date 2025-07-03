@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: hyperswitch-card-vault-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
   {{- with (default .Values.global.annotations .Values.server.annotations) }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  name: hyperswitch-card-vault-{{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -24,7 +24,6 @@ spec:
         {{- with (default .Values.global.annotations .Values.server.pod.annotations) }}
         {{- toYaml . | nindent 8 }} 
         {{- end }}
-      creationTimestamp: null
       labels:
         app: hyperswitch-card-vault
     spec:
@@ -49,6 +48,10 @@ spec:
               value: DEBUG
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
               value: default
+            - name: LOCKER__SERVER__HOST
+              value: {{ include "locker.server.host" . }}
+            - name: LOCKER__SERVER__PORT
+              value: {{ include "locker.server.port" . }}
             - name: LOCKER__DATABASE__USERNAME
               value: {{ include "locker-psql.username" . }}
             - name: LOCKER__DATABASE__PASSWORD
@@ -68,27 +71,86 @@ spec:
               value: "60"
             - name: LOCKER__SECRETS__TENANT
               value: hyperswitch
-            - name: LOCKER__SECRETS__MASTER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
-                  key: LOCKER__SECRETS__MASTER_KEY
             - name: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
-            - name: LOCKER__SECRETS__TENANT_PUBLIC_KEY
+            - name: LOCKER__TENANT_SECRETS__PUBLIC__MASTER_KEY
               valueFrom:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
-                  key: LOCKER__SECRETS__TENANT_PUBLIC_KEY
+                  key: LOCKER__TENANT_SECRETS__PUBLIC__MASTER_KEY
+            - name: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
+            - name: LOCKER__TENANT_SECRETS__PUBLIC__SCHEMA
+              value: {{ .Values.tenant_secrets.public.schema | quote }}
+            {{- if eq .Values.backend "aws" }}
+            - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
+              value: "aws_kms"
+            - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
+            - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
+            {{- else if eq .Values.backend "vault" }}
+            - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
+              value: "hashi_corp_vault"
+            - name: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__URL
+              value: {{ .Values.server.vault.url | quote }}
+            - name: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__TOKEN
+            {{- end }}
             - name: LOCKER__CACHE__MAX_CAPACITY
               value: "5000"
             - name: LOCKER__CACHE__TTI
               value: "7200"
-            {{- with .Values.server.extra.env }}
-              {{- toYaml . | nindent 14 }}
+            - name: LOCKER__EXTERNAL_KEY_MANAGER__URL
+              value: {{ .Values.server.externalKeyManager.url | quote }}
+            {{- if .Values.secrets.external_key_manager.cert }}
+            - name: LOCKER__EXTERNAL_KEY_MANAGER__CERT
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__EXTERNAL_KEY_MANAGER__CERT
+            {{- end }}
+            {{- if .Values.secrets.api_client.identity }}
+            - name: LOCKER__API_CLIENT__IDENTITY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__API_CLIENT__IDENTITY
+            {{- end }}
+            {{- if .Values.secrets.tls.certificate }}
+            - name: LOCKER__TLS__CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__TLS__CERTIFICATE
+            {{- end }}
+            {{- if .Values.secrets.tls.private_key }}
+            - name: LOCKER__TLS__PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: LOCKER__TLS__PRIVATE_KEY
+            {{- end }}
+            {{- if .Values.server.extra.env }}
+            {{- range $key, $value := .Values.server.extra.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
             {{- end }}
           image: {{ .Values.server.image }}
           imagePullPolicy: IfNotPresent

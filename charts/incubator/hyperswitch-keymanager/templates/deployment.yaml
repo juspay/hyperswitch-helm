@@ -38,8 +38,33 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
       containers:
       - env:
+        - name: CRIPTA__SECRETS__ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__SECRETS__ACCESS_TOKEN
+        - name: CRIPTA__SECRETS__HASH_CONTEXT
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__SECRETS__HASH_CONTEXT
+        - name: CRIPTA__DATABASE__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__DATABASE__PASSWORD
+        {{- if .Values.secrets.database.root_ca }}
+        - name: CRIPTA__DATABASE__ROOT_CA
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__DATABASE__ROOT_CA
+        {{- end }}
+        {{- if eq .Values.backend "aws" }}
         - name: CRIPTA__SECRETS__KMS_CONFIG__KEY_ID
           valueFrom:
             secretKeyRef:
@@ -50,21 +75,40 @@ spec:
             secretKeyRef:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__SECRETS__KMS_CONFIG__REGION
+        {{- else if eq .Values.backend "vault" }}
+        - name: CRIPTA__SECRETS__VAULT_CONFIG__VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__SECRETS__VAULT_CONFIG__VAULT_TOKEN
+        {{- else if eq .Values.backend "local" }}
+        - name: CRIPTA__SECRETS__MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: keymanager-secrets-{{ .Release.Name }}
+              key: CRIPTA__SECRETS__MASTER_KEY
+        {{- end }}
+        {{- if .Values.secrets.tls.cert }}
         - name: CRIPTA__CERTS__TLS_CERT
           valueFrom:
             secretKeyRef:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__CERTS__TLS_CERT
+        {{- end }}
+        {{- if .Values.secrets.tls.key }}
         - name: CRIPTA__CERTS__TLS_KEY
           valueFrom:
             secretKeyRef:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__CERTS__TLS_KEY
+        {{- end }}
+        {{- if .Values.secrets.tls.ca }}
         - name: CRIPTA__CERTS__ROOT_CA
           valueFrom:
             secretKeyRef:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__CERTS__ROOT_CA
+        {{- end }}
         image: {{ .Values.server.image }}
         imagePullPolicy: IfNotPresent
         lifecycle:

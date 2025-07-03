@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-10T18:34:40.348329+05:30"
+    created: "2025-04-10T18:40:10.853697+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -37,10 +37,14 @@ entries:
       name: vector
       repository: https://helm.vector.dev
       version: 0.37.0
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.120.0
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: b24739c1b9d9a817cc77075309856ff97d1aaf9a6ec803d3ee02e10e637e58d4
+    digest: 7b03f1e6290af35a6826727737e422016203c23051f883b43a9e52564a413ba9
     name: hyperswitch-app
     type: application
     urls:
@@ -49,7 +53,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2025-03-10T18:34:40.350309+05:30"
+    created: "2025-04-10T18:40:10.855648+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -57,7 +61,7 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 1c1ddb06c5862a917aea1f5d8bf76a4bbcf9a703b31a082dab641717e6e0852f
+    digest: 9cea5830d3ee67965aafaf822a1a22cf96011f1d4ac9155a03d8f7fb14a2758c
     name: hyperswitch-web
     type: application
     urls:
@@ -73,26 +77,26 @@ entries:
           url: https://github.com/prometheus/prometheus
     apiVersion: v2
     appVersion: v3.2.1
-    created: "2025-03-10T18:34:40.356313+05:30"
+    created: "2025-04-10T18:40:10.861646+05:30"
     dependencies:
     - condition: alertmanager.enabled
       name: alertmanager
       repository: https://prometheus-community.github.io/helm-charts
-      version: 1.15.*
+      version: 1.16.*
     - condition: kube-state-metrics.enabled
       name: kube-state-metrics
       repository: https://prometheus-community.github.io/helm-charts
-      version: 5.30.*
+      version: 5.31.*
     - condition: prometheus-node-exporter.enabled
       name: prometheus-node-exporter
       repository: https://prometheus-community.github.io/helm-charts
-      version: 4.44.*
+      version: 4.45.*
     - condition: prometheus-pushgateway.enabled
       name: prometheus-pushgateway
       repository: https://prometheus-community.github.io/helm-charts
       version: 3.0.*
     description: Prometheus is a monitoring system and time series database.
-    digest: a71e1abe8cbd6f5f7f1d3d9c537ede3e52b04e46dfabd8ae437af6fd8f374ca2
+    digest: d838ee231f35bc2c8d34ee07a6cf05e970a47735ad5b3c569b7b5cb1c707762d
     home: https://prometheus.io/
     icon: https://raw.githubusercontent.com/prometheus/prometheus.github.io/master/assets/prometheus_logo-cb55bb5c346.png
     keywords:
@@ -124,6 +128,6 @@ entries:
     - https://github.com/kubernetes/kube-state-metrics
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/v0.2.2/charts/prometheus-27.5.1.tgz
-    version: 27.5.1
-generated: "2025-03-10T18:34:40.281518+05:30"
+    - https://juspay.github.io/hyperswitch-helm/v0.2.2/charts/prometheus-27.8.0.tgz
+    version: 27.8.0
+generated: "2025-04-10T18:40:10.793882+05:30"

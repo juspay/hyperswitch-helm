@@ -43,11 +43,9 @@ spec:
             - name: POSTGRES_HOST
               value: {{ include "keymanager-psql.host" . }}
             - name: DBNAME
-              value: {{ include "keymanager-psql.name" . }}
+              value: {{ include "keymanager-psql.database" . }}
             - name: POSTGRES_USER
               value: {{ include "keymanager-psql.username" . }}
             - name: POSTGRES_PASSWORD
               value: {{ include "keymanager-psql.password" . }}
 {{- end }}
-
-

@@ -3,33 +3,33 @@ entries:
   hyperswitch-card-vault:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-02-08T20:29:53.190692+05:30"
+    created: "2025-06-28T20:28:30.842006+05:30"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
-      version: 13.2.27
+      version: 15.5.38
     description: A Helm chart for creating Hyperswitch Card Vault
-    digest: e0377e10dfc0999702d9a5620eb9e0ddcf93a3a07969991bc0f9db0da1c2e9ec
+    digest: 3ea3f9b1860a0a910d6f48abc85409a55276e608481250eda00c2531dbca6bd1
     name: hyperswitch-card-vault
     type: application
     urls:
-    - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-card-vault/hyperswitch-card-vault-0.1.0.tgz
+    - hyperswitch-card-vault-0.1.0.tgz
     version: 0.1.0
   postgresql:
   - annotations:
       category: Database
       images: |
         - name: os-shell
-          image: docker.io/bitnami/os-shell:11-debian-11-r93
+          image: docker.io/bitnami/os-shell:12-debian-12-r30
         - name: postgres-exporter
-          image: docker.io/bitnami/postgres-exporter:0.15.0-debian-11-r4
+          image: docker.io/bitnami/postgres-exporter:0.15.0-debian-12-r43
         - name: postgresql
-          image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
+          image: docker.io/bitnami/postgresql:16.4.0-debian-12-r14
       licenses: Apache-2.0
     apiVersion: v2
-    appVersion: 16.1.0
-    created: "2024-02-08T20:29:53.19391+05:30"
+    appVersion: 16.4.0
+    created: "2025-06-28T20:28:30.848273+05:30"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -39,7 +39,7 @@ entries:
     description: PostgreSQL (Postgres) is an open source object-relational database
       known for reliability and data integrity. ACID-compliant, it supports foreign
       keys, joins, views, triggers and stored procedures.
-    digest: 9e3ab42d8197aac72722a3557d1f8ed04adc0fd5768e1985569bc73eaddc3b9c
+    digest: 6537de714df16f71c720921bd0ad8fad90bb01525fb3aacff3503781de3f9f8b
     home: https://bitnami.com
     icon: https://bitnami.com/assets/stacks/postgresql/img/postgresql-stack-220x234.png
     keywords:
@@ -50,12 +50,12 @@ entries:
     - replication
     - cluster
     maintainers:
-    - name: VMware, Inc.
+    - name: Broadcom, Inc. All Rights Reserved.
       url: https://github.com/bitnami/charts
     name: postgresql
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     urls:
-    - https://juspay.github.io/hyperswitch-helm/charts/incubator/hyperswitch-card-vault/charts/postgresql-13.2.27.tgz
-    version: 13.2.27
-generated: "2024-02-08T20:29:53.18747+05:30"
+    - charts/postgresql-15.5.38.tgz
+    version: 15.5.38
+generated: "2025-06-28T20:28:30.827857+05:30"
