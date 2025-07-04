@@ -156,6 +156,7 @@ secrets:
 | external.postgresql.config.database | string | `"encryption_db"` |  |
 | external.postgresql.config.host | string | `"localhost"` |  |
 | external.postgresql.config.password | string | `"db_pass"` |  |
+| external.postgresql.config.plainpassword | string | `"db_pass"` |  |
 | external.postgresql.config.port | int | `5432` |  |
 | external.postgresql.config.username | string | `"db_user"` |  |
 | external.postgresql.enable_ssl | bool | `false` |  |
