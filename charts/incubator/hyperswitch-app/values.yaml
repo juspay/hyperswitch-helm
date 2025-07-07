@@ -2,35 +2,35 @@ services:
   router:
     # -- Router version
     # @section -- Services
-    version: v1.114.0
+    version: v1.115.0
     # -- Router image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.114.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.115.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
     # -- Consumer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.114.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.115.0
   producer:
     # -- Producer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.114.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.115.0
   controlCenter:
     # -- Control Center image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.1
+    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.2
   sdk:
     # -- SDK host
     # @section -- Services
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.121.2
+    version: 0.123.0
     # -- SDK subversion
     # @section -- Services
-    subversion: v0
+    subversion: v1
 
 # @ignored
 global:
@@ -294,12 +294,26 @@ server:
   cell_information:
     # -- Default CellID for Global Cell Information
     id: '12345'
+  clone_connector_allowlist:
+    # Comma-separated list of allowed merchant IDs
+    merchant_ids: "merchant_ids"
+    # Comma-separated list of allowed connector names
+    connector_names: "stripe,adyen,paypal,checkout,braintree,cybersource,square,worldpay,klarna,noon,archipel"
   connector_onboarding:
     paypal:
       enabled: true
   connector_request_reference_id_config:
     # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
     merchant_ids_send_payment_id_as_connector_request_id: "['merchant_id_1','merchant_id_2']"
+  connectors:
+    # Hyperswitch Vault Configuration
+    hyperswitch_vault:
+      # base url to call hyperswitch vault service
+      base_url: "http://localhost:8080"
+    # -- Unified Authentication Service Configuration
+    unified_authentication_service:
+      # -- base url to call unified authentication service  
+      base_url: "http://localhost:8080"   
   cors:
     # -- List of methods that are allowed
     allowed_methods: GET,POST,PUT,DELETE
@@ -307,6 +321,14 @@ server:
     max_age: 30
     # -- If true, allows any origin to make requests
     wildcard_origin: true
+  crm: 
+    # Crm manager client to be used
+    crm_manager: "hubspot_proxy"
+    hubspot_proxy:
+      # Form ID for Hubspot integration
+      form_id: "form_id"
+      # Request URL for Hubspot API
+      request_url: "request_url"
   email:
     # -- The currently active email client
     active_email_client: SMTP
@@ -378,6 +400,8 @@ server:
       payout_analytics_topic: hyperswitch-payout-events
       # -- Kafka topic to be used for Refund events
       refund_analytics_topic: hyperswitch-refund-events
+      # Kafka topic to be used for Routing events
+      routing_logs_topic: topic
   forex_api:
     # Expiration time for data in cache as well as redis in seconds
     data_expiration_delay_in_seconds: 21600
@@ -429,12 +453,7 @@ server:
       # -- Primary color of email body
       primary_color: "#006DF9"
       # -- Background color of email body
-      background_color: "#FFFFFF"
-  connectors:
-    # -- Unified Authentication Service Configuration
-    unified_authentication_service:
-      # -- base url to call unified authentication service  
-      base_url: "http://localhost:8080"    
+      background_color: "#FFFFFF" 
 
   lock_settings:
     # -- Delay between retries in milliseconds
@@ -487,6 +506,10 @@ server:
       traces_enabled: false
       # -- Set this to true for AWS X-ray compatible traces
       use_xray_generator: false
+  # Controls whether merchant ID authentication is enabled.
+  # When enabled, payment endpoints will accept and require a x-merchant-id header in the request.
+  merchant_id_auth:
+    merchant_id_auth_enabled: false
   # Main SQL data store credentials
   master_database:
     # -- Timeout for database connection in seconds
