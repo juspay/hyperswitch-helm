@@ -1,21 +1,16 @@
+{{- if .Values.controlCenter.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hyperswitch-control-center-ingress
-  namespace:  {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   annotations:
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-    alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
-    alb.ingress.kubernetes.io/ip-address-type: ipv4
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    {{- range $key, $value := .Values.controlCenter.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
     alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
-    alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
-    alb.ingress.kubernetes.io/target-type: ip
 spec:
-  ingressClassName: alb
+  ingressClassName: {{ .Values.controlCenter.ingress.className }}
   rules:
     - http: 
         paths:
@@ -25,4 +20,5 @@ spec:
               service:
                 name: hyperswitch-control-center
                 port:
-                  number: 80
+                  number: {{ .Values.controlCenter.ingress.servicePort }}
+{{- end }}
