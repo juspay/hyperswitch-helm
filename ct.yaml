@@ -1,0 +1,15 @@
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts/incubator
+chart-repos:
+  - bitnami=https://charts.bitnami.com/bitnami
+  - grafana=https://grafana.github.io/helm-charts
+  - opentelemetry=https://open-telemetry.github.io/opentelemetry-helm-charts
+  - vector=https://helm.vector.dev
+  - codecentric=https://codecentric.github.io/helm-charts
+  - prometheus-community=https://prometheus-community.github.io/helm-charts
+helm-extra-args: --timeout 600s
+validate-maintainers: false
+skip-tests: true
