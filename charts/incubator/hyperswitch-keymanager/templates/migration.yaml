@@ -1,0 +1,58 @@
+{{- if .Values.initDB.enable }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-keymanager-db
+  labels:
+    app: create-keymanager-db
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
+      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.affinity .Values.server.affinity) }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: run-keymanager-db-migration
+          image: {{ .Values.initDB.migration.image }}
+          command: [ '/bin/sh', '-c' ]
+          #language=sh
+          args:
+            - |-
+              apt update
+              apt install -y git
+              git clone --single-branch --branch main https://github.com/juspay/hyperswitch-encryption-service.git
+              cd hyperswitch-encryption-service
+              diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
+              echo "Completed hyperswitch database migration"
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "keymanager-psql.host" . }}
+            - name: DBNAME
+              value: {{ include "keymanager-psql.database" . }}
+            - name: POSTGRES_USER
+              value: {{ include "keymanager-psql.username" . }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "keymanager-psql.secret" . }}
+                  {{- if .Values.postgresql.enabled }}
+                  key: password
+                  {{- else if .Values.external.postgresql.enabled }}
+                  key: primaryPlainPassword
+                  {{- end }}
+{{- end }}
