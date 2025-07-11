@@ -8,10 +8,16 @@ global:
   affinity: {}
   
 
+# Backend selection: aws, vault, or local
+backend: local
+
 # Values for hyperswitch-card-vault.
 server:
   # Annotations to be added to hyperswitch-card-vault.
   annotations: {}
+  # When deploying with AWS backend, you can override this:
+  # annotations:
+  #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
   
   host: "0.0.0.0"
   port: "8080"
@@ -36,68 +42,6 @@ server:
       #   values:
       #     - <Value for the label>
 
-  # Secrets to be added to hyperswitch-card-vault.
-  # To create the master key, follow the instructions provided here: https://github.com/juspay/hyperswitch-card-vault/blob/main/docs/guides/setup.md#preparing-the-required-keys
-  secrets:
-    # -- Optionally, you can run </br>
-    # <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre>
-    # -- To create this key pairs, follow the instructions provided here: </br>
-    # # Generating the private keys
-    # <pre>openssl genrsa -out locker-private-key.pem 2048</pre>
-    # <pre>openssl genrsa -out tenant-private-key.pem 2048</pre>
-    # # Generating the public keys </br>
-    # <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre>
-    # <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre>
-
-    # The private key for the locker from locker-private-key.pem
-    # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
-    locker_private_key: |
-      -----BEGIN PRIVATE KEY-----
-      MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyfiCWauKEAbtW
-      mmp3ceZFdmIaa5lbQn41C3vbjnehKcZzpLDUWT+9jRaFAifr8inVe3p2czKisjdv
-      1G19A08MU0Pf+DufYj24yoSvppjGDSkrD1Rbe4GXNHknO8xWfMSMhF9226pKWmF2
-      kBW5k8QUQ32QT9VqwEh5oqZtgVnGbPgA3YgEG+pYJqohBk6tNHN8Y2FUGVf875K/
-      n1zLqfpAShgn9bDdHtxSVKu55A2VK5uShryKEFyb1UDsF2SWumzsHXvLMxMCCqFk
-      +QswhBAMEjW8UOVIqtYc1d+bhbIBcnwxc6X5OE0l0CgPDbA0mZ86uBo9AWIx89li
-      AqX/Ya5hAgMBAAECggEAFU5m922U0msegKz4DoADG8GQ3lR/vtwGErDnPQMZlpxU
-      +xLqpL5ulGLWEFR8jXaftcMCkEcaAT/CzE+QLj8J3Y/G52JLQ7BHa9qI0irRy7pg
-      cqpmyHDKvFDgMWW684v7LkbS2m5IOo3lWnDClx9jZYPU5jgRYqfHPvXCZgntvHis
-      YHAfzaB427FNQ9u5gVZ24rcbzWd0zBd4y6JSuES58JIFZs6zieC/wOYWulYGoa4b
-      ijB9mtHRDGqSrZJdn6EWU1VR9p+ZWt6c7rcr8+7puJBS/vD7CNcvkJXvjrwXko8t
-      KaoPWG0CyqFBujpDeVfTry8woq18mnBiBPSZsh2YUQKBgQDfg1y4v558NHIL0qPu
-      vUWReaSSgHMTzaTdreonENeY0k2sLZ3SSR4bFjGMcVh8bV51E6Qg1T569tv+2620
-      dzdX+sIayDMbG/gvnkJm2wihB4PRuEDoTsMWZ2BT7Kdxr8mjT64VzMsrPsPSf5it
-      jMbC4M/MJVQxpex/cy/4XoqphQKBgQDMb5yd/km13Xl8yqNBLLPfx5ScFnaldI9M
-      8Bit595AqcYqkXWasIdkvFKEz+ZYMUzEUFnDW5FSPXrf8+immb7nHYvEoB9JM9ur
-      wJ+VFMIpXZBmuShvDtdoBBQfHZXB6uGyqlzYk24KpcMeb/Gy2sPfS8ZX6f1jE0cM
-      ypPC6H76LQKBgQCcyJV61pcCQvuYxXnOlp+9CtnhFg8i3gZ+pWbxXkQNY7+uPhVN
-      k5J1p5y8CinqpgEzGMLxcQOx14W8ATaYt2Nv6GrNxI7svjLanCWx5oToB9B0hM2q
-      5sy742nTlNZjzc4gK11O12fQfud3uZ9MZcpqmq3IYorrhJsfT5pfm1mizQKBgQCy
-      mRc0F8EBdtj5onX5LDqAV3WG30ELzsaaKm8FDrnlt+v9qFIbr/i4kqVsjcvoZDly
-      j9e7ibVtKXS9TfKECXDzq6Y9Qr3ST9GrPH6t2RK+3JSYiU2/qDGbF2UUwd3hKXe/
-      hIHUWwgZmTLa1mVLIT9ZRnOivjK1aVP64scv0bmMiQKBgA5E4YEqQDJwqmcZC6Vv
-      PypXLUBTWr87S7eQqPgqZYn308k+z+MiLKgJwcV3jaAwDkcvXfGAgvht7ZqYv9JQ
-      CPrr1VIA3cwgZnVQqlwYPTKGqq6woqP6ksVgFnYwuT5Gt/EViq8pdGfvk3jU8lri
-      4tidgA0ErmcnysggrNg2W3De
-      -----END PRIVATE KEY-----
-  
-  tenant_secrets:
-    public:
-      master_key: 8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df
-      # -- The public key for the tenant from tenant_secrets-public-public_key.pem
-      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
-      public_key:  |
-        -----BEGIN PUBLIC KEY-----
-        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJtfZxG6ohl/Mvk0DOiU
-        KvPLK1Wsuvd/dzLWBhKAObZc8AqvE/RiTL73HOt1S5rXyT/TwDfpcEI8oVuSWikM
-        2tygxughqtA/mK/Fo0GXazR+5fczQBvVvlUPpEA4ZaUkpLkDlYlTLgjGCz6mBOWt
-        eChc0+iFv2YzyAdIOaA7s4luklASxL5UZq20EEHXL4wIKKv5fQLoaViBv3QeNEPh
-        a4LocldUfkoLl0ON15TWrDT/gEgl3anp8f4tySgyeuBNOfsiVVYqqngKqNVtcRHS
-        YGcxBmxBV3mThIH/YnPnSoM/f+eDAtrIuguti5B+oJfVW1WU6v53aQeOLrd2+XR2
-        PQIDAQAB
-        -----END PUBLIC KEY-----
-      schema: public
-
   # Extra values to be added to hyperswitch-card-vault.
   extra:
     # extra env variables to be added to hyperswitch-card-vault.
@@ -113,6 +57,100 @@ server:
   awsKms:
     keyId: ""
     region: ""
+  
+  vault:
+    url: "http://127.0.0.1:8200"
+
+# Secrets configuration
+secrets:
+  # Core secrets
+  # To create the master key, follow the instructions provided here: https://github.com/juspay/hyperswitch-card-vault/blob/main/docs/guides/setup.md#preparing-the-required-keys
+  # -- Optionally, you can run </br>
+  # <pre>cargo install --git https://github.com/juspay/hyperswitch-card-vault --root . && ./bin/utils master-key && rm ./bin/utils && rmdir ./bin</pre>
+  # -- To create this key pairs, follow the instructions provided here: </br>
+  # # Generating the private keys
+  # <pre>openssl genrsa -out locker-private-key.pem 2048</pre>
+  # <pre>openssl genrsa -out tenant-private-key.pem 2048</pre>
+  # # Generating the public keys </br>
+  # <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre>
+  # <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre>
+
+  # The private key for the locker from locker-private-key.pem
+  # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
+  locker_private_key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyfiCWauKEAbtW
+    mmp3ceZFdmIaa5lbQn41C3vbjnehKcZzpLDUWT+9jRaFAifr8inVe3p2czKisjdv
+    1G19A08MU0Pf+DufYj24yoSvppjGDSkrD1Rbe4GXNHknO8xWfMSMhF9226pKWmF2
+    kBW5k8QUQ32QT9VqwEh5oqZtgVnGbPgA3YgEG+pYJqohBk6tNHN8Y2FUGVf875K/
+    n1zLqfpAShgn9bDdHtxSVKu55A2VK5uShryKEFyb1UDsF2SWumzsHXvLMxMCCqFk
+    +QswhBAMEjW8UOVIqtYc1d+bhbIBcnwxc6X5OE0l0CgPDbA0mZ86uBo9AWIx89li
+    AqX/Ya5hAgMBAAECggEAFU5m922U0msegKz4DoADG8GQ3lR/vtwGErDnPQMZlpxU
+    +xLqpL5ulGLWEFR8jXaftcMCkEcaAT/CzE+QLj8J3Y/G52JLQ7BHa9qI0irRy7pg
+    cqpmyHDKvFDgMWW684v7LkbS2m5IOo3lWnDClx9jZYPU5jgRYqfHPvXCZgntvHis
+    YHAfzaB427FNQ9u5gVZ24rcbzWd0zBd4y6JSuES58JIFZs6zieC/wOYWulYGoa4b
+    ijB9mtHRDGqSrZJdn6EWU1VR9p+ZWt6c7rcr8+7puJBS/vD7CNcvkJXvjrwXko8t
+    KaoPWG0CyqFBujpDeVfTry8woq18mnBiBPSZsh2YUQKBgQDfg1y4v558NHIL0qPu
+    vUWReaSSgHMTzaTdreonENeY0k2sLZ3SSR4bFjGMcVh8bV51E6Qg1T569tv+2620
+    dzdX+sIayDMbG/gvnkJm2wihB4PRuEDoTsMWZ2BT7Kdxr8mjT64VzMsrPsPSf5it
+    jMbC4M/MJVQxpex/cy/4XoqphQKBgQDMb5yd/km13Xl8yqNBLLPfx5ScFnaldI9M
+    8Bit595AqcYqkXWasIdkvFKEz+ZYMUzEUFnDW5FSPXrf8+immb7nHYvEoB9JM9ur
+    wJ+VFMIpXZBmuShvDtdoBBQfHZXB6uGyqlzYk24KpcMeb/Gy2sPfS8ZX6f1jE0cM
+    ypPC6H76LQKBgQCcyJV61pcCQvuYxXnOlp+9CtnhFg8i3gZ+pWbxXkQNY7+uPhVN
+    k5J1p5y8CinqpgEzGMLxcQOx14W8ATaYt2Nv6GrNxI7svjLanCWx5oToB9B0hM2q
+    5sy742nTlNZjzc4gK11O12fQfud3uZ9MZcpqmq3IYorrhJsfT5pfm1mizQKBgQCy
+    mRc0F8EBdtj5onX5LDqAV3WG30ELzsaaKm8FDrnlt+v9qFIbr/i4kqVsjcvoZDly
+    j9e7ibVtKXS9TfKECXDzq6Y9Qr3ST9GrPH6t2RK+3JSYiU2/qDGbF2UUwd3hKXe/
+    hIHUWwgZmTLa1mVLIT9ZRnOivjK1aVP64scv0bmMiQKBgA5E4YEqQDJwqmcZC6Vv
+    PypXLUBTWr87S7eQqPgqZYn308k+z+MiLKgJwcV3jaAwDkcvXfGAgvht7ZqYv9JQ
+    CPrr1VIA3cwgZnVQqlwYPTKGqq6woqP6ksVgFnYwuT5Gt/EViq8pdGfvk3jU8lri
+    4tidgA0ErmcnysggrNg2W3De
+    -----END PRIVATE KEY-----
+  
+  # Database secrets
+  database:
+    password: "dummyPassword"
+  
+  # Backend-specific secrets
+  # AWS KMS configuration (required when backend: aws)
+  aws:
+    key_id: ""
+    region: "us-east-1"
+  
+  # HashiCorp Vault (required when backend: vault)
+  vault:
+    token: "" # Vault authentication token
+  
+  # TLS/mTLS certificates (optional)
+  tls:
+    certificate: "" # TLS certificate content
+    private_key: "" # TLS private key content
+  
+  # External key manager mTLS certificates (optional)
+  external_key_manager:
+    cert: "" # Certificate for external key manager mTLS
+  
+  # API client mTLS identity (optional)
+  api_client:
+    identity: "" # Client identity for mTLS authentication
+
+# Tenant configuration
+tenant_secrets:
+  public:
+    master_key: 8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df
+    # -- The public key for the tenant from tenant_secrets-public-public_key.pem
+    # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+    public_key:  |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJtfZxG6ohl/Mvk0DOiU
+      KvPLK1Wsuvd/dzLWBhKAObZc8AqvE/RiTL73HOt1S5rXyT/TwDfpcEI8oVuSWikM
+      2tygxughqtA/mK/Fo0GXazR+5fczQBvVvlUPpEA4ZaUkpLkDlYlTLgjGCz6mBOWt
+      eChc0+iFv2YzyAdIOaA7s4luklASxL5UZq20EEHXL4wIKKv5fQLoaViBv3QeNEPh
+      a4LocldUfkoLl0ON15TWrDT/gEgl3anp8f4tySgyeuBNOfsiVVYqqngKqNVtcRHS
+      YGcxBmxBV3mThIH/YnPnSoM/f+eDAtrIuguti5B+oJfVW1WU6v53aQeOLrd2+XR2
+      PQIDAQAB
+      -----END PUBLIC KEY-----
+    schema: public
 
 # Values for database (postgresql).
 postgresql:

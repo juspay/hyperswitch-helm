@@ -114,3 +114,5 @@ kubeconfig
 *.tar.xz
 *.rar
 *.7z
+
+.DS_Store

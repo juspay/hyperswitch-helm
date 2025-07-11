@@ -168,3 +168,70 @@ LOCKER server port
 {{- define "locker.awsKms.region" -}}
 {{- default "us-east-1" .Values.server.awsKms.region -}}
 {{- end -}}
+
+{{/*
+Validate backend configuration
+*/}}
+{{- define "validate.backend" -}}
+{{- $validBackends := list "aws" "vault" "local" -}}
+{{- if not (has .Values.backend $validBackends) -}}
+{{- fail (printf "Invalid backend: %s. Must be one of: %s" .Values.backend (join ", " $validBackends)) -}}
+{{- end -}}
+{{- if eq .Values.backend "aws" -}}
+  {{- if not .Values.secrets.aws.key_id -}}
+    {{- fail "AWS KMS key_id is required when backend is 'aws'" -}}
+  {{- end -}}
+  {{- if not .Values.secrets.aws.region -}}
+    {{- fail "AWS KMS region is required when backend is 'aws'" -}}
+  {{- end -}}
+{{- else if eq .Values.backend "vault" -}}
+  {{- if not .Values.secrets.vault.token -}}
+    {{- fail "HashiCorp Vault token is required when backend is 'vault'" -}}
+  {{- end -}}
+  {{- if not .Values.server.vault.url -}}
+    {{- fail "HashiCorp Vault URL is required when backend is 'vault'" -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get secrets management configuration
+*/}}
+{{- define "locker.secretsManagement" -}}
+{{- include "validate.backend" . -}}
+{{- if eq .Values.backend "aws" -}}
+secrets_manager = "aws_kms"
+
+[secrets_management.aws_kms]
+key_id = "{{ .Values.secrets.aws.key_id }}"
+region = "{{ .Values.secrets.aws.region }}"
+{{- else if eq .Values.backend "vault" -}}
+secrets_manager = "hashi_corp_vault"
+
+[secrets_management.hashi_corp_vault]
+url = "{{ .Values.server.vault.url }}"
+token = "{{ .Values.secrets.vault.token }}"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Check if TLS is enabled
+*/}}
+{{- define "locker.tlsEnabled" -}}
+{{- if and .Values.secrets.tls.certificate .Values.secrets.tls.private_key -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
+
+{{/*
+Check if external key manager mTLS is enabled
+*/}}
+{{- define "locker.externalKeyManagerMtlsEnabled" -}}
+{{- if .Values.secrets.external_key_manager.cert -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
