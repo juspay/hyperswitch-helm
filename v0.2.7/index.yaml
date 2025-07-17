@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-17T18:28:18.775543+05:30"
+    created: "2025-07-17T18:58:35.448421+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -36,7 +36,7 @@ entries:
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: d551e701ca64ec1873bc9f94779f3864632e6329810311b9363bc70c944d1bb1
+    digest: 0d31d302e804283bdc7b13753e7dd6d4ef4913fbfca3704d7d38cba2855a93b1
     name: hyperswitch-app
     type: application
     urls:
@@ -45,7 +45,7 @@ entries:
   hyperswitch-monitoring:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-17T18:28:18.808982+05:30"
+    created: "2025-07-17T18:58:35.520816+05:30"
     dependencies:
     - condition: kube-prometheus-stack.enabled
       name: kube-prometheus-stack
@@ -65,7 +65,7 @@ entries:
       version: 0.120.0
     description: Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail,
       and Grafana
-    digest: bfc643f7c67b7ea817f496986673439483ca437b5f86061a92393d370a5bd90c
+    digest: 73d9bb2689443ddd3d5321c83be0093582b6d175aa3f7f50ac53e402d3ba0936
     name: hyperswitch-monitoring
     type: application
     urls:
@@ -74,7 +74,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2025-07-17T18:28:18.809503+05:30"
+    created: "2025-07-17T18:58:35.521428+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -82,10 +82,10 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 6e98c596060889d81fd307565bb2b7dc86122d61037c7cdd2c667512f3eea384
+    digest: c9830ffe71778a85e8de1502fc939cc504dbbc018e8db8fa89e8357989679d5f
     name: hyperswitch-web
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.2.7/charts/hyperswitch-web-0.2.7.tgz
     version: 0.2.7
-generated: "2025-07-17T18:28:18.750099+05:30"
+generated: "2025-07-17T18:58:35.399159+05:30"
