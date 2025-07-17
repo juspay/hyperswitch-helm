@@ -348,6 +348,7 @@ opentelemetry-collector:
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # @section -- Dependencies configuration for grafana datasource
+  # When external is false, the host will be prefixed with {{ .Release.Name }}- (e.g., hypers-v1-postgresql)
   external: false 
   primary: 
     host: "postgresql"
