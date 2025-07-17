@@ -1,0 +1,101 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Overview
+
+The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. It includes:
+
+- **Prometheus**: Metrics collection and storage
+- **Grafana**: Visualization and dashboards
+- **Loki**: Log aggregation system
+- **Promtail**: Log collection agent
+- **OpenTelemetry Collector**: Traces and metrics collection
+
+## Prerequisites
+
+- Kubernetes 1.19+
+- Helm 3.2.0+
+- PV provisioner support in the underlying infrastructure (for Prometheus and Loki storage)
+- Recommended resources: 4 CPU cores and 8GB RAM
+
+## Custom Dashboards
+
+The monitoring stack includes two custom dashboards:
+
+1. **Payments Dashboard** (`payments-dashboard.json`):
+   - Payment success/failure rates
+   - Payment processing latencies
+   - Payment volume by processor
+   - Error rate trends
+
+2. **Pod Usage Dashboard** (`pod-usage-dashboard.json`):
+   - CPU and memory usage per pod
+   - Network I/O metrics
+   - Pod restart counts
+   - Resource limits vs actual usage
+
+## Additional Resources
+
+- [Prometheus Documentation](https://prometheus.io/docs/)
+- [Grafana Documentation](https://grafana.com/docs/)
+- [Loki Documentation](https://grafana.com/docs/loki/)
+- [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
+
+{{- define "chart.valueDefaultSectionColumnRender" -}}
+<div><code>{{ (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}</code></div>
+{{- end -}}
+{{- define "chart.valueDefaultSectionRowRender" -}}
+  <tr>
+    <td><div><a href="{{ if .Dependency }}../{{- $prefix := index (splitList "." .Dependency ) (sub (len (splitList "." .Dependency)) 1) -}}{{ $prefix }}{{ else }}{{ "." }}{{ end }}/values.yaml#L{{ .LineNumber }}">{{ .Key }}</a></div></td>
+    <td>{{- template "chart.valueDefaultSectionColumnRender" . -}}</td>
+    <td>{{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }}</td>
+  </tr>
+{{- end -}}
+
+{{ define "chart.valueDefaultSectionHeading" }}
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+{{ end }}
+
+{{ define "chart.valuesSectionTableHtml" }}
+<h3>{{- .SectionName }}</h3>
+<table height="400px">
+{{- template "chart.valueDefaultSectionHeading" . -}}
+<tbody>
+{{- range .SectionItems -}}
+	{{- template "chart.valueDefaultSectionRowRender" . -}}
+{{- end -}}
+</tbody>
+</table>
+{{- end -}}
+
+{{ template "chart.requirementsSection" . }}
+
+{{ define "chart.valuesSectionHtml" }}
+    {{- if .Sections -}}
+{{- template "chart.valuesHeader" . -}}
+        {{- if .Sections.Sections }}
+            {{- range .Sections.Sections -}}
+                {{- template "chart.valuesSectionTableHtml" . -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+    {{ if .Sections.DefaultSection.SectionItems }}
+<h3>{{- .Sections.DefaultSection.SectionName }}</h3>
+<table>
+{{ template "chart.valueDefaultSectionHeading" . }}
+<tbody>
+{{- range .Sections.DefaultSection.SectionItems }}
+	{{- template "chart.valueDefaultSectionRowRender" . -}}
+{{- end }}
+</tbody>
+</table>
+{{ end }}
+{{ end }}
+
+{{ template "chart.valuesSectionHtml" . }}

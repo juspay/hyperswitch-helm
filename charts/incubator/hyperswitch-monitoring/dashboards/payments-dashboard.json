@@ -1,11 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: grafana-dashboard-payments
-  labels:
-    grafana_dashboard: "1"
-data:
-  gafana-dashboard-payments.json: |
       {
         "annotations" : {
           "list": [

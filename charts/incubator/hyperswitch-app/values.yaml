@@ -1,5 +1,6 @@
 services:
   router:
+    enabled: true
     # -- Router version
     # @section -- Services
     version: v1.115.0
@@ -10,14 +11,17 @@ services:
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
+    enabled: true
     # -- Consumer image
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.115.0
   producer:
+    enabled: true
     # -- Producer image
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.115.0
   controlCenter:
+    enabled: true
     # -- Control Center image
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.2
@@ -496,8 +500,12 @@ server:
       metrics_enabled: false
       # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
       # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
-      # The value of `external_otel_collector_endpoint` will be considered even if the `opentelemetry-collector` subchart is enabled.
+      # The value of `external_otel_collector_endpoint` will be considered even if the `hyperswitch-monitoring` chart is enabled.
       external_otel_collector_endpoint: ""
+      # -- Enable this when using hyperswitch-stack with monitoring.
+      # Auto-configures endpoint as: <release-name>-opentelemetry-collector.<namespace>.svc.cluster.local:4317
+      # Leave false for standalone deployments or when using external collectors.
+      autoConfigureOtelEndpoint: false
       # -- timeout (in milliseconds) for sending metrics and traces
       otel_exporter_otlp_timeout: 5000
       route_to_trace: "['*/confirm']"
@@ -1171,80 +1179,6 @@ mailhog:
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
 
-loki: 
-  host: "loki"
-  port: 3100
-
-# https://github.com/grafana/helm-charts/tree/main/charts/loki-stack
-loki-stack:
-  loki:
-    # -- Enable Bitnami Loki sub-chart helm installation
-    # @section -- Dependencies configuration
-    enabled: true
-    isDefault: false
-    # -- Name of the Loki sub-chart
-    # @section -- Dependencies configuration
-    fullnameOverride: "loki"
-  promtail:
-    # -- Enable Bitnami Promtail sub-chart helm installation
-    # @section -- Dependencies configuration
-    enabled: true
-    # @ignored
-    config:
-      clients:
-        - url: http://loki:3100/loki/api/v1/push
-      snippets:
-        extraRelabelConfigs:
-          - action: "keep"
-            regex: "hyperswitch-.*"
-            source_labels: ["__meta_kubernetes_pod_label_app"]
-  grafana:
-    # -- Enable Bitnami Grafana sub-chart helm installation
-    # @section -- Dependencies configuration
-    enabled: true
-    # -- Name of the Grafana sub-chart
-    # @section -- Dependencies configuration
-    adminPassword: "admin"
-    image: 
-      # -- Grafana image tag
-      # @section -- Dependencies configuration
-      tag: 10.0.1
-    plugins:
-    - volkovlabs-variable-panel
-    dashboardProviders:
-      dashboardproviders.yaml:
-        apiVersion: 1
-        providers:
-          - name: dp1
-            orgId: 1
-            folder: ''
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/dp1
-          - name: dp2
-            orgId: 1
-            folder: ''
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/dp2
-    dashboardsConfigMaps:
-      dp1: "grafana-dashboard-payments"
-      dp2: "grafana-dashboard-pod-usage"
-    extraVolumes:
-      - name: dashboards
-        emptyDir: {}
-    extraVolumeMounts:
-      - name: dashboards
-        mountPath: /var/lib/grafana/dashboards
-  prometheus:
-    enabled: false 
-    prometheus-pushgateway:
-      enabled: false
-      tolerations: []
 
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
@@ -1521,135 +1455,3 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
-
-prometheus:
-  host: "prometheus-server"
-  port: 80
-
-opentelemetry-collector:
-  enabled: true
-
-  mode: "deployment"
-
-  # Specify which namespace should be used to deploy the resources into
-  namespaceOverride: ""
-
-  presets:
-    kubernetesAttributes:
-      enabled: true
-      extractAllPodLabels: true
-      extractAllPodAnnotations: false
-
-  alternateConfig:
-    receivers:
-      otlp:
-        protocols:
-          grpc:
-            endpoint: ${env:MY_POD_IP}:4317
-
-    processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
-      # Adds resource attributes (added by k8sattributes processor) as metrics labels
-      transform:
-        metric_statements:
-          - context: datapoint
-            statements:
-              - set(attributes["source_namespace"], resource.attributes["k8s.namespace.name"])
-              - set(attributes["source_pod"], resource.attributes["k8s.pod.name"])
-              - set(attributes["source_app"], resource.attributes["app"])
-              - set(attributes["source_version"], resource.attributes["version"])
-
-    exporters:
-      debug:
-        verbosity: detailed
-      prometheus:
-        endpoint: ${env:MY_POD_IP}:9898
-
-    extensions:
-      health_check:
-        endpoint: ${env:MY_POD_IP}:13133
-
-    service:
-      telemetry:
-        logs:
-          level: DEBUG
-          encoding: json
-        metrics:
-          level: detailed
-          address: ${env:MY_POD_IP}:8888
-      extensions:
-        - health_check
-      pipelines:
-        metrics:
-          receivers:
-            - otlp
-          processors:
-            - memory_limiter
-            - transform
-            - batch
-          exporters:
-            - prometheus
-
-  image:
-    repository: docker.io/otel/opentelemetry-collector-contrib
-    tag: 0.122.1
-
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-
-  ports:
-    otlp:
-      enabled: true
-      containerPort: 4317
-      servicePort: 4317
-      protocol: TCP
-      appProtocol: grpc
-    otel-metrics:
-      enabled: false
-      containerPort: 8888
-      servicePort: 8888
-      protocol: TCP
-    hs-metrics:
-      enabled: true
-      containerPort: 9898
-      servicePort: 9898
-      protocol: TCP
-    otlp-http:
-      enabled: false
-    jaeger-compact:
-      enabled: false
-    jaeger-thrift:
-      enabled: false
-    jaeger-grpc:
-      enabled: false
-    zipkin:
-      enabled: false
-
-  resources:
-    # Due to the `k8sattributes` processor, the collector uses more than 2 GiB of RAM and 1000+m vCPU  at startup,
-    # and later drops to ~300 MiB of RAM and ~200m vCPU.
-    limits:
-      cpu: 1500m
-      memory: 4Gi
-    requests:
-      cpu: 250m
-      memory: 512Mi
-
-  replicaCount: 1
-
-  serviceMonitor:
-    enabled: false
-    metricsEndpoints:
-      - port: otel-metrics
-        honorLabels: true
-        interval: 30s
-        path: /metrics
-      - port: hs-metrics
-        honorLabels: true
-        interval: 15s
-        path: /metrics

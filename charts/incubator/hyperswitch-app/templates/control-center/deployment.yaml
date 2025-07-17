@@ -1,3 +1,4 @@
+{{- if .Values.services.controlCenter.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -83,3 +84,4 @@ spec:
       securityContext: {}
       serviceAccountName: hyperswitch-router-role
       terminationGracePeriodSeconds: {{ .Values.controlCenter.terminationGracePeriodSeconds }}
+{{- end }}
