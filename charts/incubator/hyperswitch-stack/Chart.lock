@@ -8,5 +8,8 @@ dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 27.8.0
-digest: sha256:f8ca773fd85faa6b893586f05a011e920d9f487fd1b5d5e75d5b738842ed700c
-generated: "2025-07-03T22:58:27.951078+05:30"
+- name: hyperswitch-ucs
+  repository: file://../hyperswitch-ucs
+  version: 0.1.0
+digest: sha256:7c40ef0f4fe6d0a1b248b17613f38d9b9bbf61b906bd77e82d1f173fbb832503
+generated: "2025-07-18T18:46:33.408983+05:30"

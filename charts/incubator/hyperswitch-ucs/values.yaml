@@ -1,0 +1,152 @@
+# Default values for hyperswitch-ucs.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/juspay/connector-service
+  pullPolicy: IfNotPresent
+  tag: "main-b1487cb"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  grpc:
+    port: 8000
+    targetPort: 8000
+  metrics:
+    port: 8080
+    targetPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1000Mi
+  requests:
+    cpu: 400m
+    memory: 400Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Liveness probe configuration
+livenessProbe:
+  failureThreshold: 3
+  grpc:
+    port: 8000
+    service: grpc.health.v1.Health
+  initialDelaySeconds: 90
+  periodSeconds: 30
+  successThreshold: 1
+  timeoutSeconds: 10
+
+# Readiness probe configuration
+readinessProbe:
+  failureThreshold: 5
+  grpc:
+    port: 8000
+    service: grpc.health.v1.Health
+  initialDelaySeconds: 30
+  periodSeconds: 30
+  successThreshold: 1
+  timeoutSeconds: 5
+
+# Environment variables
+env:
+  - name: CS__LOG__CONSOLE__ENABLED
+    value: "true"
+  - name: CS__LOG__CONSOLE__LEVEL
+    value: "DEBUG"
+  - name: CS__LOG__CONSOLE__LOG_FORMAT
+    value: "json"
+  - name: CS__SERVER__HOST
+    value: "0.0.0.0"
+  - name: CS__SERVER__PORT
+    value: "8000"
+  - name: CS__SERVER__TYPE
+    value: "grpc"
+  - name: CS__METRICS__HOST
+    value: "0.0.0.0"
+  - name: CS__METRICS__PORT
+    value: "8080"
+  - name: CS__CONNECTORS__ADYEN__BASE_URL
+    value: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+  - name: CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL
+    value: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+  - name: CS__CONNECTORS__RAZORPAY__BASE_URL
+    value: "https://api.razorpay.com/"
+  - name: CS__CONNECTORS__FISERV__BASE_URL
+    value: "https://cert.api.fiservapps.com/"
+  - name: CS__CONNECTORS__ELAVON__BASE_URL
+    value: "https://api.convergepay.com/VirtualMerchant/"
+  - name: CS__CONNECTORS__XENDIT__BASE_URL
+    value: "https://api.xendit.co/"
+  - name: CS__CONNECTORS__RAZORPAYV2__BASE_URL
+    value: "https://api.razorpay.com/"
+  - name: CS__CONNECTORS__CHECKOUT__BASE_URL
+    value: "https://api.checkout.com/"
+  - name: CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL
+    value: "https://api.authorize.net/xml/v1/request.api/"
+  - name: CS__PROXY__HTTPS_URL
+    value: "http://m1.outbound.juspay.net:80"
+  - name: CS__PROXY__HTTP_URL
+    value: "http://m1.outbound.juspay.net:80"
+  - name: CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT
+    value: "90"
+  - name: CS__PROXY__BYPASS_PROXY_URLS
+    value: "localhost,local"

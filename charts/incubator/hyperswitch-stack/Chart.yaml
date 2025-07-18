@@ -34,3 +34,7 @@ dependencies:
     version: "27.8.0"
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus.enabled
+  - name: hyperswitch-ucs
+    version: 0.1.0
+    repository: "file://../hyperswitch-ucs"
+    condition: true
