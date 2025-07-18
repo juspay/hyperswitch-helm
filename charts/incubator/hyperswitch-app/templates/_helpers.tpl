@@ -179,18 +179,19 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/* Define the OpenTelemetry Collector endpoint when metrics or traces are enabled */}}
 {{- define "opentelemetry-collector.url" -}}
   {{- $telemetryConfig := .Values.server.log.telemetry -}}
-  {{- $otelCollectorValues := (index .Values "opentelemetry-collector") -}}
-  {{- $otelCollectorCtx := (index .Subcharts "opentelemetry-collector") -}}
-
   {{- if or $telemetryConfig.metrics_enabled $telemetryConfig.traces_enabled -}}
     {{- if $telemetryConfig.external_otel_collector_endpoint -}}
       {{- $telemetryConfig.external_otel_collector_endpoint -}}
-    {{- else if $otelCollectorValues.enabled -}}
-      {{- printf "http://%s.%s.svc.cluster.local:%d" (include "opentelemetry-collector.fullname" $otelCollectorCtx) (include "opentelemetry-collector.namespace" $otelCollectorCtx) ($otelCollectorValues.ports.otlp.servicePort | int) -}}
+    {{- else if $telemetryConfig.autoConfigureOtelEndpoint -}}
+      {{- /* 
+        When autoConfigureOtelEndpoint is true, construct the endpoint using the release name.
+        This is typically set to true when deployed via hyperswitch-stack with monitoring enabled.
+      */}}
+      {{- printf "http://%s-opentelemetry-collector.%s.svc.cluster.local:4317" .Release.Name .Release.Namespace -}}
     {{- else -}}
-      {{- fail "Could not obtain OpenTelemetry Collector URL. Please specify either `external_otel_collector_endpoint` or enable the `opentelemetry-collector` subchart." -}}
+      {{- fail "Could not obtain OpenTelemetry Collector URL. Please specify either `external_otel_collector_endpoint` or use hyperswitch-monitoring chart & enable `autoConfigureOtelEndpoint`" -}}
     {{- end -}}
   {{- else -}}
-    {{- print "" -}}
+    {{- print "" -}}  
   {{- end -}}
 {{- end -}}

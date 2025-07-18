@@ -1,12 +1,12 @@
 dependencies:
 - name: hyperswitch-app
   repository: file://../hyperswitch-app
-  version: 0.2.6
+  version: 0.2.7
 - name: hyperswitch-web
   repository: file://../hyperswitch-web
-  version: 0.2.6
-- name: prometheus
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 27.8.0
-digest: sha256:f8ca773fd85faa6b893586f05a011e920d9f487fd1b5d5e75d5b738842ed700c
-generated: "2025-07-03T22:58:27.951078+05:30"
+  version: 0.2.7
+- name: hyperswitch-monitoring
+  repository: file://../hyperswitch-monitoring
+  version: 0.1.0
+digest: sha256:76d50ac18bedf129547e1f0dfd6c6fe814f1504582f714a202354f75db7b7a88
+generated: "2025-07-17T18:20:28.785446+05:30"
