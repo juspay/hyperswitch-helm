@@ -218,11 +218,12 @@ task ur
 
 ## Requirements
 
-| Repository                                         | Name            | Version |
-| -------------------------------------------------- | --------------- | ------- |
-| file://../hyperswitch-app                          | hyperswitch-app | 0.2.6   |
-| file://../hyperswitch-web                          | hyperswitch-web | 0.2.6   |
-| https://prometheus-community.github.io/helm-charts | prometheus      | 27.8.0  |
+| Repository                       | Name                   | Version |
+| -------------------------------- | ---------------------- | ------- |
+| file://../hyperswitch-app        | hyperswitch-app        | 0.2.7   |
+| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.0   |
+| file://../hyperswitch-ucs        | hyperswitch-ucs        | 0.1.0   |
+| file://../hyperswitch-web        | hyperswitch-web        | 0.2.7   |
 
 ## Values
 
@@ -2547,67 +2548,67 @@ task ur
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L365">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L366">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
     <td><div><code>"HTTP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L366">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L367">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
     <td><div><code>"HTTP1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L367">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring-alb-ingress-group"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
     <td><div><code>"ipv4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L370">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
     <td><div><code>"[{\"HTTP\": 80}]"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L370">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
     <td><div><code>"internet-facing"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
     <td><div><code>"stack=hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L375">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
     <td><div><code>"ip"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L362">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L376">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L377">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L378">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L364">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
     <td><div><code>"alb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L381">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -2819,7 +2820,7 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L384">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L385">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
@@ -3211,27 +3212,27 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L351">hyperswitch-monitoring.postgresql.external</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L352">hyperswitch-monitoring.postgresql.external</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L358">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L353">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L354">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
     <td><div><code>"postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L356">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L354">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L355">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
     <td><div><code>5432</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L355">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L356">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
