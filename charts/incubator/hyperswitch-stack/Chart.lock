@@ -8,5 +8,8 @@ dependencies:
 - name: hyperswitch-monitoring
   repository: file://../hyperswitch-monitoring
   version: 0.1.0
-digest: sha256:76d50ac18bedf129547e1f0dfd6c6fe814f1504582f714a202354f75db7b7a88
-generated: "2025-07-17T18:20:28.785446+05:30"
+- name: hyperswitch-ucs
+  repository: file://../hyperswitch-ucs
+  version: 0.1.0
+digest: sha256:69ce8268d5e53b8d13ccafd74db2fe450b2930498539609a9a1daa0631d1469a
+generated: "2025-07-21T16:49:12.076528+05:30"
