@@ -1,3 +1,4 @@
+{{- if .Values.services.producer.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -95,3 +96,4 @@ spec:
             defaultMode: 420
             name: producer-cm-{{.Release.Name }}
           name: hyperswitch-config
+{{- end }}

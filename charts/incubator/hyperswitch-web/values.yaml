@@ -29,6 +29,8 @@ sdkDemo:
   env:
     host: hyperswitch-sdk-demo
     binary: sdk
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
 
 # Default values for sdk.
 # This is a YAML-formatted file.

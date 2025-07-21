@@ -17,14 +17,8 @@ dependencies:
 - name: mailhog
   repository: https://codecentric.github.io/helm-charts
   version: 4.0.0
-- name: loki-stack
-  repository: https://grafana.github.io/helm-charts
-  version: 2.10.2
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-- name: opentelemetry-collector
-  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.120.0
-digest: sha256:bfe3a9f680e7c0babcc6e0f8fac5281252c6a615c5efd7180e9dda49b22cd26c
-generated: "2025-04-01T22:20:08.722288189+05:30"
+digest: sha256:8bead9a139d028d87f0922cc09bf4e61ae505844e34f055be3b4ad17eb679e33
+generated: "2025-07-14T15:58:40.880494+05:30"

@@ -111,7 +111,7 @@ hyperswitch-app:
       forex_api_key: forex_api_key
       forex_fallback_api_key: forex_fallback_api_key
     locker:
-        locker_enabled: true
+      locker_enabled: true
     run_env: sandbox
     email:
       active_email_client: SMTP
@@ -131,10 +131,10 @@ hyperswitch-app:
     server:
       image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
       tenant_secrets:
-        hyperswitch :
-          master_key : "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
-          public_key : ""
-          schema : "public"
+        hyperswitch:
+          master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
+          public_key: ""
+          schema: "public"
 
     initDB:
       enable: true
@@ -164,58 +164,31 @@ hyperswitch-app:
       tolerations: []
   mailhog:
     tolerations: []
-  loki-stack:
-    loki:
-      tolerations: []
-    promtail:
-      tolerations: []
-    grafana:
-      tolerations: []
-    prometheus:
-      prometheus-pushgateway:
-        tolerations: []
   vector:
     tolerations: []
 
-
-prometheus:
-  host: "prometheus-server"
-  port: 80
+hyperswitch-monitoring:
   enabled: true
+  # Global tolerations for monitoring components
   global:
-    scrape_interval: 15s
-    evaluation_interval: 15s
-  prometheus-pushgateway:
     tolerations: []
-
-  scrape_configs:
-  # Scrape Kubernetes pods for CPU and Memory usage
-  - job_name: "kubernetes-pods"
-    kubernetes_sd_configs:
-      - role: pod
-    relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-        action: keep
-        regex: true
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: "$1:$2"
-
-  - job_name: "kubernetes-nodes"
-    kubernetes_sd_configs:
-      - role: node
-    relabel_configs:
-      - action: labelmap
-        regex: __meta_kubernetes_node_label_(.+)
-    static_configs:
-      - targets:
-          - "node-exporter:9100"
+  # Component-specific tolerations
+  kube-prometheus-stack:
+    prometheus:
+      prometheusSpec:
+        tolerations: []
+    grafana:
+      tolerations: []
+    alertmanager:
+      alertmanagerSpec:
+        tolerations: []
+  loki:
+    singleBinary:
+      tolerations: []
+  promtail:
+    tolerations: []
+  opentelemetry-collector:
+    tolerations: []
 
 # @ignored
 hyperswitch-ucs:
