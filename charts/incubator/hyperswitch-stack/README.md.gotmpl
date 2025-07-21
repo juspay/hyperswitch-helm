@@ -105,6 +105,11 @@ After deploying the Helm chart, you should verify that everything is working cor
 * [ ] &#x20;Verify if you are able to [create API key](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
 * [ ] &#x20;Verify if you are able to [configure a new payment processor](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
 
+### UCS (Unified Connector Service)
+
+* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext <ucs-service>:8000 grpc.health.v1.Health/Check`
+* [ ] &#x20;Verify metrics are being exposed at `<ucs-service>:8080/metrics`
+
 ## 💳 Test a payment
 
 Hyperswitch Control center will mimic the behavior of your checkout page. Please follow below steps to test a payment with the deployed app

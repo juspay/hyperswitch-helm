@@ -3,14 +3,8 @@ name: hyperswitch-ucs
 description: A Helm chart for Hyperswitch UCS Service
 type: application
 version: 0.1.0
-appVersion: "0.1.0-nightly.20250622-d88883f"
+appVersion: "0.1.0"
 keywords:
   - ucs
   - service
   - grpc
-home: https://github.com/juspay/hyperswitch-helm
-sources:
-  - https://github.com/juspay/hyperswitch-helm
-maintainers:
-  - name: Hyperswitch
-    email: hyperswitch@juspay.in

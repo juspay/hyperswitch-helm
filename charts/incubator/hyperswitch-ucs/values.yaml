@@ -2,32 +2,58 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Number of replicas for the UCS deployment
+# @section -- UCS Configuration
 replicaCount: 1
 
+# -- Container image configuration
+# @section -- UCS Configuration
 image:
+  # -- Docker image repository
+  # @section -- UCS Configuration
   repository: ghcr.io/juspay/connector-service
+  # -- Image pull policy
+  # @section -- UCS Configuration
   pullPolicy: IfNotPresent
+  # -- Image tag to use
+  # @section -- UCS Configuration
   tag: "main-b1487cb"
 
+# -- Image pull secrets for private registries
+# @section -- UCS Configuration
 imagePullSecrets: []
+# -- Override the name of the chart
+# @section -- UCS Configuration
 nameOverride: ""
+# -- Override the full name of the chart
+# @section -- UCS Configuration
 fullnameOverride: ""
 
+# -- Service account configuration
+# @section -- UCS Configuration
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
+  # @section -- UCS Configuration
   create: true
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
+  # @section -- UCS Configuration
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  # @section -- UCS Configuration
   name: ""
 
+# -- Annotations to add to the pod
+# @section -- UCS Configuration
 podAnnotations: {}
 
+# -- Pod security context
+# @section -- UCS Configuration
 podSecurityContext:
   {}
   # fsGroup: 2000
 
+# -- Container security context
+# @section -- UCS Configuration
 securityContext:
   {}
   # capabilities:
@@ -37,76 +63,169 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# -- Service configuration
+# @section -- UCS Configuration
 service:
+  # -- Service type
+  # @section -- UCS Configuration
   type: ClusterIP
+  # -- gRPC service configuration
+  # @section -- UCS Configuration
   grpc:
+    # -- gRPC service port
+    # @section -- UCS Configuration
     port: 8000
+    # -- gRPC container port
+    # @section -- UCS Configuration
     targetPort: 8000
+  # -- Metrics service configuration
+  # @section -- UCS Configuration
   metrics:
+    # -- Metrics service port
+    # @section -- UCS Configuration
     port: 8080
+    # -- Metrics container port
+    # @section -- UCS Configuration
     targetPort: 8080
 
+# -- Ingress configuration
+# @section -- UCS Configuration
 ingress:
+  # -- Enable ingress controller resource
+  # @section -- UCS Configuration
   enabled: false
+  # -- IngressClass that will be used to implement the Ingress
+  # @section -- UCS Configuration
   className: ""
+  # -- Additional annotations for the Ingress resource
+  # @section -- UCS Configuration
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # -- An array with hostname(s) to be covered with the ingress record
+  # @section -- UCS Configuration
   hosts:
-    - host: chart-example.local
+    - host: hyperswitch-ucs.local
       paths:
         - path: /
           pathType: ImplementationSpecific
+  # -- TLS configuration for hostname(s) to be covered with this ingress record
+  # @section -- UCS Configuration
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
+# -- Resource limits and requests for the UCS containers
+# @section -- UCS Configuration
 resources:
+  # -- Resource limits
+  # @section -- UCS Configuration
   limits:
+    # -- CPU limit
+    # @section -- UCS Configuration
     cpu: 1000m
+    # -- Memory limit
+    # @section -- UCS Configuration
     memory: 1000Mi
+  # -- Resource requests
+  # @section -- UCS Configuration
   requests:
+    # -- CPU request
+    # @section -- UCS Configuration
     cpu: 400m
+    # -- Memory request
+    # @section -- UCS Configuration
     memory: 400Mi
 
+# -- Autoscaling configuration
+# @section -- UCS Configuration
 autoscaling:
+  # -- Enable autoscaling
+  # @section -- UCS Configuration
   enabled: false
+  # -- Minimum number of replicas
+  # @section -- UCS Configuration
   minReplicas: 1
+  # -- Maximum number of replicas
+  # @section -- UCS Configuration
   maxReplicas: 100
+  # -- Target CPU utilization percentage
+  # @section -- UCS Configuration
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# -- Node labels for pod assignment
+# @section -- UCS Configuration
 nodeSelector: {}
 
+# -- Tolerations for pod assignment
+# @section -- UCS Configuration
 tolerations: []
 
+# -- Affinity for pod assignment
+# @section -- UCS Configuration
 affinity: {}
 
-# Liveness probe configuration
+# -- Liveness probe configuration
+# @section -- UCS Configuration
 livenessProbe:
+  # -- Number of failures before pod is restarted
+  # @section -- UCS Configuration
   failureThreshold: 3
+  # -- gRPC health check configuration
+  # @section -- UCS Configuration
   grpc:
+    # -- gRPC port for health check
+    # @section -- UCS Configuration
     port: 8000
+    # -- gRPC service name for health check
+    # @section -- UCS Configuration
     service: grpc.health.v1.Health
+  # -- Initial delay before probe starts
+  # @section -- UCS Configuration
   initialDelaySeconds: 90
+  # -- How often to perform the probe
+  # @section -- UCS Configuration
   periodSeconds: 30
+  # -- Minimum consecutive successes for the probe to be considered successful
+  # @section -- UCS Configuration
   successThreshold: 1
+  # -- Number of seconds after which the probe times out
+  # @section -- UCS Configuration
   timeoutSeconds: 10
 
-# Readiness probe configuration
+# -- Readiness probe configuration
+# @section -- UCS Configuration
 readinessProbe:
+  # -- Number of failures before pod is marked unready
+  # @section -- UCS Configuration
   failureThreshold: 5
+  # -- gRPC health check configuration
+  # @section -- UCS Configuration
   grpc:
+    # -- gRPC port for health check
+    # @section -- UCS Configuration
     port: 8000
+    # -- gRPC service name for health check
+    # @section -- UCS Configuration
     service: grpc.health.v1.Health
+  # -- Initial delay before probe starts
+  # @section -- UCS Configuration
   initialDelaySeconds: 30
+  # -- How often to perform the probe
+  # @section -- UCS Configuration
   periodSeconds: 30
+  # -- Minimum consecutive successes for the probe to be considered successful
+  # @section -- UCS Configuration
   successThreshold: 1
+  # -- Number of seconds after which the probe times out
+  # @section -- UCS Configuration
   timeoutSeconds: 5
 
-# Environment variables
+# -- UCS Environment Variables
+# @section -- UCS Configuration
 env:
   - name: CS__LOG__CONSOLE__ENABLED
     value: "true"
@@ -143,9 +262,9 @@ env:
   - name: CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL
     value: "https://api.authorize.net/xml/v1/request.api/"
   - name: CS__PROXY__HTTPS_URL
-    value: "http://m1.outbound.juspay.net:80"
+    value: "https_proxy"
   - name: CS__PROXY__HTTP_URL
-    value: "http://m1.outbound.juspay.net:80"
+    value: "http_proxy"
   - name: CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT
     value: "90"
   - name: CS__PROXY__BYPASS_PROXY_URLS

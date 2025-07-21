@@ -104,6 +104,11 @@ After deploying the Helm chart, you should verify that everything is working cor
 * [ ] &#x20;Verify if you are able to [create API key](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
 * [ ] &#x20;Verify if you are able to [configure a new payment processor](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
 
+### UCS (Unified Connector Service)
+
+* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext <ucs-service>:8000 grpc.health.v1.Health/Check`
+* [ ] &#x20;Verify metrics are being exposed at `<ucs-service>:8080/metrics`
+
 ## 💳 Test a payment
 
 Hyperswitch Control center will mimic the behavior of your checkout page. Please follow below steps to test a payment with the deployed app
@@ -211,6 +216,7 @@ task ur
 | Repository | Name | Version |
 |------------|------|---------|
 | file://../hyperswitch-app | hyperswitch-app | 0.2.6 |
+| file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.0 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.6 |
 | https://prometheus-community.github.io/helm-charts | prometheus | 27.8.0 |
 
@@ -792,6 +798,448 @@ task ur
     <td><div><a href="../hyperswitch-app/values.yaml#L30">hyperswitch-app.services.sdk.version</a></div></td>
     <td><div><code>"0.123.0"</code></div></td>
     <td>SDK version</td>
+  </tr></tbody>
+</table>
+<h3>UCS Configuration</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L169">hyperswitch-ucs.affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Affinity for pod assignment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L144">hyperswitch-ucs.autoscaling</a></div></td>
+    <td><div><code>{
+  "enabled": false,
+  "maxReplicas": 100,
+  "minReplicas": 1,
+  "targetCPUUtilizationPercentage": 80
+}</code></div></td>
+    <td>Autoscaling configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L147">hyperswitch-ucs.autoscaling.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable autoscaling</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L153">hyperswitch-ucs.autoscaling.maxReplicas</a></div></td>
+    <td><div><code>100</code></div></td>
+    <td>Maximum number of replicas</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L150">hyperswitch-ucs.autoscaling.minReplicas</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum number of replicas</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L156">hyperswitch-ucs.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><code>80</code></div></td>
+    <td>Target CPU utilization percentage</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L229">hyperswitch-ucs.env</a></div></td>
+    <td><div><code>[
+  {
+    "name": "CS__LOG__CONSOLE__ENABLED",
+    "value": "true"
+  },
+  {
+    "name": "CS__LOG__CONSOLE__LEVEL",
+    "value": "DEBUG"
+  },
+  {
+    "name": "CS__LOG__CONSOLE__LOG_FORMAT",
+    "value": "json"
+  },
+  {
+    "name": "CS__SERVER__HOST",
+    "value": "0.0.0.0"
+  },
+  {
+    "name": "CS__SERVER__PORT",
+    "value": "8000"
+  },
+  {
+    "name": "CS__SERVER__TYPE",
+    "value": "grpc"
+  },
+  {
+    "name": "CS__METRICS__HOST",
+    "value": "0.0.0.0"
+  },
+  {
+    "name": "CS__METRICS__PORT",
+    "value": "8080"
+  },
+  {
+    "name": "CS__CONNECTORS__ADYEN__BASE_URL",
+    "value": "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+  },
+  {
+    "name": "CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL",
+    "value": "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+  },
+  {
+    "name": "CS__CONNECTORS__RAZORPAY__BASE_URL",
+    "value": "https://api.razorpay.com/"
+  },
+  {
+    "name": "CS__CONNECTORS__FISERV__BASE_URL",
+    "value": "https://cert.api.fiservapps.com/"
+  },
+  {
+    "name": "CS__CONNECTORS__ELAVON__BASE_URL",
+    "value": "https://api.convergepay.com/VirtualMerchant/"
+  },
+  {
+    "name": "CS__CONNECTORS__XENDIT__BASE_URL",
+    "value": "https://api.xendit.co/"
+  },
+  {
+    "name": "CS__CONNECTORS__RAZORPAYV2__BASE_URL",
+    "value": "https://api.razorpay.com/"
+  },
+  {
+    "name": "CS__CONNECTORS__CHECKOUT__BASE_URL",
+    "value": "https://api.checkout.com/"
+  },
+  {
+    "name": "CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL",
+    "value": "https://api.authorize.net/xml/v1/request.api/"
+  },
+  {
+    "name": "CS__PROXY__HTTPS_URL",
+    "value": "https_proxy"
+  },
+  {
+    "name": "CS__PROXY__HTTP_URL",
+    "value": "http_proxy"
+  },
+  {
+    "name": "CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT",
+    "value": "90"
+  },
+  {
+    "name": "CS__PROXY__BYPASS_PROXY_URLS",
+    "value": "localhost,local"
+  }
+]</code></div></td>
+    <td>UCS Environment Variables</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L30">hyperswitch-ucs.fullnameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Override the full name of the chart</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L11">hyperswitch-ucs.image</a></div></td>
+    <td><div><code>{
+  "pullPolicy": "IfNotPresent",
+  "repository": "ghcr.io/juspay/connector-service",
+  "tag": "main-b1487cb"
+}</code></div></td>
+    <td>Container image configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L17">hyperswitch-ucs.image.pullPolicy</a></div></td>
+    <td><div><code>"IfNotPresent"</code></div></td>
+    <td>Image pull policy</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L14">hyperswitch-ucs.image.repository</a></div></td>
+    <td><div><code>"ghcr.io/juspay/connector-service"</code></div></td>
+    <td>Docker image repository</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L20">hyperswitch-ucs.image.tag</a></div></td>
+    <td><div><code>"main-b1487cb"</code></div></td>
+    <td>Image tag to use</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L24">hyperswitch-ucs.imagePullSecrets</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Image pull secrets for private registries</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L93">hyperswitch-ucs.ingress</a></div></td>
+    <td><div><code>{
+  "annotations": {},
+  "className": "",
+  "enabled": false,
+  "hosts": [
+    {
+      "host": "hyperswitch-ucs.local",
+      "paths": [
+        {
+          "path": "/",
+          "pathType": "ImplementationSpecific"
+        }
+      ]
+    }
+  ],
+  "tls": []
+}</code></div></td>
+    <td>Ingress configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L102">hyperswitch-ucs.ingress.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Additional annotations for the Ingress resource</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L99">hyperswitch-ucs.ingress.className</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>IngressClass that will be used to implement the Ingress</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L96">hyperswitch-ucs.ingress.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable ingress controller resource</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L108">hyperswitch-ucs.ingress.hosts</a></div></td>
+    <td><div><code>[
+  {
+    "host": "hyperswitch-ucs.local",
+    "paths": [
+      {
+        "path": "/",
+        "pathType": "ImplementationSpecific"
+      }
+    ]
+  }
+]</code></div></td>
+    <td>An array with hostname(s) to be covered with the ingress record</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L115">hyperswitch-ucs.ingress.tls</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>TLS configuration for hostname(s) to be covered with this ingress record</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L173">hyperswitch-ucs.livenessProbe</a></div></td>
+    <td><div><code>{
+  "failureThreshold": 3,
+  "grpc": {
+    "port": 8000,
+    "service": "grpc.health.v1.Health"
+  },
+  "initialDelaySeconds": 90,
+  "periodSeconds": 30,
+  "successThreshold": 1,
+  "timeoutSeconds": 10
+}</code></div></td>
+    <td>Liveness probe configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L176">hyperswitch-ucs.livenessProbe.failureThreshold</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td>Number of failures before pod is restarted</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L179">hyperswitch-ucs.livenessProbe.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "service": "grpc.health.v1.Health"
+}</code></div></td>
+    <td>gRPC health check configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L182">hyperswitch-ucs.livenessProbe.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC port for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L185">hyperswitch-ucs.livenessProbe.grpc.service</a></div></td>
+    <td><div><code>"grpc.health.v1.Health"</code></div></td>
+    <td>gRPC service name for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L188">hyperswitch-ucs.livenessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>90</code></div></td>
+    <td>Initial delay before probe starts</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L191">hyperswitch-ucs.livenessProbe.periodSeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>How often to perform the probe</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L194">hyperswitch-ucs.livenessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum consecutive successes for the probe to be considered successful</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L197">hyperswitch-ucs.livenessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>10</code></div></td>
+    <td>Number of seconds after which the probe times out</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L27">hyperswitch-ucs.nameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Override the name of the chart</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L161">hyperswitch-ucs.nodeSelector</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Node labels for pod assignment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L47">hyperswitch-ucs.podAnnotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Annotations to add to the pod</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L51">hyperswitch-ucs.podSecurityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Pod security context</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L201">hyperswitch-ucs.readinessProbe</a></div></td>
+    <td><div><code>{
+  "failureThreshold": 5,
+  "grpc": {
+    "port": 8000,
+    "service": "grpc.health.v1.Health"
+  },
+  "initialDelaySeconds": 30,
+  "periodSeconds": 30,
+  "successThreshold": 1,
+  "timeoutSeconds": 5
+}</code></div></td>
+    <td>Readiness probe configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L204">hyperswitch-ucs.readinessProbe.failureThreshold</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td>Number of failures before pod is marked unready</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L207">hyperswitch-ucs.readinessProbe.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "service": "grpc.health.v1.Health"
+}</code></div></td>
+    <td>gRPC health check configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L210">hyperswitch-ucs.readinessProbe.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC port for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L213">hyperswitch-ucs.readinessProbe.grpc.service</a></div></td>
+    <td><div><code>"grpc.health.v1.Health"</code></div></td>
+    <td>gRPC service name for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L216">hyperswitch-ucs.readinessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>Initial delay before probe starts</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L219">hyperswitch-ucs.readinessProbe.periodSeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>How often to perform the probe</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L222">hyperswitch-ucs.readinessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum consecutive successes for the probe to be considered successful</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L225">hyperswitch-ucs.readinessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td>Number of seconds after which the probe times out</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L7">hyperswitch-ucs.replicaCount</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Number of replicas for the UCS deployment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L122">hyperswitch-ucs.resources</a></div></td>
+    <td><div><code>{
+  "limits": {
+    "cpu": "1000m",
+    "memory": "1000Mi"
+  },
+  "requests": {
+    "cpu": "400m",
+    "memory": "400Mi"
+  }
+}</code></div></td>
+    <td>Resource limits and requests for the UCS containers</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L125">hyperswitch-ucs.resources.limits</a></div></td>
+    <td><div><code>{
+  "cpu": "1000m",
+  "memory": "1000Mi"
+}</code></div></td>
+    <td>Resource limits</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L128">hyperswitch-ucs.resources.limits.cpu</a></div></td>
+    <td><div><code>"1000m"</code></div></td>
+    <td>CPU limit</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L131">hyperswitch-ucs.resources.limits.memory</a></div></td>
+    <td><div><code>"1000Mi"</code></div></td>
+    <td>Memory limit</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L134">hyperswitch-ucs.resources.requests</a></div></td>
+    <td><div><code>{
+  "cpu": "400m",
+  "memory": "400Mi"
+}</code></div></td>
+    <td>Resource requests</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L137">hyperswitch-ucs.resources.requests.cpu</a></div></td>
+    <td><div><code>"400m"</code></div></td>
+    <td>CPU request</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L140">hyperswitch-ucs.resources.requests.memory</a></div></td>
+    <td><div><code>"400Mi"</code></div></td>
+    <td>Memory request</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L57">hyperswitch-ucs.securityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Container security context</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L68">hyperswitch-ucs.service</a></div></td>
+    <td><div><code>{
+  "grpc": {
+    "port": 8000,
+    "targetPort": 8000
+  },
+  "metrics": {
+    "port": 8080,
+    "targetPort": 8080
+  },
+  "type": "ClusterIP"
+}</code></div></td>
+    <td>Service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L74">hyperswitch-ucs.service.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "targetPort": 8000
+}</code></div></td>
+    <td>gRPC service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L77">hyperswitch-ucs.service.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC service port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L80">hyperswitch-ucs.service.grpc.targetPort</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC container port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L83">hyperswitch-ucs.service.metrics</a></div></td>
+    <td><div><code>{
+  "port": 8080,
+  "targetPort": 8080
+}</code></div></td>
+    <td>Metrics service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L86">hyperswitch-ucs.service.metrics.port</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics service port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L89">hyperswitch-ucs.service.metrics.targetPort</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics container port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L71">hyperswitch-ucs.service.type</a></div></td>
+    <td><div><code>"ClusterIP"</code></div></td>
+    <td>Service type</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L34">hyperswitch-ucs.serviceAccount</a></div></td>
+    <td><div><code>{
+  "annotations": {},
+  "create": true,
+  "name": ""
+}</code></div></td>
+    <td>Service account configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L40">hyperswitch-ucs.serviceAccount.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Annotations to add to the service account</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L37">hyperswitch-ucs.serviceAccount.create</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td>Specifies whether a service account should be created</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L43">hyperswitch-ucs.serviceAccount.name</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>The name of the service account to use. If not set and create is true, a name is generated using the fullname template</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L165">hyperswitch-ucs.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Tolerations for pod assignment</td>
   </tr></tbody>
 </table>
 <h3>Other Values</h3>

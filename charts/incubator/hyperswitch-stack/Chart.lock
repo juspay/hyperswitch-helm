@@ -11,5 +11,5 @@ dependencies:
 - name: hyperswitch-ucs
   repository: file://../hyperswitch-ucs
   version: 0.1.0
-digest: sha256:7c40ef0f4fe6d0a1b248b17613f38d9b9bbf61b906bd77e82d1f173fbb832503
-generated: "2025-07-18T18:46:33.408983+05:30"
+digest: sha256:be5dd1dafd7533df546ab24fbcd0aef797629108ae59db9e7c3446653e726cbf
+generated: "2025-07-21T12:25:38.228282+05:30"
