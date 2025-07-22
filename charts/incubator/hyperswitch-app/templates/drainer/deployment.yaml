@@ -9,7 +9,7 @@ metadata:
     app: hyperswitch-drainer
     version: {{ .Values.services.drainer.version | replace "." "o" }}
 spec:
-  replicas: {{ .Values.drainer.replicas | default .Values.global.replicas }}
+  replicas: {{ .Values.drainer.replicas }}
   progressDeadlineSeconds: {{ .Values.drainer.progressDeadlineSeconds | default .Values.global.progressDeadlineSeconds }}
   strategy:
     {{- toYaml (.Values.drainer.strategy | default .Values.global.strategy) | nindent 4 }}

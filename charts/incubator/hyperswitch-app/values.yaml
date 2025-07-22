@@ -465,7 +465,10 @@ server:
       # -- Primary color of email body
       primary_color: "#006DF9"
       # -- Background color of email body
-      background_color: "#FFFFFF" 
+      background_color: "#FFFFFF"
+  kv_config: 
+    tls: 900
+    soft_kill: false   
 
   lock_settings:
     # -- Delay between retries in milliseconds
@@ -748,7 +751,7 @@ producer:
 # @ignored
 drainer:
   # -- Number of replicas to be used for the drainer
-  replicas: 1
+  replicas: 0
   # -- Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # -- The strategy that can be used to replace the old pods by new ones

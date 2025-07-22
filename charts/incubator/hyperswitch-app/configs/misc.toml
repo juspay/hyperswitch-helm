@@ -7,6 +7,10 @@ pool_size = {{ .Values.server.analytics.sqlx.pool_size }}             # Number o
 connection_timeout = {{ .Values.server.analytics.sqlx.connection_timeout }}    # Timeout for database connection in seconds
 queue_strategy = "{{ .Values.server.analytics.sqlx.queue_strategy }}"   # Add the queue strategy used by the database bb8 client
 
+[kv_config]
+ttl = {{ .Values.server.kv_config.tls }}
+soft_kill = {{ .Values.server.kv_config.soft_kill }}
+
 [paze_decrypt_keys]
 paze_private_key = "{{ .Values.server.paze_decrypt_keys.paze_private_key }}"                       # Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
 paze_private_key_passphrase = "{{ .Values.server.paze_decrypt_keys.paze_private_key_passphrase }}" # PEM Passphrase used for generating Private Key File cakey.pem
