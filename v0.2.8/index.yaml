@@ -3,7 +3,7 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-22T17:05:43.189954+05:30"
+    created: "2025-07-22T17:11:04.437815+05:30"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -36,7 +36,7 @@ entries:
     description: Hyperswitch is a community-led, open payments switch designed to
       empower digital businesses by providing fast, reliable, and affordable access
       to the best payments infrastructure.
-    digest: ec3ac18072ba84de752ab7a1c2848034880b92e6cb76cdb00c3bc55378d70c5d
+    digest: 675a13992ad63611c06b6ba7c11af3f2b2c14a8e660399cc1ea706f3ea1ed9bb
     name: hyperswitch-app
     type: application
     urls:
@@ -45,7 +45,7 @@ entries:
   hyperswitch-monitoring:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-22T17:05:43.212557+05:30"
+    created: "2025-07-22T17:11:04.467502+05:30"
     dependencies:
     - condition: kube-prometheus-stack.enabled
       name: kube-prometheus-stack
@@ -65,7 +65,7 @@ entries:
       version: 0.120.0
     description: Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail,
       and Grafana
-    digest: 6979c3ca24bb401020cdfac573be6dcd279cfcb9aded90e12c170c24688337e5
+    digest: 1c964561cce251a3162de61c07d1c2288d318b14ec4719c354ff8c3ae48efcd8
     name: hyperswitch-monitoring
     type: application
     urls:
@@ -74,9 +74,9 @@ entries:
   hyperswitch-ucs:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2025-07-22T17:05:43.213178+05:30"
+    created: "2025-07-22T17:11:04.468161+05:30"
     description: A Helm chart for Hyperswitch UCS Service
-    digest: 7e2bde19f36773f3af1e4858b298e29a6d0f4b898f7b6dc52e96f122eb3b3b22
+    digest: d456ae1a6759ed6c913c65916d40cfccad265f0184a97f22866fc316efcfed0e
     keywords:
     - ucs
     - service
@@ -89,7 +89,7 @@ entries:
   hyperswitch-web:
   - apiVersion: v2
     appVersion: 0.15.8
-    created: "2025-07-22T17:05:43.213492+05:30"
+    created: "2025-07-22T17:11:04.468835+05:30"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
       user to deploy standalone  [SDK](https://github.com/juspay/hyperswitch-web)
       with different way:   - prebuilt nginx static server (deployment - required
@@ -97,10 +97,10 @@ entries:
       assets saved in PVC)   The prebuilt image is suitable for production, no building
       time. Autobuild is suitable to quick start, assets are built in initContainer
       and saved in PVC. Nginx container will serve  assets'
-    digest: 1f6d744ccfb4841ac44745a4510f1f43a97c57cd1999d5e6d50c6eb4c7cfa50c
+    digest: 7b5b395ca2d7d6206ddd6ff1116d15481afe434365fe14e7026592b18b727066
     name: hyperswitch-web
     type: application
     urls:
     - https://juspay.github.io/hyperswitch-helm/v0.2.8/charts/hyperswitch-web-0.2.7.tgz
     version: 0.2.7
-generated: "2025-07-22T17:05:43.171643+05:30"
+generated: "2025-07-22T17:11:04.417857+05:30"

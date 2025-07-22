@@ -106,8 +106,8 @@ After deploying the Helm chart, you should verify that everything is working cor
 
 ### UCS (Unified Connector Service)
 
-* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext <ucs-service>:8000 grpc.health.v1.Health/Check`
-* [ ] &#x20;Verify metrics are being exposed at `<ucs-service>:8080/metrics`
+* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext localhost:8000 grpc.health.v1.Health/Check`
+* [ ] &#x20;Verify metrics are being exposed at `localhost:8080/metrics`
 
 ## 💳 Test a payment
 
@@ -123,7 +123,7 @@ By default card vault and its dependencies are installed, however you need to cr
   </summary>
   <p>
   To generate the master key and the custodian keys use the following command after cloning the repository.
-   
+
     # Generate master key
     git clone https://github.com/juspay/hyperswitch-card-vault.git
     cd hyperswitch-card-vault
@@ -136,7 +136,7 @@ By default card vault and its dependencies are installed, however you need to cr
 
     # Generating the public keys
     openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
-    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem 
+    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
 </p>
 </details>
 <details>
@@ -184,7 +184,7 @@ By default card vault and its dependencies are installed, however you need to cr
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
     curl -X POST http://localhost:8080/custodian/decrypt
-   
+
   If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p>
 </details>
