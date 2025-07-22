@@ -242,47 +242,41 @@ hyperswitch-ucs:
   tolerations: []
   affinity: {}
 
-  # Environment variables
-  env:
-    - name: CS__LOG__CONSOLE__ENABLED
-      value: "true"
-    - name: CS__LOG__CONSOLE__LEVEL
-      value: "DEBUG"
-    - name: CS__LOG__CONSOLE__LOG_FORMAT
-      value: "json"
-    - name: CS__SERVER__HOST
-      value: "0.0.0.0"
-    - name: CS__SERVER__PORT
-      value: "8000"
-    - name: CS__SERVER__TYPE
-      value: "grpc"
-    - name: CS__METRICS__HOST
-      value: "0.0.0.0"
-    - name: CS__METRICS__PORT
-      value: "8080"
-    - name: CS__CONNECTORS__ADYEN__BASE_URL
-      value: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
-    - name: CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL
-      value: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
-    - name: CS__CONNECTORS__RAZORPAY__BASE_URL
-      value: "https://api.razorpay.com/"
-    - name: CS__CONNECTORS__FISERV__BASE_URL
-      value: "https://cert.api.fiservapps.com/"
-    - name: CS__CONNECTORS__ELAVON__BASE_URL
-      value: "https://api.convergepay.com/VirtualMerchant/"
-    - name: CS__CONNECTORS__XENDIT__BASE_URL
-      value: "https://api.xendit.co/"
-    - name: CS__CONNECTORS__RAZORPAYV2__BASE_URL
-      value: "https://api.razorpay.com/"
-    - name: CS__CONNECTORS__CHECKOUT__BASE_URL
-      value: "https://api.checkout.com/"
-    - name: CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL
-      value: "https://api.authorize.net/xml/v1/request.api/"
-    - name: CS__PROXY__HTTPS_URL
-      value: ""
-    - name: CS__PROXY__HTTP_URL
-      value: ""
-    - name: CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT
-      value: "90"
-    - name: CS__PROXY__BYPASS_PROXY_URLS
-      value: "localhost,local"
+  # Configuration via ConfigMap
+  config:
+    log:
+      console:
+        enabled: true
+        level: "DEBUG"
+        log_format: "json"
+    server:
+      host: "0.0.0.0"
+      port: 8000
+      type: "grpc"
+    metrics:
+      host: "0.0.0.0"
+      port: 8080
+    connectors:
+      adyen:
+        base_url: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+        dispute_base_url: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+      razorpay:
+        base_url: "https://api.razorpay.com/"
+      fiserv:
+        base_url: "https://cert.api.fiservapps.com/"
+      elavon:
+        base_url: "https://api.convergepay.com/VirtualMerchant/"
+      xendit:
+        base_url: "https://api.xendit.co/"
+      razorpayv2:
+        base_url: "https://api.razorpay.com/"
+      checkout:
+        base_url: "https://api.checkout.com/"
+      authorizedotnet:
+        base_url: "https://api.authorize.net/xml/v1/request.api/"
+    proxy:
+      https_url: ""
+      http_url: ""
+      idle_pool_connection_timeout: 90
+      bypass_proxy_urls: ["localhost", "local"]
+

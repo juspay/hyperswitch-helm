@@ -61,10 +61,16 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            {{- if .Values.env }}
             {{- range .Values.env }}
             - name: {{ .name }}
               value: {{ .value | quote }}
             {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: ucs-config
+              mountPath: /app/config/production.toml
+              subPath: production.toml
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -77,3 +83,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: ucs-config-{{ .Release.Name }}
+          name: ucs-config

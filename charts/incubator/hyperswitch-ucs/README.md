@@ -42,7 +42,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 
 ## Values
 
-### UCS Configuration
+### Connector Service
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -52,7 +52,6 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | autoscaling.maxReplicas | int | `100` | Maximum number of replicas |
 | autoscaling.minReplicas | int | `1` | Minimum number of replicas |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
-| env | list | `[{"name":"CS__LOG__CONSOLE__ENABLED","value":"true"},{"name":"CS__LOG__CONSOLE__LEVEL","value":"DEBUG"},{"name":"CS__LOG__CONSOLE__LOG_FORMAT","value":"json"},{"name":"CS__SERVER__HOST","value":"0.0.0.0"},{"name":"CS__SERVER__PORT","value":"8000"},{"name":"CS__SERVER__TYPE","value":"grpc"},{"name":"CS__METRICS__HOST","value":"0.0.0.0"},{"name":"CS__METRICS__PORT","value":"8080"},{"name":"CS__CONNECTORS__ADYEN__BASE_URL","value":"https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"},{"name":"CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL","value":"https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"},{"name":"CS__CONNECTORS__RAZORPAY__BASE_URL","value":"https://api.razorpay.com/"},{"name":"CS__CONNECTORS__FISERV__BASE_URL","value":"https://cert.api.fiservapps.com/"},{"name":"CS__CONNECTORS__ELAVON__BASE_URL","value":"https://api.convergepay.com/VirtualMerchant/"},{"name":"CS__CONNECTORS__XENDIT__BASE_URL","value":"https://api.xendit.co/"},{"name":"CS__CONNECTORS__RAZORPAYV2__BASE_URL","value":"https://api.razorpay.com/"},{"name":"CS__CONNECTORS__CHECKOUT__BASE_URL","value":"https://api.checkout.com/"},{"name":"CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL","value":"https://api.authorize.net/xml/v1/request.api/"},{"name":"CS__PROXY__HTTPS_URL","value":"https_proxy"},{"name":"CS__PROXY__HTTP_URL","value":"http_proxy"},{"name":"CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT","value":"90"},{"name":"CS__PROXY__BYPASS_PROXY_URLS","value":"localhost,local"}]` | UCS Environment Variables |
 | fullnameOverride | string | `""` | Override the full name of the chart |
 | image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/juspay/connector-service","tag":"main-b1487cb"}` | Container image configuration |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
@@ -109,6 +108,32 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` | Tolerations for pod assignment |
+
+### Connector Service Configurations
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| config.connectors.adyen.base_url | string | `"https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"` | Adyen base URL |
+| config.connectors.adyen.dispute_base_url | string | `"https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"` | Adyen dispute base URL |
+| config.connectors.authorizedotnet.base_url | string | `"https://api.authorize.net/xml/v1/request.api/"` | Authorize.net base URL |
+| config.connectors.checkout.base_url | string | `"https://api.checkout.com/"` | Checkout base URL |
+| config.connectors.elavon.base_url | string | `"https://api.convergepay.com/VirtualMerchant/"` | Elavon base URL |
+| config.connectors.fiserv.base_url | string | `"https://cert.api.fiservapps.com/"` | Fiserv base URL |
+| config.connectors.razorpay.base_url | string | `"https://api.razorpay.com/"` | Razorpay base URL |
+| config.connectors.razorpayv2.base_url | string | `"https://api.razorpay.com/"` | Razorpay v2 base URL |
+| config.connectors.xendit.base_url | string | `"https://api.xendit.co/"` | Xendit base URL |
+| config.log.console.enabled | bool | `true` | Enable console logging |
+| config.log.console.level | string | `"DEBUG"` | Log level (DEBUG, INFO, WARN, ERROR) |
+| config.log.console.log_format | string | `"json"` | Log format (json, text) |
+| config.metrics.host | string | `"0.0.0.0"` | Metrics server host address |
+| config.metrics.port | int | `8080` | Metrics server port |
+| config.proxy.bypass_proxy_urls | list | `["localhost","local"]` | URLs to bypass proxy |
+| config.proxy.http_url | string | `"http_proxy"` | HTTP proxy URL |
+| config.proxy.https_url | string | `"https_proxy"` | HTTPS proxy URL |
+| config.proxy.idle_pool_connection_timeout | int | `90` | Idle pool connection timeout |
+| config.server.host | string | `"0.0.0.0"` | Server host address |
+| config.server.port | int | `8000` | Server port |
+| config.server.type | string | `"grpc"` | Server type |
 
 ### Example Configuration
 

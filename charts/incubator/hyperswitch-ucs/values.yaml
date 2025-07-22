@@ -3,57 +3,57 @@
 # Declare variables to be passed into your templates.
 
 # -- Number of replicas for the UCS deployment
-# @section -- UCS Configuration
+# @section -- Connector Service
 replicaCount: 1
 
 # -- Container image configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 image:
   # -- Docker image repository
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   repository: ghcr.io/juspay/connector-service
   # -- Image pull policy
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   pullPolicy: IfNotPresent
   # -- Image tag to use
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   tag: "main-b1487cb"
 
 # -- Image pull secrets for private registries
-# @section -- UCS Configuration
+# @section -- Connector Service
 imagePullSecrets: []
 # -- Override the name of the chart
-# @section -- UCS Configuration
+# @section -- Connector Service
 nameOverride: ""
 # -- Override the full name of the chart
-# @section -- UCS Configuration
+# @section -- Connector Service
 fullnameOverride: ""
 
 # -- Service account configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 serviceAccount:
   # -- Specifies whether a service account should be created
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   create: true
   # -- Annotations to add to the service account
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   annotations: {}
   # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   name: ""
 
 # -- Annotations to add to the pod
-# @section -- UCS Configuration
+# @section -- Connector Service
 podAnnotations: {}
 
 # -- Pod security context
-# @section -- UCS Configuration
+# @section -- Connector Service
 podSecurityContext:
   {}
   # fsGroup: 2000
 
 # -- Container security context
-# @section -- UCS Configuration
+# @section -- Connector Service
 securityContext:
   {}
   # capabilities:
@@ -64,208 +64,256 @@ securityContext:
   # runAsUser: 1000
 
 # -- Service configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 service:
   # -- Service type
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   type: ClusterIP
   # -- gRPC service configuration
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   grpc:
     # -- gRPC service port
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     port: 8000
     # -- gRPC container port
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     targetPort: 8000
   # -- Metrics service configuration
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   metrics:
     # -- Metrics service port
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     port: 8080
     # -- Metrics container port
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     targetPort: 8080
 
 # -- Ingress configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 ingress:
   # -- Enable ingress controller resource
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   enabled: false
   # -- IngressClass that will be used to implement the Ingress
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   className: ""
   # -- Additional annotations for the Ingress resource
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   annotations:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   # -- An array with hostname(s) to be covered with the ingress record
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   hosts:
     - host: hyperswitch-ucs.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   # -- TLS configuration for hostname(s) to be covered with this ingress record
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
 # -- Resource limits and requests for the UCS containers
-# @section -- UCS Configuration
+# @section -- Connector Service
 resources:
   # -- Resource limits
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   limits:
     # -- CPU limit
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     cpu: 1000m
     # -- Memory limit
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     memory: 1000Mi
   # -- Resource requests
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   requests:
     # -- CPU request
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     cpu: 400m
     # -- Memory request
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     memory: 400Mi
 
 # -- Autoscaling configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 autoscaling:
   # -- Enable autoscaling
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   enabled: false
   # -- Minimum number of replicas
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   minReplicas: 1
   # -- Maximum number of replicas
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   maxReplicas: 100
   # -- Target CPU utilization percentage
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
 # -- Node labels for pod assignment
-# @section -- UCS Configuration
+# @section -- Connector Service
 nodeSelector: {}
 
 # -- Tolerations for pod assignment
-# @section -- UCS Configuration
+# @section -- Connector Service
 tolerations: []
 
 # -- Affinity for pod assignment
-# @section -- UCS Configuration
+# @section -- Connector Service
 affinity: {}
 
 # -- Liveness probe configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 livenessProbe:
   # -- Number of failures before pod is restarted
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   failureThreshold: 3
   # -- gRPC health check configuration
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   grpc:
     # -- gRPC port for health check
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     port: 8000
     # -- gRPC service name for health check
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     service: grpc.health.v1.Health
   # -- Initial delay before probe starts
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   initialDelaySeconds: 90
   # -- How often to perform the probe
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   periodSeconds: 30
   # -- Minimum consecutive successes for the probe to be considered successful
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   successThreshold: 1
   # -- Number of seconds after which the probe times out
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   timeoutSeconds: 10
 
 # -- Readiness probe configuration
-# @section -- UCS Configuration
+# @section -- Connector Service
 readinessProbe:
   # -- Number of failures before pod is marked unready
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   failureThreshold: 5
   # -- gRPC health check configuration
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   grpc:
     # -- gRPC port for health check
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     port: 8000
     # -- gRPC service name for health check
-    # @section -- UCS Configuration
+    # @section -- Connector Service
     service: grpc.health.v1.Health
   # -- Initial delay before probe starts
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   initialDelaySeconds: 30
   # -- How often to perform the probe
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   periodSeconds: 30
   # -- Minimum consecutive successes for the probe to be considered successful
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   successThreshold: 1
   # -- Number of seconds after which the probe times out
-  # @section -- UCS Configuration
+  # @section -- Connector Service
   timeoutSeconds: 5
 
-# -- UCS Environment Variables
-# @section -- UCS Configuration
-env:
-  - name: CS__LOG__CONSOLE__ENABLED
-    value: "true"
-  - name: CS__LOG__CONSOLE__LEVEL
-    value: "DEBUG"
-  - name: CS__LOG__CONSOLE__LOG_FORMAT
-    value: "json"
-  - name: CS__SERVER__HOST
-    value: "0.0.0.0"
-  - name: CS__SERVER__PORT
-    value: "8000"
-  - name: CS__SERVER__TYPE
-    value: "grpc"
-  - name: CS__METRICS__HOST
-    value: "0.0.0.0"
-  - name: CS__METRICS__PORT
-    value: "8080"
-  - name: CS__CONNECTORS__ADYEN__BASE_URL
-    value: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
-  - name: CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL
-    value: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
-  - name: CS__CONNECTORS__RAZORPAY__BASE_URL
-    value: "https://api.razorpay.com/"
-  - name: CS__CONNECTORS__FISERV__BASE_URL
-    value: "https://cert.api.fiservapps.com/"
-  - name: CS__CONNECTORS__ELAVON__BASE_URL
-    value: "https://api.convergepay.com/VirtualMerchant/"
-  - name: CS__CONNECTORS__XENDIT__BASE_URL
-    value: "https://api.xendit.co/"
-  - name: CS__CONNECTORS__RAZORPAYV2__BASE_URL
-    value: "https://api.razorpay.com/"
-  - name: CS__CONNECTORS__CHECKOUT__BASE_URL
-    value: "https://api.checkout.com/"
-  - name: CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL
-    value: "https://api.authorize.net/xml/v1/request.api/"
-  - name: CS__PROXY__HTTPS_URL
-    value: "https_proxy"
-  - name: CS__PROXY__HTTP_URL
-    value: "http_proxy"
-  - name: CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT
-    value: "90"
-  - name: CS__PROXY__BYPASS_PROXY_URLS
-    value: "localhost,local"
+# UCS Configuration via ConfigMap
+config:
+  # Log configuration
+  log:
+    # Console log configuration
+    console:
+      # -- Enable console logging
+      # @section -- Connector Service Configurations
+      enabled: true
+      # -- Log level (DEBUG, INFO, WARN, ERROR)
+      # @section -- Connector Service Configurations
+      level: "DEBUG"
+      # -- Log format (json, text)
+      # @section -- Connector Service Configurations
+      log_format: "json"
+  # Server configuration
+  server:
+    # -- Server host address
+    # @section -- Connector Service Configurations
+    host: "0.0.0.0"
+    # -- Server port
+    # @section -- Connector Service Configurations
+    port: 8000
+    # -- Server type
+    # @section -- Connector Service Configurations
+    type: "grpc"
+  # Metrics server configuration
+  metrics:
+    # -- Metrics server host address
+    # @section -- Connector Service Configurations
+    host: "0.0.0.0"
+    # -- Metrics server port
+    # @section -- Connector Service Configurations
+    port: 8080
+  # Connector configurations
+  connectors:
+    # Adyen connector configuration
+    adyen:
+      # -- Adyen base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+      # -- Adyen dispute base URL
+      # @section -- Connector Service Configurations
+      dispute_base_url: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+    # Razorpay connector configuration
+    razorpay:
+      # -- Razorpay base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.razorpay.com/"
+    # Fiserv connector configuration
+    fiserv:
+      # -- Fiserv base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://cert.api.fiservapps.com/"
+    # Elavon connector configuration
+    elavon:
+      # -- Elavon base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.convergepay.com/VirtualMerchant/"
+    # Xendit connector configuration
+    xendit:
+      # -- Xendit base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.xendit.co/"
+    # Razorpay v2 connector configuration
+    razorpayv2:
+      # -- Razorpay v2 base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.razorpay.com/"
+    # Checkout connector configuration
+    checkout:
+      # -- Checkout base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.checkout.com/"
+    # Authorize.net connector configuration
+    authorizedotnet:
+      # -- Authorize.net base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.authorize.net/xml/v1/request.api/"
+  # Proxy configuration
+  proxy:
+    # -- HTTPS proxy URL
+    # @section -- Connector Service Configurations
+    https_url: "https_proxy"
+    # -- HTTP proxy URL
+    # @section -- Connector Service Configurations
+    http_url: "http_proxy"
+    # -- Idle pool connection timeout
+    # @section -- Connector Service Configurations
+    idle_pool_connection_timeout: 90
+    # -- URLs to bypass proxy
+    # @section -- Connector Service Configurations
+    bypass_proxy_urls: ["localhost", "local"]

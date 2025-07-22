@@ -40,11 +40,11 @@ Hyperswitch is a community-led, open payments switch designed to empower digital
 
 Here are the components of Hyperswitch that deliver the whole solution:
 
-- [Hyperswitch Backend](https://github.com/juspay/hyperswitch): Powering Payment Processing
+* [Hyperswitch Backend](https://github.com/juspay/hyperswitch): Powering Payment Processing
 
-- [SDK (Frontend)](https://github.com/juspay/hyperswitch-web): Simplifying Integration and Powering the UI
+* [SDK (Frontend)](https://github.com/juspay/hyperswitch-web): Simplifying Integration and Powering the UI
 
-- [Control Centre](https://github.com/juspay/hyperswitch-control-center): Managing Operations with Ease
+* [Control Centre](https://github.com/juspay/hyperswitch-control-center): Managing Operations with Ease
 
 Jump in and contribute to these repositories to help improve and expand Hyperswitch!
 
@@ -79,18 +79,16 @@ helm repo update
 
 Before installing the service make sure you labels your kubernetes nodes and create a namespace `hyperswitch`
 Note: minimum --memory 6000 --cpus 4 needed
-
 ```bash
 kubectl create namespace hyperswitch
 ```
-
 Use below command to install hyperswitch services with above configs
 
 ```bash
 helm install hypers-v1 hyperswitch/hyperswitch-stack -n hyperswitch
 ```
 
-That's it! Hyperswitch should be up and running on your Cluster :tada: :tada:
+That's it! Hyperswitch should be up and running on your Cluster  :tada: :tada:
 
 ## Post-Deployment Checklist
 
@@ -98,18 +96,18 @@ After deploying the Helm chart, you should verify that everything is working cor
 
 ### App Server
 
-- [ ] &#x20;Check that `hyperswitch_server/health` returns `health is good`
+* [ ] &#x20;Check that `hyperswitch_server/health` returns `health is good`
 
 ### Control Center
 
-- [ ] &#x20;Verify if you are able to sign in or sign up
-- [ ] &#x20;Verify if you are able to [create API key](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
-- [ ] &#x20;Verify if you are able to [configure a new payment processor](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
+* [ ] &#x20;Verify if you are able to sign in or sign up
+* [ ] &#x20;Verify if you are able to [create API key](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
+* [ ] &#x20;Verify if you are able to [configure a new payment processor](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
 
 ### UCS (Unified Connector Service)
 
-- [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext <ucs-service>:8000 grpc.health.v1.Health/Check`
-- [ ] &#x20;Verify metrics are being exposed at `<ucs-service>:8080/metrics`
+* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext <ucs-service>:8000 grpc.health.v1.Health/Check`
+* [ ] &#x20;Verify metrics are being exposed at `<ucs-service>:8080/metrics`
 
 ## 💳 Test a payment
 
@@ -125,7 +123,7 @@ By default card vault and its dependencies are installed, however you need to cr
   </summary>
   <p>
   To generate the master key and the custodian keys use the following command after cloning the repository.
-
+   
     # Generate master key
     git clone https://github.com/juspay/hyperswitch-card-vault.git
     cd hyperswitch-card-vault
@@ -138,8 +136,7 @@ By default card vault and its dependencies are installed, however you need to cr
 
     # Generating the public keys
     openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
-    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
-
+    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem 
 </p>
 </details>
 <details>
@@ -178,7 +175,7 @@ By default card vault and its dependencies are installed, however you need to cr
   Once the locker is up and running, use the 2 key custodian keys generated earlier securely to unlock the locker for use.
   Go to the respective locker Pod, open its shell and run below cURLs
 
-The following cURLs are to be used to provide keys
+  The following cURLs are to be used to provide keys
 
     # temporary turn of saving to history to run the following commands
     unset HISTFILE
@@ -187,9 +184,8 @@ The following cURLs are to be used to provide keys
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
     curl -X POST http://localhost:8080/custodian/decrypt
-
-If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
-
+   
+  If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p>
 </details>
 
@@ -208,7 +204,6 @@ The community and core team are available in [GitHub Discussions](https://github
 Join our Conversation in [Slack](https://join.slack.com/t/hyperswitch-io/shared_invite/zt-2jqxmpsbm-WXUENx022HjNEy~Ark7Orw), [Discord](https://discord.gg/wJZ7DVW8mm), [Twitter](https://x.com/hyperswitchio)
 
 When you want others to use the changes you have added you need to package it and then index it
-
 ```bash
 # To package and index the new changes
 task pihh
@@ -218,15 +213,14 @@ task ur
 
 ## Requirements
 
-| Repository                       | Name                   | Version |
-| -------------------------------- | ---------------------- | ------- |
-| file://../hyperswitch-app        | hyperswitch-app        | 0.2.7   |
-| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.0   |
-| file://../hyperswitch-ucs        | hyperswitch-ucs        | 0.1.0   |
-| file://../hyperswitch-web        | hyperswitch-web        | 0.2.7   |
+| Repository | Name | Version |
+|------------|------|---------|
+| file://../hyperswitch-app | hyperswitch-app | 0.2.7 |
+| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.0 |
+| file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.0 |
+| file://../hyperswitch-web | hyperswitch-web | 0.2.7 |
 
 ## Values
-
 <h3>Dependencies configuration</h3>
 <table height="400px">
 <thead>
@@ -782,7 +776,7 @@ task ur
     <td>SDK version</td>
   </tr></tbody>
 </table>
-<h3>UCS Configuration</h3>
+<h3>Connector Service</h3>
 <table height="400px">
 <thead>
 	<th >Key</th>
@@ -818,95 +812,6 @@ task ur
     <td><div><a href="../hyperswitch-ucs/values.yaml#L156">hyperswitch-ucs.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td>Target CPU utilization percentage</td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-ucs/values.yaml#L229">hyperswitch-ucs.env</a></div></td>
-    <td><div><code>[
-  {
-    "name": "CS__LOG__CONSOLE__ENABLED",
-    "value": "true"
-  },
-  {
-    "name": "CS__LOG__CONSOLE__LEVEL",
-    "value": "DEBUG"
-  },
-  {
-    "name": "CS__LOG__CONSOLE__LOG_FORMAT",
-    "value": "json"
-  },
-  {
-    "name": "CS__SERVER__HOST",
-    "value": "0.0.0.0"
-  },
-  {
-    "name": "CS__SERVER__PORT",
-    "value": "8000"
-  },
-  {
-    "name": "CS__SERVER__TYPE",
-    "value": "grpc"
-  },
-  {
-    "name": "CS__METRICS__HOST",
-    "value": "0.0.0.0"
-  },
-  {
-    "name": "CS__METRICS__PORT",
-    "value": "8080"
-  },
-  {
-    "name": "CS__CONNECTORS__ADYEN__BASE_URL",
-    "value": "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
-  },
-  {
-    "name": "CS__CONNECTORS__ADYEN__DISPUTE_BASE_URL",
-    "value": "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
-  },
-  {
-    "name": "CS__CONNECTORS__RAZORPAY__BASE_URL",
-    "value": "https://api.razorpay.com/"
-  },
-  {
-    "name": "CS__CONNECTORS__FISERV__BASE_URL",
-    "value": "https://cert.api.fiservapps.com/"
-  },
-  {
-    "name": "CS__CONNECTORS__ELAVON__BASE_URL",
-    "value": "https://api.convergepay.com/VirtualMerchant/"
-  },
-  {
-    "name": "CS__CONNECTORS__XENDIT__BASE_URL",
-    "value": "https://api.xendit.co/"
-  },
-  {
-    "name": "CS__CONNECTORS__RAZORPAYV2__BASE_URL",
-    "value": "https://api.razorpay.com/"
-  },
-  {
-    "name": "CS__CONNECTORS__CHECKOUT__BASE_URL",
-    "value": "https://api.checkout.com/"
-  },
-  {
-    "name": "CS__CONNECTORS__AUTHORIZEDOTNET__BASE_URL",
-    "value": "https://api.authorize.net/xml/v1/request.api/"
-  },
-  {
-    "name": "CS__PROXY__HTTPS_URL",
-    "value": "https_proxy"
-  },
-  {
-    "name": "CS__PROXY__HTTP_URL",
-    "value": "http_proxy"
-  },
-  {
-    "name": "CS__PROXY__IDLE_POOL_CONNECTION_TIMEOUT",
-    "value": "90"
-  },
-  {
-    "name": "CS__PROXY__BYPASS_PROXY_URLS",
-    "value": "localhost,local"
-  }
-]</code></div></td>
-    <td>UCS Environment Variables</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-ucs/values.yaml#L30">hyperswitch-ucs.fullnameOverride</a></div></td>
     <td><div><code>""</code></div></td>
@@ -1222,6 +1127,102 @@ task ur
     <td><div><a href="../hyperswitch-ucs/values.yaml#L165">hyperswitch-ucs.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td>Tolerations for pod assignment</td>
+  </tr></tbody>
+</table>
+<h3>Connector Service Configurations</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L267">hyperswitch-ucs.config.connectors.adyen.base_url</a></div></td>
+    <td><div><code>"https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"</code></div></td>
+    <td>Adyen base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L270">hyperswitch-ucs.config.connectors.adyen.dispute_base_url</a></div></td>
+    <td><div><code>"https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"</code></div></td>
+    <td>Adyen dispute base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L305">hyperswitch-ucs.config.connectors.authorizedotnet.base_url</a></div></td>
+    <td><div><code>"https://api.authorize.net/xml/v1/request.api/"</code></div></td>
+    <td>Authorize.net base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L300">hyperswitch-ucs.config.connectors.checkout.base_url</a></div></td>
+    <td><div><code>"https://api.checkout.com/"</code></div></td>
+    <td>Checkout base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L285">hyperswitch-ucs.config.connectors.elavon.base_url</a></div></td>
+    <td><div><code>"https://api.convergepay.com/VirtualMerchant/"</code></div></td>
+    <td>Elavon base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L280">hyperswitch-ucs.config.connectors.fiserv.base_url</a></div></td>
+    <td><div><code>"https://cert.api.fiservapps.com/"</code></div></td>
+    <td>Fiserv base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L275">hyperswitch-ucs.config.connectors.razorpay.base_url</a></div></td>
+    <td><div><code>"https://api.razorpay.com/"</code></div></td>
+    <td>Razorpay base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L295">hyperswitch-ucs.config.connectors.razorpayv2.base_url</a></div></td>
+    <td><div><code>"https://api.razorpay.com/"</code></div></td>
+    <td>Razorpay v2 base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L290">hyperswitch-ucs.config.connectors.xendit.base_url</a></div></td>
+    <td><div><code>"https://api.xendit.co/"</code></div></td>
+    <td>Xendit base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L235">hyperswitch-ucs.config.log.console.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td>Enable console logging</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L238">hyperswitch-ucs.config.log.console.level</a></div></td>
+    <td><div><code>"DEBUG"</code></div></td>
+    <td>Log level (DEBUG, INFO, WARN, ERROR)</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L241">hyperswitch-ucs.config.log.console.log_format</a></div></td>
+    <td><div><code>"json"</code></div></td>
+    <td>Log format (json, text)</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L257">hyperswitch-ucs.config.metrics.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td>Metrics server host address</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L260">hyperswitch-ucs.config.metrics.port</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics server port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L319">hyperswitch-ucs.config.proxy.bypass_proxy_urls</a></div></td>
+    <td><div><code>[
+  "localhost",
+  "local"
+]</code></div></td>
+    <td>URLs to bypass proxy</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L313">hyperswitch-ucs.config.proxy.http_url</a></div></td>
+    <td><div><code>"http_proxy"</code></div></td>
+    <td>HTTP proxy URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L310">hyperswitch-ucs.config.proxy.https_url</a></div></td>
+    <td><div><code>"https_proxy"</code></div></td>
+    <td>HTTPS proxy URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L316">hyperswitch-ucs.config.proxy.idle_pool_connection_timeout</a></div></td>
+    <td><div><code>90</code></div></td>
+    <td>Idle pool connection timeout</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L246">hyperswitch-ucs.config.server.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td>Server host address</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L249">hyperswitch-ucs.config.server.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>Server port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L252">hyperswitch-ucs.config.server.type</a></div></td>
+    <td><div><code>"grpc"</code></div></td>
+    <td>Server type</td>
   </tr></tbody>
 </table>
 <h3>Other Values</h3>
@@ -3237,7 +3238,7 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L207">hyperswitch-monitoring.promtail.config.clients[0].url</a></div></td>
-    <td><div><code>"http://{{ .Release.Name }}-loki:3100/loki/api/v1/push"</code></div></td>
+    <td><div><code>"http://loki:3100/loki/api/v1/push"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L215">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
@@ -3404,3 +3405,4 @@ task ur
   </tr>
 </tbody>
 </table>
+
