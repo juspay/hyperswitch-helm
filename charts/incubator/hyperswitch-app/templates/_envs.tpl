@@ -34,6 +34,19 @@
       {{- end }}
 {{- end -}}
 
+{{/* Define environment variables for PostgreSQL secrets */}}
+{{- define "drainer.secrets.envs" -}}
+- name: DRAINER__MASTER_DATABASE__PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "postgresql.secret" . }}
+      {{- if .Values.postgresql.enabled }}
+      key: password
+      {{- else if .Values.externalPostgresql.enabled }}
+      key: primaryPassword
+      {{- end }}
+{{- end -}}
+
 {{/* Generic secret enviornnement variables */}}
 {{- define "generic.envs" -}}
 - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS

@@ -98,6 +98,10 @@ hyperswitch-app:
       image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.115.0
     producer:
       image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.115.0
+    drainer:
+      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.115.0
+      version: v1.115.0
+      
     controlCenter:
       image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.2
     sdk:
