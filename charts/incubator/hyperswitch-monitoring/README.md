@@ -72,67 +72,67 @@ The monitoring stack includes two custom dashboards:
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L365">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
+    <td><div><a href="./values.yaml#L366">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
     <td><div><code>"HTTP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L366">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
+    <td><div><a href="./values.yaml#L367">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
     <td><div><code>"HTTP1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L367">grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
+    <td><div><a href="./values.yaml#L368">grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring-alb-ingress-group"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L368">grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
+    <td><div><a href="./values.yaml#L369">grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
     <td><div><code>"ipv4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L369">grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
+    <td><div><a href="./values.yaml#L370">grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
     <td><div><code>"[{\"HTTP\": 80}]"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L370">grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
+    <td><div><a href="./values.yaml#L371">grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L371">grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
+    <td><div><a href="./values.yaml#L372">grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
     <td><div><code>"internet-facing"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L372">grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
+    <td><div><a href="./values.yaml#L373">grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L373">grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
+    <td><div><a href="./values.yaml#L374">grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
     <td><div><code>"stack=hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L374">grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
+    <td><div><a href="./values.yaml#L375">grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
     <td><div><code>"ip"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L362">grafana.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L363">grafana.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L376">grafana.ingress.hosts[0].host</a></div></td>
+    <td><div><a href="./values.yaml#L377">grafana.ingress.hosts[0].host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L378">grafana.ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><a href="./values.yaml#L379">grafana.ingress.hosts[0].paths[0].path</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L379">grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><a href="./values.yaml#L380">grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L363">grafana.ingress.ingressClassName</a></div></td>
+    <td><div><a href="./values.yaml#L364">grafana.ingress.ingressClassName</a></div></td>
     <td><div><code>"alb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L380">grafana.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L381">grafana.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -344,7 +344,7 @@ The monitoring stack includes two custom dashboards:
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L384">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L385">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
@@ -736,32 +736,32 @@ The monitoring stack includes two custom dashboards:
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L351">postgresql.external</a></div></td>
+    <td><div><a href="./values.yaml#L352">postgresql.external</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L357">postgresql.primary.database</a></div></td>
+    <td><div><a href="./values.yaml#L358">postgresql.primary.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L353">postgresql.primary.host</a></div></td>
+    <td><div><a href="./values.yaml#L354">postgresql.primary.host</a></div></td>
     <td><div><code>"postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L356">postgresql.primary.password</a></div></td>
+    <td><div><a href="./values.yaml#L357">postgresql.primary.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L354">postgresql.primary.port</a></div></td>
+    <td><div><a href="./values.yaml#L355">postgresql.primary.port</a></div></td>
     <td><div><code>5432</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L355">postgresql.primary.username</a></div></td>
+    <td><div><a href="./values.yaml#L356">postgresql.primary.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L207">promtail.config.clients[0].url</a></div></td>
-    <td><div><code>"http://{{ .Release.Name }}-loki:3100/loki/api/v1/push"</code></div></td>
+    <td><div><code>"http://loki:3100/loki/api/v1/push"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L215">promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>

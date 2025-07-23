@@ -104,6 +104,11 @@ After deploying the Helm chart, you should verify that everything is working cor
 * [ ] &#x20;Verify if you are able to [create API key](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#user-content-create-an-api-key)
 * [ ] &#x20;Verify if you are able to [configure a new payment processor](https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/using-hyperswitch-control-center#add-a-payment-processor)
 
+### UCS (Unified Connector Service)
+
+* [ ] &#x20;Check that the gRPC health endpoint is responding: `grpcurl -plaintext localhost:8000 grpc.health.v1.Health/Check`
+* [ ] &#x20;Verify metrics are being exposed at `localhost:8080/metrics`
+
 ## 💳 Test a payment
 
 Hyperswitch Control center will mimic the behavior of your checkout page. Please follow below steps to test a payment with the deployed app
@@ -118,7 +123,7 @@ By default card vault and its dependencies are installed, however you need to cr
   </summary>
   <p>
   To generate the master key and the custodian keys use the following command after cloning the repository.
-   
+
     # Generate master key
     git clone https://github.com/juspay/hyperswitch-card-vault.git
     cd hyperswitch-card-vault
@@ -131,7 +136,7 @@ By default card vault and its dependencies are installed, however you need to cr
 
     # Generating the public keys
     openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem
-    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem 
+    openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem
 </p>
 </details>
 <details>
@@ -179,7 +184,7 @@ By default card vault and its dependencies are installed, however you need to cr
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 1>"}' http://localhost:8080/custodian/key1
     curl -X POST -H "Content-Type: application/json" -d '{"key": "<key 2>"}' http://localhost:8080/custodian/key2
     curl -X POST http://localhost:8080/custodian/decrypt
-   
+
   If the last cURL replies with `Decrypted Successfully`, we are ready to use the locker.
    </p>
 </details>
@@ -212,6 +217,7 @@ task ur
 |------------|------|---------|
 | file://../hyperswitch-app | hyperswitch-app | 0.2.7 |
 | file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.0 |
+| file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.0 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.7 |
 
 ## Values
@@ -768,6 +774,455 @@ task ur
     <td><div><a href="../hyperswitch-app/values.yaml#L34">hyperswitch-app.services.sdk.version</a></div></td>
     <td><div><code>"0.123.0"</code></div></td>
     <td>SDK version</td>
+  </tr></tbody>
+</table>
+<h3>Connector Service</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L169">hyperswitch-ucs.affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Affinity for pod assignment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L144">hyperswitch-ucs.autoscaling</a></div></td>
+    <td><div><code>{
+  "enabled": false,
+  "maxReplicas": 100,
+  "minReplicas": 1,
+  "targetCPUUtilizationPercentage": 80
+}</code></div></td>
+    <td>Autoscaling configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L147">hyperswitch-ucs.autoscaling.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable autoscaling</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L153">hyperswitch-ucs.autoscaling.maxReplicas</a></div></td>
+    <td><div><code>100</code></div></td>
+    <td>Maximum number of replicas</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L150">hyperswitch-ucs.autoscaling.minReplicas</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum number of replicas</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L156">hyperswitch-ucs.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><code>80</code></div></td>
+    <td>Target CPU utilization percentage</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L30">hyperswitch-ucs.fullnameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Override the full name of the chart</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L11">hyperswitch-ucs.image</a></div></td>
+    <td><div><code>{
+  "pullPolicy": "IfNotPresent",
+  "repository": "ghcr.io/juspay/connector-service",
+  "tag": "main-b1487cb"
+}</code></div></td>
+    <td>Container image configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L17">hyperswitch-ucs.image.pullPolicy</a></div></td>
+    <td><div><code>"IfNotPresent"</code></div></td>
+    <td>Image pull policy</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L14">hyperswitch-ucs.image.repository</a></div></td>
+    <td><div><code>"ghcr.io/juspay/connector-service"</code></div></td>
+    <td>Docker image repository</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L20">hyperswitch-ucs.image.tag</a></div></td>
+    <td><div><code>"main-b1487cb"</code></div></td>
+    <td>Image tag to use</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L24">hyperswitch-ucs.imagePullSecrets</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Image pull secrets for private registries</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L93">hyperswitch-ucs.ingress</a></div></td>
+    <td><div><code>{
+  "annotations": {},
+  "className": "",
+  "enabled": false,
+  "hosts": [
+    {
+      "host": "hyperswitch-ucs.local",
+      "paths": [
+        {
+          "path": "/",
+          "pathType": "ImplementationSpecific"
+        }
+      ]
+    }
+  ],
+  "tls": []
+}</code></div></td>
+    <td>Ingress configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L102">hyperswitch-ucs.ingress.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Additional annotations for the Ingress resource</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L99">hyperswitch-ucs.ingress.className</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>IngressClass that will be used to implement the Ingress</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L96">hyperswitch-ucs.ingress.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable ingress controller resource</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L108">hyperswitch-ucs.ingress.hosts</a></div></td>
+    <td><div><code>[
+  {
+    "host": "hyperswitch-ucs.local",
+    "paths": [
+      {
+        "path": "/",
+        "pathType": "ImplementationSpecific"
+      }
+    ]
+  }
+]</code></div></td>
+    <td>An array with hostname(s) to be covered with the ingress record</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L115">hyperswitch-ucs.ingress.tls</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>TLS configuration for hostname(s) to be covered with this ingress record</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L173">hyperswitch-ucs.livenessProbe</a></div></td>
+    <td><div><code>{
+  "failureThreshold": 3,
+  "grpc": {
+    "port": 8000,
+    "service": "grpc.health.v1.Health"
+  },
+  "initialDelaySeconds": 90,
+  "periodSeconds": 30,
+  "successThreshold": 1,
+  "timeoutSeconds": 10
+}</code></div></td>
+    <td>Liveness probe configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L176">hyperswitch-ucs.livenessProbe.failureThreshold</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td>Number of failures before pod is restarted</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L179">hyperswitch-ucs.livenessProbe.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "service": "grpc.health.v1.Health"
+}</code></div></td>
+    <td>gRPC health check configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L182">hyperswitch-ucs.livenessProbe.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC port for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L185">hyperswitch-ucs.livenessProbe.grpc.service</a></div></td>
+    <td><div><code>"grpc.health.v1.Health"</code></div></td>
+    <td>gRPC service name for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L188">hyperswitch-ucs.livenessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>90</code></div></td>
+    <td>Initial delay before probe starts</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L191">hyperswitch-ucs.livenessProbe.periodSeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>How often to perform the probe</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L194">hyperswitch-ucs.livenessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum consecutive successes for the probe to be considered successful</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L197">hyperswitch-ucs.livenessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>10</code></div></td>
+    <td>Number of seconds after which the probe times out</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L27">hyperswitch-ucs.nameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Override the name of the chart</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L161">hyperswitch-ucs.nodeSelector</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Node labels for pod assignment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L47">hyperswitch-ucs.podAnnotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Annotations to add to the pod</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L51">hyperswitch-ucs.podSecurityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Pod security context</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L201">hyperswitch-ucs.readinessProbe</a></div></td>
+    <td><div><code>{
+  "failureThreshold": 5,
+  "grpc": {
+    "port": 8000,
+    "service": "grpc.health.v1.Health"
+  },
+  "initialDelaySeconds": 30,
+  "periodSeconds": 30,
+  "successThreshold": 1,
+  "timeoutSeconds": 5
+}</code></div></td>
+    <td>Readiness probe configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L204">hyperswitch-ucs.readinessProbe.failureThreshold</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td>Number of failures before pod is marked unready</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L207">hyperswitch-ucs.readinessProbe.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "service": "grpc.health.v1.Health"
+}</code></div></td>
+    <td>gRPC health check configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L210">hyperswitch-ucs.readinessProbe.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC port for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L213">hyperswitch-ucs.readinessProbe.grpc.service</a></div></td>
+    <td><div><code>"grpc.health.v1.Health"</code></div></td>
+    <td>gRPC service name for health check</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L216">hyperswitch-ucs.readinessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>Initial delay before probe starts</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L219">hyperswitch-ucs.readinessProbe.periodSeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>How often to perform the probe</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L222">hyperswitch-ucs.readinessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Minimum consecutive successes for the probe to be considered successful</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L225">hyperswitch-ucs.readinessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td>Number of seconds after which the probe times out</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L7">hyperswitch-ucs.replicaCount</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Number of replicas for the UCS deployment</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L122">hyperswitch-ucs.resources</a></div></td>
+    <td><div><code>{
+  "limits": {
+    "cpu": "1000m",
+    "memory": "1000Mi"
+  },
+  "requests": {
+    "cpu": "400m",
+    "memory": "400Mi"
+  }
+}</code></div></td>
+    <td>Resource limits and requests for the UCS containers</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L125">hyperswitch-ucs.resources.limits</a></div></td>
+    <td><div><code>{
+  "cpu": "1000m",
+  "memory": "1000Mi"
+}</code></div></td>
+    <td>Resource limits</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L128">hyperswitch-ucs.resources.limits.cpu</a></div></td>
+    <td><div><code>"1000m"</code></div></td>
+    <td>CPU limit</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L131">hyperswitch-ucs.resources.limits.memory</a></div></td>
+    <td><div><code>"1000Mi"</code></div></td>
+    <td>Memory limit</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L134">hyperswitch-ucs.resources.requests</a></div></td>
+    <td><div><code>{
+  "cpu": "400m",
+  "memory": "400Mi"
+}</code></div></td>
+    <td>Resource requests</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L137">hyperswitch-ucs.resources.requests.cpu</a></div></td>
+    <td><div><code>"400m"</code></div></td>
+    <td>CPU request</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L140">hyperswitch-ucs.resources.requests.memory</a></div></td>
+    <td><div><code>"400Mi"</code></div></td>
+    <td>Memory request</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L57">hyperswitch-ucs.securityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Container security context</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L68">hyperswitch-ucs.service</a></div></td>
+    <td><div><code>{
+  "grpc": {
+    "port": 8000,
+    "targetPort": 8000
+  },
+  "metrics": {
+    "port": 8080,
+    "targetPort": 8080
+  },
+  "type": "ClusterIP"
+}</code></div></td>
+    <td>Service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L74">hyperswitch-ucs.service.grpc</a></div></td>
+    <td><div><code>{
+  "port": 8000,
+  "targetPort": 8000
+}</code></div></td>
+    <td>gRPC service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L77">hyperswitch-ucs.service.grpc.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC service port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L80">hyperswitch-ucs.service.grpc.targetPort</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>gRPC container port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L83">hyperswitch-ucs.service.metrics</a></div></td>
+    <td><div><code>{
+  "port": 8080,
+  "targetPort": 8080
+}</code></div></td>
+    <td>Metrics service configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L86">hyperswitch-ucs.service.metrics.port</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics service port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L89">hyperswitch-ucs.service.metrics.targetPort</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics container port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L71">hyperswitch-ucs.service.type</a></div></td>
+    <td><div><code>"ClusterIP"</code></div></td>
+    <td>Service type</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L34">hyperswitch-ucs.serviceAccount</a></div></td>
+    <td><div><code>{
+  "annotations": {},
+  "create": true,
+  "name": ""
+}</code></div></td>
+    <td>Service account configuration</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L40">hyperswitch-ucs.serviceAccount.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Annotations to add to the service account</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L37">hyperswitch-ucs.serviceAccount.create</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td>Specifies whether a service account should be created</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L43">hyperswitch-ucs.serviceAccount.name</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>The name of the service account to use. If not set and create is true, a name is generated using the fullname template</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L165">hyperswitch-ucs.tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Tolerations for pod assignment</td>
+  </tr></tbody>
+</table>
+<h3>Connector Service Configurations</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L267">hyperswitch-ucs.config.connectors.adyen.base_url</a></div></td>
+    <td><div><code>"https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"</code></div></td>
+    <td>Adyen base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L270">hyperswitch-ucs.config.connectors.adyen.dispute_base_url</a></div></td>
+    <td><div><code>"https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"</code></div></td>
+    <td>Adyen dispute base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L305">hyperswitch-ucs.config.connectors.authorizedotnet.base_url</a></div></td>
+    <td><div><code>"https://api.authorize.net/xml/v1/request.api/"</code></div></td>
+    <td>Authorize.net base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L300">hyperswitch-ucs.config.connectors.checkout.base_url</a></div></td>
+    <td><div><code>"https://api.checkout.com/"</code></div></td>
+    <td>Checkout base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L285">hyperswitch-ucs.config.connectors.elavon.base_url</a></div></td>
+    <td><div><code>"https://api.convergepay.com/VirtualMerchant/"</code></div></td>
+    <td>Elavon base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L280">hyperswitch-ucs.config.connectors.fiserv.base_url</a></div></td>
+    <td><div><code>"https://cert.api.fiservapps.com/"</code></div></td>
+    <td>Fiserv base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L275">hyperswitch-ucs.config.connectors.razorpay.base_url</a></div></td>
+    <td><div><code>"https://api.razorpay.com/"</code></div></td>
+    <td>Razorpay base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L295">hyperswitch-ucs.config.connectors.razorpayv2.base_url</a></div></td>
+    <td><div><code>"https://api.razorpay.com/"</code></div></td>
+    <td>Razorpay v2 base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L290">hyperswitch-ucs.config.connectors.xendit.base_url</a></div></td>
+    <td><div><code>"https://api.xendit.co/"</code></div></td>
+    <td>Xendit base URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L235">hyperswitch-ucs.config.log.console.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td>Enable console logging</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L238">hyperswitch-ucs.config.log.console.level</a></div></td>
+    <td><div><code>"DEBUG"</code></div></td>
+    <td>Log level (DEBUG, INFO, WARN, ERROR)</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L241">hyperswitch-ucs.config.log.console.log_format</a></div></td>
+    <td><div><code>"json"</code></div></td>
+    <td>Log format (json, text)</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L257">hyperswitch-ucs.config.metrics.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td>Metrics server host address</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L260">hyperswitch-ucs.config.metrics.port</a></div></td>
+    <td><div><code>8080</code></div></td>
+    <td>Metrics server port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L319">hyperswitch-ucs.config.proxy.bypass_proxy_urls</a></div></td>
+    <td><div><code>[
+  "localhost",
+  "local"
+]</code></div></td>
+    <td>URLs to bypass proxy</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L313">hyperswitch-ucs.config.proxy.http_url</a></div></td>
+    <td><div><code>"http_proxy"</code></div></td>
+    <td>HTTP proxy URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L310">hyperswitch-ucs.config.proxy.https_url</a></div></td>
+    <td><div><code>"https_proxy"</code></div></td>
+    <td>HTTPS proxy URL</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L316">hyperswitch-ucs.config.proxy.idle_pool_connection_timeout</a></div></td>
+    <td><div><code>90</code></div></td>
+    <td>Idle pool connection timeout</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L246">hyperswitch-ucs.config.server.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td>Server host address</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L249">hyperswitch-ucs.config.server.port</a></div></td>
+    <td><div><code>8000</code></div></td>
+    <td>Server port</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L252">hyperswitch-ucs.config.server.type</a></div></td>
+    <td><div><code>"grpc"</code></div></td>
+    <td>Server type</td>
   </tr></tbody>
 </table>
 <h3>Other Values</h3>
@@ -2094,67 +2549,67 @@ task ur
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L365">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L366">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
     <td><div><code>"HTTP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L366">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L367">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
     <td><div><code>"HTTP1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L367">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring-alb-ingress-group"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
     <td><div><code>"ipv4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L370">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
     <td><div><code>"[{\"HTTP\": 80}]"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L370">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
     <td><div><code>"internet-facing"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
     <td><div><code>"stack=hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L375">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
     <td><div><code>"ip"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L362">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L376">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L377">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L378">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L364">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
     <td><div><code>"alb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L381">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -2366,7 +2821,7 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L384">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L385">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
@@ -2758,32 +3213,32 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L351">hyperswitch-monitoring.postgresql.external</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L352">hyperswitch-monitoring.postgresql.external</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L358">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L353">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L354">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
     <td><div><code>"postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L356">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L354">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L355">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
     <td><div><code>5432</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L355">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L356">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L207">hyperswitch-monitoring.promtail.config.clients[0].url</a></div></td>
-    <td><div><code>"http://{{ .Release.Name }}-loki:3100/loki/api/v1/push"</code></div></td>
+    <td><div><code>"http://loki:3100/loki/api/v1/push"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L215">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
