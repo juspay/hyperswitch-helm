@@ -7,7 +7,7 @@ dependencies:
   version: 15.5.38
 - name: hyperswitch-card-vault
   repository: file://../hyperswitch-card-vault
-  version: 0.1.0
+  version: 0.1.1
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
   version: 31.0.0
@@ -20,5 +20,5 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-digest: sha256:8bead9a139d028d87f0922cc09bf4e61ae505844e34f055be3b4ad17eb679e33
-generated: "2025-07-14T15:58:40.880494+05:30"
+digest: sha256:94233e480b734928e44a065f97383e55d306a5f774b465004a29735c7c1da97b
+generated: "2025-07-30T12:04:23.577829+05:30"

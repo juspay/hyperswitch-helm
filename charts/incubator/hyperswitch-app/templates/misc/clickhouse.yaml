@@ -1964,6 +1964,9 @@ metadata:
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
   template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
     spec:
       restartPolicy: OnFailure
       initContainers:

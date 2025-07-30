@@ -1,15 +1,15 @@
 dependencies:
 - name: hyperswitch-app
   repository: file://../hyperswitch-app
-  version: 0.2.8
+  version: 0.2.9
 - name: hyperswitch-web
   repository: file://../hyperswitch-web
   version: 0.2.7
 - name: hyperswitch-monitoring
   repository: file://../hyperswitch-monitoring
-  version: 0.1.0
+  version: 0.1.1
 - name: hyperswitch-ucs
   repository: file://../hyperswitch-ucs
   version: 0.1.0
-digest: sha256:49ca70f9158ca214c2e9e9d5cc24d9db725949d688e21e5916362d680d10534a
-generated: "2025-07-23T16:43:11.818797+05:30"
+digest: sha256:94c09ac1bff1a0459a10ac66936234c9613f6ca08fef184d478c31d8e5c3364f
+generated: "2025-07-30T11:55:05.686061+05:30"
