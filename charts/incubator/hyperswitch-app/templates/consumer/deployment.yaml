@@ -1,3 +1,4 @@
+{{- if .Values.services.consumer.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -98,3 +99,4 @@ spec:
             defaultMode: 420
             name: consumer-cm-{{ .Release.Name }}
           name: hyperswitch-config
+{{- end }}

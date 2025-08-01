@@ -18,7 +18,7 @@ services:
 global:
   tolerations: []
   # @ignored
-  # Eg. 
+  # Eg.
   # affinity:
   #   nodeAffinity:
   #     requiredDuringSchedulingIgnoredDuringExecution:
@@ -45,7 +45,7 @@ hyperswitch-web:
   autoBuild:
     enable: true
     forceBuild: true
-    gitCloneParam: 
+    gitCloneParam:
       gitVersion: 0.123.0
     nginxConfig:
       extraPath: v1
@@ -74,7 +74,7 @@ hyperswitch-web:
       alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
       alb.ingress.kubernetes.io/target-type: ip
     hosts:
-      - http: 
+      - http:
         paths:
           - path: /
             pathType: Prefix
@@ -98,6 +98,9 @@ hyperswitch-app:
       image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.115.0
     producer:
       image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.115.0
+    drainer:
+      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.115.0
+      version: v1.115.0
     controlCenter:
       image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.2
     sdk:
@@ -111,7 +114,7 @@ hyperswitch-app:
       forex_api_key: forex_api_key
       forex_fallback_api_key: forex_fallback_api_key
     locker:
-        locker_enabled: true
+      locker_enabled: true
     run_env: sandbox
     email:
       active_email_client: SMTP
@@ -125,17 +128,17 @@ hyperswitch-app:
     minReplicas: 1
     maxReplicas: 4
     targetCPUUtilizationPercentage: 80
-  
+
   hyperswitch-card-vault:
     enabled: true
     server:
       image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
-      tenant_secrets: 
-        hyperswitch :  
-          master_key : "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df" 
-          public_key : "" 
-          schema : "public" 
-                  
+      tenant_secrets:
+        hyperswitch:
+          master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
+          public_key: ""
+          schema: "public"
+
     initDB:
       enable: true
     postgresql:
@@ -164,55 +167,119 @@ hyperswitch-app:
       tolerations: []
   mailhog:
     tolerations: []
-  loki-stack:
-    loki:
-      tolerations: []
-    promtail:
-      tolerations: []
-    grafana:
-      tolerations: []
-    prometheus: 
-      prometheus-pushgateway:
-        tolerations: []
   vector:
     tolerations: []
 
-
-prometheus:
-  host: "prometheus-server"
-  port: 80
+hyperswitch-monitoring:
   enabled: true
+  # Global tolerations for monitoring components
   global:
-    scrape_interval: 15s
-    evaluation_interval: 15s
-  prometheus-pushgateway:
+    tolerations: []
+  # Component-specific tolerations
+  kube-prometheus-stack:
+    prometheus:
+      prometheusSpec:
+        tolerations: []
+    grafana:
+      tolerations: []
+    alertmanager:
+      alertmanagerSpec:
+        tolerations: []
+  loki:
+    singleBinary:
+      tolerations: []
+  promtail:
+    tolerations: []
+  opentelemetry-collector:
     tolerations: []
 
-  scrape_configs:
-  # Scrape Kubernetes pods for CPU and Memory usage
-  - job_name: "kubernetes-pods"
-    kubernetes_sd_configs:
-      - role: pod
-    relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-        action: keep
-        regex: true
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: "$1:$2"
+# @ignored
+hyperswitch-ucs:
+  enabled: true
+  fullnameOverride: "hyperswitch-ucs"
+  image:
+    repository: ghcr.io/juspay/connector-service
+    pullPolicy: IfNotPresent
+    tag: "main-b1487cb"
+  imagePullSecrets: []
+  nameOverride: ""
 
-  - job_name: "kubernetes-nodes"
-    kubernetes_sd_configs:
-      - role: node
-    relabel_configs:
-      - action: labelmap
-        regex: __meta_kubernetes_node_label_(.+)
-    static_configs:
-      - targets:
-          - "node-exporter:9100"
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    grpc:
+      port: 8000
+      targetPort: 8000
+    metrics:
+      port: 8080
+      targetPort: 8080
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: hyperswitch-ucs.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage:
+      80
+      # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Configuration via ConfigMap
+  config:
+    log:
+      console:
+        enabled: true
+        level: "DEBUG"
+        log_format: "json"
+    server:
+      host: "0.0.0.0"
+      port: 8000
+      type: "grpc"
+    metrics:
+      host: "0.0.0.0"
+      port: 8080
+    connectors:
+      adyen:
+        base_url: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+        dispute_base_url: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+      razorpay:
+        base_url: "https://api.razorpay.com/"
+      fiserv:
+        base_url: "https://cert.api.fiservapps.com/"
+      elavon:
+        base_url: "https://api.convergepay.com/VirtualMerchant/"
+      xendit:
+        base_url: "https://api.xendit.co/"
+      razorpayv2:
+        base_url: "https://api.razorpay.com/"
+      checkout:
+        base_url: "https://api.checkout.com/"
+      authorizedotnet:
+        base_url: "https://api.authorize.net/xml/v1/request.api/"
+    proxy:
+      https_url: ""
+      http_url: ""
+      idle_pool_connection_timeout: 90
+      bypass_proxy_urls: ["localhost", "local"]
+

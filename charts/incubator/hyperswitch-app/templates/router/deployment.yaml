@@ -1,3 +1,4 @@
+{{- if .Values.services.router.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -110,3 +111,4 @@ spec:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
           name: hyperswitch-config
+{{- end }}
