@@ -1,0 +1,71 @@
+name: Lint Code Base
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  CT_CONFIGFILE: ct.yaml
+  HELM_VERSION: v3.14.0
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  super-linter:
+    name: Super Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v3.12.0
+        env:
+          FILTER_REGEX_EXCLUDE: .*(README\.md|Chart\.yaml|NOTES\.txt).*
+          FILTER_REGEX_INCLUDE: .*
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_KUBERNETES_KUBEVAL: false
+          VALIDATE_YAML: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  helm-ct-lint:
+    name: Helm Chart Lint
+    needs: super-linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Detect changed charts
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config "${CT_CONFIGFILE}")
+          echo "changed=$([[ -n "$changed" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Run Chart Lint
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --config "${CT_CONFIGFILE}"

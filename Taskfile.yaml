@@ -26,7 +26,12 @@ tasks:
     #language=sh
     cmds:
       - >
-        helm-docs --document-dependency-values=true --chart-search-root=charts/incubator 
+        docker run --rm
+        -v $(pwd):/helm-docs
+        -w /helm-docs
+        jnorwood/helm-docs:latest
+        --document-dependency-values=true
+        --chart-search-root=charts/incubator
     aliases:
       - ur
 
