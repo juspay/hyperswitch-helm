@@ -99,7 +99,7 @@ jobs:
           # Get the target branch from the PR
           target_branch="${{ github.event.pull_request.base.ref }}"
           echo "Target branch: $target_branch"
-          
+
           changed_charts=$(ct list-changed --config "${CT_CONFIGFILE}")
           if [[ -z "$changed_charts" ]]; then
             echo "No changed charts to check."
@@ -110,7 +110,7 @@ jobs:
           for chart in $changed_charts; do
             echo "Checking $chart..."
             chart_yaml="${chart}/Chart.yaml"
-            
+
             # Check if chart exists in target branch
             if git show "origin/${target_branch}:${chart_yaml}" >/dev/null 2>&1; then
               old_version=$(git show "origin/${target_branch}:${chart_yaml}" | yq '.version')
@@ -134,103 +134,3 @@ jobs:
             fi
           done
           echo "::endgroup::"
-
-  # install-test:
-  #   name: Install and Test Charts
-  #   runs-on: ubuntu-latest
-  #   needs: [lint, version-check]
-  #   if: needs.lint.outputs.changed == 'true'
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: Set up Helm
-  #       uses: azure/setup-helm@v4
-  #       with:
-  #         version: ${{ env.HELM_VERSION }}
-
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: ${{ env.PYTHON_VERSION }}
-
-  #     - name: Set up chart-testing
-  #       uses: helm/chart-testing-action@v2.1.0
-
-  #     - name: Create kind cluster
-  #       uses: helm/kind-action@v1.8.0
-  #       with:
-  #         kubectl_version: v1.29.0
-  #         node_image: kindest/node:v1.29.0
-
-  #     - name: Run Install Test
-  #       run: |
-  #         echo "::group::Determine changed charts"
-  #         git fetch origin main
-  #         changed=$(ct list-changed --config "${CT_CONFIGFILE}")
-
-  #         charts=(
-  #           "charts/incubator/hyperswitch-card-vault"
-  #           "charts/incubator/hyperswitch-keymanager"
-  #           "charts/incubator/hyperswitch-istio"
-  #           "charts/incubator/hyperswitch-app"
-  #           "charts/incubator/hyperswitch-web"
-  #           "charts/incubator/hyperswitch-stack"
-  #         )
-
-  #         # Define charts to skip
-  #         skip_charts=(
-  #           "charts/incubator/hyperswitch-istio"
-  #           "charts/incubator/hyperswitch-keymanager"
-  #           "charts/incubator/hyperswitch-web"
-  #         )
-
-  #         # Filter charts
-  #         filtered_charts=()
-  #         for chart in $changed; do
-  #           skip=false
-  #           for skip_chart in "${skip_charts[@]}"; do
-  #             if [[ "$chart" == "$skip_chart" ]]; then
-  #               echo "Skipping $chart"
-  #               skip=true
-  #               break
-  #             fi
-  #           done
-  #           if ! $skip; then
-  #             filtered_charts+=("$chart")
-  #           fi
-  #         done
-  #         echo "::endgroup::"
-
-  #         if [ ${#filtered_charts[@]} -eq 0 ]; then
-  #           echo "No charts to install after filtering."
-  #           exit 0
-  #         fi
-
-  #         echo "::group::Running helm dependency build"
-  #         for chart in "${charts[@]}"; do
-  #           echo "Building dependencies for $chart"
-  #           helm dependency build "$chart"
-  #         done
-  #         echo "::endgroup::"
-
-  #         echo "::group::Creating namespace"
-  #         kubectl create namespace hyperswitch || true
-  #         echo "::endgroup::"
-
-  #         echo "::group::Running chart installation tests"
-  #         ct install \
-  #           --config "${CT_CONFIGFILE}" \
-  #           --charts "${filtered_charts[@]}" \
-  #           --namespace="hyperswitch" \
-  #           --debug || {
-  #             echo "::error::Chart installation tests failed"
-  #             echo "::group::Kubernetes cluster state"
-  #             kubectl get pods --all-namespaces
-  #             kubectl get events --all-namespaces --sort-by='.lastTimestamp'
-  #             echo "::endgroup::"
-  #             exit 1
-  #           }
-  #         echo "::endgroup::"
