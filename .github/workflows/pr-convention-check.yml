@@ -1,0 +1,48 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Add permissions for the GITHUB_TOKEN
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  check-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Title Convention
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+
+            // Define allowed prefixes (conventional commit types)
+            const allowedPrefixes = [
+              'feat', 'fix', 'docs', 'style', 'refactor',
+              'test', 'chore', 'perf', 'ci', 'build',
+              'revert', 'hotfix'
+            ];
+
+            // Define the regex pattern for PR title validation
+            // Format: type(scope): description
+            // Examples:
+            // - feat: add user authentication
+            // - fix(api): resolve timeout issue
+            // - docs(readme): update installation guide
+            const titleRegex = /^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert|hotfix)(\(.+\))?: .+/;
+
+            console.log(`Checking PR title: "${title}"`);
+
+            if (!titleRegex.test(title)) {
+              // Fail the check with detailed message
+              core.setFailed(`PR title "${title}" doesn't follow the required convention. Required format: type(scope): description. Valid types: ${allowedPrefixes.join(', ')}`);
+            } else {
+              console.log('✅ PR title follows the required convention!');
+            }

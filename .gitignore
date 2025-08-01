@@ -1,1 +1,111 @@
+# Helm specific
+*.tgz
+charts/*/charts/
+charts/*/Chart.lock
+charts/incubator/*/charts/
+*.lock
+requirements.lock
+index.yaml
+
+# Chart Releaser artifacts
+.cr-release-packages/
+.cr-index/
+
+# Temporary Helm files
+*.tmp
+.helm/
+
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+
+# Windows
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.tmproj
+.sublime-*
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Emacs
+\#*\#
+.\#*
+*~
+.#*
+
+# JetBrains
+*.iml
+*.ipr
+*.iws
+
+# Task runner artifacts
+.task/
+
+# Log files
+*.log
+logs/
+
+# Temporary directories
+tmp/
+temp/
+.tmp/
+
+# Build artifacts
+dist/
+build/
+target/
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Secrets and sensitive files
+*.key
+*.pem
+*.crt
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Archive files
+*.tar.gz
+*.tar.bz2
+*.tar.xz

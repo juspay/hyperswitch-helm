@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 0.2.8](https://img.shields.io/badge/Version-0.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.2.9](https://img.shields.io/badge/Version-0.2.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -138,7 +138,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../hyperswitch-card-vault | hyperswitch-card-vault | 0.1.0 |
+| file://../hyperswitch-card-vault | hyperswitch-card-vault | 0.1.1 |
 | https://charts.bitnami.com/bitnami | clickhouse | 6.3.3 |
 | https://charts.bitnami.com/bitnami | kafka | 31.0.0 |
 | https://charts.bitnami.com/bitnami | postgresql | 15.5.38 |

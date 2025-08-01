@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.7](https://img.shields.io/badge/Version-0.2.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
+![Version: 0.2.8](https://img.shields.io/badge/Version-0.2.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:

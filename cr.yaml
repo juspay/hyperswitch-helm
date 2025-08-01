@@ -1,0 +1,9 @@
+# cr.yaml
+owner: juspay
+git-repo: hyperswitch-helm
+charts-repo: https://juspay.github.io/hyperswitch-helm
+package-path: .cr-release-packages
+generate-release-notes: true
+make-release-latest: true
+pages-branch: gh-pages
+pages-index-path: index.yaml

@@ -1,0 +1,136 @@
+name: CI-PR
+
+on:
+  pull_request:
+    paths:
+      - "charts/**"
+  workflow_dispatch: # Allow manual triggering
+
+# Cancel previous runs on new pushes to the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  CT_CONFIGFILE: ct.yaml
+  CT_CHECK_VERSION_INCREMENT: true
+  HELM_VERSION: v3.14.0 # Updated to latest stable version
+  KUBECTL_VERSION: v1.30.3 # Updated to latest stable version
+  KIND_VERSION: v0.24.0 # Pinned kind version
+  PYTHON_VERSION: "3.12"
+
+# Define default shell for consistency
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  detect-changes:
+    name: Detect Changed Charts
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.list-changed.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Detect changed charts
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config "${CT_CONFIGFILE}")
+          echo "changed=$([[ -n \"$changed\" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  check-helm-docs:
+    name: Check Helm Docs
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.changed == 'true'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check Helm-Docs updated
+        run: |
+          docker run --rm \
+          -v $(pwd):/helm-docs \
+          -w /helm-docs \
+          jnorwood/helm-docs:latest \
+          --document-dependency-values=true \
+          --chart-search-root=charts/incubator
+
+          # Check for uncommitted changes after helm-docs
+          if ! git diff --exit-code; then
+            echo "Documentation not up to date. Please run 'task update-readme' and commit changes!" >&2
+            exit 1
+          fi
+
+  version-check:
+    name: Chart Version Check
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.changed == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.1.0
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Check chart version increment
+        run: |
+          # Get the target branch from the PR
+          target_branch="${{ github.event.pull_request.base.ref }}"
+          echo "Target branch: $target_branch"
+
+          changed_charts=$(ct list-changed --config "${CT_CONFIGFILE}")
+          if [[ -z "$changed_charts" ]]; then
+            echo "No changed charts to check."
+            exit 0
+          fi
+
+          echo "::group::Checking chart versions"
+          for chart in $changed_charts; do
+            echo "Checking $chart..."
+            chart_yaml="${chart}/Chart.yaml"
+
+            # Check if chart exists in target branch
+            if git show "origin/${target_branch}:${chart_yaml}" >/dev/null 2>&1; then
+              old_version=$(git show "origin/${target_branch}:${chart_yaml}" | yq '.version')
+              new_version=$(yq '.version' "${chart_yaml}")
+
+              echo "  Old version: $old_version"
+              echo "  New version: $new_version"
+
+              # Version comparison using sort -V for semantic versioning
+              if [[ "$old_version" == "$new_version" ]]; then
+                echo "::error::$chart version was not incremented (still $new_version)"
+                exit 1
+              elif ! printf '%s\n%s\n' "$old_version" "$new_version" | sort -V -C; then
+                echo "::error::$chart version $new_version is not greater than $old_version"
+                exit 1
+              else
+                echo "::notice::✓ $chart version correctly incremented: $old_version → $new_version"
+              fi
+            else
+              echo "::notice::$chart is new, skipping version check"
+            fi
+          done
+          echo "::endgroup::"

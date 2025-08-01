@@ -3,7 +3,7 @@ appVersion: 1.16.0
 description: Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 name: hyperswitch-app
 type: application
-version: 0.2.8
+version: 0.2.9
 dependencies:
   - name: redis
     version: 18.6.1
@@ -14,7 +14,7 @@ dependencies:
     version: 15.5.38
     condition: postgresql.enabled
   - name: hyperswitch-card-vault
-    version: 0.1.0
+    version: 0.1.1
     repository: "file://../hyperswitch-card-vault"
     condition: hyperswitch-card-vault.enabled
   - name: kafka

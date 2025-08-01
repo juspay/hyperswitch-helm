@@ -2,15 +2,15 @@ apiVersion: v2
 name: hyperswitch-web
 #language=md
 description: |-
-  Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone 
+  Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
   [SDK](https://github.com/juspay/hyperswitch-web) with different way:
-    - prebuilt nginx static server (deployment - required a specific docker build) 
-    - autobuild nginx static server (statefulset and assets saved in PVC) 
-  
+    - prebuilt nginx static server (deployment - required a specific docker build)
+    - autobuild nginx static server (statefulset and assets saved in PVC)
+
   The prebuilt image is suitable for production, no building time.
-  Autobuild is suitable to quick start, assets are built in initContainer and saved in PVC. Nginx container will serve 
+  Autobuild is suitable to quick start, assets are built in initContainer and saved in PVC. Nginx container will serve
   assets
 
 type: application
-version: 0.2.7
+version: 0.2.8
 appVersion: "0.15.8"
