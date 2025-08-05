@@ -42,6 +42,15 @@ server:
       #   values:
       #     - <Value for the label>
 
+  # Resource requests and limits for hyperswitch-card-vault container
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "200Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
   # Extra values to be added to hyperswitch-card-vault.
   extra:
     # extra env variables to be added to hyperswitch-card-vault.

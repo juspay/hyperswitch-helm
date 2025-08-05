@@ -190,6 +190,9 @@ hyperswitch-monitoring:
       tolerations: []
   promtail:
     tolerations: []
+  server:
+    extraArgs:
+      web.enable-remote-write-receiver: ""
   opentelemetry-collector:
     tolerations: []
 

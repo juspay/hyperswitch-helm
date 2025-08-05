@@ -18,6 +18,15 @@ server:
   # When deploying with AWS backend, you can override this:
   # annotations:
   #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
+  
+  # Resource requests and limits for hyperswitch-keymanager container
+  resources:
+    requests:
+      cpu: "400m"
+      memory: "400Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
 
 # Backend selection: aws, vault, or local
 backend: local

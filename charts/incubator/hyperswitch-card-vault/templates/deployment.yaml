@@ -187,9 +187,7 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           resources:
-            requests:
-              cpu: 100m
-              memory: 200Mi
+            {{- toYaml .Values.server.resources | nindent 12 }}
 
           securityContext:
             privileged: false
