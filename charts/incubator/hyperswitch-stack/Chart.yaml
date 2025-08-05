@@ -27,7 +27,7 @@ dependencies:
     version: 0.2.10
     repository: "file://../hyperswitch-app"
   - name: hyperswitch-web
-    version: 0.2.8
+    version: 0.2.9
     repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
   - name: hyperswitch-monitoring
