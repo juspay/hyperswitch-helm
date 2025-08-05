@@ -218,7 +218,7 @@ server:
     # @section -- App Server Secrets
     kms_jwekey_tunnel_private_key: dummy_val
     # @section -- App Server Secrets
-    kms_jwekey_rust_locker_encryption_key:  |
+    kms_jwekey_rust_locker_encryption_key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
       RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
@@ -272,7 +272,7 @@ server:
     api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
     # -- Encryption key used for encrypting data in user_authentication_methods table
     # @section -- App Server Secrets
-    keymanager: 
+    keymanager:
       ca: "sample_ca"
       cert: "sample_cert"
 
@@ -324,8 +324,8 @@ server:
       base_url: "http://localhost:8080"
     # -- Unified Authentication Service Configuration
     unified_authentication_service:
-      # -- base url to call unified authentication service  
-      base_url: "http://localhost:8080"   
+      # -- base url to call unified authentication service
+      base_url: "http://localhost:8080"
   cors:
     # -- List of methods that are allowed
     allowed_methods: GET,POST,PUT,DELETE
@@ -333,7 +333,7 @@ server:
     max_age: 30
     # -- If true, allows any origin to make requests
     wildcard_origin: true
-  crm: 
+  crm:
     # Crm manager client to be used
     crm_manager: "hubspot_proxy"
     hubspot_proxy:
@@ -466,9 +466,9 @@ server:
       primary_color: "#006DF9"
       # -- Background color of email body
       background_color: "#FFFFFF"
-  kv_config: 
+  kv_config:
     tls: 900
-    soft_kill: false   
+    soft_kill: false
 
   lock_settings:
     # -- Delay between retries in milliseconds
@@ -543,16 +543,16 @@ server:
       clickhouse_database: default
       redis_key_prefix: ""
       schema: public
-      tenant_id : "global"
+      tenant_id: "global"
     tenants:
       public:
-        base_url : "http://localhost:8080"
+        base_url: "http://localhost:8080"
         schema: public
         accounts_schema: "public"
         redis_key_prefix: ""
         clickhouse_database: "default"
         user:
-          control_center_url :  "http://localhost:9000"
+          control_center_url: "http://localhost:9000"
   opensearch:
     auth:
       auth: basic
@@ -837,7 +837,7 @@ controlCenter:
   serviceAccountAnnotations:
     eks.amazonaws.com/role-arn:
   env:
-    # -- 
+    # --
     binary: dashboard
     # -- Enables user sign-in and sign-up using magic links instead of passwords. When enabled, users can request a magic link via email that logs them into their account or creates a new account if they are signing up.
     # @section -- Control Center configs
@@ -858,7 +858,7 @@ controlCenter:
     # @section -- Control Center configs
     default__features__payout: "true"
     # -- Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management
-    # @section -- Control Center configs 
+    # @section -- Control Center configs
     default__features__frm: "true"
     # -- Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.
     # @section -- Control Center configs
@@ -1077,7 +1077,7 @@ externalPostgresql:
       password: "hyperswitch"
       # -- master DB plainpassword
       # @section -- Dependencies configuration
-      plainpassword: 
+      plainpassword:
       # -- master DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
@@ -1097,7 +1097,7 @@ externalPostgresql:
       password: "hyperswitch"
       # -- replica DB plainpassword
       # @section -- Dependencies configuration
-      plainpassword: 
+      plainpassword:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
@@ -1107,7 +1107,7 @@ initDB:
   checkPGisUp:
     image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags # tags or heads
+  refs: tags  # tags or heads
   migration:
     image: christophwurst/diesel-cli:latest
 
@@ -1188,7 +1188,7 @@ initCH:
   checkCHisUp:
     image: "docker.io/bitnami/clickhouse:24.3"
     maxAttempt: 30
-# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml 
+# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml
 clickhouse:
   host: "clickhouse"
   # -- Enable Bitnami Clickhouse sub-chart helm installation
@@ -1250,14 +1250,14 @@ vector:
   # -- Enable Bitnami Vector sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
-  env: 
+  env:
     # -- Vector environment variables
     # @section -- Dependencies configuration
     - name: KAFKA_HOST
       value: "kafka0:29092"
   # @ignored
   customConfig:
-  
+
     acknowledgements:
       enabled: true
     # enrichment_tables:
@@ -1358,7 +1358,7 @@ vector:
         key_field: "{{ .payment_id }}{{ .merchant_id }}"
         threshold: 1000
         window_secs: 60
-      
+
       amend_sdk_logs:
         type: remap
         inputs:
@@ -1367,12 +1367,10 @@ vector:
           .before_transform = now()
 
           merchant_id = .merchant_id
-          # row = get_enrichment_table_record!("sdk_map", { "publishable_key" : merchant_id }, case_sensitive: true) 
+          # row = get_enrichment_table_record!("sdk_map", { "publishable_key" : merchant_id }, case_sensitive: true)
           # .merchant_id = row.merchant_id
 
           .after_transform = now()
-
-      
 
     sinks:
       opensearch_events_1:

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: hyperswitch-web
-#language=md
+# language=md
 description: |-
   Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
   [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -12,5 +12,5 @@ description: |-
   assets
 
 type: application
-version: 0.2.8
+version: 0.2.9
 appVersion: "0.15.8"
