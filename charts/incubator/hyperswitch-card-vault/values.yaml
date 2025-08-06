@@ -61,6 +61,15 @@ server:
   vault:
     url: "http://127.0.0.1:8200"
 
+  # Resource configuration for the hyperswitch-card-vault container
+  resources:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: "1000m"  # 1 core
+      memory: "1Gi"  # 1GB
+
 # Secrets configuration
 secrets:
   # Core secrets

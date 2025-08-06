@@ -19,6 +19,15 @@ server:
   # annotations:
   #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
 
+  # Resource configuration for the hyperswitch-keymanager container
+  resources:
+    requests:
+      cpu: 400m
+      memory: 400Mi
+    limits:
+      cpu: "1000m"  # 1 core
+      memory: "1Gi"  # 1GB
+
 # Backend selection: aws, vault, or local
 backend: local
 

@@ -124,9 +124,13 @@ spec:
           name: http
           protocol: TCP
         resources:
+          {{- if .Values.server.resources }}
+          {{- toYaml .Values.server.resources | nindent 10 }}
+          {{- else }}
           requests:
             cpu: 400m
             memory: 400Mi
+          {{- end }}
         securityContext:
           privileged: false
         terminationMessagePath: /dev/termination-log
