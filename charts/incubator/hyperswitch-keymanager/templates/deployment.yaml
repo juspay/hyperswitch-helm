@@ -124,12 +124,8 @@ spec:
           name: http
           protocol: TCP
         resources:
-          {{- if .Values.server.resources }}
-          {{- toYaml .Values.server.resources | nindent 10 }}
-          {{- else }}
-          requests:
-            cpu: 400m
-            memory: 400Mi
+          {{- with .Values.server.resources }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
         securityContext:
           privileged: false

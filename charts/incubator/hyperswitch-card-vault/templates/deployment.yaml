@@ -187,12 +187,8 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           resources:
-            {{- if .Values.server.resources }}
-            {{- toYaml .Values.server.resources | nindent 12 }}
-            {{- else }}
-            requests:
-              cpu: 100m
-              memory: 200Mi
+            {{- with .Values.server.resources }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
 
           securityContext:
