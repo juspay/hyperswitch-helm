@@ -187,16 +187,7 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           resources:
-            {{- if .Values.server.resources }}
-            {{- toYaml .Values.server.resources | nindent 12 }}
-            {{- else }}
-            requests:
-              cpu: 100m
-              memory: 200Mi
-            limits:
-              cpu: "1000m"
-              memory: "1Gi"
-            {{- end }}
+            {{- toYaml (default (dict "requests" (dict "cpu" "100m" "memory" "200Mi") "limits" (dict "cpu" "1000m" "memory" "1Gi")) .Values.server.resources) | nindent 12 }}
 
           securityContext:
             privileged: false
