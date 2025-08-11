@@ -195,3 +195,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
     {{- print "" -}}  
   {{- end -}}
 {{- end -}}
+
+{{/* 
+Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
+*/}}
+{{- define "version.suffix" -}}
+{{- . | replace "." "o" -}}
+{{- end -}}

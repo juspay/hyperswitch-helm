@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.server.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-server-v1o115o0
+  name: hyperswitch-server-{{ include "version.suffix" .Values.services.router.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.server.labels.app }}
-      version: v1o115o0
+      version: {{ include "version.suffix" .Values.services.router.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.server.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -30,7 +30,7 @@ spec:
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.server.labels.app }}
-        version: v1o115o0
+        version: {{ include "version.suffix" .Values.services.router.version }}
     spec:
       {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
       tolerations:

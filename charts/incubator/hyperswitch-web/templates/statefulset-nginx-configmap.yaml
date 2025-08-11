@@ -8,6 +8,9 @@ data:
   envBackendUrl: "{{ .Values.autoBuild.buildParam.envBackendUrl }}"
   envSdkUrl: "{{ .Values.autoBuild.buildParam.envSdkUrl }}"
   envLogsUrl: "{{ .Values.autoBuild.buildParam.envLogsUrl }}"
+  disableCSP: "{{ .Values.autoBuild.buildParam.disableCSP}}"
+  apiUrl: "{{ .Values.autoBuild.buildParam.appCloudFrontUrl }}"
+  sdkUrl: "{{ .Values.autoBuild.buildParam.sdkCloudFrontUrl }}"
   default.conf: |-
     server {
         listen       {{ .Values.service.port }};
