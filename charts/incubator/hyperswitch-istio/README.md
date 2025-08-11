@@ -124,7 +124,6 @@ Note: This will remove all Istio components. If you have other applications usin
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| createNamespace | bool | `true` |  |
 | hyperswitchControlCenter.version | string | `"v1o37o1"` |  |
 | hyperswitchServer.version | string | `"v1o114o0"` |  |
 | ingress.annotations | object | `{}` |  |
@@ -158,8 +157,6 @@ Note: This will remove all Istio components. If you have other applications usin
 | replicaCount | int | `1` |  |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |
-| serviceAccount.create | bool | `false` |  |
-| serviceAccount.name | string | `""` |  |
 
 ## Troubleshooting
 

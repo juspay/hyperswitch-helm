@@ -4,10 +4,10 @@ replicaCount: 1
 
 # Service-specific versions
 hyperswitchServer:
-  version: "v1o114o0"  # hyperswitch-router version
+  version: "v1o114o0"  
 
 hyperswitchControlCenter:
-  version: "v1o37o1"   # hyperswitch-control-center version
+  version: "v1o37o1"   
 
 service:
   type: ClusterIP
@@ -38,9 +38,6 @@ readinessProbe:
     path: /
     port: http
 
-# Istio Components Configuration
-# These are configured for local development by default
-# Override for production deployments
 
 # Istio Base Configuration
 istio-base:
@@ -50,13 +47,12 @@ istio-base:
 # Istiod Configuration
 istiod:
   enabled: true
-  # Default configuration for local development
+
   global:
     hub: docker.io/istio
     tag: "1.25.0"
   pilot:
     nodeSelector: {}
-    # For production environments, uncomment and use:
     # nodeSelector:
     #   node-type: memory-optimized
 
@@ -64,24 +60,13 @@ istiod:
 istio-gateway:
   enabled: true
   name: istio-ingressgateway
-  # Default configuration for local development
   global:
     hub: docker.io/istio
     tag: "1.25.0"
   service:
     type: ClusterIP
   nodeSelector: {}
-  # For production environments, uncomment and use:
   # nodeSelector:
   #   node-type: memory-optimized
 
-# Create istio-system namespace
-createNamespace: true
 
-# Service account configuration
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
