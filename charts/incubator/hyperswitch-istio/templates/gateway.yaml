@@ -4,6 +4,10 @@ metadata:
   generation: 1
   name: hyperswitch-gateway
   namespace: istio-system
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   selector:
     istio: ingressgateway

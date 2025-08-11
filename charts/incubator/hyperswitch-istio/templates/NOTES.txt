@@ -1,0 +1,58 @@
+{{- if .Release.IsInstall }}
+================================================================================
+Hyperswitch-Istio has been installed!
+================================================================================
+
+Release Name: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+Chart Version: {{ .Chart.Version }}
+App Version: {{ .Chart.AppVersion }}
+
+================================================================================
+Components Installed:
+================================================================================
+
+{{- if index .Values "istio-base" "enabled" }}
+✅ Istio Base CRDs - Installed
+{{- else }}
+❌ Istio Base CRDs - Disabled
+{{- end }}
+
+{{- if .Values.istiod.enabled }}
+✅ Istiod (Control Plane) - Installed
+   Image: {{ .Values.istiod.global.hub }}/pilot:{{ .Values.istiod.global.tag }}
+{{- else }}
+❌ Istiod (Control Plane) - Disabled
+{{- end }}
+
+{{- if index .Values "istio-gateway" "enabled" }}
+✅ Istio Ingress Gateway - Installed
+   Image: {{ index .Values "istio-gateway" "global" "hub" }}/proxyv2:{{ index .Values "istio-gateway" "global" "tag" }}
+   Service Type: {{ index .Values "istio-gateway" "service" "type" }}
+{{- else }}
+❌ Istio Ingress Gateway - Disabled
+{{- end }}
+
+{{- if .Values.ingress.enabled }}
+✅ ALB Ingress - Configured
+   Class: {{ .Values.ingress.className }}
+{{- else }}
+❌ ALB Ingress - Disabled
+{{- end }}
+
+================================================================================
+{{- else if .Release.IsUpgrade }}
+================================================================================
+Hyperswitch Istio has been upgraded!
+================================================================================
+
+Release Name: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+Chart Version: {{ .Chart.Version }}
+Revision: {{ .Release.Revision }}
+
+Check the status of the upgraded components:
+kubectl get pods -n {{ .Release.Namespace }}
+
+================================================================================
+{{- end }}

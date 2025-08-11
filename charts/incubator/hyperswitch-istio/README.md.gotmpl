@@ -1,8 +1,9 @@
-# hyperswitch-istio
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+{{ template "chart.badgesSection" . }}
 
-A Helm chart for Kubernetes
+{{ template "chart.description" . }}
 
 ## Overview
 
@@ -112,54 +113,9 @@ helm uninstall hyperswitch-istio -n istio-system
 
 Note: This will remove all Istio components. If you have other applications using Istio, consider carefully before uninstalling.
 
-## Requirements
+{{ template "chart.requirementsSection" . }}
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://istio-release.storage.googleapis.com/charts | istio-base(base) | 1.25.0 |
-| https://istio-release.storage.googleapis.com/charts | istio-gateway(gateway) | 1.25.0 |
-| https://istio-release.storage.googleapis.com/charts | istiod | 1.25.0 |
-
-## Values
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| createNamespace | bool | `true` |  |
-| hyperswitchControlCenter.version | string | `"v1o37o1"` |  |
-| hyperswitchServer.version | string | `"v1o114o0"` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `"alb"` |  |
-| ingress.enabled | bool | `true` |  |
-| ingress.hosts.paths[0].name | string | `"istio-ingressgateway"` |  |
-| ingress.hosts.paths[0].path | string | `"/"` |  |
-| ingress.hosts.paths[0].pathType | string | `"Prefix"` |  |
-| ingress.hosts.paths[0].port | int | `80` |  |
-| ingress.hosts.paths[1].name | string | `"istio-ingressgateway"` |  |
-| ingress.hosts.paths[1].path | string | `"/healthz/ready"` |  |
-| ingress.hosts.paths[1].pathType | string | `"Prefix"` |  |
-| ingress.hosts.paths[1].port | int | `15021` |  |
-| ingress.tls | list | `[]` |  |
-| istio-base.defaultRevision | string | `"default"` |  |
-| istio-base.enabled | bool | `true` |  |
-| istio-gateway.enabled | bool | `true` |  |
-| istio-gateway.global.hub | string | `"docker.io/istio"` |  |
-| istio-gateway.global.tag | string | `"1.25.0"` |  |
-| istio-gateway.name | string | `"istio-ingressgateway"` |  |
-| istio-gateway.nodeSelector | object | `{}` |  |
-| istio-gateway.service.type | string | `"ClusterIP"` |  |
-| istiod.enabled | bool | `true` |  |
-| istiod.global.hub | string | `"docker.io/istio"` |  |
-| istiod.global.tag | string | `"1.25.0"` |  |
-| istiod.pilot.nodeSelector | object | `{}` |  |
-| livenessProbe.httpGet.path | string | `"/"` |  |
-| livenessProbe.httpGet.port | string | `"http"` |  |
-| readinessProbe.httpGet.path | string | `"/"` |  |
-| readinessProbe.httpGet.port | string | `"http"` |  |
-| replicaCount | int | `1` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.create | bool | `false` |  |
-| serviceAccount.name | string | `""` |  |
+{{ template "chart.valuesSection" . }}
 
 ## Troubleshooting
 
@@ -199,3 +155,8 @@ kubectl get ingress -n istio-system
 kubectl describe ingress hyperswitch-istio-app-alb-ingress -n istio-system
 ```
 
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}

@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: hyperswitch-server-destinations
+  name: hyperswitch-control-center-destinations
   namespace: hyperswitch
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -10,11 +10,11 @@ metadata:
 spec:
   exportTo:
   - '*'
-  host: hyperswitch-server
+  host: hyperswitch-control-center
   subsets:
   - labels:
-      version: {{ .Values.hyperswitchServer.version }}
-    name: {{ .Values.hyperswitchServer.version }}
+      version: {{ .Values.hyperswitchControlCenter.version }}
+    name: {{ .Values.hyperswitchControlCenter.version }}
   trafficPolicy:
     loadBalancer:
       simple: LEAST_CONN
