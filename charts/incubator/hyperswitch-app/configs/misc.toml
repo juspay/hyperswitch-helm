@@ -28,8 +28,7 @@ enabled = {{ .Values.server.connector_onboarding.paypal.enabled }} # boolean
 merchant_ids_send_payment_id_as_connector_request_id = {{ .Values.server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id }}
 
 [cors]
-max_age = {{ .Values.server.cors.max_age }}
-origin = {{ .Values.server.cors.origin }}                            # Maximum time (in seconds) for which this CORS request may be cached.
+max_age = {{ .Values.server.cors.max_age }}                            # Maximum time (in seconds) for which this CORS request may be cached.
 allowed_methods = "{{ .Values.server.cors.allowed_methods }}" # List of methods that are allowed
 wildcard_origin = {{ .Values.server.cors.wildcard_origin }}                 # If true, allows any origin to make requests
 
