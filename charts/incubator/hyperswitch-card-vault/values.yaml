@@ -6,7 +6,6 @@ global:
 
   # Node affinity to be added to all resources
   affinity: {}
-  
 
 # Backend selection: aws, vault, or local
 backend: local
@@ -18,7 +17,6 @@ server:
   # When deploying with AWS backend, you can override this:
   # annotations:
   #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
-  
   host: "0.0.0.0"
   port: "8080"
   version: v0.6.5
@@ -46,18 +44,18 @@ server:
   extra:
     # extra env variables to be added to hyperswitch-card-vault.
     env: {}
-  
+
   externalKeyManager:
     url: "http://localhost:5000"
     cert: ""
-  
+
   apiClient:
     identity: ""
 
   awsKms:
     keyId: ""
     region: ""
-  
+
   vault:
     url: "http://127.0.0.1:8200"
 
@@ -106,33 +104,33 @@ secrets:
     CPrr1VIA3cwgZnVQqlwYPTKGqq6woqP6ksVgFnYwuT5Gt/EViq8pdGfvk3jU8lri
     4tidgA0ErmcnysggrNg2W3De
     -----END PRIVATE KEY-----
-  
+
   # Database secrets
   database:
     password: "dummyPassword"
-  
+
   # Backend-specific secrets
   # AWS KMS configuration (required when backend: aws)
   aws:
     key_id: ""
     region: "us-east-1"
-  
+
   # HashiCorp Vault (required when backend: vault)
   vault:
-    token: "" # Vault authentication token
-  
+    token: ""  # Vault authentication token
+
   # TLS/mTLS certificates (optional)
   tls:
-    certificate: "" # TLS certificate content
-    private_key: "" # TLS private key content
-  
+    certificate: ""  # TLS certificate content
+    private_key: ""  # TLS private key content
+
   # External key manager mTLS certificates (optional)
   external_key_manager:
-    cert: "" # Certificate for external key manager mTLS
-  
+    cert: ""  # Certificate for external key manager mTLS
+
   # API client mTLS identity (optional)
   api_client:
-    identity: "" # Client identity for mTLS authentication
+    identity: ""  # Client identity for mTLS authentication
 
 # Tenant configuration
 tenant_secrets:
@@ -140,7 +138,7 @@ tenant_secrets:
     master_key: 8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df
     # -- The public key for the tenant from tenant_secrets-public-public_key.pem
     # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
-    public_key:  |
+    public_key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJtfZxG6ohl/Mvk0DOiU
       KvPLK1Wsuvd/dzLWBhKAObZc8AqvE/RiTL73HOt1S5rXyT/TwDfpcEI8oVuSWikM
@@ -156,7 +154,7 @@ tenant_secrets:
 postgresql:
   enabled: true
   nameOverride: locker-db
-  auth:             
+  auth:
     username: db_user
     password: dummyPassword
     database: locker-db
@@ -172,11 +170,11 @@ external:
   postgresql:
     enabled: false
     config:
-      host: # <value for the secret>
-      port: # <value for the secret>
-      username: # <value for the secret>
-      password: # <value for the secret>
-      database: # <value for the secret>
+      host:  # <value for the secret>
+      port:  # <value for the secret>
+      username:  # <value for the secret>
+      password:  # <value for the secret>
+      database:  # <value for the secret>
 
 # Values for the database migration job
 initDB:
@@ -191,9 +189,9 @@ initDB:
 vaultKeysJob:
   enabled: true
   checkVaultService:
-    image: curlimages/curl:8.7.1 
+    image: curlimages/curl:8.7.1
     maxAttempt: 30
-    host: ""  
+    host: ""
     port: 80
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"

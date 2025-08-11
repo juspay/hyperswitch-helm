@@ -10,6 +10,9 @@ metadata:
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
     spec:
       restartPolicy: OnFailure
       {{- with (default .Values.global.tolerations .Values.server.tolerations) }}

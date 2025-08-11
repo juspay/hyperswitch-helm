@@ -215,10 +215,10 @@ task ur
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../hyperswitch-app | hyperswitch-app | 0.2.9 |
-| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.1 |
+| file://../hyperswitch-app | hyperswitch-app | 0.2.10 |
+| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.2 |
 | file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.1 |
-| file://../hyperswitch-web | hyperswitch-web | 0.2.8 |
+| file://../hyperswitch-web | hyperswitch-web | 0.2.9 |
 
 ## Values
 <h3>Dependencies configuration</h3>
@@ -501,6 +501,10 @@ task ur
     <td><div><code>"false"</code></div></td>
     <td>Enables the ability for users to provide direct product feedback from within the dashboard. When enabled, a feedback modal will be available in the UI that allows users to rate features, report bugs, and suggest improvements. Disabling this flag will remove the feedback modal and prevent collection of any user data.</td>
   </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L862">hyperswitch-app.controlCenter.env.default__features__frm</a></div></td>
+    <td><div><code>"true"</code></div></td>
+    <td>Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management</td>
+  </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L877">hyperswitch-app.controlCenter.env.default__features__generate_report</a></div></td>
     <td><div><code>"true"</code></div></td>
     <td>Enables the ability to generate detailed reports on payments, refunds, and disputes. When enabled, this allows users to pull reports covering the previous 6 months of transaction data. The reports can provide insights into trends, identify issues, and inform business decisions.</td>
@@ -564,19 +568,6 @@ task ur
     <td><div><a href="../hyperswitch-app/values.yaml#L965">hyperswitch-app.controlCenter.env.mixpanelToken</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mix panel token</td>
-  </tr></tbody>
-</table>
-<h3>Control Center configs </h3>
-<table height="400px">
-<thead>
-	<th >Key</th>
-	<th >Default</th>
-	<th >Description</th>
-</thead>
-<tbody><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L862">hyperswitch-app.controlCenter.env.default__features__frm</a></div></td>
-    <td><div><code>"true"</code></div></td>
-    <td>Enables the Fraud and Risk Management (FRM) module within the dashboard. When enabled, this unlocks integrations with FRM players like Riskified and Signified. https://docs.hyperswitch.io/explore-hyperswitch/payment-flows-and-management/fraud-and-risk-management</td>
   </tr></tbody>
 </table>
 <h3>App Server Secrets</h3>
@@ -1649,7 +1640,7 @@ task ur
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L328">hyperswitch-app.server.connectors.unified_authentication_service.base_url</a></div></td>
     <td><div><code>"http://localhost:8080"</code></div></td>
-    <td>base url to call unified authentication service  </td>
+    <td>base url to call unified authentication service</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L331">hyperswitch-app.server.cors.allowed_methods</a></div></td>
     <td><div><code>"GET,POST,PUT,DELETE"</code></div></td>
@@ -2357,287 +2348,287 @@ task ur
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L12">hyperswitch-app.hyperswitch-card-vault.backend</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L11">hyperswitch-app.hyperswitch-card-vault.backend</a></div></td>
     <td><div><code>"local"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L177">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L175">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L173">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L178">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L176">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L176">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L174">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L177">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L175">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L173">hyperswitch-app.hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L171">hyperswitch-app.hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L186">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L184">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"postgres:16-alpine3.19"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L187">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L185">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L184">hyperswitch-app.hyperswitch-card-vault.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L182">hyperswitch-app.hyperswitch-card-vault.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L189">hyperswitch-app.hyperswitch-card-vault.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L187">hyperswitch-app.hyperswitch-card-vault.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-app.hyperswitch-card-vault.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-app.hyperswitch-card-vault.postgresql.architecture</a></div></td>
     <td><div><code>"standalone"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L162">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L160">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.database</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L159">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.password</a></div></td>
     <td><div><code>"dummyPassword"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L160">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L158">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.username</a></div></td>
     <td><div><code>"db_user"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L157">hyperswitch-app.hyperswitch-card-vault.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L155">hyperswitch-app.hyperswitch-card-vault.postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L158">hyperswitch-app.hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L156">hyperswitch-app.hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L165">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L167">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L164">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L135">hyperswitch-app.hyperswitch-card-vault.secrets.api_client.identity</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L133">hyperswitch-app.hyperswitch-card-vault.secrets.api_client.identity</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L117">hyperswitch-app.hyperswitch-card-vault.secrets.aws.key_id</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L115">hyperswitch-app.hyperswitch-card-vault.secrets.aws.key_id</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L118">hyperswitch-app.hyperswitch-card-vault.secrets.aws.region</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L116">hyperswitch-app.hyperswitch-card-vault.secrets.aws.region</a></div></td>
     <td><div><code>"us-east-1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L112">hyperswitch-app.hyperswitch-card-vault.secrets.database.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L110">hyperswitch-app.hyperswitch-card-vault.secrets.database.password</a></div></td>
     <td><div><code>"dummyPassword"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L131">hyperswitch-app.hyperswitch-card-vault.secrets.external_key_manager.cert</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L129">hyperswitch-app.hyperswitch-card-vault.secrets.external_key_manager.cert</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L80">hyperswitch-app.hyperswitch-card-vault.secrets.locker_private_key</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L78">hyperswitch-app.hyperswitch-card-vault.secrets.locker_private_key</a></div></td>
     <td><div><code>"-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"</code></div></td>
     <td>To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L126">hyperswitch-app.hyperswitch-card-vault.secrets.tls.certificate</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L124">hyperswitch-app.hyperswitch-card-vault.secrets.tls.certificate</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L127">hyperswitch-app.hyperswitch-card-vault.secrets.tls.private_key</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L125">hyperswitch-app.hyperswitch-card-vault.secrets.tls.private_key</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L122">hyperswitch-app.hyperswitch-card-vault.secrets.vault.token</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L120">hyperswitch-app.hyperswitch-card-vault.secrets.vault.token</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L34">hyperswitch-app.hyperswitch-card-vault.server.affinity</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L32">hyperswitch-app.hyperswitch-card-vault.server.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L17">hyperswitch-app.hyperswitch-card-vault.server.annotations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L16">hyperswitch-app.hyperswitch-card-vault.server.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L55">hyperswitch-app.hyperswitch-card-vault.server.apiClient.identity</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L53">hyperswitch-app.hyperswitch-card-vault.server.apiClient.identity</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L58">hyperswitch-app.hyperswitch-card-vault.server.awsKms.keyId</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L56">hyperswitch-app.hyperswitch-card-vault.server.awsKms.keyId</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L59">hyperswitch-app.hyperswitch-card-vault.server.awsKms.region</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L57">hyperswitch-app.hyperswitch-card-vault.server.awsKms.region</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L52">hyperswitch-app.hyperswitch-card-vault.server.externalKeyManager.cert</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L50">hyperswitch-app.hyperswitch-card-vault.server.externalKeyManager.cert</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L51">hyperswitch-app.hyperswitch-card-vault.server.externalKeyManager.url</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L49">hyperswitch-app.hyperswitch-card-vault.server.externalKeyManager.url</a></div></td>
     <td><div><code>"http://localhost:5000"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L48">hyperswitch-app.hyperswitch-card-vault.server.extra.env</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L46">hyperswitch-app.hyperswitch-card-vault.server.extra.env</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L22">hyperswitch-app.hyperswitch-card-vault.server.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L20">hyperswitch-app.hyperswitch-card-vault.server.host</a></div></td>
     <td><div><code>"0.0.0.0"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L26">hyperswitch-app.hyperswitch-card-vault.server.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L24">hyperswitch-app.hyperswitch-card-vault.server.image</a></div></td>
     <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L31">hyperswitch-app.hyperswitch-card-vault.server.pod.annotations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L29">hyperswitch-app.hyperswitch-card-vault.server.pod.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L23">hyperswitch-app.hyperswitch-card-vault.server.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L21">hyperswitch-app.hyperswitch-card-vault.server.port</a></div></td>
     <td><div><code>"8080"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L62">hyperswitch-app.hyperswitch-card-vault.server.vault.url</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L60">hyperswitch-app.hyperswitch-card-vault.server.vault.url</a></div></td>
     <td><div><code>"http://127.0.0.1:8200"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L24">hyperswitch-app.hyperswitch-card-vault.server.version</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L22">hyperswitch-app.hyperswitch-card-vault.server.version</a></div></td>
     <td><div><code>"v0.6.5"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L140">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.master_key</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L138">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.master_key</a></div></td>
     <td><div><code>"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L143">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.public_key</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L141">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.public_key</a></div></td>
     <td><div><code>"-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"</code></div></td>
     <td>The public key for the tenant from tenant_secrets-public-public_key.pem</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L153">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.schema</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L151">hyperswitch-app.hyperswitch-card-vault.tenant_secrets.public.schema</a></div></td>
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L196">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L192">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
     <td><div><code>"curlimages/curl:8.7.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L195">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L193">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L195">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L192">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L190">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L199">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
     <td><div><code>"3c82773a6621feee3d5e0ce96654bf1f"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L198">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L366">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
     <td><div><code>"HTTP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L367">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
     <td><div><code>"HTTP1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring-alb-ingress-group"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
     <td><div><code>"ipv4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L370">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L375">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
     <td><div><code>"[{\"HTTP\": 80}]"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L371">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L376">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L372">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L377">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
     <td><div><code>"internet-facing"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L373">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L378">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L374">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
     <td><div><code>"stack=hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L375">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
     <td><div><code>"ip"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L368">hyperswitch-monitoring.grafana.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L377">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L382">hyperswitch-monitoring.grafana.ingress.hosts[0].host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L379">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L384">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].path</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L380">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L385">hyperswitch-monitoring.grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L364">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L369">hyperswitch-monitoring.grafana.ingress.ingressClassName</a></div></td>
     <td><div><code>"alb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L381">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L386">hyperswitch-monitoring.grafana.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L18">hyperswitch-monitoring.kube-prometheus-stack.alertmanager.alertmanagerSpec.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L23">hyperswitch-monitoring.kube-prometheus-stack.alertmanager.alertmanagerSpec.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L15">hyperswitch-monitoring.kube-prometheus-stack.alertmanager.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L20">hyperswitch-monitoring.kube-prometheus-stack.alertmanager.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
@@ -2645,643 +2636,647 @@ task ur
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L100">hyperswitch-monitoring.kube-prometheus-stack.grafana.additionalDataSources</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L105">hyperswitch-monitoring.kube-prometheus-stack.grafana.additionalDataSources</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L83">hyperswitch-monitoring.kube-prometheus-stack.grafana.adminPassword</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L88">hyperswitch-monitoring.kube-prometheus-stack.grafana.adminPassword</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L97">hyperswitch-monitoring.kube-prometheus-stack.grafana.defaultDatasourceEnabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L102">hyperswitch-monitoring.kube-prometheus-stack.grafana.defaultDatasourceEnabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L82">hyperswitch-monitoring.kube-prometheus-stack.grafana.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L87">hyperswitch-monitoring.kube-prometheus-stack.grafana.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L90">hyperswitch-monitoring.kube-prometheus-stack.grafana.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L95">hyperswitch-monitoring.kube-prometheus-stack.grafana.image.tag</a></div></td>
     <td><div><code>"10.0.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L94">hyperswitch-monitoring.kube-prometheus-stack.grafana.plugins[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L99">hyperswitch-monitoring.kube-prometheus-stack.grafana.plugins[0]</a></div></td>
     <td><div><code>"volkovlabs-variable-panel"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L105">hyperswitch-monitoring.kube-prometheus-stack.grafana.prometheus.datasource.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L110">hyperswitch-monitoring.kube-prometheus-stack.grafana.prometheus.datasource.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L120">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L125">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L121">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.label</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L126">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.label</a></div></td>
     <td><div><code>"grafana_dashboard"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L122">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.labelValue</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L127">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.labelValue</a></div></td>
     <td><div><code>"1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L127">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.provider.allowUiUpdates</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L132">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.provider.allowUiUpdates</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L124">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.searchNamespace</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L129">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.dashboards.searchNamespace</a></div></td>
     <td><div><code>"ALL"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L116">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.defaultDatasourceEnabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L121">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.defaultDatasourceEnabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L110">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L115">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L111">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.label</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L116">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.label</a></div></td>
     <td><div><code>"grafana_datasource"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L112">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.labelValue</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L117">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.labelValue</a></div></td>
     <td><div><code>"1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L114">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.searchNamespace</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L119">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.searchNamespace</a></div></td>
     <td><div><code>"{{ .Release.Namespace }}"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L118">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.skipTlsVerify</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L123">hyperswitch-monitoring.kube-prometheus-stack.grafana.sidecar.datasources.skipTlsVerify</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L86">hyperswitch-monitoring.kube-prometheus-stack.grafana.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L91">hyperswitch-monitoring.kube-prometheus-stack.grafana.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L22">hyperswitch-monitoring.kube-prometheus-stack.prometheus.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L27">hyperswitch-monitoring.kube-prometheus-stack.prometheus.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L56">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].job_name</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L61">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].job_name</a></div></td>
     <td><div><code>"kubernetes-pods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L58">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L63">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"pod"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L61">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].action</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L66">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].action</a></div></td>
     <td><div><code>"keep"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L62">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L67">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].regex</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L60">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].source_labels[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L65">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_scrape"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L64">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].action</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L69">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L66">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].regex</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L71">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].regex</a></div></td>
     <td><div><code>"(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L63">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].source_labels[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L68">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_path"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L65">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].target_label</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L70">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].target_label</a></div></td>
     <td><div><code>"__metrics_path__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L68">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].action</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L73">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L70">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].regex</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L75">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].regex</a></div></td>
     <td><div><code>"([^:]+)(?::\\d+)?;(\\d+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L71">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].replacement</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L76">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].replacement</a></div></td>
     <td><div><code>"$1:$2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L67">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L72">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[0]</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L67">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[1]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L72">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[1]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_port"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L69">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].target_label</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L74">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].target_label</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L73">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].job_name</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L78">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].job_name</a></div></td>
     <td><div><code>"kubernetes-nodes"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L75">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L80">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"node"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L77">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].action</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L82">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].action</a></div></td>
     <td><div><code>"labelmap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L78">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L83">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].regex</a></div></td>
     <td><div><code>"__meta_kubernetes_node_label_(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L34">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L39">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.cpu</a></div></td>
     <td><div><code>"500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L33">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L38">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.memory</a></div></td>
     <td><div><code>"1Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L31">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L36">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.cpu</a></div></td>
     <td><div><code>"50m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L30">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L35">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.memory</a></div></td>
     <td><div><code>"256Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L37">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.retention</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L42">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.retention</a></div></td>
     <td><div><code>"30d"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L43">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L48">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L40">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L45">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L49">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L54">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0]</a></div></td>
     <td><div><code>"ReadWriteOnce"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L52">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L57">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage</a></div></td>
     <td><div><code>"50Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L25">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L30">hyperswitch-monitoring.kube-prometheus-stack.prometheus.prometheusSpec.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L385">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L17">hyperswitch-monitoring.kube-prometheus-stack.prometheusOperator.admissionWebhooks.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L390">hyperswitch-monitoring.loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L188">hyperswitch-monitoring.loki.backend.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L193">hyperswitch-monitoring.loki.backend.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L194">hyperswitch-monitoring.loki.chunksCache.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L199">hyperswitch-monitoring.loki.chunksCache.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L165">hyperswitch-monitoring.loki.deploymentMode</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L170">hyperswitch-monitoring.loki.deploymentMode</a></div></td>
     <td><div><code>"SingleBinary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L132">hyperswitch-monitoring.loki.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L137">hyperswitch-monitoring.loki.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L133">hyperswitch-monitoring.loki.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L138">hyperswitch-monitoring.loki.fullnameOverride</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L190">hyperswitch-monitoring.loki.gateway.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L195">hyperswitch-monitoring.loki.gateway.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L137">hyperswitch-monitoring.loki.loki.auth_enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L142">hyperswitch-monitoring.loki.loki.auth_enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L144">hyperswitch-monitoring.loki.loki.commonConfig.replication_factor</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L149">hyperswitch-monitoring.loki.loki.commonConfig.replication_factor</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L162">hyperswitch-monitoring.loki.loki.limits_config.ingestion_burst_size_mb</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L167">hyperswitch-monitoring.loki.loki.limits_config.ingestion_burst_size_mb</a></div></td>
     <td><div><code>20</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L161">hyperswitch-monitoring.loki.loki.limits_config.ingestion_rate_mb</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L166">hyperswitch-monitoring.loki.loki.limits_config.ingestion_rate_mb</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L160">hyperswitch-monitoring.loki.loki.limits_config.retention_period</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L165">hyperswitch-monitoring.loki.loki.limits_config.retention_period</a></div></td>
     <td><div><code>"168h"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L151">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].from</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L156">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].from</a></div></td>
     <td><div><code>"2024-01-01"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L157">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].index.period</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L162">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].index.period</a></div></td>
     <td><div><code>"24h"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L156">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].index.prefix</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L161">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].index.prefix</a></div></td>
     <td><div><code>"index_"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L153">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].object_store</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L158">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].object_store</a></div></td>
     <td><div><code>"filesystem"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L154">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].schema</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L159">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].schema</a></div></td>
     <td><div><code>"v13"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L152">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].store</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L157">hyperswitch-monitoring.loki.loki.schemaConfig.configs[0].store</a></div></td>
     <td><div><code>"tsdb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L141">hyperswitch-monitoring.loki.loki.server.grpc_listen_port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L146">hyperswitch-monitoring.loki.loki.server.grpc_listen_port</a></div></td>
     <td><div><code>9095</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L140">hyperswitch-monitoring.loki.loki.server.http_listen_port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L145">hyperswitch-monitoring.loki.loki.server.http_listen_port</a></div></td>
     <td><div><code>3100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L147">hyperswitch-monitoring.loki.loki.storage.type</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L152">hyperswitch-monitoring.loki.loki.storage.type</a></div></td>
     <td><div><code>"filesystem"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L184">hyperswitch-monitoring.loki.read.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L189">hyperswitch-monitoring.loki.read.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L196">hyperswitch-monitoring.loki.resultsCache.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L201">hyperswitch-monitoring.loki.resultsCache.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L172">hyperswitch-monitoring.loki.singleBinary.persistence.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L177">hyperswitch-monitoring.loki.singleBinary.persistence.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L173">hyperswitch-monitoring.loki.singleBinary.persistence.size</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L178">hyperswitch-monitoring.loki.singleBinary.persistence.size</a></div></td>
     <td><div><code>"10Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L168">hyperswitch-monitoring.loki.singleBinary.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L173">hyperswitch-monitoring.loki.singleBinary.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L179">hyperswitch-monitoring.loki.singleBinary.resources.limits.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L184">hyperswitch-monitoring.loki.singleBinary.resources.limits.cpu</a></div></td>
     <td><div><code>"500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L180">hyperswitch-monitoring.loki.singleBinary.resources.limits.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L185">hyperswitch-monitoring.loki.singleBinary.resources.limits.memory</a></div></td>
     <td><div><code>"512Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L176">hyperswitch-monitoring.loki.singleBinary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L181">hyperswitch-monitoring.loki.singleBinary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L177">hyperswitch-monitoring.loki.singleBinary.resources.requests.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L182">hyperswitch-monitoring.loki.singleBinary.resources.requests.memory</a></div></td>
     <td><div><code>"256Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L170">hyperswitch-monitoring.loki.singleBinary.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L175">hyperswitch-monitoring.loki.singleBinary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L186">hyperswitch-monitoring.loki.write.replicas</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L191">hyperswitch-monitoring.loki.write.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L294">hyperswitch-monitoring.opentelemetry-collector.affinity</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L299">hyperswitch-monitoring.opentelemetry-collector.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L259">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L264">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L261">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L266">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:9898"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L265">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L270">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:13133"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L242">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L247">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L244">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L249">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
     <td><div><code>"5s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L245">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L250">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L246">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L251">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
     <td><div><code>25</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L250">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L255">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
     <td><div><code>"datapoint"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L252">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L257">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
     <td><div><code>"set(attributes[\"source_namespace\"], resource.attributes[\"k8s.namespace.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L253">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L258">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
     <td><div><code>"set(attributes[\"source_pod\"], resource.attributes[\"k8s.pod.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L254">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L259">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
     <td><div><code>"set(attributes[\"source_app\"], resource.attributes[\"app\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L255">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L260">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
     <td><div><code>"set(attributes[\"source_version\"], resource.attributes[\"version\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L239">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L244">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:4317"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L276">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L281">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
     <td><div><code>"health_check"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L286">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L291">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
     <td><div><code>"prometheus"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L282">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L287">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
     <td><div><code>"memory_limiter"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L283">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L288">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
     <td><div><code>"transform"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L284">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L289">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
     <td><div><code>"batch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L280">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L285">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
     <td><div><code>"otlp"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L271">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L276">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
     <td><div><code>"json"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L270">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L275">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
     <td><div><code>"DEBUG"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L274">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L279">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:8888"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L273">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L278">hyperswitch-monitoring.opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L221">hyperswitch-monitoring.opentelemetry-collector.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L226">hyperswitch-monitoring.opentelemetry-collector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L289">hyperswitch-monitoring.opentelemetry-collector.image.repository</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L294">hyperswitch-monitoring.opentelemetry-collector.image.repository</a></div></td>
     <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L290">hyperswitch-monitoring.opentelemetry-collector.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L295">hyperswitch-monitoring.opentelemetry-collector.image.tag</a></div></td>
     <td><div><code>"0.122.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L223">hyperswitch-monitoring.opentelemetry-collector.mode</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L228">hyperswitch-monitoring.opentelemetry-collector.mode</a></div></td>
     <td><div><code>"deployment"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L226">hyperswitch-monitoring.opentelemetry-collector.namespaceOverride</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L231">hyperswitch-monitoring.opentelemetry-collector.namespaceOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L292">hyperswitch-monitoring.opentelemetry-collector.nodeSelector</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L297">hyperswitch-monitoring.opentelemetry-collector.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L310">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L315">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L309">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L314">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L312">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L317">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L311">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L316">hyperswitch-monitoring.opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L316">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L321">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L320">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L325">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L318">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L323">hyperswitch-monitoring.opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L305">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L310">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L304">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L309">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L307">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L312">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L306">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L311">hyperswitch-monitoring.opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L314">hyperswitch-monitoring.opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L319">hyperswitch-monitoring.opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L302">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L307">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
     <td><div><code>"grpc"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L299">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.containerPort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L304">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.containerPort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L298">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L303">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L301">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L306">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L300">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.servicePort</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L305">hyperswitch-monitoring.opentelemetry-collector.ports.otlp.servicePort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L322">hyperswitch-monitoring.opentelemetry-collector.ports.zipkin.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L327">hyperswitch-monitoring.opentelemetry-collector.ports.zipkin.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L230">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L235">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L232">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L237">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L231">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L236">hyperswitch-monitoring.opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L334">hyperswitch-monitoring.opentelemetry-collector.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L339">hyperswitch-monitoring.opentelemetry-collector.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L328">hyperswitch-monitoring.opentelemetry-collector.resources.limits.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L333">hyperswitch-monitoring.opentelemetry-collector.resources.limits.cpu</a></div></td>
     <td><div><code>"1500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L329">hyperswitch-monitoring.opentelemetry-collector.resources.limits.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L334">hyperswitch-monitoring.opentelemetry-collector.resources.limits.memory</a></div></td>
     <td><div><code>"4Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L331">hyperswitch-monitoring.opentelemetry-collector.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L336">hyperswitch-monitoring.opentelemetry-collector.resources.requests.cpu</a></div></td>
     <td><div><code>"250m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L332">hyperswitch-monitoring.opentelemetry-collector.resources.requests.memory</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L337">hyperswitch-monitoring.opentelemetry-collector.resources.requests.memory</a></div></td>
     <td><div><code>"512Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L337">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L342">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L340">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L345">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L341">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L346">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
     <td><div><code>"30s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L342">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L347">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L339">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L344">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
     <td><div><code>"otel-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L344">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L349">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L345">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L350">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
     <td><div><code>"15s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L346">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L351">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L343">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L348">hyperswitch-monitoring.opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
     <td><div><code>"hs-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L293">hyperswitch-monitoring.opentelemetry-collector.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L298">hyperswitch-monitoring.opentelemetry-collector.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L352">hyperswitch-monitoring.postgresql.external</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.external</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L358">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L363">hyperswitch-monitoring.postgresql.primary.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L354">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L359">hyperswitch-monitoring.postgresql.primary.host</a></div></td>
     <td><div><code>"postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L357">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L362">hyperswitch-monitoring.postgresql.primary.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L355">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L360">hyperswitch-monitoring.postgresql.primary.port</a></div></td>
     <td><div><code>5432</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L356">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L361">hyperswitch-monitoring.postgresql.primary.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L207">hyperswitch-monitoring.promtail.config.clients[0].url</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L212">hyperswitch-monitoring.promtail.config.clients[0].url</a></div></td>
     <td><div><code>"http://loki:3100/loki/api/v1/push"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L215">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L220">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
     <td><div><code>"keep"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L216">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].regex</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L221">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].regex</a></div></td>
     <td><div><code>"hyperswitch-.*"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L217">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].source_labels[0]</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L222">hyperswitch-monitoring.promtail.config.snippets.extraRelabelConfigs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_label_app"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L211">hyperswitch-monitoring.promtail.config.snippets.pipelineStages[0].cri</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L216">hyperswitch-monitoring.promtail.config.snippets.pipelineStages[0].cri</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L200">hyperswitch-monitoring.promtail.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L205">hyperswitch-monitoring.promtail.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-monitoring/values.yaml#L203">hyperswitch-monitoring.promtail.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-monitoring/values.yaml#L208">hyperswitch-monitoring.promtail.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>

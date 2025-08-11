@@ -11,19 +11,24 @@ global:
 kube-prometheus-stack:
   enabled: true
 
+  # Disable admission webhooks to avoid Istio sidecar issues
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: false
+
   alertmanager:
     enabled: true
     alertmanagerSpec:
       # Tolerations for Alertmanager pods
       tolerations: []
-  
+
   # Prometheus configuration
   prometheus:
     enabled: true
     prometheusSpec:
       # Tolerations for Prometheus pods
       tolerations: []
-      
+
       # Resource requests and limits
       resources:
         requests:
@@ -32,16 +37,16 @@ kube-prometheus-stack:
         limits:
           memory: 1Gi
           cpu: 500m
-      
+
       # Retention period
       retention: 30d
 
       # Empty selector - discovers all ServiceMonitors in allowed namespaces
       serviceMonitorSelector: {}
-      
+
       # namespaces to monitor
-      serviceMonitorNamespaceSelector: {} 
-      
+      serviceMonitorNamespaceSelector: {}
+
       # Storage configuration
       storageSpec:
         volumeClaimTemplate:
@@ -50,7 +55,7 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 50Gi
-      
+
       # Additional scrape configs from hyperswitch-stack
       additionalScrapeConfigs:
         - job_name: "kubernetes-pods"
@@ -69,41 +74,41 @@ kube-prometheus-stack:
               target_label: __address__
               regex: ([^:]+)(?::\d+)?;(\d+)
               replacement: "$1:$2"
-        
+
         - job_name: "kubernetes-nodes"
           kubernetes_sd_configs:
             - role: node
           relabel_configs:
             - action: labelmap
               regex: __meta_kubernetes_node_label_(.+)
-  
+
   # Grafana configuration
   grafana:
     enabled: true
     adminPassword: "admin"
-    
+
     # Tolerations for Grafana pods
     tolerations: []
-    
+
     # Grafana image
     image:
       tag: 10.0.1
-    
+
     # Install additional plugins
     plugins:
       - volkovlabs-variable-panel
-    
+
     # Disable default datasources from kube-prometheus-stack
     defaultDatasourceEnabled: false
-    
+
     # Configure datasources - these will be processed as plain YAML, not templates
     additionalDataSources: []
-    
+
     # Disable the default prometheus datasource
     prometheus:
       datasource:
         enabled: false
-    
+
     # Sidecar configuration for datasources
     sidecar:
       datasources:
@@ -135,17 +140,17 @@ loki:
   # Loki configuration
   loki:
     auth_enabled: false
-    
+
     server:
       http_listen_port: 3100
       grpc_listen_port: 9095
-    
+
     commonConfig:
       replication_factor: 1
-    
+
     storage:
       type: filesystem
-    
+
     schemaConfig:
       configs:
         - from: 2024-01-01
@@ -155,15 +160,15 @@ loki:
           index:
             prefix: index_
             period: 24h
-    
+
     limits_config:
       retention_period: 168h
       ingestion_rate_mb: 10
       ingestion_burst_size_mb: 20
-    
+
   # Single binary deployment
   deploymentMode: SingleBinary
-   
+
   singleBinary:
     replicas: 1
     # Tolerations for Loki pods
@@ -178,7 +183,7 @@ loki:
       limits:
         cpu: 500m
         memory: 512Mi
-  
+
   # Explicitly disable other deployment modes
   read:
     replicas: 0
@@ -188,7 +193,7 @@ loki:
     replicas: 0
   gateway:
     replicas: 0
-  
+
   # Disable chunks cache to reduce memory requirements
   chunksCache:
     enabled: false
@@ -198,23 +203,23 @@ loki:
 # Promtail configuration
 promtail:
   enabled: true
-  
+
   # Tolerations for Promtail pods
   tolerations: []
-  
+
   config:
     clients:
       - url: "http://loki:3100/loki/api/v1/push"
-    
+
     snippets:
       pipelineStages:
         - cri: {}
-      
+
       # Extra relabel configs to filter hyperswitch pods
       extraRelabelConfigs:
-          - action: "keep"
-            regex: "hyperswitch-.*"
-            source_labels: ["__meta_kubernetes_pod_label_app"]
+        - action: "keep"
+          regex: "hyperswitch-.*"
+          source_labels: ["__meta_kubernetes_pod_label_app"]
 
 # OpenTelemetry Collector configuration
 opentelemetry-collector:
@@ -349,8 +354,8 @@ opentelemetry-collector:
 postgresql:
   # @section -- Dependencies configuration for grafana datasource
   # When external is false, the host will be prefixed with {{ .Release.Name }}- (e.g., hypers-v1-postgresql)
-  external: false 
-  primary: 
+  external: false
+  primary:
     host: "postgresql"
     port: 5432
     username: "hyperswitch"
