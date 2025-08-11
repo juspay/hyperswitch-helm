@@ -152,6 +152,7 @@ Note: This will remove all Istio components. If you have other applications usin
 | istiod.pilot.nodeSelector | object | `{}` |  |
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
+| namespace | string | `"hyperswitch"` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` |  |

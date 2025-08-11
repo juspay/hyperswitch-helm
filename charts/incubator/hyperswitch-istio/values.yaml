@@ -2,6 +2,9 @@
 
 replicaCount: 1
 
+# Namespace configuration
+namespace: hyperswitch
+
 # Service-specific versions
 hyperswitchServer:
   version: "v1o114o0"  
@@ -68,5 +71,3 @@ istio-gateway:
   nodeSelector: {}
   # nodeSelector:
   #   node-type: memory-optimized
-
-

@@ -51,12 +51,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Get the namespace name
 */}}
-{{- define "hyperswitch-istio.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "hyperswitch-istio.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
+{{- define "hyperswitch-istio.namespace" -}}
+{{- default "hyperswitch" .Values.namespace }}
 {{- end }}
