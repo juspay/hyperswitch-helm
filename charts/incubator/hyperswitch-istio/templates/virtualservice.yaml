@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: hyperswitch-application-server
-  namespace: hyperswitch
+  namespace: {{ include "hyperswitch-istio.namespace" . }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "5"
