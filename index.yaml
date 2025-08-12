@@ -158,6 +158,31 @@ entries:
   hyperswitch-istio:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-08-12T06:25:09.480250461Z"
+    dependencies:
+    - alias: istio-base
+      condition: istio-base.enabled
+      name: base
+      repository: https://istio-release.storage.googleapis.com/charts
+      version: 1.25.0
+    - condition: istiod.enabled
+      name: istiod
+      repository: https://istio-release.storage.googleapis.com/charts
+      version: 1.25.0
+    - alias: istio-gateway
+      condition: istio-gateway.enabled
+      name: gateway
+      repository: https://istio-release.storage.googleapis.com/charts
+      version: 1.25.0
+    description: A Helm chart for Kubernetes
+    digest: 6107538f8738fce112f3ac60aef0a28bf10001acd1edb467d5019c69aeab2a04
+    name: hyperswitch-istio
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-istio-0.1.2/hyperswitch-istio-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-01T14:25:37.660126644Z"
     description: A Helm chart for Kubernetes
     digest: 4d6175997f08c6a1cf21ad3d355bc4a3d0f9a74fc061d6bfc372398432d3982c
@@ -697,4 +722,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2025-08-12T05:29:03.761730437Z"
+generated: "2025-08-12T06:25:09.480318098Z"
