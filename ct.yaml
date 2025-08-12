@@ -10,6 +10,7 @@ chart-repos:
   - vector=https://helm.vector.dev
   - codecentric=https://codecentric.github.io/helm-charts
   - prometheus-community=https://prometheus-community.github.io/helm-charts
+  - istio=https://istio-release.storage.googleapis.com/charts
 helm-extra-args: --timeout 600s
 validate-maintainers: false
 skip-tests: true
