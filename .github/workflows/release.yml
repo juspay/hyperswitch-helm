@@ -37,6 +37,7 @@ jobs:
           helm repo add vector https://helm.vector.dev
           helm repo add codecentric https://codecentric.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add istio https://istio-release.storage.googleapis.com/charts
           helm repo update
 
       - name: Build Helm Dependencies
