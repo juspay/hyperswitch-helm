@@ -2,8 +2,15 @@
 
 replicaCount: 1
 
-image:
-  version: "v1o107o0"
+# Namespace configuration
+namespace: hyperswitch
+
+# Service-specific versions
+hyperswitchServer:
+  version: "v1o114o0"  
+
+hyperswitchControlCenter:
+  version: "v1o37o1"   
 
 service:
   type: ClusterIP
@@ -33,3 +40,34 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+
+
+# Istio Base Configuration
+istio-base:
+  enabled: true
+  defaultRevision: default
+
+# Istiod Configuration
+istiod:
+  enabled: true
+
+  global:
+    hub: docker.io/istio
+    tag: "1.25.0"
+  pilot:
+    nodeSelector: {}
+    # nodeSelector:
+    #   node-type: memory-optimized
+
+# Istio Gateway Configuration
+istio-gateway:
+  enabled: true
+  name: istio-ingressgateway
+  global:
+    hub: docker.io/istio
+    tag: "1.25.0"
+  service:
+    type: ClusterIP
+  nodeSelector: {}
+  # nodeSelector:
+  #   node-type: memory-optimized

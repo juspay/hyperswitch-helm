@@ -2,30 +2,62 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: hyperswitch-application-server
-  namespace: hyperswitch
+  namespace: {{ include "hyperswitch-istio.namespace" . }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   gateways:
-  - istio-system/hyperswitch-gateway
+    - istio-system/hyperswitch-gateway
   hosts:
-  - '*'
+    - '*'
   http:
-  - match:
-    - uri:
-        prefix: /sample_data
-    rewrite:
-      uri: /not/authorization
-    route:
-    - destination:
-        host: hyperswitch-server
-        subset: {{ .Values.image.version }}
-      weight: 100
-    timeout: 50s
-  - match:
-    - uri:
-        prefix: /
-    route:
-    - destination:
-        host: hyperswitch-server
-        subset: {{ .Values.image.version }}
-      weight: 100
-    timeout: 50s
+    # Health checks to hyperswitch-server
+    - match:
+        - uri:
+            exact: /health
+      route:
+        - destination:
+            host: hyperswitch-server
+            subset: {{ .Values.hyperswitchServer.version }}
+            port:
+              number: 80
+      timeout: 10s
+
+    - match:
+        - uri:
+            exact: /health/ready
+      route:
+        - destination:
+            host: hyperswitch-server
+            subset: {{ .Values.hyperswitchServer.version }}
+            port:
+              number: 80
+      timeout: 10s
+
+    # API requests to hyperswitch-server with path rewrite
+    - match:
+        - uri:
+            prefix: /api/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: hyperswitch-server
+            subset: {{ .Values.hyperswitchServer.version }}
+            port:
+              number: 80
+      timeout: 50s
+
+    # Everything else to control center
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: hyperswitch-control-center
+            subset: {{ .Values.hyperswitchControlCenter.version }}
+            port:
+              number: 80
+      timeout: 50s

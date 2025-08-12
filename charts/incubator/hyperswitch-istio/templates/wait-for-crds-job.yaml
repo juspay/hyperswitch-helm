@@ -1,0 +1,56 @@
+{{- if or (index .Values "istio-base" "enabled") .Values.istiod.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "hyperswitch-istio.fullname" . }}-wait-crds
+  namespace: istio-system
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 300  # 5 minute timeout
+  template:
+    metadata:
+      name: {{ include "hyperswitch-istio.fullname" . }}-wait-crds
+    spec:
+      serviceAccountName: {{ include "hyperswitch-istio.fullname" . }}-wait-crds
+      restartPolicy: Never
+      containers:
+      - name: wait-crds
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Waiting for Istio CRDs to be established..."
+          
+          # List of CRDs to wait for
+          crds=(
+            "gateways.networking.istio.io"
+            "virtualservices.networking.istio.io"
+            "destinationrules.networking.istio.io"
+          )
+          
+          # Maximum wait time per CRD (in seconds)
+          MAX_WAIT=60
+          
+          # Wait for each CRD
+          for crd in "${crds[@]}"; do
+            echo "Waiting for CRD: $crd"
+            SECONDS=0
+            until kubectl get crd "$crd" &> /dev/null; do
+              if [ $SECONDS -gt $MAX_WAIT ]; then
+                echo "ERROR: Timeout waiting for CRD $crd after ${MAX_WAIT}s"
+                exit 1
+              fi
+              echo "CRD $crd not found. Waiting... (${SECONDS}s elapsed)"
+              sleep 2
+            done
+            echo "✓ CRD $crd is ready"
+          done
+          
+          echo "✓ All Istio CRDs are ready!"
+          sleep 5  # Extra buffer time for CRD establishment
+{{- end }}
