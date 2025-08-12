@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.producer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-producer-v1o115o0
+  name: hyperswitch-producer-{{ include "version.suffix" .Values.services.producer.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.producer.progressDeadlineSeconds }}
@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.producer.labels.app }}
-      version: v1o115o0
+      version: {{ include "version.suffix" .Values.services.producer.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.producer.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -24,7 +24,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.producer.labels.app }}
-        version: v1o115o0
+        version: {{ include "version.suffix" .Values.services.producer.version }}
       annotations:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
         checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}

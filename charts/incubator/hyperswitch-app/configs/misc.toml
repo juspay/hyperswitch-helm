@@ -229,6 +229,16 @@ request_url = "{{ .Values.server.crm.hubspot_proxy.request_url }}"
 [cell_information]
 id = "{{ .Values.server.cell_information.id }}" # Default CellID for Global Cell Information
 
+[network_tokenization_service]
+generate_token_url= "{{ .Values.server.network_tokenization_service.generate_token_url }}"
+fetch_token_url= "{{ .Values.server.network_tokenization_service.fetch_token_url }}"
+token_service_api_key= "{{ .Values.server.network_tokenization_service.token_service_api_key }}"
+public_key= "{{ .Values.server.network_tokenization_service.public_key }}"
+private_key= "{{ .Values.server.network_tokenization_service.private_key }}"
+key_id= "{{ .Values.server.network_tokenization_service.key_id }}"                    
+delete_token_url= "{{ .Values.server.network_tokenization_service.delete_token_url }}"          
+check_token_status_url= "{{ .Values.server.network_tokenization_service.check_token_status_url }}"    
+webhook_source_verification_key= "{{ .Values.server.network_tokenization_service.webhook_source_verification_key }}" 
 
 [grpc_client.dynamic_routing_client] # Dynamic Routing Client Configuration
 host = "{{ .Values.server.grpc_client.dynamic_routing_client.host }}" 
@@ -257,4 +267,13 @@ base_url = "{{ .Values.server.connectors.hyperswitch_vault }}"
 
 [clone_connector_allowlist]
 merchant_ids = "{{ .Values.server.clone_connector_allowlist.merchant_ids }}"
-connector_names = "{{ .Values.server.clone_connector_allowlist.connector_names }}"   
+connector_names = "{{ .Values.server.clone_connector_allowlist.connector_names }}"
+
+[grpc_client.unified_connector_service]
+host = {{ .Values.server.grpc_client.unified_connectors_client.host | quote }}
+port = {{ .Values.server.grpc_client.unified_connectors_client.port }}
+connection_timeout = {{ .Values.server.grpc_client.unified_connectors_client.connection_timeout }}
+
+[chat]
+enabled = false                                # Enable or disable chat features
+hyperswitch_ai_host = "http://0.0.0.0:8000"    # Hyperswitch ai workflow host

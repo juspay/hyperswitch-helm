@@ -3,43 +3,50 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.115.0
+    version: v1.116.0
     # -- Router image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.115.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.116.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
     enabled: true
+    # -- Consumer version
+    # @section -- Services
+    version: v1.116.0
     # -- Consumer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.115.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.116.0
   producer:
     enabled: true
+    # -- Producer version
+    # @section -- Services
+    version: v1.116.0
     # -- Producer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.115.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.116.0
   drainer:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.115.0
+    version: v1.116.0
     # -- Drainer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.115.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.116.0
   controlCenter:
     enabled: true
     # -- Control Center image
+    version: v1.37.3
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.2
+    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
   sdk:
     # -- SDK host
     # @section -- Services
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.123.0
+    version: 0.125.0
     # -- SDK subversion
     # @section -- Services
     subversion: v1
@@ -151,6 +158,9 @@ server:
   env:
     binary: router
     host: hyperswitch
+  chat:
+    enabled: false
+    hyperswitch_ai_host: ""
   secrets:
     # -- admin API key for admin authentication.
     # @section -- App Server Secrets
@@ -326,9 +336,29 @@ server:
     unified_authentication_service:
       # -- base url to call unified authentication service
       base_url: "http://localhost:8080"
+  network_tokenization_service:
+    # base url to generate token
+    generate_token_url: "https://example.com/generate"
+    # base url to fetch token
+    fetch_token_url: "https://example.com/fetch"
+    # api key for token service
+    token_service_api_key: "api_key"
+    # public key to encrypt data for token service
+    public_key: "public_key"
+    # private key to decrypt response payload from token service
+    private_key: "private_key"
+    # key id to encrypt data for token service
+    key_id: "key_id"
+    # base url to delete token from token service
+    delete_token_url: "https://example.com/delete"
+    # base url to check token status from token service
+    check_token_status_url: "https://example.com/status"
+    # webhook source verification key to verify the webhook payload from token service
+    webhook_source_verification_key: "placeholder_webhook_key"
   cors:
     # -- List of methods that are allowed
     allowed_methods: GET,POST,PUT,DELETE
+    origin: "https://hyperswti"
     # -- Maximum time (in seconds) for which this CORS request may be cached.
     max_age: 30
     # -- If true, allows any origin to make requests
@@ -446,6 +476,13 @@ server:
       port: 7000
       # -- Client Service Name
       service: "dynamo"
+    unified_connectors_client:
+      # -- Client Host
+      host: "localhost"
+      # -- Client Port
+      port: 8000
+      # Connection Timeout Duration in Seconds
+      connection_timeout: "10"
   theme:
     storage:
       # -- Theme storage backend to be used

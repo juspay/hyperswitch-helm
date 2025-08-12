@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-control-center-v1o37o2
+  name: hyperswitch-control-center-{{ include "version.suffix" .Values.services.controlCenter.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.controlCenter.labels.app }}
-      version: v1o37o2
+      version: {{ include "version.suffix" .Values.services.controlCenter.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -24,7 +24,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.controlCenter.labels.app }}
-        version: v1o37o2
+        version: {{ include "version.suffix" .Values.services.controlCenter.version }}
     spec:
       {{- with (default .Values.global.tolerations .Values.controlCenter.tolerations) }}
       tolerations:
