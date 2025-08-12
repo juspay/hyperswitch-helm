@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.9](https://img.shields.io/badge/Version-0.2.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
+![Version: 0.2.10](https://img.shields.io/badge/Version-0.2.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -16,13 +16,16 @@ assets
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | autoBuild.buildImage | string | `"docker.juspay.io/juspaydotin/hyperswitch-web"` | docker image to use for the build |
+| autoBuild.buildParam.appCloudFrontUrl | string | `""` |  |
+| autoBuild.buildParam.disableCSP | string | `"true"` |  |
 | autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch"` | node build parameter, hyperswitch server host |
 | autoBuild.buildParam.envLogsUrl | string | `"https://hyperswitch-sdk-logs"` | node build parameter, hyperswitch SDK logs host |
 | autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
+| autoBuild.buildParam.sdkCloudFrontUrl | string | `""` |  |
 | autoBuild.enable | bool | `true` | enable npm auto build |
 | autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
-| autoBuild.gitCloneParam.gitVersion | string | `"0.123.0"` | hyperswitch-web repository tag |
+| autoBuild.gitCloneParam.gitVersion | string | `"0.125.0"` | hyperswitch-web repository tag |
 | autoBuild.nginxConfig.extraPath | string | `"v1"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
