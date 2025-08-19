@@ -1,4 +1,4 @@
-{{- if or (index .Values "istio-base" "enabled") .Values.istiod.enabled }}
+{{- if and .Values.waitForCrds.enabled (or (index .Values "istio-base" "enabled") .Values.istiod.enabled) }}
 apiVersion: batch/v1
 kind: Job
 metadata:

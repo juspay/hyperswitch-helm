@@ -71,3 +71,7 @@ istio-gateway:
   nodeSelector: {}
   # nodeSelector:
   #   node-type: memory-optimized
+
+# Wait for CRDs Job Configuration
+waitForCrds:
+  enabled: true
