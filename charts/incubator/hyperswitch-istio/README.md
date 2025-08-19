@@ -124,8 +124,8 @@ Note: This will remove all Istio components. If you have other applications usin
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| hyperswitchControlCenter.version | string | `"v1o37o1"` |  |
-| hyperswitchServer.version | string | `"v1o114o0"` |  |
+| hyperswitchControlCenter.version | string | `"v1o37o3"` |  |
+| hyperswitchServer.version | string | `"v1o116o0"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"alb"` |  |
 | ingress.enabled | bool | `true` |  |
