@@ -1,6 +1,6 @@
 # hyperswitch-istio
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -124,8 +124,8 @@ Note: This will remove all Istio components. If you have other applications usin
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| hyperswitchControlCenter.version | string | `"v1o37o1"` |  |
-| hyperswitchServer.version | string | `"v1o114o0"` |  |
+| hyperswitchControlCenter.version | string | `"v1o37o3"` |  |
+| hyperswitchServer.version | string | `"v1o116o0"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"alb"` |  |
 | ingress.enabled | bool | `true` |  |
@@ -158,6 +158,7 @@ Note: This will remove all Istio components. If you have other applications usin
 | replicaCount | int | `1` |  |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |
+| waitForCrds.enabled | bool | `true` |  |
 
 ## Troubleshooting
 
