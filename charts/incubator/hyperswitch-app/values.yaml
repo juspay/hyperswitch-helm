@@ -156,7 +156,7 @@ server:
     app: hyperswitch-server
   # -- service account annotations to be used
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn: "" my-role-arn
+    eks.amazonaws.com/role-arn: ""
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   # @ignored
   env:
