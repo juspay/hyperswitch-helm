@@ -12,6 +12,5 @@ description: |-
   assets
 
 type: application
-version: 0.2.10
+version: 0.2.11
 appVersion: "0.15.8"
-icon: https://app.hyperswitch.io/HyperswitchFavicon.png
