@@ -10,12 +10,6 @@ services:
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
-    # -- Router ingress configuration
-    # @section -- Services
-    ingress:
-      # -- Enable or disable ingress for router service
-      # @section -- Services
-      enabled: true
   consumer:
     enabled: true
     # -- Consumer version
@@ -46,12 +40,6 @@ services:
     version: v1.37.3
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
-    # -- Control Center ingress configuration
-    # @section -- Services
-    ingress:
-      # -- Enable or disable ingress for control center service
-      # @section -- Services
-      enabled: true
   sdk:
     # -- SDK host
     # @section -- Services
@@ -96,7 +84,7 @@ global:
 
   # -- service account annotations to be used
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+    eks.amazonaws.com/role-arn: ""
   # -- Environmant variables that are to be used by the hyperswitch application services
   env:
     pod_name:
@@ -124,6 +112,10 @@ server:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Ingress configuration for server/router service
+  ingress:
+    # -- Enable or disable ingress for router service
+    enabled: true
   # -- The liveness probe configuration for the pods
   # @ignored
   livenessProbe:
@@ -164,7 +156,7 @@ server:
     app: hyperswitch-server
   # -- service account annotations to be used
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn: my-role-arn
+    eks.amazonaws.com/role-arn: "" my-role-arn
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   # @ignored
   env:
@@ -759,7 +751,7 @@ consumer:
   # -- service account annotations to be used
   # @ignored
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+    eks.amazonaws.com/role-arn: ""
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: consumer
@@ -792,7 +784,7 @@ producer:
     app: hyperswitch-producer
   # -- service account annotations to be used
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+    eks.amazonaws.com/role-arn: ""
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: producer
@@ -825,7 +817,7 @@ drainer:
     app: hyperswitch-drainer
   # -- service account annotations to be used
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+    eks.amazonaws.com/role-arn: ""
   # -- Environment variables that are to be used by the hyperswitch drainer service
   env:
     binary: drainer
@@ -863,6 +855,10 @@ controlCenter:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Ingress configuration for control center service
+  ingress:
+    # -- Enable or disable ingress for control center service
+    enabled: true
   # -- Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -884,7 +880,7 @@ controlCenter:
   # -- service account annotations to be used
   # @ignored
   serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+    eks.amazonaws.com/role-arn: ""
   env:
     # --
     binary: dashboard
