@@ -10,6 +10,12 @@ services:
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
+    # -- Router ingress configuration
+    # @section -- Services
+    ingress:
+      # -- Enable or disable ingress for router service
+      # @section -- Services
+      enabled: true
   consumer:
     enabled: true
     # -- Consumer version
@@ -40,6 +46,12 @@ services:
     version: v1.37.3
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
+    # -- Control Center ingress configuration
+    # @section -- Services
+    ingress:
+      # -- Enable or disable ingress for control center service
+      # @section -- Services
+      enabled: true
   sdk:
     # -- SDK host
     # @section -- Services

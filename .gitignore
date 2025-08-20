@@ -109,3 +109,6 @@ kubeconfig
 *.tar.gz
 *.tar.bz2
 *.tar.xz
+
+# Claude Files
+*.claude
