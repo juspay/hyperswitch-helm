@@ -4,6 +4,7 @@ description: Hyperswitch is a community-led, open payments switch designed to em
 name: hyperswitch-app
 type: application
 version: 0.2.11
+icon: https://app.hyperswitch.io/HyperswitchFavicon.png
 dependencies:
   - name: redis
     version: 18.6.1

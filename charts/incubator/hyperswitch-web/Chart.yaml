@@ -14,3 +14,4 @@ description: |-
 type: application
 version: 0.2.10
 appVersion: "0.15.8"
+icon: https://app.hyperswitch.io/HyperswitchFavicon.png

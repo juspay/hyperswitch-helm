@@ -4,6 +4,7 @@ description: Monitoring stack for Hyperswitch including Prometheus, Loki, Promta
 type: application
 version: 0.1.2
 appVersion: "1.0.0"
+icon: https://app.hyperswitch.io/HyperswitchFavicon.png
 
 dependencies:
   - name: kube-prometheus-stack

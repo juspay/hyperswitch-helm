@@ -4,6 +4,7 @@ description: A Helm chart for Hyperswitch UCS Service
 type: application
 version: 0.1.1
 appVersion: "0.1.0"
+icon: https://app.hyperswitch.io/HyperswitchFavicon.png
 keywords:
   - ucs
   - service
