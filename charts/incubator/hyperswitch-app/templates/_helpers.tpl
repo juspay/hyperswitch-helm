@@ -202,3 +202,31 @@ Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 {{- define "version.suffix" -}}
 {{- . | replace "." "o" -}}
 {{- end -}}
+
+{{/*
+Ingress validation helper templates for fine-grained control
+*/}}
+
+{{/* Validate ingress configuration for router service */}}
+{{- define "validate.router.ingress" -}}
+  {{- if and (not .Values.ingress.enabled) .Values.services.router.ingress.enabled -}}
+    {{- fail "Router ingress cannot be enabled when global ingress is disabled. Please set 'ingress.enabled: true' or 'services.router.ingress.enabled: false'" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Validate ingress configuration for control center service */}}
+{{- define "validate.controlCenter.ingress" -}}
+  {{- if and (not .Values.ingress.enabled) .Values.services.controlCenter.ingress.enabled -}}
+    {{- fail "Control Center ingress cannot be enabled when global ingress is disabled. Please set 'ingress.enabled: true' or 'services.controlCenter.ingress.enabled: false'" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Check if router ingress should be created */}}
+{{- define "router.ingress.enabled" -}}
+  {{- and .Values.services.router.enabled .Values.ingress.enabled .Values.services.router.ingress.enabled -}}
+{{- end -}}
+
+{{/* Check if control center ingress should be created */}}
+{{- define "controlCenter.ingress.enabled" -}}
+  {{- and .Values.services.controlCenter.enabled .Values.ingress.enabled .Values.services.controlCenter.ingress.enabled -}}
+{{- end -}}

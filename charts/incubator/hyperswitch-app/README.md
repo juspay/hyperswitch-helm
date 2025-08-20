@@ -2076,3 +2076,71 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 </tbody>
 </table>
 
+## Ingress Configuration
+
+This chart supports fine-grained ingress control for Router and Control Center services. You can enable or disable ingress for each service independently.
+
+### Configuration Hierarchy
+
+The ingress configuration follows this precedence order:
+1. Service-specific `ingress.enabled` setting (highest priority)
+2. Global `ingress.enabled` configuration (fallback)
+
+### Default Configuration
+
+By default, both global and service-specific ingress are enabled:
+
+```yaml
+ingress:
+  enabled: true  # Global ingress control
+
+services:
+  router:
+    enabled: true
+    ingress:
+      enabled: true  # Router-specific ingress control
+  controlCenter:
+    enabled: true
+    ingress:
+      enabled: true  # Control Center-specific ingress control
+```
+
+### Configuration Examples
+
+#### Disable Router Ingress Only
+```yaml
+ingress:
+  enabled: true
+
+services:
+  router:
+    ingress:
+      enabled: false  # Router ingress disabled
+  controlCenter:
+    ingress:
+      enabled: true   # Control Center ingress still enabled
+```
+
+#### Disable All Ingress
+```yaml
+ingress:
+  enabled: false  # Global disable - no ingress resources will be created
+```
+
+#### Migration from Previous Versions
+
+Existing deployments will continue to work without modification. The default values maintain backward compatibility by enabling all ingress resources by default.
+
+### Validation
+
+The chart includes validation to prevent misconfiguration:
+- Service-specific ingress cannot be enabled when global ingress is disabled
+- Clear error messages guide users to correct configuration conflicts
+
+### Use Cases
+
+- **Development environments**: Disable ingress for services not needed for testing
+- **Service mesh integration**: Selectively disable ingress for services handled by service mesh
+- **Progressive rollouts**: Enable ingress for services ready for external traffic
+- **Multi-environment deployments**: Different ingress configurations per environment
+

@@ -10,6 +10,12 @@ services:
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
+    # -- Router ingress configuration for fine-grained control
+    # @section -- Services
+    ingress:
+      # -- Enable or disable ingress for router service
+      # @section -- Services
+      enabled: true
   consumer:
     enabled: true
     # -- Consumer version
@@ -40,6 +46,12 @@ services:
     version: v1.37.3
     # @section -- Services
     image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
+    # -- Control Center ingress configuration for fine-grained control
+    # @section -- Services
+    ingress:
+      # -- Enable or disable ingress for control center service
+      # @section -- Services
+      enabled: true
   sdk:
     # -- SDK host
     # @section -- Services
@@ -50,6 +62,14 @@ services:
     # -- SDK subversion
     # @section -- Services
     subversion: v1
+
+# -- Global ingress configuration for backward compatibility
+# @section -- Ingress
+ingress:
+  # -- Global ingress enable/disable flag
+  # When set to false, no ingress resources will be created regardless of service-specific settings
+  # @section -- Ingress
+  enabled: true
 
 # @ignored
 global:

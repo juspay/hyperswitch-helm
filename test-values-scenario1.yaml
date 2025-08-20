@@ -1,0 +1,13 @@
+# Test scenario 1: Both global and service-specific ingress enabled (default behavior)
+ingress:
+  enabled: true
+
+services:
+  router:
+    enabled: true
+    ingress:
+      enabled: true
+  controlCenter:
+    enabled: true
+    ingress:
+      enabled: true

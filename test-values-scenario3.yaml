@@ -1,0 +1,13 @@
+# Test scenario 3: Global ingress disabled (should prevent all ingress creation)
+ingress:
+  enabled: false
+
+services:
+  router:
+    enabled: true
+    ingress:
+      enabled: true
+  controlCenter:
+    enabled: true
+    ingress:
+      enabled: true
