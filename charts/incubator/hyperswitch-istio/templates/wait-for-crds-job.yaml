@@ -25,17 +25,14 @@ spec:
         - -c
         - |
           echo "Waiting for Istio CRDs to be established..."
-          
           # List of CRDs to wait for
           crds=(
             "gateways.networking.istio.io"
             "virtualservices.networking.istio.io"
             "destinationrules.networking.istio.io"
           )
-          
           # Maximum wait time per CRD (in seconds)
           MAX_WAIT=60
-          
           # Wait for each CRD
           for crd in "${crds[@]}"; do
             echo "Waiting for CRD: $crd"
@@ -50,7 +47,6 @@ spec:
             done
             echo "✓ CRD $crd is ready"
           done
-          
           echo "✓ All Istio CRDs are ready!"
           sleep 5  # Extra buffer time for CRD establishment
 {{- end }}
