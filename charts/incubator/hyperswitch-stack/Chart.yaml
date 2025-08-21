@@ -24,7 +24,7 @@ version: 0.2.13
 appVersion: "1.16.0"
 dependencies:
   - name: hyperswitch-app
-    version: 0.2.11
+    version: 0.2.12
     repository: "file://../hyperswitch-app"
   - name: hyperswitch-web
     version: 0.2.10
