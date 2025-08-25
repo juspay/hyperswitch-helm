@@ -31,22 +31,15 @@ spec:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:
         - name: run-hyperswitch-db-migration
-          image: {{ .Values.initDB.migration.image }}
+          image: juspaydotin/hyperswitch-migration-runner:{{ .Values.services.router.version }}-standalone
           imagePullPolicy: IfNotPresent
-          command: [ '/bin/sh', '-c' ]
-          #language=sh
+          command: ['diesel']
           args:
-            - |-
-              curl -L -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
-              tar -xzvf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
-              cd hyperswitch
-              diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
-              echo "Completed hyperswitch database migration"
+            - migration
+            - --database-url
+            - postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):5432/$(DBNAME)
+            - run
           env:
-            - name: REFERENCE
-              value: {{ .Values.initDB.refs }}
-            - name: ROUTER_VERSION
-              value: {{ .Values.services.router.version }}
             - name: POSTGRES_HOST
               value: {{ include "postgresql.host" . }}
             - name: DBNAME
