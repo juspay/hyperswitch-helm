@@ -46,7 +46,7 @@ services:
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.125.0
+    version: 0.125.2
     # -- SDK subversion
     # @section -- Services
     subversion: v1

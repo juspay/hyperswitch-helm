@@ -46,7 +46,7 @@ hyperswitch-web:
     enable: true
     forceBuild: true
     gitCloneParam:
-      gitVersion: 0.125.0
+      gitVersion: 0.125.2
     nginxConfig:
       extraPath: v1
     buildParam:
