@@ -80,3 +80,27 @@
     done;
     echo "ClickHouse is ready.";
 {{- end -}}
+
+{{/* Ensure UCS is up and running */}}
+{{- define "ucs.initContainer.check.ready" -}}
+- name: check-ucs
+  image: {{ .Values.ucsConfig.checkUcsIsUp.initContainer.image }}
+  imagePullPolicy: IfNotPresent
+  command: [ "/bin/sh", "-c" ]
+  #language=sh
+  args:
+  - >
+    MAX_ATTEMPTS={{ .Values.ucsConfig.checkUcsIsUp.initContainer.maxAttempt }};
+    SLEEP_SECONDS=5;
+    attempt=0;
+    while ! nc -z {{ .Values.ucsConfig.checkUcsIsUp.host }} {{ .Values.ucsConfig.checkUcsIsUp.port }}; do
+      if [ $attempt -ge $MAX_ATTEMPTS ]; then
+        echo "UCS did not become ready in time";
+        exit 1;
+      fi;
+      attempt=$((attempt+1));
+      echo "Waiting for UCS to be ready... Attempt: $attempt";
+      sleep $SLEEP_SECONDS;
+    done;
+    echo "UCS is ready.";
+{{- end -}}

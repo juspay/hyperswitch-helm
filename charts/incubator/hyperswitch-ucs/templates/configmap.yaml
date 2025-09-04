@@ -23,15 +23,73 @@ data:
     adyen.base_url = "{{ .Values.config.connectors.adyen.base_url }}"
     adyen.dispute_base_url = "{{ .Values.config.connectors.adyen.dispute_base_url }}"
     razorpay.base_url = "{{ .Values.config.connectors.razorpay.base_url }}"
+    razorpayv2.base_url = "{{ .Values.config.connectors.razorpayv2.base_url }}"
     fiserv.base_url = "{{ .Values.config.connectors.fiserv.base_url }}"
     elavon.base_url = "{{ .Values.config.connectors.elavon.base_url }}"
     xendit.base_url = "{{ .Values.config.connectors.xendit.base_url }}"
-    razorpayv2.base_url = "{{ .Values.config.connectors.razorpayv2.base_url }}"
     checkout.base_url = "{{ .Values.config.connectors.checkout.base_url }}"
     authorizedotnet.base_url = "{{ .Values.config.connectors.authorizedotnet.base_url }}"
+    phonepe.base_url = "{{ .Values.config.connectors.phonepe.base_url }}"
+    cashfree.base_url = "{{ .Values.config.connectors.cashfree.base_url }}"
+    fiuu.base_url = "{{ .Values.config.connectors.fiuu.base_url }}"
+    payu.base_url = "{{ .Values.config.connectors.payu.base_url }}"
+    paytm.base_url = "{{ .Values.config.connectors.paytm.base_url }}"
+    cashtocode.base_url = "{{ .Values.config.connectors.cashtocode.base_url }}"
+    novalnet.base_url = "{{ .Values.config.connectors.novalnet.base_url }}"
+    nexinets.base_url = "{{ .Values.config.connectors.nexinets.base_url }}"
+    noon.base_url = "{{ .Values.config.connectors.noon.base_url }}"
+    mifinity.base_url = "{{ .Values.config.connectors.mifinity.base_url }}"
 
     [proxy]
+    {{- if .Values.config.proxy.enabled }}
+    {{- if .Values.config.proxy.https_url }}
     https_url = "{{ .Values.config.proxy.https_url }}"
+    {{- end }}
+    {{- if .Values.config.proxy.http_url }}
     http_url = "{{ .Values.config.proxy.http_url }}"
+    {{- end }}
+    {{- end }}
     idle_pool_connection_timeout = {{ .Values.config.proxy.idle_pool_connection_timeout }}
     bypass_proxy_urls = {{ .Values.config.proxy.bypass_proxy_urls | toJson }}
+
+    [log.kafka]
+    enabled = {{ .Values.config.kafka_log.enabled }}
+    level = "{{ .Values.config.kafka_log.level }}"
+    filtering_directive = "{{ .Values.config.kafka_log.filtering_directive }}"
+    brokers = {{ .Values.config.kafka_log.brokers | toJson }}
+    topic = "{{ .Values.config.kafka_log.topic }}"
+    buffer_limit = {{ .Values.config.kafka_log.buffer_limit }}
+
+    # Generic Events Configuration
+    [events]
+    enabled = {{ .Values.config.events.enabled }}
+    brokers = {{ .Values.config.events.brokers | toJson }}
+    topic = "{{ .Values.config.events.topic }}"
+    partition_key_field = "{{ .Values.config.events.partition_key_field }}"
+
+    # Euler-compatible configuration
+    [events.transformations]
+    "gateway" = "connector"
+    "action" = "flow_type"
+    "entity" = "flow_type"
+    "message.latency" = "latency"
+    "message.request_time" = "timestamp"
+    "message.res_code" = "status_code"
+    "message.url" = "url"
+    "message.stage" = "stage"
+    "message.req_body" = "connector_request_data"
+    "message.res_body" = "connector_response_data"
+
+    [events.static_values]
+    "hostname" = "connector-service"
+    "schema_version" = "V2"
+    "category" = "OUTGOING_API"
+    "message.req_type" = "EXTERNAL"
+    "message.log_type" = "API_CALL"
+
+    [events.extractions]
+    "udf_txn_uuid" = "req.metadata.udf_txn_uuid"
+    "x-request-id" = "req.metadata.x-request-id"
+
+    [common]
+    environment = "{{ .Values.config.common.environment }}"

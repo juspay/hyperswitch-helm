@@ -14,10 +14,10 @@ image:
   repository: ghcr.io/juspay/connector-service
   # -- Image pull policy
   # @section -- Connector Service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "main-b1487cb"
+  tag: "main-2e5ae6a"
 
 # -- Image pull secrets for private registries
 # @section -- Connector Service
@@ -264,10 +264,10 @@ config:
     adyen:
       # -- Adyen base URL
       # @section -- Connector Service Configurations
-      base_url: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
+      base_url: "https://checkout-test.adyen.com/"
       # -- Adyen dispute base URL
       # @section -- Connector Service Configurations
-      dispute_base_url: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
+      dispute_base_url: "https://ca-test.adyen.com/"
     # Razorpay connector configuration
     razorpay:
       # -- Razorpay base URL
@@ -282,7 +282,7 @@ config:
     elavon:
       # -- Elavon base URL
       # @section -- Connector Service Configurations
-      base_url: "https://api.convergepay.com/VirtualMerchant/"
+      base_url: "https://api.demo.convergepay.com/VirtualMerchantDemo/"
     # Xendit connector configuration
     xendit:
       # -- Xendit base URL
@@ -297,23 +297,118 @@ config:
     checkout:
       # -- Checkout base URL
       # @section -- Connector Service Configurations
-      base_url: "https://api.checkout.com/"
+      base_url: "https://api.sandbox.checkout.com/"
     # Authorize.net connector configuration
     authorizedotnet:
       # -- Authorize.net base URL
       # @section -- Connector Service Configurations
-      base_url: "https://api.authorize.net/xml/v1/request.api/"
+      base_url: "https://apitest.authorize.net/xml/v1/request.api"
+    # PhonePe connector configuration
+    phonepe:
+      # -- PhonePe base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api.phonepe.com/apis/hermes/"
+    # Cashfree connector configuration
+    cashfree:
+      # -- Cashfree base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://sandbox.cashfree.com/"
+    # Fiuu connector configuration
+    fiuu:
+      # -- Fiuu base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://sandbox.merchant.razer.com/"
+    # PayU connector configuration
+    payu:
+      # -- PayU base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://test.payu.in/"
+    # Paytm connector configuration
+    paytm:
+      # -- Paytm base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://securegw-stage.paytm.in/"
+    # Cashtocode connector configuration
+    cashtocode:
+      # -- Cashtocode base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://cluster05.api-test.cashtocode.com"
+    # Novalnet connector configuration
+    novalnet:
+      # -- Novalnet base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://payport.novalnet.de/v2"
+    # Nexinets connector configuration
+    nexinets:
+      # -- Nexinets base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://apitest.payengine.de/v1"
+    # Noon connector configuration
+    noon:
+      # -- Noon base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://api-test.noonpayments.com/"
+    # Mifinity connector configuration
+    mifinity:
+      # -- Mifinity base URL
+      # @section -- Connector Service Configurations
+      base_url: "https://demo.mifinity.com/"
   # Proxy configuration
   proxy:
+    # -- Enable proxy configuration
+    # @section -- Connector Service Configurations
+    enabled: false
     # -- HTTPS proxy URL
     # @section -- Connector Service Configurations
-    https_url: "https_proxy"
+    https_url: ""
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
-    http_url: "http_proxy"
+    http_url: ""
     # -- Idle pool connection timeout
     # @section -- Connector Service Configurations
     idle_pool_connection_timeout: 90
     # -- URLs to bypass proxy
     # @section -- Connector Service Configurations
     bypass_proxy_urls: ["localhost", "local"]
+  
+  # Additional logging configuration
+  kafka_log:
+    # -- Enable Kafka logging
+    # @section -- Connector Service Configurations
+    enabled: false
+    # -- Log level for Kafka logs
+    # @section -- Connector Service Configurations
+    level: "info"
+    # -- Filtering directive
+    # @section -- Connector Service Configurations
+    filtering_directive: "info"
+    # -- Kafka brokers
+    # @section -- Connector Service Configurations
+    brokers: ["localhost:9092"]
+    # -- Kafka topic for logs
+    # @section -- Connector Service Configurations
+    topic: "connector-service-logs"
+    # -- Buffer limit
+    # @section -- Connector Service Configurations
+    buffer_limit: 100000
+
+  # Events configuration
+  events:
+    # -- Enable events
+    # @section -- Connector Service Configurations
+    enabled: false
+    # -- Kafka brokers for events
+    # @section -- Connector Service Configurations
+    brokers: ["localhost:9092"]
+    # -- Kafka topic for events
+    # @section -- Connector Service Configurations
+    topic: "audit-trail-events"
+    # -- Partition key field
+    # @section -- Connector Service Configurations
+    partition_key_field: "request_id"
+    
+  # Common configuration
+  common:
+    # -- Environment setting
+    # @section -- Connector Service Configurations
+    environment: "development"

@@ -476,13 +476,15 @@ server:
       port: 7000
       # -- Client Service Name
       service: "dynamo"
-    unified_connectors_client:
-      # -- Client Host
-      host: "localhost"
-      # -- Client Port
-      port: 8000
-      # Connection Timeout Duration in Seconds
-      connection_timeout: "10"
+    unified_connector_service:
+      # -- Unified Connector Service Base URL
+      base_url: "http://hyperswitch-ucs.hyperswitch.svc.cluster.local:8000"
+      # -- Connection Timeout Duration in Seconds
+      connection_timeout: 10
+      # -- Comma-separated list of connectors that use UCS only
+      ucs_only_connectors: "paytm, phonepe"
+      # -- Comma-separated list of connectors to disable UCS PSync call
+      ucs_psync_disabled_connectors: "cashtocode"
   theme:
     storage:
       # -- Theme storage backend to be used
@@ -1048,6 +1050,15 @@ redisMiscConfig:
       enable: true
       image: docker.io/bitnami/redis:7.2.3-debian-11-r2
       maxAttempt: 60
+
+ucsConfig:
+  checkUcsIsUp:
+    initContainer:
+      enable: true
+      image: busybox:1.35
+      maxAttempt: 30
+    host: hyperswitch-ucs.hyperswitch.svc.cluster.local
+    port: 8000
 
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:

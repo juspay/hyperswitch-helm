@@ -63,8 +63,9 @@ consolidated_events_topic = "{{ .Values.server.events.kafka.consolidated_events_
 authentication_analytics_topic = "{{ .Values.server.events.kafka.authentication_analytics_topic }}" # Kafka topic to be used for Authentication events
 fraud_check_analytics_topic = "{{ .Values.server.events.kafka.fraud_check_analytics_topic }}"    # Kafka topic to be used for Fraud Check events
 routing_logs_topic = "{{ .Values.server.events.kafka.routing_logs_topic }}"
+revenue_recovery_topic = "topic"         # Kafka topic to be used for Revenue Recovery Events
 
-[forex_api]          
+[forex_api]
 data_expiration_delay_in_seconds = {{ .Values.server.forex_api.data_expiration_delay_in_seconds }}
 redis_lock_timeout_in_seconds = {{ .Values.server.forex_api.redis_lock_timeout_in_seconds }}
 redis_ttl_in_seconds = {{ .Values.server.forex_api.redis_lock_timeout_in_seconds }}
@@ -107,7 +108,7 @@ merchant_id_auth_enabled = {{ .Values.server.merchant_id_auth.merchant_id_auth_e
 
 [master_database]
 pool_size = "{{ .Values.server.master_database.pool_size }}"
-connection_timeout = {{ .Values.server.master_database.connection_timeout }}   
+connection_timeout = {{ .Values.server.master_database.connection_timeout }}
 queue_strategy = "{{ .Values.server.master_database.queue_strategy }}"
 
 [generic_link]
@@ -145,7 +146,7 @@ redis_expiry = {{ .Values.server.payment_method_auth.redis_expiry }}          # 
 
 {{- if .Values.server.proxy.enabled }}
 [proxy]
-http_url = "{{ .Values.server.proxy.http_url }}"    
+http_url = "{{ .Values.server.proxy.http_url }}"
 https_url = "{{ .Values.server.proxy.https_url }}"
 bypass_proxy_hosts = {{ .Values.server.proxy.bypass_proxy_hosts }}
 {{- end }}
@@ -198,8 +199,8 @@ sessionizer_disputes = "{{ .Values.server.opensearch.indexes.sessionizer_dispute
 dispute_function = "{{ .Values.server.report_download_config.dispute_function }}" # Config to download dispute report
 payment_function = "{{ .Values.server.report_download_config.payment_function }}" # Config to download payment report
 refund_function = "{{ .Values.server.report_download_config.refund_function }}"   # Config to download refund report
-region = "{{ .Values.server.report_download_config.region }}" 
-authentication_function = "{{ .Values.server.report_download_config.authentication_function }}"   
+region = "{{ .Values.server.report_download_config.region }}"
+authentication_function = "{{ .Values.server.report_download_config.authentication_function }}"
 
 [server]
 port = {{ .Values.server.server.port }}
@@ -210,9 +211,9 @@ workers = {{ .Values.server.server.workers }}
 
 [crm]
 crm_manager = "{{ .Values.server.crm.crm_manager }}"
- 
+
 [crm.hubspot_proxy]
-form_id = "{{ .Values.server.crm.hubspot_proxy.form_id }}"     
+form_id = "{{ .Values.server.crm.hubspot_proxy.form_id }}"
 request_url = "{{ .Values.server.crm.hubspot_proxy.request_url }}"
 
 # Secrets manager client to be used
@@ -235,34 +236,37 @@ fetch_token_url= "{{ .Values.server.network_tokenization_service.fetch_token_url
 token_service_api_key= "{{ .Values.server.network_tokenization_service.token_service_api_key }}"
 public_key= "{{ .Values.server.network_tokenization_service.public_key }}"
 private_key= "{{ .Values.server.network_tokenization_service.private_key }}"
-key_id= "{{ .Values.server.network_tokenization_service.key_id }}"                    
-delete_token_url= "{{ .Values.server.network_tokenization_service.delete_token_url }}"          
-check_token_status_url= "{{ .Values.server.network_tokenization_service.check_token_status_url }}"    
-webhook_source_verification_key= "{{ .Values.server.network_tokenization_service.webhook_source_verification_key }}" 
+key_id= "{{ .Values.server.network_tokenization_service.key_id }}"
+delete_token_url= "{{ .Values.server.network_tokenization_service.delete_token_url }}"
+check_token_status_url= "{{ .Values.server.network_tokenization_service.check_token_status_url }}"
+webhook_source_verification_key= "{{ .Values.server.network_tokenization_service.webhook_source_verification_key }}"
 
 [grpc_client.dynamic_routing_client] # Dynamic Routing Client Configuration
-host = "{{ .Values.server.grpc_client.dynamic_routing_client.host }}" 
-port = {{ .Values.server.grpc_client.dynamic_routing_client.port }}        
-service = "{{ .Values.server.grpc_client.dynamic_routing_client.service }}" 
+host = "{{ .Values.server.grpc_client.dynamic_routing_client.host }}"
+port = {{ .Values.server.grpc_client.dynamic_routing_client.port }}
+service = "{{ .Values.server.grpc_client.dynamic_routing_client.service }}"
+
+[grpc_client.recovery_decider_client] # Revenue recovery client base url
+base_url = "http://127.0.0.1:8080"  #Base URL
 
 [theme.storage]
-file_storage_backend = "{{ .Values.server.theme.storage.file_storage_backend }}" 
+file_storage_backend = "{{ .Values.server.theme.storage.file_storage_backend }}"
 
 [theme.storage.aws_s3]
-region = "{{ .Values.server.theme.storage.aws_s3.region }}" 
-bucket_name = "{{ .Values.server.theme.storage.aws_s3.bucket_name }}"   
+region = "{{ .Values.server.theme.storage.aws_s3.region }}"
+bucket_name = "{{ .Values.server.theme.storage.aws_s3.bucket_name }}"
 
 [theme.email_config]
-entity_name = "{{ .Values.server.theme.email_config.entity_name }}"                      
-entity_logo_url = "{{ .Values.server.theme.email_config.entity_name }}" 
-foreground_color = "{{ .Values.server.theme.email_config.entity_name }}"                     
-primary_color = "{{ .Values.server.theme.email_config.entity_name }}"                        
-background_color = "{{ .Values.server.theme.email_config.entity_name }}"                     
+entity_name = "{{ .Values.server.theme.email_config.entity_name }}"
+entity_logo_url = "{{ .Values.server.theme.email_config.entity_name }}"
+foreground_color = "{{ .Values.server.theme.email_config.entity_name }}"
+primary_color = "{{ .Values.server.theme.email_config.entity_name }}"
+background_color = "{{ .Values.server.theme.email_config.entity_name }}"
 
-[connectors.unified_authentication_service] 
-base_url = "{{ .Values.server.connectors.unified_authentication_service.base_url }}" 
+[connectors.unified_authentication_service]
+base_url = "{{ .Values.server.connectors.unified_authentication_service.base_url }}"
 
-[connectors.hyperswitch_vault] 
+[connectors.hyperswitch_vault]
 base_url = "{{ .Values.server.connectors.hyperswitch_vault }}"
 
 [clone_connector_allowlist]
@@ -270,10 +274,43 @@ merchant_ids = "{{ .Values.server.clone_connector_allowlist.merchant_ids }}"
 connector_names = "{{ .Values.server.clone_connector_allowlist.connector_names }}"
 
 [grpc_client.unified_connector_service]
-host = {{ .Values.server.grpc_client.unified_connectors_client.host | quote }}
-port = {{ .Values.server.grpc_client.unified_connectors_client.port }}
-connection_timeout = {{ .Values.server.grpc_client.unified_connectors_client.connection_timeout }}
+base_url = "{{ .Values.server.grpc_client.unified_connector_service.base_url }}"      # Unified Connector Service Base URL
+connection_timeout = {{ .Values.server.grpc_client.unified_connector_service.connection_timeout }}                # Connection Timeout Duration in Seconds
+ucs_only_connectors = "{{ .Values.server.grpc_client.unified_connector_service.ucs_only_connectors }}"    # Comma-separated list of connectors that use UCS only
+ucs_psync_disabled_connectors = "{{ .Values.server.grpc_client.unified_connector_service.ucs_psync_disabled_connectors }}"    # Comma-separated list of connectors to disable UCS PSync call
+
+[revenue_recovery]
+# monitoring threshold -  120 days
+monitoring_threshold_in_seconds = 10368000
+retry_algorithm_type = "cascading"
+redis_ttl_in_seconds=3888000
+
+# Card specific configuration for Revenue Recovery
+[revenue_recovery.card_config.amex]
+max_retries_per_day = 20
+max_retry_count_for_thirty_day = 20
+
+[revenue_recovery.card_config.mastercard]
+max_retries_per_day = 10
+max_retry_count_for_thirty_day = 35
+
+[revenue_recovery.card_config.visa]
+max_retries_per_day = 20
+max_retry_count_for_thirty_day = 20
+
+[revenue_recovery.card_config.discover]
+max_retries_per_day = 20
+max_retry_count_for_thirty_day = 20
+
+[revenue_recovery.recovery_timestamp] # Timestamp configuration for Revenue Recovery
+initial_timestamp_in_seconds = 3600        # number of seconds added to start time for Decider service of Revenue Recovery
+job_schedule_buffer_time_in_seconds = 3600 # time in seconds to be added in schedule time as a buffer
+reopen_workflow_buffer_time_in_seconds = 3600  # time in seconds to be added in scheduling for calculate workflow
+max_random_schedule_delay_in_seconds = 300 # max random delay in seconds to schedule the payment for Revenue Recovery
 
 [chat]
 enabled = false                                # Enable or disable chat features
 hyperswitch_ai_host = "http://0.0.0.0:8000"    # Hyperswitch ai workflow host
+
+[proxy_status_mapping]
+proxy_connector_http_status_code = false    # If enabled, the http status code of the connector will be proxied in the response
