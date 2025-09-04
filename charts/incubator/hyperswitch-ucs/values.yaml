@@ -17,7 +17,7 @@ image:
   pullPolicy: Always
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "main-2e5ae6a"
+  tag: "main-176b6e7"
 
 # -- Image pull secrets for private registries
 # @section -- Connector Service
@@ -370,7 +370,7 @@ config:
     # -- URLs to bypass proxy
     # @section -- Connector Service Configurations
     bypass_proxy_urls: ["localhost", "local"]
-  
+
   # Additional logging configuration
   kafka_log:
     # -- Enable Kafka logging
@@ -406,7 +406,7 @@ config:
     # -- Partition key field
     # @section -- Connector Service Configurations
     partition_key_field: "request_id"
-    
+
   # Common configuration
   common:
     # -- Environment setting

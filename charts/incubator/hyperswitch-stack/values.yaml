@@ -91,23 +91,23 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: 2025.09.03.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-router:2025.09.03.0-standalone
+      version: 2025.09.04.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-router:2025.09.04.0-standalone
       host: *router_host
     consumer:
-      version: 2025.09.03.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:2025.09.03.0
+      version: 2025.09.04.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:2025.09.04.0
     producer:
-      version: 2025.09.03.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-producer:2025.09.03.0
+      version: 2025.09.04.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-producer:2025.09.04.0
     drainer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:2025.09.03.0
-      version: 2025.09.03.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:2025.09.04.0
+      version: 2025.09.04.0
     controlCenter:
       image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
     sdk:
       host: *web_sdk_host
-      version: 0.125.0
+      version: 0.125.2
       subversion: v1
   server:
     replicas: 1
@@ -202,7 +202,7 @@ hyperswitch-ucs:
   image:
     repository: ghcr.io/juspay/connector-service
     pullPolicy: Always
-    tag: "main-2e5ae6a"
+    tag: "main-176b6e7"
   imagePullSecrets: []
   nameOverride: ""
 

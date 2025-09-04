@@ -52,31 +52,6 @@ spec:
         {{- if .Values.ucsConfig.checkUcsIsUp.initContainer.enable }}
         {{- include "ucs.initContainer.check.ready" . | nindent 8 }}
         {{- end }}
-        - name: config-merger
-          image: busybox:1.35
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              echo "Merging configuration files..."
-              cat /config-parts/misc.toml > /merged-config/{{ if eq .Values.server.run_env "production" }}production.toml{{ else }}sandbox.toml{{ end }}
-              echo "" >> /merged-config/{{ if eq .Values.server.run_env "production" }}production.toml{{ else }}sandbox.toml{{ end }}
-              cat /config-parts/router-config.toml >> /merged-config/{{ if eq .Values.server.run_env "production" }}production.toml{{ else }}sandbox.toml{{ end }}
-              echo "Configuration merged successfully"
-          volumeMounts:
-            - mountPath: /config-parts/misc.toml
-              name: hyperswitch-config
-              subPath: misc.toml
-            {{- if eq .Values.server.run_env "production" }}
-            - mountPath: /config-parts/router-config.toml
-              name: hyperswitch-config
-              subPath: router-production.toml
-            {{- else }}
-            - mountPath: /config-parts/router-config.toml
-              name: hyperswitch-config
-              subPath: router-sandbox.toml
-            {{- end }}
-            - mountPath: /merged-config
-              name: merged-config-volume
       containers:
         - name: hyperswitch-router
           image: {{ .Values.services.router.image }}
@@ -96,8 +71,6 @@ spec:
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
-            - configMapRef:
-                name: router-cm-{{ .Release.Name }}
             - secretRef:
                 name: router-secret-{{ .Release.Name }}
             - secretRef:
@@ -121,11 +94,11 @@ spec:
           volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
-              name: merged-config-volume
+              name: hyperswitch-config
               subPath: production.toml
             {{- else }}
             - mountPath: /local/config/sandbox.toml
-              name: merged-config-volume
+              name: hyperswitch-config
               subPath: sandbox.toml
             {{- end }}
       dnsPolicy: ClusterFirst
@@ -139,6 +112,4 @@ spec:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
           name: hyperswitch-config
-        - name: merged-config-volume
-          emptyDir: {}
 {{- end }}

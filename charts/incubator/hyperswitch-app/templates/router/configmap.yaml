@@ -4,13 +4,13 @@ kind: ConfigMap
 metadata:
   name: router-cm-{{.Release.Name }}
 data:
-  misc.toml: |
-{{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
   {{- if eq .Values.server.run_env "production" }}
-  router-production.toml: |
+  production.toml: |
+{{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
 {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
   {{- else }}
-  router-sandbox.toml: |
+  sandbox.toml: |
+{{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
 {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
   {{- end }}
 {{- end }}
