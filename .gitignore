@@ -109,3 +109,5 @@ kubeconfig
 *.tar.gz
 *.tar.bz2
 *.tar.xz
+
+!v0.2.13/hyperswitch-stack-0.2.13.tgz
