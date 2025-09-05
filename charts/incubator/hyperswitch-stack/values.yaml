@@ -91,18 +91,18 @@ hyperswitch-app:
     targetSecurityGroup: *lb_security_group
   services:
     router:
-      version: 2025.09.04.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-router:2025.09.04.0-standalone
+      version: 2025.09.04.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-router:2025.09.04.1-standalone
       host: *router_host
     consumer:
-      version: 2025.09.04.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:2025.09.04.0
+      version: 2025.09.04.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:2025.09.04.1-standalone
     producer:
-      version: 2025.09.04.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-producer:2025.09.04.0
+      version: 2025.09.04.1
+      image: docker.juspay.io/juspaydotin/hyperswitch-producer:2025.09.04.1-standalone
     drainer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:2025.09.04.0
-      version: 2025.09.04.0
+      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:2025.09.04.1-standalone
+      version: 2025.09.04.1
     controlCenter:
       image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
     sdk:
