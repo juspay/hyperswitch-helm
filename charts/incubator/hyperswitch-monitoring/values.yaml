@@ -14,7 +14,7 @@ kube-prometheus-stack:
   # Disable admission webhooks to avoid Istio sidecar issues
   prometheusOperator:
     admissionWebhooks:
-      enabled: false
+      enabled: true
 
   alertmanager:
     enabled: true
@@ -55,6 +55,23 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 50Gi
+      
+      serviceMonitorSelectorNilUsesHelmValues: false
+      remoteWrite:
+        - url: ""
+          # Use bearer token from secret file (note: release name will be prefixed)
+          bearerTokenFile: "/etc/prometheus/secrets/prometheus-remote-write/bearer-token"
+          # Configure headers if needed 
+          headers: 
+            "X-Hyperswitch-External-Merchant": ""
+          # Filter metrics to send 
+          writeRelabelConfigs:
+            - sourceLabels: [namespace]
+              regex: 'hyperswitch'
+              action: keep
+      # Mount the secret containing the bearer token (note: release name will be prefixed)
+      # secrets:
+      #   - "prometheus-remote-write"
 
       # Additional scrape configs from hyperswitch-stack
       additionalScrapeConfigs:
@@ -388,3 +405,9 @@ grafana:
 # Load balancer configuration
 loadBalancer:
   targetSecurityGroup: "loadbalancer-sg"
+
+prometheus:
+  remoteWrite:
+    # to use the remoteWrite uncomment the remoteWrite-secrets at line 73,74
+    enabled: true
+    bearerToken: ""
