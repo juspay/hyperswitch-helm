@@ -3,10 +3,10 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.116.0
+    version: v1.117.0
     # -- Router image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.116.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.117.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
@@ -14,39 +14,39 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.116.0
+    version: v1.117.0
     # -- Consumer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.116.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.117.0
   producer:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.116.0
+    version: v1.117.0
     # -- Producer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.116.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.117.0
   drainer:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.116.0
+    version: v1.117.0
     # -- Drainer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.116.0
+    image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.117.0
   controlCenter:
     enabled: true
     # -- Control Center image
-    version: v1.37.3
+    version: v1.37.4
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
+    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.4
   sdk:
     # -- SDK host
     # @section -- Services
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.125.0
+    version: 0.126.0
     # -- SDK subversion
     # @section -- Services
     subversion: v1
@@ -159,8 +159,10 @@ server:
     binary: router
     host: hyperswitch
   chat:
+    # Enable or disable chat features
     enabled: false
-    hyperswitch_ai_host: ""
+    # Hyperswitch ai workflow host
+    hyperswitch_ai_host: "http://0.0.0.0:8000"
   secrets:
     # -- admin API key for admin authentication.
     # @section -- App Server Secrets
@@ -444,6 +446,8 @@ server:
       refund_analytics_topic: hyperswitch-refund-events
       # Kafka topic to be used for Routing events
       routing_logs_topic: topic
+      # Kafka topic to be used for Revenue Recovery Events
+      revenue_recovery_topic: topic
   forex_api:
     # Expiration time for data in cache as well as redis in seconds
     data_expiration_delay_in_seconds: 21600
@@ -469,6 +473,7 @@ server:
         merchant_name: HyperSwitch
         theme: '#4285F4'
   grpc_client:
+    # Dynamic Routing Client Configuration
     dynamic_routing_client:
       # -- Client Host
       host: localhost
@@ -476,13 +481,17 @@ server:
       port: 7000
       # -- Client Service Name
       service: "dynamo"
-    unified_connectors_client:
-      # -- Client Host
-      host: "localhost"
-      # -- Client Port
-      port: 8000
+    unified_connector_service:
+      # Unified Connector Service Base URL
+      base_url: "http://localhost:8000"
       # Connection Timeout Duration in Seconds
       connection_timeout: "10"
+      # Comma-separated list of connectors that use UCS only
+      ucs_only_connectors: "paytm, phonepe"
+    # Revenue recovery client base url
+    recovery_decider_client:
+      #Base URL
+      base_url: "http://127.0.0.1:8080"
   theme:
     storage:
       # -- Theme storage backend to be used
@@ -627,6 +636,9 @@ server:
     http_url: http://proxy_http_url
     # -- Outgoing proxy https URL to proxy the HTTPS traffic
     https_url: https://proxy_https_url
+  proxy_status_mapping:
+    # If enabled, the http status code of the connector will be proxied in the response
+    proxy_connector_http_status_code: false
   # Redis credentials
   redis:
     # -- Whether or not the client should automatically pipeline commands across tasks when possible.
@@ -680,6 +692,29 @@ server:
     region: report_download_config_region
     # -- Config to authentication function
     authentication_function: report_download_config_authentication_function
+  revenue_recovery:
+    # monitoring threshold -  120 days
+    monitoring_threshold_in_seconds: 10368000
+    retry_algorithm_type: "cascading"
+    redis_ttl_in_seconds: 3888000
+    # Card specific configuration for Revenue Recovery
+    card_config:
+      amex:
+        max_retries_per_day: 20
+        max_retry_count_for_thirty_day: 20
+      mastercard:
+        max_retries_per_day: 10
+        max_retry_count_for_thirty_day: 35
+      visa:
+        max_retries_per_day: 20
+        max_retry_count_for_thirty_day: 20
+      discover:
+        max_retries_per_day: 20
+        max_retry_count_for_thirty_day: 20
+    # Timestamp configuration for Revenue Recovery
+    recovery_timestamp:
+      # number of hours added to start time for Decider service of Revenue Recovery
+      initial_timestamp_in_hours: 1
   # -- Processor URLs will be decided based on this config, Eg: sandbox or production
   run_env: sandbox
   secrets_management:

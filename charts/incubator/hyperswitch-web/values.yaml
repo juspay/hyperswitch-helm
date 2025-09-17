@@ -50,7 +50,7 @@ autoBuild:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
     # -- hyperswitch-web repository tag
-    gitVersion: 0.125.0
+    gitVersion: 0.126.0
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
     envSdkUrl: https://hyperswitch-sdk
