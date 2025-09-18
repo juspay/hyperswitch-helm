@@ -490,7 +490,7 @@ server:
       ucs_only_connectors: "paytm, phonepe"
     # Revenue recovery client base url
     recovery_decider_client:
-      #Base URL
+      # Base URL
       base_url: "http://127.0.0.1:8080"
   theme:
     storage:
