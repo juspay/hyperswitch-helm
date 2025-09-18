@@ -34,7 +34,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}-helm"
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}-helm"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

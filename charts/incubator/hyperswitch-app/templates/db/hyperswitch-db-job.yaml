@@ -31,7 +31,8 @@ spec:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
       containers:
         - name: run-hyperswitch-db-migration
-          image: {{ .Values.initDB.migration.image }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.initDB.migration.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.initDB.migration.image }}"
           imagePullPolicy: IfNotPresent
           command: [ '/bin/sh', '-c' ]
           #language=sh

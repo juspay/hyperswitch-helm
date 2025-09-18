@@ -2,6 +2,9 @@
 
 # Global configuration
 global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+
   # Tolerations to be applied to all monitoring components
   tolerations: []
   labels:
@@ -136,6 +139,9 @@ kube-prometheus-stack:
 loki:
   enabled: true
   fullnameOverride: "loki"
+  global:
+    image:
+      registry: null
 
   # Loki configuration
   loki:

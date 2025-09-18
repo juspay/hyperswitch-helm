@@ -4,9 +4,12 @@ services:
     # -- Router version
     # @section -- Services
     version: v1.116.0
+    # -- Router image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
     # -- Router image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.116.0
+    image: juspaydotin/hyperswitch-router:v1.116.0
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
@@ -15,31 +18,43 @@ services:
     # -- Consumer version
     # @section -- Services
     version: v1.116.0
+    # -- Consumer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
     # -- Consumer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.116.0
+    image: juspaydotin/hyperswitch-consumer:v1.116.0
   producer:
     enabled: true
     # -- Producer version
     # @section -- Services
     version: v1.116.0
+    # -- Producer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
     # -- Producer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.116.0
+    image: juspaydotin/hyperswitch-producer:v1.116.0
   drainer:
     enabled: true
     # -- Drainer version
     # @section -- Services
     version: v1.116.0
+    # -- Drainer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
     # -- Drainer image
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.116.0
+    image: juspaydotin/hyperswitch-drainer:v1.116.0
   controlCenter:
     enabled: true
+    # -- Control Center image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
     # -- Control Center image
     version: v1.37.3
     # @section -- Services
-    image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
+    image: juspaydotin/hyperswitch-control-center:v1.37.3
   sdk:
     # -- SDK host
     # @section -- Services
@@ -1046,7 +1061,8 @@ redisMiscConfig:
   checkRedisIsUp:
     initContainer:
       enable: true
-      image: docker.io/bitnami/redis:7.2.3-debian-11-r2
+      imageRegistry: docker.io
+      image: bitnami/redis:7.2.3-debian-11-r2
       maxAttempt: 60
 
 # https://artifacthub.io/packages/helm/bitnami/postgresql
@@ -1142,10 +1158,12 @@ externalPostgresql:
 initDB:
   enable: true
   checkPGisUp:
-    image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
+    imageRegistry: docker.io
+    image: bitnami/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
   refs: tags  # tags or heads
   migration:
+    imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
 
 loadBalancer:
@@ -1223,7 +1241,8 @@ kafka:
 
 initCH:
   checkCHisUp:
-    image: "docker.io/bitnami/clickhouse:24.3"
+    imageRegistry: docker.io
+    image: "bitnami/clickhouse:24.3"
     maxAttempt: 30
 # https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml
 clickhouse:

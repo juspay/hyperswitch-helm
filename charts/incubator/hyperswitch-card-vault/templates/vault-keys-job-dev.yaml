@@ -20,7 +20,8 @@ spec:
 
       containers:
         - name: run-vault-key-setup
-          image: {{ .Values.vaultKeysJob.checkVaultService.image }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.vaultKeysJob.checkVaultService.image }}"
           command: ["/bin/sh", "-c"]
           args:
             - |-

@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+
 # -- Number of replicas for the UCS deployment
 # @section -- Connector Service
 replicaCount: 1
