@@ -134,3 +134,117 @@ jobs:
             fi
           done
           echo "::endgroup::"
+
+  test-global-registry:
+    name: Test Global Registry Override
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.changed == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Test Global Registry Coverage
+        run: |
+          # Known exceptions - third-party chart images that don't support global registry override
+          declare -a EXCEPTIONS=(
+            "docker.io/mailhog/mailhog:v1.0.1"
+            "timberio/vector:0.42.0-distroless-libc"
+            # "kiwigrid/k8s-sidecar:1.27.5"
+          )
+
+          TEST_REGISTRY="test-registry.example.com"
+          CHART_NAME="test-release"
+
+          echo "Testing global image registry override for hyperswitch-stack..."
+          echo "Test registry: $TEST_REGISTRY"
+          echo "Known exceptions: ${#EXCEPTIONS[@]} images"
+
+          # Only test hyperswitch-stack chart
+          cd charts/incubator/hyperswitch-stack
+
+          # Generate Helm template with global registry override
+          echo "Generating Helm templates..."
+          if ! helm template "$CHART_NAME" . --set global.imageRegistry="$TEST_REGISTRY" > /tmp/helm-output.yaml 2>/dev/null; then
+            echo "FAILED: Helm template generation failed"
+            exit 1
+          fi
+
+          # Extract all image references
+          echo "Extracting image references..."
+          grep -E '^\s*image:\s*' /tmp/helm-output.yaml | \
+            sed -E 's/^\s*image:\s*"?([^"]*)"?.*/\1/' | \
+            sort | uniq > /tmp/all-images.txt
+
+          # Count total images
+          TOTAL_IMAGES=$(wc -l < /tmp/all-images.txt)
+          echo "Total unique images found: $TOTAL_IMAGES"
+
+          # Find images NOT using the test registry
+          grep -v "^$TEST_REGISTRY/" /tmp/all-images.txt > /tmp/non-global-images.txt || true
+
+          # Filter out known exceptions
+          cp /tmp/non-global-images.txt /tmp/unexpected-images.txt
+          for exception in "${EXCEPTIONS[@]}"; do
+            grep -v "^$exception$" /tmp/unexpected-images.txt > /tmp/temp.txt || true
+            mv /tmp/temp.txt /tmp/unexpected-images.txt
+          done
+
+          # Count results
+          GLOBAL_IMAGES=$(grep -c "^$TEST_REGISTRY/" /tmp/all-images.txt || echo "0")
+          NON_GLOBAL_IMAGES=$(wc -l < /tmp/non-global-images.txt)
+          UNEXPECTED_IMAGES=$(wc -l < /tmp/unexpected-images.txt)
+
+          # Calculate coverage percentage
+          COVERAGE=$((GLOBAL_IMAGES * 100 / TOTAL_IMAGES))
+
+          echo ""
+          echo "RESULTS:"
+          echo "   Images using global registry: $GLOBAL_IMAGES"
+          echo "   Images not using global registry: $NON_GLOBAL_IMAGES"
+          echo "   Unexpected non-global images: $UNEXPECTED_IMAGES"
+          echo "   Coverage: $COVERAGE%"
+
+          # Show details of non-global images
+          if [ $NON_GLOBAL_IMAGES -gt 0 ]; then
+            echo ""
+            echo "Images not using global registry:"
+            while read -r image; do
+              if printf '%s\n' "${EXCEPTIONS[@]}" | grep -q "^$image$"; then
+                echo "   $image (known exception)"
+              else
+                echo "   $image (UNEXPECTED)"
+              fi
+            done < /tmp/non-global-images.txt
+          fi
+
+          # Test results
+          echo ""
+          if [ $UNEXPECTED_IMAGES -eq 0 ]; then
+            echo "PASSED: All images use global registry override (with expected exceptions)"
+            echo "   Coverage: $COVERAGE% ($GLOBAL_IMAGES/$TOTAL_IMAGES images)"
+
+            # Quality gates
+            if [ $COVERAGE -lt 90 ]; then
+              echo "WARNING: Coverage below 90% threshold"
+            fi
+          else
+            echo "FAILED: $UNEXPECTED_IMAGES unexpected images not using global registry"
+            echo ""
+            echo "To fix:"
+            echo "   1. Update image configurations to separate registry and repository"
+            echo "   2. Ensure templates use: {{- \$registry := .Values.global.imageRegistry | default .Values.service.imageRegistry }}"
+            echo "   3. If this is a known third-party limitation, add to exceptions list"
+            echo ""
+            echo "Unexpected images:"
+            cat /tmp/unexpected-images.txt | sed 's/^/   /'
+
+            exit 1
+          fi
