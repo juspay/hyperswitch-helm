@@ -190,12 +190,9 @@ hyperswitch-monitoring:
   enabled: true
   # Pass global imageRegistry to monitoring subcharts
   global:
-    imageRegistry: null
     tolerations: []
   # Component-specific tolerations
   kube-prometheus-stack:
-    global:
-      imageRegistry: null
     prometheus:
       prometheusSpec:
         tolerations: []
@@ -205,9 +202,6 @@ hyperswitch-monitoring:
       alertmanagerSpec:
         tolerations: []
   loki:
-    global:
-      image:
-        registry: null
     singleBinary:
       tolerations: []
   promtail:

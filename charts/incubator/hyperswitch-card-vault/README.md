@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -136,11 +136,14 @@ external:
 | external.postgresql.enabled | bool | `false` |  |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
+| global.imageRegistry | string | `nil` |  |
 | global.tolerations | list | `[]` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
+| initDB.checkPGisUp.imageRegistry | string | `"docker.io"` |  |
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
+| initDB.migration.imageRegistry | string | `"docker.io"` |  |
 | postgresql.architecture | string | `"standalone"` |  |
 | postgresql.auth.database | string | `"locker-db"` |  |
 | postgresql.auth.password | string | `"dummyPassword"` |  |
@@ -168,7 +171,8 @@ external:
 | server.externalKeyManager.url | string | `"http://localhost:5000"` |  |
 | server.extra.env | object | `{}` |  |
 | server.host | string | `"0.0.0.0"` |  |
-| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
+| server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
+| server.imageRegistry | string | `"docker.juspay.io"` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.port | string | `"8080"` |  |
 | server.vault.url | string | `"http://127.0.0.1:8200"` |  |
@@ -178,6 +182,7 @@ external:
 | tenant_secrets.public.schema | string | `"public"` |  |
 | vaultKeysJob.checkVaultService.host | string | `""` |  |
 | vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
+| vaultKeysJob.checkVaultService.imageRegistry | string | `"docker.io"` |  |
 | vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |
 | vaultKeysJob.checkVaultService.port | int | `80` |  |
 | vaultKeysJob.enabled | bool | `true` |  |

@@ -4,7 +4,9 @@
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
-
+  # Some charts use this format for global image configuration
+  image:
+    registry: null
   # Tolerations to be applied to all monitoring components
   tolerations: []
   labels:

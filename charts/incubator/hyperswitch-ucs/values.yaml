@@ -13,9 +13,12 @@ replicaCount: 1
 # -- Container image configuration
 # @section -- Connector Service
 image:
+  # -- Docker image registry
+  # @section -- Connector Service  
+  imageRegistry: ghcr.io
   # -- Docker image repository
   # @section -- Connector Service
-  repository: ghcr.io/juspay/connector-service
+  repository: juspay/connector-service
   # -- Image pull policy
   # @section -- Connector Service
   pullPolicy: IfNotPresent

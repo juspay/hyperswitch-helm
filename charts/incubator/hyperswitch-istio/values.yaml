@@ -12,10 +12,10 @@ namespace: hyperswitch
 
 # Service-specific versions
 hyperswitchServer:
-  version: "v1o114o0"  
+  version: "v1o114o0"
 
 hyperswitchControlCenter:
-  version: "v1o37o1"   
+  version: "v1o37o1"
 
 service:
   type: ClusterIP

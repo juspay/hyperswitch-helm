@@ -3,7 +3,7 @@ global:
   # Global image registry that can override all imageRegistry fields
   # This will be set by the parent chart (hyperswitch-stack)
   imageRegistry: null
-  
+
   # Annotations to be added to all resources
   annotations: {}
   tolerations: []
