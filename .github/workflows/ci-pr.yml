@@ -151,13 +151,23 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
+      - name: Add Helm repositories
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add codecentric https://codecentric.github.io/helm-charts
+          helm repo add vector https://helm.vector.dev
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+          helm repo update
+
       - name: Test Global Registry Coverage
         run: |
           # Known exceptions - third-party chart images that don't support global registry override
           declare -a EXCEPTIONS=(
             "docker.io/mailhog/mailhog:v1.0.1"
             "timberio/vector:0.42.0-distroless-libc"
-            # "kiwigrid/k8s-sidecar:1.27.5"
+            "kiwigrid/k8s-sidecar:1.27.5"
           )
 
           TEST_REGISTRY="test-registry.example.com"
@@ -169,6 +179,13 @@ jobs:
 
           # Only test hyperswitch-stack chart
           cd charts/incubator/hyperswitch-stack
+
+          # Update helm dependencies
+          echo "Updating Helm dependencies..."
+          if ! helm dependency update; then
+            echo "FAILED: Helm dependency update failed"
+            exit 1
+          fi
 
           # Generate Helm template with global registry override
           echo "Generating Helm templates..."
