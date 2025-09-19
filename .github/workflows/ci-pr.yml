@@ -167,7 +167,6 @@ jobs:
           declare -a EXCEPTIONS=(
             "docker.io/mailhog/mailhog:v1.0.1"
             "timberio/vector:0.42.0-distroless-libc"
-            # "kiwigrid/k8s-sidecar:1.27.5"
           )
 
           TEST_REGISTRY="test-registry.example.com"
