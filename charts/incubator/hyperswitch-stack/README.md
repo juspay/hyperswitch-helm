@@ -849,6 +849,10 @@ task ur
 }</code></div></td>
     <td>Container image configuration</td>
   </tr><tr>
+    <td><div><a href="../hyperswitch-ucs/values.yaml#L18">hyperswitch-ucs.image.imageRegistry</a></div></td>
+    <td><div><code>"ghcr.io"</code></div></td>
+    <td>Docker image registry</td>
+  </tr><tr>
     <td><div><a href="../hyperswitch-ucs/values.yaml#L24">hyperswitch-ucs.image.pullPolicy</a></div></td>
     <td><div><code>"IfNotPresent"</code></div></td>
     <td>Image pull policy</td>
@@ -1247,19 +1251,6 @@ task ur
     <td><div><a href="../hyperswitch-ucs/values.yaml#L259">hyperswitch-ucs.config.server.type</a></div></td>
     <td><div><code>"grpc"</code></div></td>
     <td>Server type</td>
-  </tr></tbody>
-</table>
-<h3>Connector Service  </h3>
-<table height="400px">
-<thead>
-	<th >Key</th>
-	<th >Default</th>
-	<th >Description</th>
-</thead>
-<tbody><tr>
-    <td><div><a href="../hyperswitch-ucs/values.yaml#L18">hyperswitch-ucs.image.imageRegistry</a></div></td>
-    <td><div><code>"ghcr.io"</code></div></td>
-    <td>Docker image registry</td>
   </tr></tbody>
 </table>
 <h3>Other Values</h3>

@@ -54,6 +54,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
 | fullnameOverride | string | `""` | Override the full name of the chart |
 | image | object | `{"imageRegistry":"ghcr.io","pullPolicy":"IfNotPresent","repository":"juspay/connector-service","tag":"main-b1487cb"}` | Container image configuration |
+| image.imageRegistry | string | `"ghcr.io"` | Docker image registry |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | image.repository | string | `"juspay/connector-service"` | Docker image repository |
 | image.tag | string | `"main-b1487cb"` | Image tag to use |
@@ -134,12 +135,6 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | config.server.host | string | `"0.0.0.0"` | Server host address |
 | config.server.port | int | `8000` | Server port |
 | config.server.type | string | `"grpc"` | Server type |
-
-### Connector Service 
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| image.imageRegistry | string | `"ghcr.io"` | Docker image registry |
 
 ### Other Values
 
