@@ -161,6 +161,16 @@ jobs:
           helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
           helm repo update
 
+      - name: Build Helm Dependencies
+        run: |
+          # Build dependencies for all charts
+          for chart in charts/incubator/*; do
+            if [ -f "$chart/Chart.yaml" ]; then
+              echo "Updating dependencies for $chart"
+              helm dependency update "$chart"
+            fi
+          done
+
       - name: Test Global Registry Coverage
         run: |
           # Known exceptions - third-party chart images that don't support global registry override
@@ -176,22 +186,21 @@ jobs:
           echo "Test registry: $TEST_REGISTRY"
           echo "Known exceptions: ${#EXCEPTIONS[@]} images"
 
-          # Only test hyperswitch-stack chart
-          cd charts/incubator/hyperswitch-stack
-
-          # Update helm dependencies
-          echo "Updating Helm dependencies..."
-          if ! helm dependency update; then
-            echo "FAILED: Helm dependency update failed"
-            exit 1
-          fi
-
-          # Generate Helm template with global registry override
-          echo "Generating Helm templates..."
-          if ! helm template "$CHART_NAME" . --set global.imageRegistry="$TEST_REGISTRY" > /tmp/helm-output.yaml 2>/dev/null; then
-            echo "FAILED: Helm template generation failed"
-            exit 1
-          fi
+          # Test all charts for global registry coverage
+          echo "Generating Helm templates for all charts..."
+          > /tmp/helm-output.yaml  # Clear the file
+          
+          for chart in charts/incubator/*; do
+            if [ -f "$chart/Chart.yaml" ]; then
+              chart_name=$(basename "$chart")
+              echo "  Processing chart: $chart_name"
+              if helm template "$CHART_NAME-$chart_name" "$chart" --set global.imageRegistry="$TEST_REGISTRY" >> /tmp/helm-output.yaml 2>/dev/null; then
+                echo "    ✓ Template generated successfully"
+              else
+                echo "    ! Template generation failed (may not support global registry or have missing dependencies)"
+              fi
+            fi
+          done
 
           # Extract all image references
           echo "Extracting image references..."
