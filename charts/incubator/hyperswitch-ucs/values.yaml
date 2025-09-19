@@ -14,7 +14,7 @@ replicaCount: 1
 # @section -- Connector Service
 image:
   # -- Docker image registry
-  # @section -- Connector Service  
+  # @section -- Connector Service
   imageRegistry: ghcr.io
   # -- Docker image repository
   # @section -- Connector Service
