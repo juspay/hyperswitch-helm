@@ -30,11 +30,50 @@ spec:
       serviceAccountName: {{ include "sdk.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: build-and-copy
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Building static files..."
+              npm run re:build
+              npm run build
+              echo "Copying built files to nginx path..."
+              mkdir -p /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              cp -r /usr/src/app/dist/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              echo "Build and copy completed successfully"
+              ls -la /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+          env:
+            - name: ENV_SDK_URL
+              value: "{{ .Values.env.envSdkUrl }}{{ include "nginx.sdk.path" . }}"
+            - name: ENV_BACKEND_URL
+              value: "{{ .Values.env.envBackendUrl }}"
+            - name: ENV_LOGGING_URL
+              value: "{{ .Values.env.envLoggingUrl }}"
+            - name: ENABLE_LOGGING
+              value: "{{ .Values.env.enableLogging }}"
+            - name: DISABLE_CSP
+              value: "{{ .Values.env.disableCSP }}"
+            - name: SDK_VERSION
+              value: "{{ .Values.env.sdkVersion }}"
+            - name: SDK_TAG_VERSION
+              value: "{{ .Values.env.sdkTagVersion }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.env.sentryDsn }}"
+            - name: VISA_API_KEY_ID
+              value: "{{ .Values.env.visaApiKeyId }}"
+            - name: VISA_API_CERTIFICATE_PEM
+              value: "{{ .Values.env.visaApiCertificatePem }}"
+          volumeMounts:
+            - name: nginx-html-volume
+              mountPath: /usr/share/nginx/html
       containers:
-        - name: {{ .Chart.Name }}
+        - name: nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}-helm"
+          image: "{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -50,18 +89,22 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: nginx-html-volume
+              mountPath: /usr/share/nginx/html
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- end }}
           {{- with .Values.envFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+        - name: nginx-html-volume
+          emptyDir: {}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

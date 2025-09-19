@@ -934,7 +934,7 @@ controlCenter:
     default__features__frm: "true"
     # -- Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.
     # @section -- Control Center configs
-    default__features__mixpanel: "true"
+    default__features__mixpanel: "false"
     # -- Enables the ability to load simulated sample data into the dashboard for preview purposes. When enabled, dummy transactions, analytics, and reporting data can be generated.
     # @section -- Control Center configs
     default__features__sample_data: "true"

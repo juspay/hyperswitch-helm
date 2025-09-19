@@ -73,12 +73,12 @@ autoBuild:
 
 
 image:
-  # -- prebuild SDK image
-  repository: nginx
+  # -- prebuild SDK image with hyperswitch-web included
+  repository: docker.juspay.io/juspaydotin/hyperswitch-web
   # -- prebuild image pull policy
   pullPolicy: IfNotPresent
   # -- prebuild image tag, the image tag whose default is the chart appVersion.
-  tag: 0.35.4
+  tag: v0.126.0
   nginxConfig:
     # -- nginx extra path used to set liveness and readiness probe /0.80.0/v0
     extraPath: v1
@@ -188,6 +188,29 @@ volumeMounts:
   - name: nginx-config-volume
     mountPath: /etc/nginx/conf.d/default.conf
     subPath: default.conf
+# -- Environment variables for hyperswitch-web application
+env:
+  # -- SDK URL 
+  envSdkUrl: "http://localhost:9050"
+  # -- Backend URL for API calls
+  envBackendUrl: "http://localhost:8080"
+  # -- Logging URL for SDK logs
+  envLoggingUrl: ""
+  # -- Enable/disable logging
+  enableLogging: "false"
+  # -- Disable Content Security Policy
+  disableCSP: "false"
+  # -- SDK version
+  sdkVersion: "v1"
+  # -- SDK tag version
+  sdkTagVersion: ""
+  # -- Sentry DSN for error tracking
+  sentryDsn: ""
+  # -- Visa API key ID
+  visaApiKeyId: ""
+  # -- Visa API certificate PEM
+  visaApiCertificatePem: ""
+
 envFrom:
   - configMapRef:
       name: hyperswitch-web-nginx

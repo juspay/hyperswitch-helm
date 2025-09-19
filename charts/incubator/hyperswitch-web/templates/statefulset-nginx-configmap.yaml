@@ -26,7 +26,12 @@ data:
         }
 
         location /HyperLoader.js {
-              alias /usr/share/nginx/html{{ include "nginx.sdk.path" . }}/HyperLoader.js;
+              alias /usr/share/nginx/html{{ include "nginx.sdk.path" . }}HyperLoader.js;
+        }
+
+        # Catch-all for any non-versioned static assets - redirect to versioned path
+        location ~* ^/(?!web/)(.+)$ {
+            try_files $uri {{ include "nginx.sdk.path" . }}$1;
         }
 
         #error_page  404              /404.html;

@@ -53,6 +53,11 @@ hyperswitch-web:
       envSdkUrl: *web_sdk_host
       envBackendUrl: *router_host
       envLogsUrl: http://localhost:3103
+  env:
+    # -- SDK URL 
+    envSdkUrl: *web_sdk_host
+    # -- Backend URL for API calls
+    envBackendUrl: *router_host
   service:
     port: 9050
   loadBalancer:
