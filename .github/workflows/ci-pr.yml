@@ -199,6 +199,12 @@ jobs:
             sed -E 's/^\s*image:\s*"?([^"]*)"?.*/\1/' | \
             sort | uniq > /tmp/all-images.txt
 
+          # Debug: Show all found images
+          echo ""
+          echo "DEBUG: All unique images found:"
+          cat /tmp/all-images.txt | sed 's/^/   /'
+          echo ""
+
           # Count total images
           TOTAL_IMAGES=$(wc -l < /tmp/all-images.txt)
           echo "Total unique images found: $TOTAL_IMAGES"
@@ -206,12 +212,38 @@ jobs:
           # Find images NOT using the test registry
           grep -v "^$TEST_REGISTRY/" /tmp/all-images.txt > /tmp/non-global-images.txt || true
 
+          # Debug: Show images not using global registry
+          echo ""
+          echo "DEBUG: Images NOT using test registry ($TEST_REGISTRY):"
+          if [ -s /tmp/non-global-images.txt ]; then
+            cat /tmp/non-global-images.txt | sed 's/^/   /'
+          else
+            echo "   (none)"
+          fi
+          echo ""
+
           # Filter out known exceptions
           cp /tmp/non-global-images.txt /tmp/unexpected-images.txt
+          echo "DEBUG: Filtering out known exceptions..."
           for exception in "${EXCEPTIONS[@]}"; do
+            echo "   Filtering out: $exception"
+            before_count=$(wc -l < /tmp/unexpected-images.txt)
             grep -v "^$exception$" /tmp/unexpected-images.txt > /tmp/temp.txt || true
             mv /tmp/temp.txt /tmp/unexpected-images.txt
+            after_count=$(wc -l < /tmp/unexpected-images.txt)
+            removed_count=$((before_count - after_count))
+            echo "     Removed $removed_count occurrences"
           done
+
+          # Debug: Show final unexpected images
+          echo ""
+          echo "DEBUG: Final unexpected images (after filtering exceptions):"
+          if [ -s /tmp/unexpected-images.txt ]; then
+            cat /tmp/unexpected-images.txt | sed 's/^/   /'
+          else
+            echo "   (none)"
+          fi
+          echo ""
 
           # Count results
           GLOBAL_IMAGES=$(grep -c "^$TEST_REGISTRY/" /tmp/all-images.txt || echo "0")
@@ -228,6 +260,17 @@ jobs:
           echo "   Unexpected non-global images: $UNEXPECTED_IMAGES"
           echo "   Coverage: $COVERAGE%"
 
+          # Debug: Show calculation details
+          echo ""
+          echo "DEBUG: Calculation details:"
+          echo "   Total images: $TOTAL_IMAGES"
+          echo "   Global registry images: $GLOBAL_IMAGES"
+          echo "   Non-global images: $NON_GLOBAL_IMAGES"
+          echo "   Unexpected images: $UNEXPECTED_IMAGES"
+          echo "   Expected exceptions: ${#EXCEPTIONS[@]}"
+          echo "   Math check: $GLOBAL_IMAGES + $NON_GLOBAL_IMAGES = $((GLOBAL_IMAGES + NON_GLOBAL_IMAGES)) (should equal $TOTAL_IMAGES)"
+          echo ""
+
           # Show details of non-global images
           if [ $NON_GLOBAL_IMAGES -gt 0 ]; then
             echo ""
@@ -243,6 +286,12 @@ jobs:
 
           # Test results
           echo ""
+          echo "DEBUG: Test decision logic:"
+          echo "   UNEXPECTED_IMAGES = $UNEXPECTED_IMAGES"
+          echo "   Test condition: UNEXPECTED_IMAGES == 0"
+          echo "   Will pass: $([ $UNEXPECTED_IMAGES -eq 0 ] && echo "YES" || echo "NO")"
+          echo ""
+
           if [ $UNEXPECTED_IMAGES -eq 0 ]; then
             echo "PASSED: All images use global registry override (with expected exceptions)"
             echo "   Coverage: $COVERAGE% ($GLOBAL_IMAGES/$TOTAL_IMAGES images)"
