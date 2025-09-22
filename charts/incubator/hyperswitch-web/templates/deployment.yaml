@@ -30,13 +30,55 @@ spec:
       serviceAccountName: {{ include "sdk.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: build-and-copy
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.autoBuild.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Building static files..."
+              npm run re:build
+              npm run build
+              echo "Copying built files to nginx path..."
+              mkdir -p /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              cp -r /usr/src/app/dist/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              echo "Build and copy completed successfully"
+              ls -la /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+          env:
+            - name: ENV_SDK_URL
+              value: "{{ .Values.autoBuild.buildParam.envSdkUrl }}{{ include "nginx.sdk.path" . }}"
+            - name: ENV_BACKEND_URL
+              value: "{{ .Values.autoBuild.buildParam.envBackendUrl }}"
+            - name: ENV_LOGGING_URL
+              value: "{{ .Values.autoBuild.buildParam.envLoggingUrl }}"
+            - name: ENABLE_LOGGING
+              value: "{{ .Values.env.enableLogging }}"
+            - name: DISABLE_CSP
+              value: "{{ .Values.autoBuild.buildParam.disableCSP }}"
+            - name: SDK_VERSION
+              value: "{{ .Values.env.sdkVersion }}"
+            - name: SDK_TAG_VERSION
+              value: "{{ .Values.env.sdkTagVersion }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.env.sentryDsn }}"
+            - name: VISA_API_KEY_ID
+              value: "{{ .Values.env.visaApiKeyId }}"
+            - name: VISA_API_CERTIFICATE_PEM
+              value: "{{ .Values.env.visaApiCertificatePem }}"
+            - name: PORT
+              value: "{{ .Values.service.port }}"
+          volumeMounts:
+            - name: nginx-html-volume
+              mountPath: /usr/share/nginx/html
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
-          image: "{{ $registry }}/{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}-helm"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.nginxConfig.buildImageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
+          imagePullPolicy: {{ .Values.autoBuild.nginxConfig.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

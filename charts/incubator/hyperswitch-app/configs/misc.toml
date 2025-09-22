@@ -63,6 +63,7 @@ consolidated_events_topic = "{{ .Values.server.events.kafka.consolidated_events_
 authentication_analytics_topic = "{{ .Values.server.events.kafka.authentication_analytics_topic }}" # Kafka topic to be used for Authentication events
 fraud_check_analytics_topic = "{{ .Values.server.events.kafka.fraud_check_analytics_topic }}"    # Kafka topic to be used for Fraud Check events
 routing_logs_topic = "{{ .Values.server.events.kafka.routing_logs_topic }}"
+revenue_recovery_topic = "{{ .Values.server.events.kafka.revenue_recovery_topic }}"       
 
 [forex_api]          
 data_expiration_delay_in_seconds = {{ .Values.server.forex_api.data_expiration_delay_in_seconds }}
@@ -240,10 +241,13 @@ delete_token_url= "{{ .Values.server.network_tokenization_service.delete_token_u
 check_token_status_url= "{{ .Values.server.network_tokenization_service.check_token_status_url }}"    
 webhook_source_verification_key= "{{ .Values.server.network_tokenization_service.webhook_source_verification_key }}" 
 
-[grpc_client.dynamic_routing_client] # Dynamic Routing Client Configuration
+[grpc_client.dynamic_routing_client] 
 host = "{{ .Values.server.grpc_client.dynamic_routing_client.host }}" 
 port = {{ .Values.server.grpc_client.dynamic_routing_client.port }}        
 service = "{{ .Values.server.grpc_client.dynamic_routing_client.service }}" 
+
+[grpc_client.recovery_decider_client] 
+base_url = "{{ .Values.server.grpc_client.recovery_decider_client.base_url }}" 
 
 [theme.storage]
 file_storage_backend = "{{ .Values.server.theme.storage.file_storage_backend }}" 
@@ -270,10 +274,38 @@ merchant_ids = "{{ .Values.server.clone_connector_allowlist.merchant_ids }}"
 connector_names = "{{ .Values.server.clone_connector_allowlist.connector_names }}"
 
 [grpc_client.unified_connector_service]
-host = {{ .Values.server.grpc_client.unified_connectors_client.host | quote }}
-port = {{ .Values.server.grpc_client.unified_connectors_client.port }}
-connection_timeout = {{ .Values.server.grpc_client.unified_connectors_client.connection_timeout }}
+base_url = "{{ .Values.server.grpc_client.unified_connector_service.base_url }}"      
+connection_timeout = "{{ .Values.server.grpc_client.unified_connector_service.connection_timeout }}"
+ucs_only_connectors = "{{ .Values.server.grpc_client.unified_connector_service.ucs_only_connectors }}"    
+
+[revenue_recovery]
+monitoring_threshold_in_seconds = {{ .Values.server.revenue_recovery.monitoring_threshold_in_seconds }}
+retry_algorithm_type = "{{ .Values.server.revenue_recovery.retry_algorithm_type }}"
+redis_ttl_in_seconds = {{ .Values.server.revenue_recovery.redis_ttl_in_seconds }} 
+
+
+[revenue_recovery.card_config.amex]
+max_retries_per_day = {{ .Values.server.revenue_recovery.card_config.amex.max_retries_per_day }}
+max_retry_count_for_thirty_day = {{ .Values.server.revenue_recovery.card_config.amex.max_retry_count_for_thirty_day }}
+
+[revenue_recovery.card_config.mastercard]
+max_retries_per_day = {{ .Values.server.revenue_recovery.card_config.mastercard.max_retries_per_day }}
+max_retry_count_for_thirty_day = {{ .Values.server.revenue_recovery.card_config.mastercard.max_retry_count_for_thirty_day }}
+
+[revenue_recovery.card_config.visa]
+max_retries_per_day = {{ .Values.server.revenue_recovery.card_config.visa.max_retries_per_day }}
+max_retry_count_for_thirty_day = {{ .Values.server.revenue_recovery.card_config.visa.max_retry_count_for_thirty_day }}
+
+[revenue_recovery.card_config.discover]
+max_retries_per_day = {{ .Values.server.revenue_recovery.card_config.discover.max_retries_per_day }}
+max_retry_count_for_thirty_day = {{ .Values.server.revenue_recovery.card_config.discover.max_retry_count_for_thirty_day }}
+
+[revenue_recovery.recovery_timestamp] 
+initial_timestamp_in_hours = {{ .Values.server.revenue_recovery.recovery_timestamp.initial_timestamp_in_hours }}      
 
 [chat]
-enabled = false                                # Enable or disable chat features
-hyperswitch_ai_host = "http://0.0.0.0:8000"    # Hyperswitch ai workflow host
+enabled = {{ .Values.server.chat.enabled }}                               
+hyperswitch_ai_host = "{{ .Values.server.chat.hyperswitch_ai_host }}"    
+
+[proxy_status_mapping]
+proxy_connector_http_status_code = {{ .Values.server.proxy_status_mapping.proxy_connector_http_status_code }} 

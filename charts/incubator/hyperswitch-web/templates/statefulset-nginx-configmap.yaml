@@ -9,8 +9,6 @@ data:
   envSdkUrl: "{{ .Values.autoBuild.buildParam.envSdkUrl }}"
   envLogsUrl: "{{ .Values.autoBuild.buildParam.envLogsUrl }}"
   disableCSP: "{{ .Values.autoBuild.buildParam.disableCSP}}"
-  apiUrl: "{{ .Values.autoBuild.buildParam.appCloudFrontUrl }}"
-  sdkUrl: "{{ .Values.autoBuild.buildParam.sdkCloudFrontUrl }}"
   default.conf: |-
     server {
         listen       {{ .Values.service.port }};
@@ -26,7 +24,12 @@ data:
         }
 
         location /HyperLoader.js {
-              alias /usr/share/nginx/html{{ include "nginx.sdk.path" . }}/HyperLoader.js;
+              alias /usr/share/nginx/html{{ include "nginx.sdk.path" . }}HyperLoader.js;
+        }
+
+        # Catch-all for any non-versioned static assets - redirect to versioned path
+        location ~* ^/(?!web/)(.+)$ {
+            try_files $uri {{ include "nginx.sdk.path" . }}$1;
         }
 
         #error_page  404              /404.html;
