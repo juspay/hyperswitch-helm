@@ -1181,7 +1181,8 @@ hyperswitch-card-vault:
   enabled: true
   initDB:
     checkPGisUp:
-      image: docker.io/bitnami/postgresql:16.1.0-debian-11-r18
+      imageRegistry: docker.io
+      image: bitnami/postgresql:16.1.0-debian-11-r18
 
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:

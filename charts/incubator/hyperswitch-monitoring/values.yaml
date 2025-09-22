@@ -19,7 +19,10 @@ kube-prometheus-stack:
   # Disable admission webhooks to avoid Istio sidecar issues
   prometheusOperator:
     admissionWebhooks:
-      enabled: false
+      enabled: true
+      patch:
+        podAnnotations:
+          sidecar.istio.io/inject: "false"
 
   alertmanager:
     enabled: true
