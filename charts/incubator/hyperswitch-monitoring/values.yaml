@@ -2,6 +2,11 @@
 
 # Global configuration
 global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+  # Some charts use this format for global image configuration
+  image:
+    registry: null
   # Tolerations to be applied to all monitoring components
   tolerations: []
   labels:
@@ -11,10 +16,13 @@ global:
 kube-prometheus-stack:
   enabled: true
 
-  # Disable admission webhooks to avoid Istio sidecar issues
+  # Prometheus Operator configurations
   prometheusOperator:
     admissionWebhooks:
-      enabled: false
+      enabled: true
+      patch:
+        podAnnotations:
+          sidecar.istio.io/inject: "false"
 
   alertmanager:
     enabled: true
@@ -136,6 +144,9 @@ kube-prometheus-stack:
 loki:
   enabled: true
   fullnameOverride: "loki"
+  global:
+    image:
+      registry: null
 
   # Loki configuration
   loki:

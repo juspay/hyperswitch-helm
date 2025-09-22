@@ -16,6 +16,14 @@ services:
     host: &web_sdk_host http://localhost:9050
 
 global:
+  # Global image registry to override all container image registries
+  # If set, all container images will be pulled from this registry
+  # If not set, each service will use its default registry
+  # Example: "my-registry.com" or "localhost:5000"
+  imageRegistry: &image_registry null
+  image:
+    registry: *image_registry
+
   tolerations: []
   # @ignored
   # Eg.
@@ -92,19 +100,24 @@ hyperswitch-app:
   services:
     router:
       version: v1.116.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-router:v1.116.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-router:v1.116.0
       host: *router_host
     consumer:
       version: v1.116.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-consumer:v1.116.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-consumer:v1.116.0
     producer:
       version: v1.116.0
-      image: docker.juspay.io/juspaydotin/hyperswitch-producer:v1.116.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-producer:v1.116.0
     drainer:
-      image: docker.juspay.io/juspaydotin/hyperswitch-drainer:v1.116.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-drainer:v1.116.0
       version: v1.116.0
     controlCenter:
-      image: docker.juspay.io/juspaydotin/hyperswitch-control-center:v1.37.3
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-control-center:v1.37.3
     sdk:
       host: *web_sdk_host
       version: 0.125.0
@@ -134,7 +147,8 @@ hyperswitch-app:
   hyperswitch-card-vault:
     enabled: true
     server:
-      image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
       tenant_secrets:
         hyperswitch:
           master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
@@ -174,7 +188,7 @@ hyperswitch-app:
 
 hyperswitch-monitoring:
   enabled: true
-  # Global tolerations for monitoring components
+  # Pass global imageRegistry to monitoring subcharts
   global:
     tolerations: []
   # Component-specific tolerations
@@ -200,7 +214,8 @@ hyperswitch-ucs:
   enabled: true
   fullnameOverride: "hyperswitch-ucs"
   image:
-    repository: ghcr.io/juspay/connector-service
+    imageRegistry: ghcr.io
+    repository: juspay/connector-service
     pullPolicy: IfNotPresent
     tag: "main-b1487cb"
   imagePullSecrets: []

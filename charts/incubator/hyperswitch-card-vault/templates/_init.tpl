@@ -1,7 +1,8 @@
 {{/*Ensure postgres database is up and running */}}
 {{- define "locker-psql.initContainer.check.ready" -}}
 - name: check-postgres
-  image: {{ .Values.initDB.checkPGisUp.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.initDB.checkPGisUp.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.initDB.checkPGisUp.image }}"
   env:
     - name: PGPASSWORD
       value: {{ include "locker-psql.password" . | quote }}
@@ -32,7 +33,8 @@
 {{/* Ensure CardVault service is up and healthy */}}
 {{- define "locker-vault.initContainer.check.ready" -}}
 - name: check-vault-service-ready
-  image: {{ .Values.vaultKeysJob.checkVaultService.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.vaultKeysJob.checkVaultService.image }}"
   command: [ "/bin/sh", "-c" ]
   args:
     - |

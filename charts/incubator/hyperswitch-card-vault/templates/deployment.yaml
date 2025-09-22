@@ -152,7 +152,8 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
             {{- end }}
-          image: {{ .Values.server.image }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.server.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.server.image }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

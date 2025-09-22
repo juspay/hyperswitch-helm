@@ -1,6 +1,6 @@
 # hyperswitch-keymanager
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch Keymanager
@@ -163,11 +163,13 @@ secrets:
 | external.postgresql.enabled | bool | `false` |  |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
-| global.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
+| global.imageRegistry | string | `nil` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
+| initDB.checkPGisUp.imageRegistry | string | `"docker.io"` |  |
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
+| initDB.migration.imageRegistry | string | `"docker.io"` |  |
 | multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
 | multitenancy.tenants.global.schema | string | `"global"` |  |
 | multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
@@ -193,7 +195,8 @@ secrets:
 | secrets.tls.key | string | `"sample_cert"` |  |
 | secrets.vault.token | string | `""` |  |
 | server.annotations | object | `{}` |  |
-| server.image | string | `"docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
+| server.image | string | `"juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
+| server.imageRegistry | string | `"docker.juspay.io"` |  |
 
 ## Examples
 

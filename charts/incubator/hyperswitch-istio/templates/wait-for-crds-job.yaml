@@ -19,7 +19,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: wait-crds
-        image: bitnami/kubectl:latest
+        {{- $registry := .Values.global.imageRegistry | default .Values.waitForCrds.imageRegistry }}
+        image: "{{ $registry }}/{{ .Values.waitForCrds.image }}"
         command:
         - /bin/bash
         - -c

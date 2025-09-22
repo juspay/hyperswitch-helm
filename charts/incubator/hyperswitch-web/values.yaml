@@ -1,4 +1,9 @@
 # @ignored
+
+global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+
 sdkDemo:
   enabled: true
   # Number of replicas to be used for the application
@@ -44,8 +49,10 @@ autoBuild:
   enable: true
   # -- force rebuild assets even these files exist
   forceBuild: false
+  # -- docker image registry for the build
+  buildImageRegistry: docker.juspay.io
   # -- docker image to use for the build
-  buildImage: docker.juspay.io/juspaydotin/hyperswitch-web
+  buildImage: juspaydotin/hyperswitch-web
   gitCloneParam:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
@@ -213,6 +220,7 @@ services:
   router:
     host: http://localhost:8080
   sdkDemo:
-    image: docker.juspay.io/juspaydotin/hyperswitch-web:v1.0.10
+    imageRegistry: docker.juspay.io
+    image: juspaydotin/hyperswitch-web:v1.0.10
     hyperswitchPublishableKey: pub_key
     hyperswitchSecretKey: secret_key
