@@ -5,7 +5,8 @@
 replicaCount: 1
 
 global:
-  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
   annotations: {}
   affinity: {}
 
@@ -13,7 +14,8 @@ autoscaling:
   enabled: false
 
 server:
-  image: docker.juspay.io/juspaydotin/hyperswitch-encryption-service:v0.1.8
+  imageRegistry: docker.juspay.io
+  image: juspaydotin/hyperswitch-encryption-service:v0.1.8
   annotations: {}
   # When deploying with AWS backend, you can override this:
   # annotations:
@@ -94,7 +96,9 @@ multitenancy:
 initDB:
   enable: true
   checkPGisUp:
+    imageRegistry: docker.io
     image: postgres:16-alpine3.19
     maxAttempt: 30
   migration:
+    imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest

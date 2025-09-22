@@ -109,7 +109,8 @@ spec:
               name: keymanager-secrets-{{ .Release.Name }}
               key: CRIPTA__CERTS__ROOT_CA
         {{- end }}
-        image: {{ .Values.server.image }}
+        {{- $registry := .Values.global.imageRegistry | default .Values.server.imageRegistry }}
+        image: "{{ $registry }}/{{ .Values.server.image }}"
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:

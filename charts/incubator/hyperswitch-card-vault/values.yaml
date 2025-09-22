@@ -1,5 +1,9 @@
 # Default values for helm.
 global:
+  # Global image registry that can override all imageRegistry fields
+  # This will be set by the parent chart (hyperswitch-stack)
+  imageRegistry: null
+
   # Annotations to be added to all resources
   annotations: {}
   tolerations: []
@@ -20,8 +24,9 @@ server:
   host: "0.0.0.0"
   port: "8080"
   version: v0.6.5
-  # Image to be used for hyperswitch-card-vault.
-  image: docker.juspay.io/juspaydotin/hyperswitch-card-vault:v0.6.5-dev
+  # Image registry and name for hyperswitch-card-vault.
+  imageRegistry: docker.juspay.io
+  image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
 
   # values to be used in pod template.
   pod:
@@ -181,14 +186,17 @@ initDB:
   # Should we run the migrations on the database
   enable: true
   checkPGisUp:
+    imageRegistry: docker.io
     image: postgres:16-alpine3.19
     maxAttempt: 30
   migration:
+    imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
 
 vaultKeysJob:
   enabled: true
   checkVaultService:
+    imageRegistry: docker.io
     image: curlimages/curl:8.7.1
     maxAttempt: 30
     host: ""

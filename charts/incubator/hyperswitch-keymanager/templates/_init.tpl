@@ -1,7 +1,8 @@
 {{/*Ensure postgres database is up and running */}}
 {{- define "keymanager-psql.initContainer.check.ready" -}}
 - name: check-postgres
-  image: {{ .Values.initDB.checkPGisUp.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.initDB.checkPGisUp.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.initDB.checkPGisUp.image }}"
   command: [ "/bin/sh", "-c" ]
   #language=sh
   args:

@@ -32,7 +32,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: build-and-copy
-          image: "{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}"
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.autoBuild.pullPolicy }}
           command: ["/bin/sh", "-c"]
           args:
@@ -75,7 +76,8 @@ spec:
         - name: {{ .Chart.Name }}-nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
           imagePullPolicy: {{ .Values.autoBuild.nginxConfig.pullPolicy }}
           ports:
             - name: http

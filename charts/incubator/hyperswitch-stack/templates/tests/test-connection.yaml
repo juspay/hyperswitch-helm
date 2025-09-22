@@ -9,7 +9,8 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: busybox
+      {{- $registry := .Values.global.imageRegistry | default "docker.io" }}
+      image: "{{ $registry }}/busybox"
       command: ['wget']
       args: ['{{ include "hyperswitch-stack.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

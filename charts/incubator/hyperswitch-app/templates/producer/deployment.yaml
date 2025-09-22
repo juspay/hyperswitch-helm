@@ -49,7 +49,8 @@ spec:
         {{- end }}
       containers:
         - name: hyperswitch-producer
-          image: {{ .Values.services.producer.image }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.services.producer.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.services.producer.image }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

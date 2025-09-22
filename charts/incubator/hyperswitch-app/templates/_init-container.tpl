@@ -1,7 +1,8 @@
 {{/*Ensure postgres database is up and running */}}
 {{- define "postgresql.initContainer.check.ready" -}}
 - name: check-postgres
-  image: {{ .Values.initDB.checkPGisUp.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.initDB.checkPGisUp.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.initDB.checkPGisUp.image }}"
   imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh
@@ -26,7 +27,8 @@
 {{/*Ensure Redis is up and running */}}
 {{- define "redis.initContainer.check.ready" -}}
 - name: check-redis
-  image: {{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.image }}"
   imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh
@@ -50,7 +52,8 @@
 {{/* Ensure ClickHouse is up and running */}}
 {{- define "clickhouse.initContainer.check.ready" -}}
 - name: check-clickhouse
-  image: {{ .Values.initCH.checkCHisUp.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.initCH.checkCHisUp.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.initCH.checkCHisUp.image }}"
   imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh

@@ -31,7 +31,8 @@ spec:
       {{- end }}
       containers:
         - name: run-keymanager-db-migration
-          image: {{ .Values.initDB.migration.image }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.initDB.migration.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.initDB.migration.image }}"
           command: [ '/bin/sh', '-c' ]
           #language=sh
           args:
