@@ -440,7 +440,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L937">controlCenter.env.default__features__mixpanel</a></div></td>
-    <td><div><code>"true"</code></div></td>
+    <td><div><code>"false"</code></div></td>
     <td>Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L931">controlCenter.env.default__features__payout</a></div></td>

@@ -50,14 +50,9 @@ hyperswitch-web:
     nginxConfig:
       extraPath: v1
     buildParam:
-      envSdkUrl: *web_sdk_host
-      envBackendUrl: *router_host
+      envSdkUrl: one_two_three
+      envBackendUrl: four_five_six
       envLogsUrl: http://localhost:3103
-  env:
-    # -- SDK URL 
-    envSdkUrl: *web_sdk_host
-    # -- Backend URL for API calls
-    envBackendUrl: *router_host
   service:
     port: 9050
   loadBalancer:

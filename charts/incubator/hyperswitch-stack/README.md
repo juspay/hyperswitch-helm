@@ -514,7 +514,7 @@ task ur
     <td>Enables the live mode - that the user is accessing. When enabled, it will show a visual indicator within the dashboard signaling whether the user is currently in a test environment or live production environment. In Live mode, current users are not allowed to sign up. Users must be created manually.</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L937">hyperswitch-app.controlCenter.env.default__features__mixpanel</a></div></td>
-    <td><div><code>"true"</code></div></td>
+    <td><div><code>"false"</code></div></td>
     <td>Controls the collection and transmission of anonymous usage data to Mixpanel for analytics. When enabled, the dashboard will automatically send information about user actions and events to Mixpanel without collecting any personally identifiable information via REST API.</td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L931">hyperswitch-app.controlCenter.env.default__features__payout</a></div></td>
@@ -3416,29 +3416,21 @@ task ur
     <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-web"</code></div></td>
     <td>docker image to use for the build</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L64">hyperswitch-web.autoBuild.buildParam.appCloudFrontUrl</a></div></td>
-    <td><div><code>""</code></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L64">hyperswitch-web.autoBuild.buildParam.disableCSP</a></div></td>
+    <td><div><code>"false"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L62">hyperswitch-web.autoBuild.buildParam.disableCSP</a></div></td>
-    <td><div><code>"true"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L58">hyperswitch-web.autoBuild.buildParam.envBackendUrl</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L60">hyperswitch-web.autoBuild.buildParam.envBackendUrl</a></div></td>
     <td><div><code>"https://hyperswitch"</code></div></td>
     <td>node build parameter, hyperswitch server host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L60">hyperswitch-web.autoBuild.buildParam.envLogsUrl</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L62">hyperswitch-web.autoBuild.buildParam.envLogsUrl</a></div></td>
     <td><div><code>"https://hyperswitch-sdk-logs"</code></div></td>
     <td>node build parameter, hyperswitch SDK logs host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L56">hyperswitch-web.autoBuild.buildParam.envSdkUrl</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L58">hyperswitch-web.autoBuild.buildParam.envSdkUrl</a></div></td>
     <td><div><code>"https://hyperswitch-sdk"</code></div></td>
     <td>node build parameter, hyperswitch-web sdk host (same as ingress host)</td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L65">hyperswitch-web.autoBuild.buildParam.sdkCloudFrontUrl</a></div></td>
-    <td><div><code>""</code></div></td>
-    <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-web/values.yaml#L44">hyperswitch-web.autoBuild.enable</a></div></td>
     <td><div><code>true</code></div></td>
@@ -3448,59 +3440,86 @@ task ur
     <td><div><code>false</code></div></td>
     <td>force rebuild assets even these files exist</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L51">hyperswitch-web.autoBuild.gitCloneParam.gitRepo</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L53">hyperswitch-web.autoBuild.gitCloneParam.gitRepo</a></div></td>
     <td><div><code>"https://github.com/juspay/hyperswitch-web"</code></div></td>
     <td>hyperswitch-web repository</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L53">hyperswitch-web.autoBuild.gitCloneParam.gitVersion</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L55">hyperswitch-web.autoBuild.gitCloneParam.gitVersion</a></div></td>
     <td><div><code>"0.126.0"</code></div></td>
     <td>hyperswitch-web repository tag</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L68">hyperswitch-web.autoBuild.nginxConfig.extraPath</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L67">hyperswitch-web.autoBuild.nginxConfig.extraPath</a></div></td>
     <td><div><code>"v1"</code></div></td>
     <td>nginx static server extra path ( like https://<host>/0.15.8/v0 )</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L70">hyperswitch-web.autoBuild.nginxConfig.image</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L69">hyperswitch-web.autoBuild.nginxConfig.image</a></div></td>
     <td><div><code>"nginx"</code></div></td>
     <td>nginx static server image</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L72">hyperswitch-web.autoBuild.nginxConfig.tag</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L73">hyperswitch-web.autoBuild.nginxConfig.pullPolicy</a></div></td>
+    <td><div><code>"IfNotPresent"</code></div></td>
+    <td>nginx static server pull policy</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L71">hyperswitch-web.autoBuild.nginxConfig.tag</a></div></td>
     <td><div><code>"1.25.3"</code></div></td>
     <td>nginx static server tag</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L193">hyperswitch-web.envFrom[0].configMapRef.name</a></div></td>
-    <td><div><code>"hyperswitch-web-nginx"</code></div></td>
-    <td></td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L84">hyperswitch-web.image.nginxConfig.extraPath</a></div></td>
-    <td><div><code>"v1"</code></div></td>
-    <td>nginx extra path used to set liveness and readiness probe /0.80.0/v0</td>
-  </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L79">hyperswitch-web.image.pullPolicy</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L50">hyperswitch-web.autoBuild.pullPolicy</a></div></td>
     <td><div><code>"IfNotPresent"</code></div></td>
     <td>prebuild image pull policy</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L77">hyperswitch-web.image.repository</a></div></td>
-    <td><div><code>"nginx"</code></div></td>
-    <td>prebuild SDK image</td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L185">hyperswitch-web.env</a></div></td>
+    <td><div><code>{
+  "enableLogging": "false",
+  "sdkTagVersion": "",
+  "sdkVersion": "v1",
+  "sentryDsn": "",
+  "visaApiCertificatePem": "",
+  "visaApiKeyId": ""
+}</code></div></td>
+    <td>Environment variables for hyperswitch-web application</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L81">hyperswitch-web.image.tag</a></div></td>
-    <td><div><code>"0.35.4"</code></div></td>
-    <td>prebuild image tag, the image tag whose default is the chart appVersion.</td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L187">hyperswitch-web.env.enableLogging</a></div></td>
+    <td><div><code>"false"</code></div></td>
+    <td>Enable/disable logging</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L139">hyperswitch-web.ingress.annotations</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L191">hyperswitch-web.env.sdkTagVersion</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>SDK tag version</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L189">hyperswitch-web.env.sdkVersion</a></div></td>
+    <td><div><code>"v1"</code></div></td>
+    <td>SDK version</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L193">hyperswitch-web.env.sentryDsn</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Sentry DSN for error tracking</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L197">hyperswitch-web.env.visaApiCertificatePem</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Visa API certificate PEM</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L195">hyperswitch-web.env.visaApiKeyId</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Visa API key ID</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L201">hyperswitch-web.envFrom[0].configMapRef.name</a></div></td>
+    <td><div><code>"hyperswitch-web-nginx"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L128">hyperswitch-web.ingress.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>ingress annotations</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L137">hyperswitch-web.ingress.className</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L126">hyperswitch-web.ingress.className</a></div></td>
     <td><div><code>"nginx"</code></div></td>
     <td>ingress class name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L135">hyperswitch-web.ingress.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L124">hyperswitch-web.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable/disable ingress</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L143">hyperswitch-web.ingress.hosts</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L132">hyperswitch-web.ingress.hosts</a></div></td>
     <td><div><code>[
   {
     "host": "chart-example.local",
@@ -3514,19 +3533,19 @@ task ur
 ]</code></div></td>
     <td>ingress hosts list</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L149">hyperswitch-web.ingress.tls</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L138">hyperswitch-web.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td>tls configurations list</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L108">hyperswitch-web.podAnnotations</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L97">hyperswitch-web.podAnnotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>pod annotations</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L110">hyperswitch-web.podLabels</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L99">hyperswitch-web.podLabels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>pod labels</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L113">hyperswitch-web.podSecurityContext</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L102">hyperswitch-web.podSecurityContext</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>pod security context</td>
   </tr><tr>
@@ -3534,31 +3553,31 @@ task ur
     <td><div><code>1</code></div></td>
     <td>deployment/statefulset replicas</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L117">hyperswitch-web.securityContext</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L106">hyperswitch-web.securityContext</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>security context</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L130">hyperswitch-web.service.port</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L119">hyperswitch-web.service.port</a></div></td>
     <td><div><code>9050</code></div></td>
     <td>service port</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L128">hyperswitch-web.service.type</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L117">hyperswitch-web.service.type</a></div></td>
     <td><div><code>"ClusterIP"</code></div></td>
     <td>service type</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L214">hyperswitch-web.services.router.host</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L222">hyperswitch-web.services.router.host</a></div></td>
     <td><div><code>"http://localhost:8080"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L217">hyperswitch-web.services.sdkDemo.hyperswitchPublishableKey</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L225">hyperswitch-web.services.sdkDemo.hyperswitchPublishableKey</a></div></td>
     <td><div><code>"pub_key"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L218">hyperswitch-web.services.sdkDemo.hyperswitchSecretKey</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L226">hyperswitch-web.services.sdkDemo.hyperswitchSecretKey</a></div></td>
     <td><div><code>"secret_key"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L216">hyperswitch-web.services.sdkDemo.image</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L224">hyperswitch-web.services.sdkDemo.image</a></div></td>
     <td><div><code>"docker.juspay.io/juspaydotin/hyperswitch-web:v1.0.10"</code></div></td>
     <td></td>
   </tr>

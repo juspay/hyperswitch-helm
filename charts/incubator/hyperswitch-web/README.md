@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.11](https://img.shields.io/badge/Version-0.2.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.15.8](https://img.shields.io/badge/AppVersion-0.15.8-informational?style=flat-square)
+![Version: 0.2.11](https://img.shields.io/badge/Version-0.2.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -16,24 +16,27 @@ assets
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | autoBuild.buildImage | string | `"docker.juspay.io/juspaydotin/hyperswitch-web"` | docker image to use for the build |
-| autoBuild.buildParam.appCloudFrontUrl | string | `""` |  |
-| autoBuild.buildParam.disableCSP | string | `"true"` |  |
+| autoBuild.buildParam.disableCSP | string | `"false"` |  |
 | autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch"` | node build parameter, hyperswitch server host |
 | autoBuild.buildParam.envLogsUrl | string | `"https://hyperswitch-sdk-logs"` | node build parameter, hyperswitch SDK logs host |
 | autoBuild.buildParam.envSdkUrl | string | `"https://hyperswitch-sdk"` | node build parameter, hyperswitch-web sdk host (same as ingress host) |
-| autoBuild.buildParam.sdkCloudFrontUrl | string | `""` |  |
 | autoBuild.enable | bool | `true` | enable npm auto build |
 | autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
 | autoBuild.gitCloneParam.gitVersion | string | `"0.126.0"` | hyperswitch-web repository tag |
 | autoBuild.nginxConfig.extraPath | string | `"v1"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
+| autoBuild.nginxConfig.pullPolicy | string | `"IfNotPresent"` | nginx static server pull policy |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
+| autoBuild.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
+| env | object | `{"enableLogging":"false","sdkTagVersion":"","sdkVersion":"v1","sentryDsn":"","visaApiCertificatePem":"","visaApiKeyId":""}` | Environment variables for hyperswitch-web application |
+| env.enableLogging | string | `"false"` | Enable/disable logging |
+| env.sdkTagVersion | string | `""` | SDK tag version |
+| env.sdkVersion | string | `"v1"` | SDK version |
+| env.sentryDsn | string | `""` | Sentry DSN for error tracking |
+| env.visaApiCertificatePem | string | `""` | Visa API certificate PEM |
+| env.visaApiKeyId | string | `""` | Visa API key ID |
 | envFrom[0].configMapRef.name | string | `"hyperswitch-web-nginx"` |  |
-| image.nginxConfig.extraPath | string | `"v1"` | nginx extra path used to set liveness and readiness probe /0.80.0/v0 |
-| image.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
-| image.repository | string | `"nginx"` | prebuild SDK image |
-| image.tag | string | `"0.35.4"` | prebuild image tag, the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | ingress annotations |
 | ingress.className | string | `"nginx"` | ingress class name |
 | ingress.enabled | bool | `true` | enable/disable ingress |

@@ -74,7 +74,7 @@ Ngnix autobuild statefulset sdk path
 Ngnix deployment sdk path
 */}}
 {{- define "nginx.sdk.path" -}}
-{{- printf "/web/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.image.nginxConfig.extraPath }}
+{{- printf "/web/%s/%s/" .Values.autoBuild.gitCloneParam.gitVersion .Values.autoBuild.nginxConfig.extraPath }}
 {{- end }}
 
 {{/* Define the name for hyperswitch sdk host */}}
