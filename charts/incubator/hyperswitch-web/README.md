@@ -15,7 +15,8 @@ assets
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoBuild.buildImage | string | `"docker.juspay.io/juspaydotin/hyperswitch-web"` | docker image to use for the build |
+| autoBuild.buildImage | string | `"juspaydotin/hyperswitch-web"` | docker image to use for the build |
+| autoBuild.buildImageRegistry | string | `"docker.juspay.io"` | docker image registry for the build |
 | autoBuild.buildParam.disableCSP | string | `"false"` |  |
 | autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch"` | node build parameter, hyperswitch server host |
 | autoBuild.buildParam.envLogsUrl | string | `"https://hyperswitch-sdk-logs"` | node build parameter, hyperswitch SDK logs host |
@@ -24,11 +25,11 @@ assets
 | autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
 | autoBuild.gitCloneParam.gitVersion | string | `"0.126.0"` | hyperswitch-web repository tag |
+| autoBuild.nginxConfig.buildImageRegistry | string | `"docker.io"` | docker image registry for the build |
 | autoBuild.nginxConfig.extraPath | string | `"v1"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.pullPolicy | string | `"IfNotPresent"` | nginx static server pull policy |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
-| autoBuild.pullPolicy | string | `"IfNotPresent"` | prebuild image pull policy |
 | env | object | `{"enableLogging":"false","sdkTagVersion":"","sdkVersion":"v1","sentryDsn":"","visaApiCertificatePem":"","visaApiKeyId":""}` | Environment variables for hyperswitch-web application |
 | env.enableLogging | string | `"false"` | Enable/disable logging |
 | env.sdkTagVersion | string | `""` | SDK tag version |
@@ -37,6 +38,7 @@ assets
 | env.visaApiCertificatePem | string | `""` | Visa API certificate PEM |
 | env.visaApiKeyId | string | `""` | Visa API key ID |
 | envFrom[0].configMapRef.name | string | `"hyperswitch-web-nginx"` |  |
+| global.imageRegistry | string | `nil` |  |
 | ingress.annotations | object | `{}` | ingress annotations |
 | ingress.className | string | `"nginx"` | ingress class name |
 | ingress.enabled | bool | `true` | enable/disable ingress |

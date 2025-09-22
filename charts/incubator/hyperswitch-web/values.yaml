@@ -68,6 +68,8 @@ autoBuild:
     # Disable Content Security Policy (true/false)
     disableCSP: "false"
   nginxConfig:
+    # -- docker image registry for the build
+    buildImageRegistry: docker.io
     # -- nginx static server extra path ( like https://<host>/0.15.8/v0 )
     extraPath: v1
     # -- nginx static server image

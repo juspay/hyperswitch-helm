@@ -76,7 +76,7 @@ spec:
         - name: {{ .Chart.Name }}-nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.nginxConfig.buildImageRegistry }}
           image: "{{ $registry }}/{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
           imagePullPolicy: {{ .Values.autoBuild.nginxConfig.pullPolicy }}
           ports:
