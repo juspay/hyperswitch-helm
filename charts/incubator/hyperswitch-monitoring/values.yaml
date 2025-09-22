@@ -16,7 +16,7 @@ global:
 kube-prometheus-stack:
   enabled: true
 
-  # Disable admission webhooks to avoid Istio sidecar issues
+  # Prometheus Operator configurations
   prometheusOperator:
     admissionWebhooks:
       enabled: true

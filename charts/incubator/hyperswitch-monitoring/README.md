@@ -80,75 +80,75 @@ The monitoring stack includes two custom dashboards:
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L379">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
+    <td><div><a href="./values.yaml#L382">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol"</a></div></td>
     <td><div><code>"HTTP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L380">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
+    <td><div><a href="./values.yaml#L383">grafana.ingress.annotations."alb.ingress.kubernetes.io/backend-protocol-version"</a></div></td>
     <td><div><code>"HTTP1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L381">grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
+    <td><div><a href="./values.yaml#L384">grafana.ingress.annotations."alb.ingress.kubernetes.io/group.name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring-alb-ingress-group"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L382">grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
+    <td><div><a href="./values.yaml#L385">grafana.ingress.annotations."alb.ingress.kubernetes.io/ip-address-type"</a></div></td>
     <td><div><code>"ipv4"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L383">grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
+    <td><div><a href="./values.yaml#L386">grafana.ingress.annotations."alb.ingress.kubernetes.io/listen-ports"</a></div></td>
     <td><div><code>"[{\"HTTP\": 80}]"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L384">grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
+    <td><div><a href="./values.yaml#L387">grafana.ingress.annotations."alb.ingress.kubernetes.io/load-balancer-name"</a></div></td>
     <td><div><code>"hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L385">grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
+    <td><div><a href="./values.yaml#L388">grafana.ingress.annotations."alb.ingress.kubernetes.io/scheme"</a></div></td>
     <td><div><code>"internet-facing"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L386">grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
+    <td><div><a href="./values.yaml#L389">grafana.ingress.annotations."alb.ingress.kubernetes.io/security-groups"</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L387">grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
+    <td><div><a href="./values.yaml#L390">grafana.ingress.annotations."alb.ingress.kubernetes.io/tags"</a></div></td>
     <td><div><code>"stack=hyperswitch-monitoring"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L388">grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
+    <td><div><a href="./values.yaml#L391">grafana.ingress.annotations."alb.ingress.kubernetes.io/target-type"</a></div></td>
     <td><div><code>"ip"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L376">grafana.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L379">grafana.ingress.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L390">grafana.ingress.hosts[0].host</a></div></td>
+    <td><div><a href="./values.yaml#L393">grafana.ingress.hosts[0].host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L392">grafana.ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><a href="./values.yaml#L395">grafana.ingress.hosts[0].paths[0].path</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L393">grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><a href="./values.yaml#L396">grafana.ingress.hosts[0].paths[0].pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L377">grafana.ingress.ingressClassName</a></div></td>
+    <td><div><a href="./values.yaml#L380">grafana.ingress.ingressClassName</a></div></td>
     <td><div><code>"alb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L394">grafana.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L397">grafana.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L28">kube-prometheus-stack.alertmanager.alertmanagerSpec.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L31">kube-prometheus-stack.alertmanager.alertmanagerSpec.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L25">kube-prometheus-stack.alertmanager.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L28">kube-prometheus-stack.alertmanager.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
@@ -156,651 +156,655 @@ The monitoring stack includes two custom dashboards:
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L110">kube-prometheus-stack.grafana.additionalDataSources</a></div></td>
+    <td><div><a href="./values.yaml#L113">kube-prometheus-stack.grafana.additionalDataSources</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L93">kube-prometheus-stack.grafana.adminPassword</a></div></td>
+    <td><div><a href="./values.yaml#L96">kube-prometheus-stack.grafana.adminPassword</a></div></td>
     <td><div><code>"admin"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L107">kube-prometheus-stack.grafana.defaultDatasourceEnabled</a></div></td>
+    <td><div><a href="./values.yaml#L110">kube-prometheus-stack.grafana.defaultDatasourceEnabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L92">kube-prometheus-stack.grafana.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L95">kube-prometheus-stack.grafana.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L100">kube-prometheus-stack.grafana.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L103">kube-prometheus-stack.grafana.image.tag</a></div></td>
     <td><div><code>"10.0.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L104">kube-prometheus-stack.grafana.plugins[0]</a></div></td>
+    <td><div><a href="./values.yaml#L107">kube-prometheus-stack.grafana.plugins[0]</a></div></td>
     <td><div><code>"volkovlabs-variable-panel"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L115">kube-prometheus-stack.grafana.prometheus.datasource.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L118">kube-prometheus-stack.grafana.prometheus.datasource.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L130">kube-prometheus-stack.grafana.sidecar.dashboards.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L133">kube-prometheus-stack.grafana.sidecar.dashboards.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L131">kube-prometheus-stack.grafana.sidecar.dashboards.label</a></div></td>
+    <td><div><a href="./values.yaml#L134">kube-prometheus-stack.grafana.sidecar.dashboards.label</a></div></td>
     <td><div><code>"grafana_dashboard"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L132">kube-prometheus-stack.grafana.sidecar.dashboards.labelValue</a></div></td>
+    <td><div><a href="./values.yaml#L135">kube-prometheus-stack.grafana.sidecar.dashboards.labelValue</a></div></td>
     <td><div><code>"1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L137">kube-prometheus-stack.grafana.sidecar.dashboards.provider.allowUiUpdates</a></div></td>
+    <td><div><a href="./values.yaml#L140">kube-prometheus-stack.grafana.sidecar.dashboards.provider.allowUiUpdates</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L134">kube-prometheus-stack.grafana.sidecar.dashboards.searchNamespace</a></div></td>
+    <td><div><a href="./values.yaml#L137">kube-prometheus-stack.grafana.sidecar.dashboards.searchNamespace</a></div></td>
     <td><div><code>"ALL"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L126">kube-prometheus-stack.grafana.sidecar.datasources.defaultDatasourceEnabled</a></div></td>
+    <td><div><a href="./values.yaml#L129">kube-prometheus-stack.grafana.sidecar.datasources.defaultDatasourceEnabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L120">kube-prometheus-stack.grafana.sidecar.datasources.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L123">kube-prometheus-stack.grafana.sidecar.datasources.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L121">kube-prometheus-stack.grafana.sidecar.datasources.label</a></div></td>
+    <td><div><a href="./values.yaml#L124">kube-prometheus-stack.grafana.sidecar.datasources.label</a></div></td>
     <td><div><code>"grafana_datasource"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L122">kube-prometheus-stack.grafana.sidecar.datasources.labelValue</a></div></td>
+    <td><div><a href="./values.yaml#L125">kube-prometheus-stack.grafana.sidecar.datasources.labelValue</a></div></td>
     <td><div><code>"1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L124">kube-prometheus-stack.grafana.sidecar.datasources.searchNamespace</a></div></td>
+    <td><div><a href="./values.yaml#L127">kube-prometheus-stack.grafana.sidecar.datasources.searchNamespace</a></div></td>
     <td><div><code>"{{ .Release.Namespace }}"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L128">kube-prometheus-stack.grafana.sidecar.datasources.skipTlsVerify</a></div></td>
+    <td><div><a href="./values.yaml#L131">kube-prometheus-stack.grafana.sidecar.datasources.skipTlsVerify</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L96">kube-prometheus-stack.grafana.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L99">kube-prometheus-stack.grafana.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L32">kube-prometheus-stack.prometheus.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L35">kube-prometheus-stack.prometheus.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L66">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].job_name</a></div></td>
+    <td><div><a href="./values.yaml#L69">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].job_name</a></div></td>
     <td><div><code>"kubernetes-pods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L68">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="./values.yaml#L71">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"pod"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L71">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L74">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].action</a></div></td>
     <td><div><code>"keep"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L72">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L75">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].regex</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L70">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L73">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_scrape"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L74">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].action</a></div></td>
+    <td><div><a href="./values.yaml#L77">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L76">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].regex</a></div></td>
+    <td><div><a href="./values.yaml#L79">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].regex</a></div></td>
     <td><div><code>"(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L73">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L76">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_path"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L75">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L78">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[1].target_label</a></div></td>
     <td><div><code>"__metrics_path__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L78">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].action</a></div></td>
+    <td><div><a href="./values.yaml#L81">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].action</a></div></td>
     <td><div><code>"replace"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L80">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].regex</a></div></td>
+    <td><div><a href="./values.yaml#L83">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].regex</a></div></td>
     <td><div><code>"([^:]+)(?::\\d+)?;(\\d+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L81">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].replacement</a></div></td>
+    <td><div><a href="./values.yaml#L84">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].replacement</a></div></td>
     <td><div><code>"$1:$2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L77">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L80">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[0]</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L77">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[1]</a></div></td>
+    <td><div><a href="./values.yaml#L80">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].source_labels[1]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_annotation_prometheus_io_port"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L79">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].target_label</a></div></td>
+    <td><div><a href="./values.yaml#L82">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[0].relabel_configs[2].target_label</a></div></td>
     <td><div><code>"__address__"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L83">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].job_name</a></div></td>
+    <td><div><a href="./values.yaml#L86">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].job_name</a></div></td>
     <td><div><code>"kubernetes-nodes"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L85">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].kubernetes_sd_configs[0].role</a></div></td>
+    <td><div><a href="./values.yaml#L88">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].kubernetes_sd_configs[0].role</a></div></td>
     <td><div><code>"node"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L87">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L90">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].action</a></div></td>
     <td><div><code>"labelmap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L88">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L91">kube-prometheus-stack.prometheus.prometheusSpec.additionalScrapeConfigs[1].relabel_configs[0].regex</a></div></td>
     <td><div><code>"__meta_kubernetes_node_label_(.+)"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L44">kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L47">kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.cpu</a></div></td>
     <td><div><code>"500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L43">kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.memory</a></div></td>
+    <td><div><a href="./values.yaml#L46">kube-prometheus-stack.prometheus.prometheusSpec.resources.limits.memory</a></div></td>
     <td><div><code>"1Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L41">kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L44">kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.cpu</a></div></td>
     <td><div><code>"50m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L40">kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.memory</a></div></td>
+    <td><div><a href="./values.yaml#L43">kube-prometheus-stack.prometheus.prometheusSpec.resources.requests.memory</a></div></td>
     <td><div><code>"256Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L47">kube-prometheus-stack.prometheus.prometheusSpec.retention</a></div></td>
+    <td><div><a href="./values.yaml#L50">kube-prometheus-stack.prometheus.prometheusSpec.retention</a></div></td>
     <td><div><code>"30d"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L53">kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector</a></div></td>
+    <td><div><a href="./values.yaml#L56">kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorNamespaceSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L50">kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector</a></div></td>
+    <td><div><a href="./values.yaml#L53">kube-prometheus-stack.prometheus.prometheusSpec.serviceMonitorSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L59">kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0]</a></div></td>
+    <td><div><a href="./values.yaml#L62">kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0]</a></div></td>
     <td><div><code>"ReadWriteOnce"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L62">kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage</a></div></td>
+    <td><div><a href="./values.yaml#L65">kube-prometheus-stack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage</a></div></td>
     <td><div><code>"50Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L35">kube-prometheus-stack.prometheus.prometheusSpec.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L38">kube-prometheus-stack.prometheus.prometheusSpec.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L22">kube-prometheus-stack.prometheusOperator.admissionWebhooks.enabled</a></div></td>
-    <td><div><code>false</code></div></td>
+    <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L398">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L25">kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.podAnnotations."sidecar.istio.io/inject"</a></div></td>
+    <td><div><code>"false"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L401">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadbalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L201">loki.backend.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L204">loki.backend.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L207">loki.chunksCache.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L210">loki.chunksCache.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L178">loki.deploymentMode</a></div></td>
+    <td><div><a href="./values.yaml#L181">loki.deploymentMode</a></div></td>
     <td><div><code>"SingleBinary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L142">loki.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L145">loki.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L143">loki.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L146">loki.fullnameOverride</a></div></td>
     <td><div><code>"loki"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L203">loki.gateway.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L206">loki.gateway.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L146">loki.global.image.registry</a></div></td>
+    <td><div><a href="./values.yaml#L149">loki.global.image.registry</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L150">loki.loki.auth_enabled</a></div></td>
+    <td><div><a href="./values.yaml#L153">loki.loki.auth_enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L157">loki.loki.commonConfig.replication_factor</a></div></td>
+    <td><div><a href="./values.yaml#L160">loki.loki.commonConfig.replication_factor</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L175">loki.loki.limits_config.ingestion_burst_size_mb</a></div></td>
+    <td><div><a href="./values.yaml#L178">loki.loki.limits_config.ingestion_burst_size_mb</a></div></td>
     <td><div><code>20</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L174">loki.loki.limits_config.ingestion_rate_mb</a></div></td>
+    <td><div><a href="./values.yaml#L177">loki.loki.limits_config.ingestion_rate_mb</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L173">loki.loki.limits_config.retention_period</a></div></td>
+    <td><div><a href="./values.yaml#L176">loki.loki.limits_config.retention_period</a></div></td>
     <td><div><code>"168h"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L164">loki.loki.schemaConfig.configs[0].from</a></div></td>
+    <td><div><a href="./values.yaml#L167">loki.loki.schemaConfig.configs[0].from</a></div></td>
     <td><div><code>"2024-01-01"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L170">loki.loki.schemaConfig.configs[0].index.period</a></div></td>
+    <td><div><a href="./values.yaml#L173">loki.loki.schemaConfig.configs[0].index.period</a></div></td>
     <td><div><code>"24h"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L169">loki.loki.schemaConfig.configs[0].index.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L172">loki.loki.schemaConfig.configs[0].index.prefix</a></div></td>
     <td><div><code>"index_"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L166">loki.loki.schemaConfig.configs[0].object_store</a></div></td>
+    <td><div><a href="./values.yaml#L169">loki.loki.schemaConfig.configs[0].object_store</a></div></td>
     <td><div><code>"filesystem"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L167">loki.loki.schemaConfig.configs[0].schema</a></div></td>
+    <td><div><a href="./values.yaml#L170">loki.loki.schemaConfig.configs[0].schema</a></div></td>
     <td><div><code>"v13"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L165">loki.loki.schemaConfig.configs[0].store</a></div></td>
+    <td><div><a href="./values.yaml#L168">loki.loki.schemaConfig.configs[0].store</a></div></td>
     <td><div><code>"tsdb"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L154">loki.loki.server.grpc_listen_port</a></div></td>
+    <td><div><a href="./values.yaml#L157">loki.loki.server.grpc_listen_port</a></div></td>
     <td><div><code>9095</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L153">loki.loki.server.http_listen_port</a></div></td>
+    <td><div><a href="./values.yaml#L156">loki.loki.server.http_listen_port</a></div></td>
     <td><div><code>3100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L160">loki.loki.storage.type</a></div></td>
+    <td><div><a href="./values.yaml#L163">loki.loki.storage.type</a></div></td>
     <td><div><code>"filesystem"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L197">loki.read.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L200">loki.read.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L209">loki.resultsCache.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L212">loki.resultsCache.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L185">loki.singleBinary.persistence.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L188">loki.singleBinary.persistence.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L186">loki.singleBinary.persistence.size</a></div></td>
+    <td><div><a href="./values.yaml#L189">loki.singleBinary.persistence.size</a></div></td>
     <td><div><code>"10Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L181">loki.singleBinary.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L184">loki.singleBinary.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L192">loki.singleBinary.resources.limits.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L195">loki.singleBinary.resources.limits.cpu</a></div></td>
     <td><div><code>"500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L193">loki.singleBinary.resources.limits.memory</a></div></td>
+    <td><div><a href="./values.yaml#L196">loki.singleBinary.resources.limits.memory</a></div></td>
     <td><div><code>"512Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L189">loki.singleBinary.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L192">loki.singleBinary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L190">loki.singleBinary.resources.requests.memory</a></div></td>
+    <td><div><a href="./values.yaml#L193">loki.singleBinary.resources.requests.memory</a></div></td>
     <td><div><code>"256Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L183">loki.singleBinary.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L186">loki.singleBinary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L199">loki.write.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L202">loki.write.replicas</a></div></td>
     <td><div><code>0</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L307">opentelemetry-collector.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L310">opentelemetry-collector.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L272">opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
+    <td><div><a href="./values.yaml#L275">opentelemetry-collector.alternateConfig.exporters.debug.verbosity</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L274">opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L277">opentelemetry-collector.alternateConfig.exporters.prometheus.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:9898"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L278">opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L281">opentelemetry-collector.alternateConfig.extensions.health_check.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:13133"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L255">opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
+    <td><div><a href="./values.yaml#L258">opentelemetry-collector.alternateConfig.processors.batch</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L257">opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
+    <td><div><a href="./values.yaml#L260">opentelemetry-collector.alternateConfig.processors.memory_limiter.check_interval</a></div></td>
     <td><div><code>"5s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L258">opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
+    <td><div><a href="./values.yaml#L261">opentelemetry-collector.alternateConfig.processors.memory_limiter.limit_percentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L259">opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
+    <td><div><a href="./values.yaml#L262">opentelemetry-collector.alternateConfig.processors.memory_limiter.spike_limit_percentage</a></div></td>
     <td><div><code>25</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L263">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
+    <td><div><a href="./values.yaml#L266">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].context</a></div></td>
     <td><div><code>"datapoint"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L265">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
+    <td><div><a href="./values.yaml#L268">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[0]</a></div></td>
     <td><div><code>"set(attributes[\"source_namespace\"], resource.attributes[\"k8s.namespace.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L266">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
+    <td><div><a href="./values.yaml#L269">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[1]</a></div></td>
     <td><div><code>"set(attributes[\"source_pod\"], resource.attributes[\"k8s.pod.name\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L267">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
+    <td><div><a href="./values.yaml#L270">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[2]</a></div></td>
     <td><div><code>"set(attributes[\"source_app\"], resource.attributes[\"app\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L268">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
+    <td><div><a href="./values.yaml#L271">opentelemetry-collector.alternateConfig.processors.transform.metric_statements[0].statements[3]</a></div></td>
     <td><div><code>"set(attributes[\"source_version\"], resource.attributes[\"version\"])"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L252">opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L255">opentelemetry-collector.alternateConfig.receivers.otlp.protocols.grpc.endpoint</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:4317"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L289">opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
+    <td><div><a href="./values.yaml#L292">opentelemetry-collector.alternateConfig.service.extensions[0]</a></div></td>
     <td><div><code>"health_check"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L299">opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
+    <td><div><a href="./values.yaml#L302">opentelemetry-collector.alternateConfig.service.pipelines.metrics.exporters[0]</a></div></td>
     <td><div><code>"prometheus"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L295">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
+    <td><div><a href="./values.yaml#L298">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[0]</a></div></td>
     <td><div><code>"memory_limiter"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L296">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
+    <td><div><a href="./values.yaml#L299">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[1]</a></div></td>
     <td><div><code>"transform"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L297">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
+    <td><div><a href="./values.yaml#L300">opentelemetry-collector.alternateConfig.service.pipelines.metrics.processors[2]</a></div></td>
     <td><div><code>"batch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L293">opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
+    <td><div><a href="./values.yaml#L296">opentelemetry-collector.alternateConfig.service.pipelines.metrics.receivers[0]</a></div></td>
     <td><div><code>"otlp"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L284">opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
+    <td><div><a href="./values.yaml#L287">opentelemetry-collector.alternateConfig.service.telemetry.logs.encoding</a></div></td>
     <td><div><code>"json"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L283">opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
+    <td><div><a href="./values.yaml#L286">opentelemetry-collector.alternateConfig.service.telemetry.logs.level</a></div></td>
     <td><div><code>"DEBUG"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L287">opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
+    <td><div><a href="./values.yaml#L290">opentelemetry-collector.alternateConfig.service.telemetry.metrics.address</a></div></td>
     <td><div><code>"${env:MY_POD_IP}:8888"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L286">opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
+    <td><div><a href="./values.yaml#L289">opentelemetry-collector.alternateConfig.service.telemetry.metrics.level</a></div></td>
     <td><div><code>"detailed"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L234">opentelemetry-collector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L237">opentelemetry-collector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L302">opentelemetry-collector.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L305">opentelemetry-collector.image.repository</a></div></td>
     <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L303">opentelemetry-collector.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L306">opentelemetry-collector.image.tag</a></div></td>
     <td><div><code>"0.122.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L236">opentelemetry-collector.mode</a></div></td>
+    <td><div><a href="./values.yaml#L239">opentelemetry-collector.mode</a></div></td>
     <td><div><code>"deployment"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L239">opentelemetry-collector.namespaceOverride</a></div></td>
+    <td><div><a href="./values.yaml#L242">opentelemetry-collector.namespaceOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L305">opentelemetry-collector.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L308">opentelemetry-collector.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L323">opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L326">opentelemetry-collector.ports.hs-metrics.containerPort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L322">opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L325">opentelemetry-collector.ports.hs-metrics.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L325">opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L328">opentelemetry-collector.ports.hs-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L324">opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L327">opentelemetry-collector.ports.hs-metrics.servicePort</a></div></td>
     <td><div><code>9898</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L329">opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L332">opentelemetry-collector.ports.jaeger-compact.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L333">opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L336">opentelemetry-collector.ports.jaeger-grpc.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L331">opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L334">opentelemetry-collector.ports.jaeger-thrift.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L318">opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L321">opentelemetry-collector.ports.otel-metrics.containerPort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L317">opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L320">opentelemetry-collector.ports.otel-metrics.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L320">opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L323">opentelemetry-collector.ports.otel-metrics.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L319">opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L322">opentelemetry-collector.ports.otel-metrics.servicePort</a></div></td>
     <td><div><code>8888</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L327">opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L330">opentelemetry-collector.ports.otlp-http.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L315">opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
+    <td><div><a href="./values.yaml#L318">opentelemetry-collector.ports.otlp.appProtocol</a></div></td>
     <td><div><code>"grpc"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L312">opentelemetry-collector.ports.otlp.containerPort</a></div></td>
+    <td><div><a href="./values.yaml#L315">opentelemetry-collector.ports.otlp.containerPort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L311">opentelemetry-collector.ports.otlp.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L314">opentelemetry-collector.ports.otlp.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L314">opentelemetry-collector.ports.otlp.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L317">opentelemetry-collector.ports.otlp.protocol</a></div></td>
     <td><div><code>"TCP"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L313">opentelemetry-collector.ports.otlp.servicePort</a></div></td>
+    <td><div><a href="./values.yaml#L316">opentelemetry-collector.ports.otlp.servicePort</a></div></td>
     <td><div><code>4317</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L335">opentelemetry-collector.ports.zipkin.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L338">opentelemetry-collector.ports.zipkin.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L243">opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L246">opentelemetry-collector.presets.kubernetesAttributes.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L245">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L248">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodAnnotations</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L244">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
+    <td><div><a href="./values.yaml#L247">opentelemetry-collector.presets.kubernetesAttributes.extractAllPodLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L347">opentelemetry-collector.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L350">opentelemetry-collector.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L341">opentelemetry-collector.resources.limits.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L344">opentelemetry-collector.resources.limits.cpu</a></div></td>
     <td><div><code>"1500m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L342">opentelemetry-collector.resources.limits.memory</a></div></td>
+    <td><div><a href="./values.yaml#L345">opentelemetry-collector.resources.limits.memory</a></div></td>
     <td><div><code>"4Gi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L344">opentelemetry-collector.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L347">opentelemetry-collector.resources.requests.cpu</a></div></td>
     <td><div><code>"250m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L345">opentelemetry-collector.resources.requests.memory</a></div></td>
+    <td><div><a href="./values.yaml#L348">opentelemetry-collector.resources.requests.memory</a></div></td>
     <td><div><code>"512Mi"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L350">opentelemetry-collector.serviceMonitor.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L353">opentelemetry-collector.serviceMonitor.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L353">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
+    <td><div><a href="./values.yaml#L356">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L354">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
+    <td><div><a href="./values.yaml#L357">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].interval</a></div></td>
     <td><div><code>"30s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L355">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
+    <td><div><a href="./values.yaml#L358">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L352">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
+    <td><div><a href="./values.yaml#L355">opentelemetry-collector.serviceMonitor.metricsEndpoints[0].port</a></div></td>
     <td><div><code>"otel-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L357">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
+    <td><div><a href="./values.yaml#L360">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].honorLabels</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L358">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
+    <td><div><a href="./values.yaml#L361">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].interval</a></div></td>
     <td><div><code>"15s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L359">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
+    <td><div><a href="./values.yaml#L362">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].path</a></div></td>
     <td><div><code>"/metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L356">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
+    <td><div><a href="./values.yaml#L359">opentelemetry-collector.serviceMonitor.metricsEndpoints[1].port</a></div></td>
     <td><div><code>"hs-metrics"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L306">opentelemetry-collector.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L309">opentelemetry-collector.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L365">postgresql.external</a></div></td>
+    <td><div><a href="./values.yaml#L368">postgresql.external</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L371">postgresql.primary.database</a></div></td>
+    <td><div><a href="./values.yaml#L374">postgresql.primary.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L367">postgresql.primary.host</a></div></td>
+    <td><div><a href="./values.yaml#L370">postgresql.primary.host</a></div></td>
     <td><div><code>"postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L370">postgresql.primary.password</a></div></td>
+    <td><div><a href="./values.yaml#L373">postgresql.primary.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L368">postgresql.primary.port</a></div></td>
+    <td><div><a href="./values.yaml#L371">postgresql.primary.port</a></div></td>
     <td><div><code>5432</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L369">postgresql.primary.username</a></div></td>
+    <td><div><a href="./values.yaml#L372">postgresql.primary.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L220">promtail.config.clients[0].url</a></div></td>
+    <td><div><a href="./values.yaml#L223">promtail.config.clients[0].url</a></div></td>
     <td><div><code>"http://loki:3100/loki/api/v1/push"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L228">promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
+    <td><div><a href="./values.yaml#L231">promtail.config.snippets.extraRelabelConfigs[0].action</a></div></td>
     <td><div><code>"keep"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L229">promtail.config.snippets.extraRelabelConfigs[0].regex</a></div></td>
+    <td><div><a href="./values.yaml#L232">promtail.config.snippets.extraRelabelConfigs[0].regex</a></div></td>
     <td><div><code>"hyperswitch-.*"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L230">promtail.config.snippets.extraRelabelConfigs[0].source_labels[0]</a></div></td>
+    <td><div><a href="./values.yaml#L233">promtail.config.snippets.extraRelabelConfigs[0].source_labels[0]</a></div></td>
     <td><div><code>"__meta_kubernetes_pod_label_app"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L224">promtail.config.snippets.pipelineStages[0].cri</a></div></td>
+    <td><div><a href="./values.yaml#L227">promtail.config.snippets.pipelineStages[0].cri</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L213">promtail.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L216">promtail.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L216">promtail.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L219">promtail.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr>
