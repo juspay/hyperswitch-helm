@@ -78,10 +78,19 @@ spec:
             privileged: false
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /tmp/dashboard-theme-config.json
+              name: hyperswitch-control-center-theme
+              subPath: dashboard-theme-config.json
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       serviceAccountName: hyperswitch-router-role
       terminationGracePeriodSeconds: {{ .Values.controlCenter.terminationGracePeriodSeconds }}
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: hyperswitch-control-center
+          name: hyperswitch-control-center-theme
 {{- end }}
