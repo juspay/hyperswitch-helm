@@ -80,4 +80,4 @@ istio-gateway:
 # Wait for CRDs job configuration
 waitForCrds:
   imageRegistry: docker.io
-  image: bitnami/kubectl:latest
+  image: bitnamilegacy/kubectl:latest

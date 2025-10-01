@@ -58,6 +58,8 @@ secrets:
 # Values for database (postgresql).
 postgresql:
   enabled: true
+  image: 
+    repository: bitnamilegacy/postgresql
   nameOverride: keymanager-db
   auth:
     username: db_user
