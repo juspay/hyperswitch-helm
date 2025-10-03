@@ -190,6 +190,8 @@ volumeMounts:
     mountPath: /usr/share/nginx/html
 # -- Environment variables for hyperswitch-web application
 env:
+  # -- hyperswitch-web environment (sandbox/prod)
+  sdkEnv: sandbox
   # -- Enable/disable logging
   enableLogging: "false"
   # -- SDK version

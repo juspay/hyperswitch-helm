@@ -40,19 +40,21 @@ spec:
             - |
               echo "Building static files..."
               npm run re:build
-              npm run build
+              npm run build:{{ .Values.env.sdkEnv }}
               echo "Copying built files to nginx path..."
               mkdir -p /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
-              cp -r /usr/src/app/dist/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              cp -r /usr/src/app/dist/{{ .Values.env.sdkEnv }}/v1/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
               echo "Build and copy completed successfully"
               ls -la /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
           env:
+            - name: sdkEnv
+              value: "{{ .Values.env.sdkEnv }}"
             - name: ENV_SDK_URL
-              value: "{{ .Values.autoBuild.buildParam.envSdkUrl }}{{ include "nginx.sdk.path" . }}"
+              value: "{{ .Values.autoBuild.buildParam.envSdkUrl }}"
             - name: ENV_BACKEND_URL
               value: "{{ .Values.autoBuild.buildParam.envBackendUrl }}"
             - name: ENV_LOGGING_URL
-              value: "{{ .Values.autoBuild.buildParam.envLoggingUrl }}"
+              value: "{{ .Values.autoBuild.buildParam.envLogsUrl }}"
             - name: ENABLE_LOGGING
               value: "{{ .Values.env.enableLogging }}"
             - name: DISABLE_CSP
