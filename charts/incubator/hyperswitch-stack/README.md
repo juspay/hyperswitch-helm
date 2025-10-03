@@ -218,7 +218,7 @@ task ur
 | file://../hyperswitch-app | hyperswitch-app | 0.2.13 |
 | file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.3 |
 | file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.2 |
-| file://../hyperswitch-web | hyperswitch-web | 0.2.11 |
+| file://../hyperswitch-web | hyperswitch-web | 0.2.12 |
 
 ## Values
 <h3>Dependencies configuration</h3>
@@ -3584,6 +3584,7 @@ task ur
     <td><div><a href="../hyperswitch-web/values.yaml#L192">hyperswitch-web.env</a></div></td>
     <td><div><code>{
   "enableLogging": "false",
+  "sdkEnv": "sandbox",
   "sdkTagVersion": "",
   "sdkVersion": "v1",
   "sentryDsn": "",
@@ -3592,31 +3593,35 @@ task ur
 }</code></div></td>
     <td>Environment variables for hyperswitch-web application</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L194">hyperswitch-web.env.enableLogging</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L196">hyperswitch-web.env.enableLogging</a></div></td>
     <td><div><code>"false"</code></div></td>
     <td>Enable/disable logging</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L198">hyperswitch-web.env.sdkTagVersion</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L194">hyperswitch-web.env.sdkEnv</a></div></td>
+    <td><div><code>"sandbox"</code></div></td>
+    <td>hyperswitch-web environment (sandbox/prod)</td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-web/values.yaml#L200">hyperswitch-web.env.sdkTagVersion</a></div></td>
     <td><div><code>""</code></div></td>
     <td>SDK tag version</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L196">hyperswitch-web.env.sdkVersion</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L198">hyperswitch-web.env.sdkVersion</a></div></td>
     <td><div><code>"v1"</code></div></td>
     <td>SDK version</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L200">hyperswitch-web.env.sentryDsn</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L202">hyperswitch-web.env.sentryDsn</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Sentry DSN for error tracking</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L204">hyperswitch-web.env.visaApiCertificatePem</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L206">hyperswitch-web.env.visaApiCertificatePem</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Visa API certificate PEM</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L202">hyperswitch-web.env.visaApiKeyId</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L204">hyperswitch-web.env.visaApiKeyId</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Visa API key ID</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L208">hyperswitch-web.envFrom[0].configMapRef.name</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L210">hyperswitch-web.envFrom[0].configMapRef.name</a></div></td>
     <td><div><code>"hyperswitch-web-nginx"</code></div></td>
     <td></td>
   </tr><tr>
@@ -3734,23 +3739,23 @@ task ur
     <td><div><code>"ClusterIP"</code></div></td>
     <td>service type</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L229">hyperswitch-web.services.router.host</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L231">hyperswitch-web.services.router.host</a></div></td>
     <td><div><code>"http://localhost:8080"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L233">hyperswitch-web.services.sdkDemo.hyperswitchPublishableKey</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L235">hyperswitch-web.services.sdkDemo.hyperswitchPublishableKey</a></div></td>
     <td><div><code>"pub_key"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L234">hyperswitch-web.services.sdkDemo.hyperswitchSecretKey</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L236">hyperswitch-web.services.sdkDemo.hyperswitchSecretKey</a></div></td>
     <td><div><code>"secret_key"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L232">hyperswitch-web.services.sdkDemo.image</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L234">hyperswitch-web.services.sdkDemo.image</a></div></td>
     <td><div><code>"juspaydotin/hyperswitch-web:v1.0.10"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-web/values.yaml#L231">hyperswitch-web.services.sdkDemo.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-web/values.yaml#L233">hyperswitch-web.services.sdkDemo.imageRegistry</a></div></td>
     <td><div><code>"docker.juspay.io"</code></div></td>
     <td></td>
   </tr>
