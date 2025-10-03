@@ -158,6 +158,9 @@ tenant_secrets:
 # Values for database (postgresql).
 postgresql:
   enabled: true
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 16.1.0-debian-11-r18
   nameOverride: locker-db
   auth:
     username: db_user

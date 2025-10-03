@@ -215,7 +215,7 @@ task ur
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../hyperswitch-app | hyperswitch-app | 0.2.12 |
+| file://../hyperswitch-app | hyperswitch-app | 0.2.13 |
 | file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.3 |
 | file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.2 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.11 |
@@ -229,211 +229,211 @@ task ur
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1301">hyperswitch-app.clickhouse.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1307">hyperswitch-app.clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1298">hyperswitch-app.clickhouse.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1304">hyperswitch-app.clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1307">hyperswitch-app.clickhouse.config.TZ</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1314">hyperswitch-app.clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1290">hyperswitch-app.clickhouse.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1296">hyperswitch-app.clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1294">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1300">hyperswitch-app.clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1320">hyperswitch-app.clickhouse.logLevel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1329">hyperswitch-app.clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1313">hyperswitch-app.clickhouse.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1320">hyperswitch-app.clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1310">hyperswitch-app.clickhouse.shards</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1317">hyperswitch-app.clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1317">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1326">hyperswitch-app.clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1156">hyperswitch-app.externalPostgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1158">hyperswitch-app.externalPostgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Postgres server</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1173">hyperswitch-app.externalPostgresql.primary.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1175">hyperswitch-app.externalPostgresql.primary.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1167">hyperswitch-app.externalPostgresql.primary.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1169">hyperswitch-app.externalPostgresql.primary.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1170">hyperswitch-app.externalPostgresql.primary.auth.plainpassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1172">hyperswitch-app.externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>master DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1164">hyperswitch-app.externalPostgresql.primary.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1166">hyperswitch-app.externalPostgresql.primary.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1160">hyperswitch-app.externalPostgresql.primary.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1162">hyperswitch-app.externalPostgresql.primary.host</a></div></td>
     <td><div><code>"postgresql-ext"</code></div></td>
     <td>External postgres host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1193">hyperswitch-app.externalPostgresql.readOnly.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1195">hyperswitch-app.externalPostgresql.readOnly.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1187">hyperswitch-app.externalPostgresql.readOnly.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1189">hyperswitch-app.externalPostgresql.readOnly.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1190">hyperswitch-app.externalPostgresql.readOnly.auth.plainpassword</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1192">hyperswitch-app.externalPostgresql.readOnly.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>replica DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1184">hyperswitch-app.externalPostgresql.readOnly.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1186">hyperswitch-app.externalPostgresql.readOnly.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1177">hyperswitch-app.externalPostgresql.readOnly.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1179">hyperswitch-app.externalPostgresql.readOnly.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>External postgres read only host enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1180">hyperswitch-app.externalPostgresql.readOnly.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1182">hyperswitch-app.externalPostgresql.readOnly.host</a></div></td>
     <td><div><code>"postgres-service"</code></div></td>
     <td>External postgres read only host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1089">hyperswitch-app.externalRedis.auth.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1090">hyperswitch-app.externalRedis.auth.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>auth enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1095">hyperswitch-app.externalRedis.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1096">hyperswitch-app.externalRedis.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1092">hyperswitch-app.externalRedis.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1093">hyperswitch-app.externalRedis.auth.username</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1082">hyperswitch-app.externalRedis.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1083">hyperswitch-app.externalRedis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Redis server</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1085">hyperswitch-app.externalRedis.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1086">hyperswitch-app.externalRedis.host</a></div></td>
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1239">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1243">hyperswitch-app.kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1234">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1238">hyperswitch-app.kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1226">hyperswitch-app.kafka.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1230">hyperswitch-app.kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1229">hyperswitch-app.kafka.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1233">hyperswitch-app.kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1256">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1262">hyperswitch-app.kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1268">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1274">hyperswitch-app.kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1264">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1270">hyperswitch-app.kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1260">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1266">hyperswitch-app.kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1272">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1278">hyperswitch-app.kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1251">hyperswitch-app.kafka.service.ports.client</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1257">hyperswitch-app.kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1246">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1252">hyperswitch-app.kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1336">hyperswitch-app.mailhog.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1345">hyperswitch-app.mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1339">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1348">hyperswitch-app.mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1126">hyperswitch-app.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1128">hyperswitch-app.postgresql.architecture</a></div></td>
     <td><div><code>"replication"</code></div></td>
     <td>Postgresql architecture: replication or standalone</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1109">hyperswitch-app.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1110">hyperswitch-app.postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable Bitnami postgresql sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1123">hyperswitch-app.postgresql.global.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1125">hyperswitch-app.postgresql.global.postgresql.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql database</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1120">hyperswitch-app.postgresql.global.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1122">hyperswitch-app.postgresql.global.postgresql.auth.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td>Postgresql password</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1117">hyperswitch-app.postgresql.global.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1119">hyperswitch-app.postgresql.global.postgresql.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql username</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1137">hyperswitch-app.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1139">hyperswitch-app.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>postgres primary name</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1142">hyperswitch-app.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1144">hyperswitch-app.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"150m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1146">hyperswitch-app.postgresql.readReplicas.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1148">hyperswitch-app.postgresql.readReplicas.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of read replicas</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1151">hyperswitch-app.postgresql.readReplicas.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1153">hyperswitch-app.postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1133">hyperswitch-app.postgresql.replication.numSynchronousReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1135">hyperswitch-app.postgresql.replication.numSynchronousReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of synchronous replicas</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1130">hyperswitch-app.postgresql.replication.synchronousCommit</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1132">hyperswitch-app.postgresql.replication.synchronousCommit</a></div></td>
     <td><div><code>"off"</code></div></td>
     <td>synchronous_commit parameter</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1074">hyperswitch-app.redis.auth.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1075">hyperswitch-app.redis.auth.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable redis auth</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1077">hyperswitch-app.redis.auth.sentinel</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1078">hyperswitch-app.redis.auth.sentinel</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable sentinel</td>
   </tr><tr>
@@ -441,19 +441,19 @@ task ur
     <td><div><code>true</code></div></td>
     <td>- enable Bitnami redis sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1066">hyperswitch-app.redis.master.count</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1067">hyperswitch-app.redis.master.count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for master</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1070">hyperswitch-app.redis.replica.replicaCount</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1071">hyperswitch-app.redis.replica.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1346">hyperswitch-app.vector.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1355">hyperswitch-app.vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1350">hyperswitch-app.vector.env[0]</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1359">hyperswitch-app.vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -1319,32 +1319,40 @@ task ur
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1210">hyperswitch-app.autoscaling.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1212">hyperswitch-app.autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1212">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1214">hyperswitch-app.autoscaling.maxReplicas</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1211">hyperswitch-app.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1213">hyperswitch-app.autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1213">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1215">hyperswitch-app.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1287">hyperswitch-app.clickhouse.host</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1293">hyperswitch-app.clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1303">hyperswitch-app.clickhouse.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1309">hyperswitch-app.clickhouse.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1310">hyperswitch-app.clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1291">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1297">hyperswitch-app.clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1323">hyperswitch-app.clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-app/values.yaml#L930">hyperswitch-app.controlCenter.env.binary</a></div></td>
@@ -1543,95 +1551,111 @@ task ur
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for the application</td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1216">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1218">hyperswitch-app.hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1220">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
-    <td><div><code>"bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1222">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1219">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1221">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1283">hyperswitch-app.initCH.checkCHisUp.image</a></div></td>
-    <td><div><code>"bitnami/clickhouse:24.3"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1289">hyperswitch-app.initCH.checkCHisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1282">hyperswitch-app.initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1288">hyperswitch-app.initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1284">hyperswitch-app.initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1290">hyperswitch-app.initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1199">hyperswitch-app.initDB.checkPGisUp.image</a></div></td>
-    <td><div><code>"bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1201">hyperswitch-app.initDB.checkPGisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1198">hyperswitch-app.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1200">hyperswitch-app.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1200">hyperswitch-app.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1202">hyperswitch-app.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1196">hyperswitch-app.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1198">hyperswitch-app.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1204">hyperswitch-app.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1206">hyperswitch-app.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1203">hyperswitch-app.initDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1205">hyperswitch-app.initDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1201">hyperswitch-app.initDB.refs</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1203">hyperswitch-app.initDB.refs</a></div></td>
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1240">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1244">hyperswitch-app.kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1235">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1239">hyperswitch-app.kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1276">hyperswitch-app.kafka.extraConfig</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1282">hyperswitch-app.kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1207">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1227">hyperswitch-app.kafka.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/kafka"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1249">hyperswitch-app.kafka.zookeeper.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1209">hyperswitch-app.loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1111">hyperswitch-app.postgresql.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1112">hyperswitch-app.postgresql.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1113">hyperswitch-app.postgresql.image.tag</a></div></td>
     <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1062">hyperswitch-app.redis.image.tag</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1062">hyperswitch-app.redis.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/redis"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1063">hyperswitch-app.redis.image.tag</a></div></td>
     <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1100">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1101">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1102">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
-    <td><div><code>"bitnami/redis:7.2.3-debian-11-r2"</code></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1103">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
+    <td><div><code>"bitnamilegacy/redis:7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1101">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1102">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-app/values.yaml#L1103">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-app/values.yaml#L1104">hyperswitch-app.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
@@ -2537,67 +2561,67 @@ task ur
     <td><div><code>"local"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L182">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L185">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L178">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L181">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L181">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L184">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L182">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L180">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L183">hyperswitch-app.hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L176">hyperswitch-app.hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-app.hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L190">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L193">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"postgres:16-alpine3.19"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L189">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L192">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L191">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-app.hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L187">hyperswitch-app.hyperswitch-card-vault.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L190">hyperswitch-app.hyperswitch-card-vault.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-app.hyperswitch-card-vault.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-app.hyperswitch-card-vault.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L193">hyperswitch-app.hyperswitch-card-vault.initDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L196">hyperswitch-app.hyperswitch-card-vault.initDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-app.hyperswitch-card-vault.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-app.hyperswitch-card-vault.postgresql.architecture</a></div></td>
     <td><div><code>"standalone"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L165">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L168">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.database</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L164">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L167">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.password</a></div></td>
     <td><div><code>"dummyPassword"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-app.hyperswitch-card-vault.postgresql.auth.username</a></div></td>
     <td><div><code>"db_user"</code></div></td>
     <td></td>
   </tr><tr>
@@ -2605,19 +2629,27 @@ task ur
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-app.hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L162">hyperswitch-app.hyperswitch-card-vault.postgresql.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-app.hyperswitch-card-vault.postgresql.image.tag</a></div></td>
+    <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L164">hyperswitch-app.hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L168">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L171">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L172">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L175">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L172">hyperswitch-app.hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -2729,35 +2761,35 @@ task ur
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L202">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L205">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L203">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
     <td><div><code>"curlimages/curl:8.7.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L199">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L202">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L201">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L204">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L203">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L206">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L205">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L208">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
     <td><div><code>"3c82773a6621feee3d5e0ce96654bf1f"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L206">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L209">hyperswitch-app.hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr><tr>

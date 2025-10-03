@@ -1059,6 +1059,7 @@ redis:
   # @section -- Dependencies configuration
   enabled: true
   image:
+    repository: bitnamilegacy/redis
     tag: 7.2.3-debian-11-r2
   master:
     # -- Number of replicas to be used for master
@@ -1099,7 +1100,7 @@ redisMiscConfig:
     initContainer:
       enable: true
       imageRegistry: docker.io
-      image: bitnami/redis:7.2.3-debian-11-r2
+      image: bitnamilegacy/redis:7.2.3-debian-11-r2
       maxAttempt: 60
 
 # https://artifacthub.io/packages/helm/bitnami/postgresql
@@ -1108,6 +1109,7 @@ postgresql:
   # @section -- Dependencies configuration
   enabled: true
   image:
+    repository: bitnamilegacy/postgresql
     tag: 16.1.0-debian-11-r18
   global:
     postgresql:
@@ -1196,7 +1198,7 @@ initDB:
   enable: true
   checkPGisUp:
     imageRegistry: docker.io
-    image: bitnami/postgresql:16.1.0-debian-11-r18
+    image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
   refs: tags  # tags or heads
   migration:
@@ -1217,10 +1219,12 @@ hyperswitch-card-vault:
   initDB:
     checkPGisUp:
       imageRegistry: docker.io
-      image: bitnami/postgresql:16.1.0-debian-11-r18
+      image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
 
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
+  image:
+    repository: bitnamilegacy/kafka
   # -- Enable Bitnami Kafka sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
@@ -1241,6 +1245,8 @@ kafka:
   # broker:
   # replicaCount: 1
   zookeeper:
+    image:
+      repository: bitnamilegacy/zookeeper
     # -- Number of replicas to be used for zookeeper
     # @section -- Dependencies configuration
     replicaCount: 1
@@ -1280,7 +1286,7 @@ kafka:
 initCH:
   checkCHisUp:
     imageRegistry: docker.io
-    image: "bitnami/clickhouse:24.3"
+    image: "bitnamilegacy/clickhouse:24.3"
     maxAttempt: 30
 # https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml
 clickhouse:
@@ -1300,6 +1306,7 @@ clickhouse:
     # @section -- Dependencies configuration
     password: ""
   image:
+    repository: bitnamilegacy/clickhouse
     tag: 24.3
   config:
     # -- Clickhouse timezone
@@ -1312,6 +1319,8 @@ clickhouse:
   # @section -- Dependencies configuration
   replicaCount: 1
   zookeeper:
+    image: 
+      repository: bitnamilegacy/zookeeper
     # -- Zookerper replica count
     # @section -- Dependencies configuration
     replicaCount: 1
