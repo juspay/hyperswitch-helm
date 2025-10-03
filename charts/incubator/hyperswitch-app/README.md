@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 0.2.12](https://img.shields.io/badge/Version-0.2.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.2.13](https://img.shields.io/badge/Version-0.2.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -138,7 +138,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../hyperswitch-card-vault | hyperswitch-card-vault | 0.1.3 |
+| file://../hyperswitch-card-vault | hyperswitch-card-vault | 0.1.4 |
 | https://charts.bitnami.com/bitnami | clickhouse | 6.3.3 |
 | https://charts.bitnami.com/bitnami | kafka | 31.0.0 |
 | https://charts.bitnami.com/bitnami | postgresql | 15.5.38 |
@@ -155,211 +155,211 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1301">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1307">clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1298">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1304">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1307">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1314">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1290">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1296">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1294">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1300">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1320">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L1329">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1313">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1320">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1310">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1317">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1317">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1326">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1156">externalPostgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1158">externalPostgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Postgres server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1173">externalPostgresql.primary.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1175">externalPostgresql.primary.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1167">externalPostgresql.primary.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1169">externalPostgresql.primary.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1170">externalPostgresql.primary.auth.plainpassword</a></div></td>
+    <td><div><a href="./values.yaml#L1172">externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>master DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1164">externalPostgresql.primary.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1166">externalPostgresql.primary.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1160">externalPostgresql.primary.host</a></div></td>
+    <td><div><a href="./values.yaml#L1162">externalPostgresql.primary.host</a></div></td>
     <td><div><code>"postgresql-ext"</code></div></td>
     <td>External postgres host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1193">externalPostgresql.readOnly.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1195">externalPostgresql.readOnly.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1187">externalPostgresql.readOnly.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1189">externalPostgresql.readOnly.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1190">externalPostgresql.readOnly.auth.plainpassword</a></div></td>
+    <td><div><a href="./values.yaml#L1192">externalPostgresql.readOnly.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>replica DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1184">externalPostgresql.readOnly.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1186">externalPostgresql.readOnly.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1177">externalPostgresql.readOnly.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1179">externalPostgresql.readOnly.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>External postgres read only host enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1180">externalPostgresql.readOnly.host</a></div></td>
+    <td><div><a href="./values.yaml#L1182">externalPostgresql.readOnly.host</a></div></td>
     <td><div><code>"postgres-service"</code></div></td>
     <td>External postgres read only host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1089">externalRedis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1090">externalRedis.auth.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>auth enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1095">externalRedis.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1096">externalRedis.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1092">externalRedis.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1093">externalRedis.auth.username</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1082">externalRedis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1083">externalRedis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Redis server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1085">externalRedis.host</a></div></td>
+    <td><div><a href="./values.yaml#L1086">externalRedis.host</a></div></td>
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1239">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1243">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1234">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1238">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1226">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1230">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1229">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1233">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1256">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1262">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1268">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1274">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1264">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1270">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1260">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1266">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1272">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1278">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1251">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1257">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1246">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1252">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1336">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1345">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1339">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1348">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1126">postgresql.architecture</a></div></td>
+    <td><div><a href="./values.yaml#L1128">postgresql.architecture</a></div></td>
     <td><div><code>"replication"</code></div></td>
     <td>Postgresql architecture: replication or standalone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1109">postgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1110">postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable Bitnami postgresql sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1123">postgresql.global.postgresql.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1125">postgresql.global.postgresql.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql database</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1120">postgresql.global.postgresql.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1122">postgresql.global.postgresql.auth.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td>Postgresql password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1117">postgresql.global.postgresql.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1119">postgresql.global.postgresql.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1137">postgresql.primary.name</a></div></td>
+    <td><div><a href="./values.yaml#L1139">postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>postgres primary name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1142">postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1144">postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"150m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1146">postgresql.readReplicas.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1148">postgresql.readReplicas.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of read replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1151">postgresql.readReplicas.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1153">postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1133">postgresql.replication.numSynchronousReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1135">postgresql.replication.numSynchronousReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of synchronous replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1130">postgresql.replication.synchronousCommit</a></div></td>
+    <td><div><a href="./values.yaml#L1132">postgresql.replication.synchronousCommit</a></div></td>
     <td><div><code>"off"</code></div></td>
     <td>synchronous_commit parameter</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1074">redis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1075">redis.auth.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable redis auth</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1077">redis.auth.sentinel</a></div></td>
+    <td><div><a href="./values.yaml#L1078">redis.auth.sentinel</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable sentinel</td>
   </tr><tr>
@@ -367,19 +367,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>true</code></div></td>
     <td>- enable Bitnami redis sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1066">redis.master.count</a></div></td>
+    <td><div><a href="./values.yaml#L1067">redis.master.count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for master</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1070">redis.replica.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1071">redis.replica.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1346">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1355">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1350">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1359">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -751,32 +751,40 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1210">autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1212">autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1212">autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1214">autoscaling.maxReplicas</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1211">autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1213">autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1213">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L1215">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1287">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1293">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1303">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1309">clickhouse.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1310">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1291">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1297">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1323">clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L930">controlCenter.env.binary</a></div></td>
@@ -975,95 +983,111 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for the application</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1216">hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1218">hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1220">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
-    <td><div><code>"bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
+    <td><div><a href="./values.yaml#L1222">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1219">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1221">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1283">initCH.checkCHisUp.image</a></div></td>
-    <td><div><code>"bitnami/clickhouse:24.3"</code></div></td>
+    <td><div><a href="./values.yaml#L1289">initCH.checkCHisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1282">initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1288">initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1284">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1290">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1199">initDB.checkPGisUp.image</a></div></td>
-    <td><div><code>"bitnami/postgresql:16.1.0-debian-11-r18"</code></div></td>
+    <td><div><a href="./values.yaml#L1201">initDB.checkPGisUp.image</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1198">initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1200">initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1200">initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1202">initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1196">initDB.enable</a></div></td>
+    <td><div><a href="./values.yaml#L1198">initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1204">initDB.migration.image</a></div></td>
+    <td><div><a href="./values.yaml#L1206">initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1203">initDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1205">initDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1201">initDB.refs</a></div></td>
+    <td><div><a href="./values.yaml#L1203">initDB.refs</a></div></td>
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1240">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1244">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1235">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1239">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1276">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1282">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1207">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L1227">kafka.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/kafka"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1249">kafka.zookeeper.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1209">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1111">postgresql.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1112">postgresql.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1113">postgresql.image.tag</a></div></td>
     <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1062">redis.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1062">redis.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/redis"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1063">redis.image.tag</a></div></td>
     <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1100">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><a href="./values.yaml#L1101">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1102">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
-    <td><div><code>"bitnami/redis:7.2.3-debian-11-r2"</code></div></td>
+    <td><div><a href="./values.yaml#L1103">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
+    <td><div><code>"bitnamilegacy/redis:7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1101">redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1102">redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1103">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1104">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
@@ -1969,67 +1993,67 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"local"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L182">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L185">hyperswitch-card-vault.external.postgresql.config.database</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L178">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L181">hyperswitch-card-vault.external.postgresql.config.host</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L181">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L184">hyperswitch-card-vault.external.postgresql.config.password</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L182">hyperswitch-card-vault.external.postgresql.config.port</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L180">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L183">hyperswitch-card-vault.external.postgresql.config.username</a></div></td>
     <td><div><code>null</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L176">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L179">hyperswitch-card-vault.external.postgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L190">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L193">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"postgres:16-alpine3.19"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L189">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L192">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L191">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-card-vault.initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L187">hyperswitch-card-vault.initDB.enable</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L190">hyperswitch-card-vault.initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L194">hyperswitch-card-vault.initDB.migration.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-card-vault.initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L193">hyperswitch-card-vault.initDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L196">hyperswitch-card-vault.initDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-card-vault.postgresql.architecture</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-card-vault.postgresql.architecture</a></div></td>
     <td><div><code>"standalone"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L165">hyperswitch-card-vault.postgresql.auth.database</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L168">hyperswitch-card-vault.postgresql.auth.database</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L164">hyperswitch-card-vault.postgresql.auth.password</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L167">hyperswitch-card-vault.postgresql.auth.password</a></div></td>
     <td><div><code>"dummyPassword"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-card-vault.postgresql.auth.username</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L166">hyperswitch-card-vault.postgresql.auth.username</a></div></td>
     <td><div><code>"db_user"</code></div></td>
     <td></td>
   </tr><tr>
@@ -2037,19 +2061,27 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L161">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L162">hyperswitch-card-vault.postgresql.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L163">hyperswitch-card-vault.postgresql.image.tag</a></div></td>
+    <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L164">hyperswitch-card-vault.postgresql.nameOverride</a></div></td>
     <td><div><code>"locker-db"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L168">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L171">hyperswitch-card-vault.postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L172">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L175">hyperswitch-card-vault.postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L169">hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L172">hyperswitch-card-vault.postgresql.primary.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
@@ -2161,35 +2193,35 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"public"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L202">hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L205">hyperswitch-card-vault.vaultKeysJob.checkVaultService.host</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L203">hyperswitch-card-vault.vaultKeysJob.checkVaultService.image</a></div></td>
     <td><div><code>"curlimages/curl:8.7.1"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L199">hyperswitch-card-vault.vaultKeysJob.checkVaultService.imageRegistry</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L202">hyperswitch-card-vault.vaultKeysJob.checkVaultService.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L201">hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L204">hyperswitch-card-vault.vaultKeysJob.checkVaultService.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L203">hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L206">hyperswitch-card-vault.vaultKeysJob.checkVaultService.port</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L197">hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L200">hyperswitch-card-vault.vaultKeysJob.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L205">hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L208">hyperswitch-card-vault.vaultKeysJob.keys.key1</a></div></td>
     <td><div><code>"3c82773a6621feee3d5e0ce96654bf1f"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="../hyperswitch-card-vault/values.yaml#L206">hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
+    <td><div><a href="../hyperswitch-card-vault/values.yaml#L209">hyperswitch-card-vault.vaultKeysJob.keys.key2</a></div></td>
     <td><div><code>"7de95dbbd5d020e6b2a44847b8942bf5"</code></div></td>
     <td></td>
   </tr>
