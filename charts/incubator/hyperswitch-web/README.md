@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.11](https://img.shields.io/badge/Version-0.2.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
+![Version: 0.2.12](https://img.shields.io/badge/Version-0.2.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -30,8 +30,9 @@ assets
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
 | autoBuild.nginxConfig.pullPolicy | string | `"IfNotPresent"` | nginx static server pull policy |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
-| env | object | `{"enableLogging":"false","sdkTagVersion":"","sdkVersion":"v1","sentryDsn":"","visaApiCertificatePem":"","visaApiKeyId":""}` | Environment variables for hyperswitch-web application |
+| env | object | `{"enableLogging":"false","sdkEnv":"sandbox","sdkTagVersion":"","sdkVersion":"v1","sentryDsn":"","visaApiCertificatePem":"","visaApiKeyId":""}` | Environment variables for hyperswitch-web application |
 | env.enableLogging | string | `"false"` | Enable/disable logging |
+| env.sdkEnv | string | `"sandbox"` | hyperswitch-web environment (sandbox/prod) |
 | env.sdkTagVersion | string | `""` | SDK tag version |
 | env.sdkVersion | string | `"v1"` | SDK version |
 | env.sentryDsn | string | `""` | Sentry DSN for error tracking |
