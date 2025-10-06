@@ -593,7 +593,7 @@ The monitoring stack includes two custom dashboards:
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L305">opentelemetry-collector.image.repository</a></div></td>
-    <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
+    <td><div><code>"otel/opentelemetry-collector-contrib"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L306">opentelemetry-collector.image.tag</a></div></td>

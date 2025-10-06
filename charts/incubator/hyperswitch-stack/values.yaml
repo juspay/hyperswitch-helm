@@ -211,7 +211,7 @@ hyperswitch-monitoring:
 
 # @ignored
 hyperswitch-ucs:
-  enabled: true
+  enabled: false
   fullnameOverride: "hyperswitch-ucs"
   image:
     imageRegistry: ghcr.io
