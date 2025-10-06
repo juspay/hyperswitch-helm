@@ -31,7 +31,7 @@ dependencies:
     repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
   - name: hyperswitch-monitoring
-    version: 0.1.3
+    version: 0.1.4
     repository: "file://../hyperswitch-monitoring"
     condition: hyperswitch-monitoring.enabled
   - name: hyperswitch-ucs

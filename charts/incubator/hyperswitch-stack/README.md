@@ -216,7 +216,7 @@ task ur
 | Repository | Name | Version |
 |------------|------|---------|
 | file://../hyperswitch-app | hyperswitch-app | 0.2.13 |
-| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.3 |
+| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.4 |
 | file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.2 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.12 |
 
