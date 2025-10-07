@@ -216,7 +216,7 @@ task ur
 | Repository | Name | Version |
 |------------|------|---------|
 | file://../hyperswitch-app | hyperswitch-app | 0.2.13 |
-| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.3 |
+| file://../hyperswitch-monitoring | hyperswitch-monitoring | 0.1.4 |
 | file://../hyperswitch-ucs | hyperswitch-ucs | 0.1.2 |
 | file://../hyperswitch-web | hyperswitch-web | 0.2.12 |
 
@@ -3306,7 +3306,7 @@ task ur
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L305">hyperswitch-monitoring.opentelemetry-collector.image.repository</a></div></td>
-    <td><div><code>"docker.io/otel/opentelemetry-collector-contrib"</code></div></td>
+    <td><div><code>"otel/opentelemetry-collector-contrib"</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="../hyperswitch-monitoring/values.yaml#L306">hyperswitch-monitoring.opentelemetry-collector.image.tag</a></div></td>

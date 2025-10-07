@@ -302,7 +302,7 @@ opentelemetry-collector:
             - prometheus
 
   image:
-    repository: docker.io/otel/opentelemetry-collector-contrib
+    repository: otel/opentelemetry-collector-contrib
     tag: 0.122.1
 
   nodeSelector: {}
