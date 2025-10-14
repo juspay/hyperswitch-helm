@@ -1,0 +1,10 @@
+{{- if .Values.services.router.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: misc-cm-{{.Release.Name }}
+data:
+  # Environment variables from values.server.configs (loaded via envFrom)
+  # Dynamic values will be automatically replaced using helper functions
+  {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 2 }}
+{{- end }}

@@ -178,27 +178,69 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{/* Define the OpenTelemetry Collector endpoint when metrics or traces are enabled */}}
 {{- define "opentelemetry-collector.url" -}}
-  {{- $telemetryConfig := .Values.server.log.telemetry -}}
+  {{- $telemetryConfig := .Values.server.configs.log.telemetry -}}
   {{- if or $telemetryConfig.metrics_enabled $telemetryConfig.traces_enabled -}}
-    {{- if $telemetryConfig.external_otel_collector_endpoint -}}
-      {{- $telemetryConfig.external_otel_collector_endpoint -}}
-    {{- else if $telemetryConfig.autoConfigureOtelEndpoint -}}
-      {{- /* 
-        When autoConfigureOtelEndpoint is true, construct the endpoint using the release name.
-        This is typically set to true when deployed via hyperswitch-stack with monitoring enabled.
+    {{- if and $telemetryConfig.otel_exporter_otlp_endpoint (ne $telemetryConfig.otel_exporter_otlp_endpoint "") -}}
+      {{- $telemetryConfig.otel_exporter_otlp_endpoint -}}
+    {{- else -}}
+      {{- /*
+        When otel_exporter_otlp_endpoint is empty, auto-configure the endpoint using the release name.
+        This is typically used when deployed via hyperswitch-stack with monitoring enabled.
       */}}
       {{- printf "http://%s-opentelemetry-collector.%s.svc.cluster.local:4317" .Release.Name .Release.Namespace -}}
-    {{- else -}}
-      {{- fail "Could not obtain OpenTelemetry Collector URL. Please specify either `external_otel_collector_endpoint` or use hyperswitch-monitoring chart & enable `autoConfigureOtelEndpoint`" -}}
     {{- end -}}
   {{- else -}}
-    {{- print "" -}}  
+    {{- print "" -}}
   {{- end -}}
 {{- end -}}
 
-{{/* 
+{{/*
 Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 */}}
 {{- define "version.suffix" -}}
 {{- . | replace "." "o" -}}
+{{- end -}}
+
+{{/* Define mapping of config keys to helper functions */}}
+{{- define "hyperswitch.configKeyToHelperMapping" -}}
+generic_link.payment_method_collect.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+generic_link.payout_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+payment_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
+{{- end -}}
+
+{{/* Convert YAML config to environment variables for ConfigMap */}}
+{{- define "hyperswitch.configToEnvVars" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+  {{- $keyMapping := include "hyperswitch.configKeyToHelperMapping" . | fromYaml -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper) -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{/* Recursively process nested objects */}}
+      {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+    {{- else if kindIs "slice" $value -}}
+      {{/* Handle arrays by joining with commas */}}
+      {{- $arrayValue := $value | join "," -}}
+      {{- printf "%s: %q\n" $envKey $arrayValue -}}
+    {{- else -}}
+      {{/* Check if this path has a helper function mapping and value is empty */}}
+      {{- if and (hasKey $keyMapping $configPath) (or (eq $value "") (eq $value nil)) -}}
+        {{- $helperFunc := get $keyMapping $configPath -}}
+        {{- $helperValue := include $helperFunc $context -}}
+        {{- printf "%s: %q\n" $envKey $helperValue -}}
+      {{- else -}}
+        {{/* Handle primitive values with proper YAML quoting */}}
+        {{- printf "%s: %q\n" $envKey ($value | toString) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

@@ -64,6 +64,8 @@ spec:
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
+            - configMapRef:
+                name: misc-cm-{{.Release.Name }}
             - secretRef:
                 name: producer-secret-{{.Release.Name }}
             - secretRef:

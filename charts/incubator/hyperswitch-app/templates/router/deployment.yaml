@@ -65,12 +65,16 @@ spec:
             {{/* TODO this env can be static ? */}}
             - name: BINARY
               value: {{ .Values.server.env.binary }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: router-cm-{{ .Release.Name }}
+                name: misc-cm-{{ .Release.Name }}
             - secretRef:
                 name: router-secret-{{ .Release.Name }}
             - secretRef:

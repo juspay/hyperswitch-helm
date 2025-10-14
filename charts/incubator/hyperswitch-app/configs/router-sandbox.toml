@@ -190,6 +190,14 @@ refund_tolerance = 100                                                  # Fake d
 refund_ttl = 172800                                                     # Time to live for dummy connector refund in redis
 slack_invite_url = "https://join.slack.com/t/hyperswitch-io/shared_invite/zt-2awm23agh-p_G5xNpziv6yAiedTkkqLg"    # Slack invite url for hyperswitch
 
+[user]
+password_validity_in_days = 90
+two_factor_auth_expiry_in_secs = 300
+totp_issuer_name = "Hyperswitch Sandbox"
+base_url = "https://app.hyperswitch.io"
+force_two_factor_auth = false
+force_cookies = false
+
 [debit_routing_config]
 supported_currencies = "USD"
 supported_connectors = "adyen"
@@ -867,3 +875,6 @@ click_to_pay = {connector_list = "adyen, cybersource, trustpay"}
 
 [list_dispute_supported_connectors]
 connector_list = "worldpayvantiv"
+
+[grpc_client.unified_connector_service]
+ucs_only_connectors = "paytm, phonepe"    # Comma-separated list of connectors that use UCS only

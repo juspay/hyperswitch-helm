@@ -50,7 +50,7 @@
 {{/* Generic secret enviornnement variables */}}
 {{- define "generic.envs" -}}
 - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
-  value: "{{ .Values.server.email.allowed_unverified_days }}"
+  value: "{{ .Values.server.configs.email.allowed_unverified_days }}"
 - name: RUN_ENV
   value: {{ .Values.server.run_env }}
 {{- end -}}

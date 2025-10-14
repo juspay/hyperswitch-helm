@@ -8,23 +8,23 @@ shutdown_interval = {{ .Values.drainer.config.shutdown_interval }}
 loop_interval = {{ .Values.drainer.config.loop_interval }}
 
 # Secrets manager client to be used
-{{- toToml (dict "secrets_management" .Values.server.secrets_management) | nindent 0 }}
+{{- toToml (dict "secrets_management" .Values.server.configs.secrets_management) | nindent 0 }}
 
 # Encryption manager client to be used
-{{- toToml (dict "encryption_management" .Values.server.encryption_management) | nindent 0 }}
+{{- toToml (dict "encryption_management" .Values.server.configs.encryption_management) | nindent 0 }}
 
-{{- toToml (dict "multitenancy" .Values.server.multitenancy) | nindent 0 }}
+{{- toToml (dict "multitenancy" .Values.server.configs.multitenancy) | nindent 0 }}
 
 [log.console]
-enabled = {{ .Values.server.log.console.enabled }}
-level = "{{ .Values.server.log.console.level }}"
-log_format = "{{ .Values.server.log.console.log_format }}"
+enabled = {{ .Values.server.configs.log.console.enabled }}
+level = "{{ .Values.server.configs.log.console.level }}"
+log_format = "{{ .Values.server.configs.log.console.log_format }}"
 
 [log.file]
-enabled = {{ .Values.server.log.file.enabled }}
-level = "{{ .Values.server.log.file.level }}"
-log_format = "{{ .Values.server.log.file.log_format }}"
+enabled = {{ .Values.server.configs.log.file.enabled }}
+level = "{{ .Values.server.configs.log.file.level }}"
+log_format = "{{ .Values.server.configs.log.file.log_format }}"
 
 [log.telemetry]
-metrics_enabled = {{ .Values.server.log.telemetry.metrics_enabled }}
-otel_exporter_otlp_endpoint = {{ include "opentelemetry-collector.url" . | quote }} 
+metrics_enabled = {{ .Values.server.configs.log.telemetry.metrics_enabled }}
+otel_exporter_otlp_endpoint = {{ include "opentelemetry-collector.url" . | quote }}

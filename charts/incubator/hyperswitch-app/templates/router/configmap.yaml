@@ -6,10 +6,8 @@ metadata:
 data:
   router.toml: |
     {{- if eq .Values.server.run_env "production" -}}
-    {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
     {{- else -}}
-    {{ tpl (.Files.Get "configs/misc.toml") . | nindent 4 }}
     {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
     {{- end }}
 {{- end }}
