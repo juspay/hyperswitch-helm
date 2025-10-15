@@ -15,6 +15,7 @@ services:
   sdk:
     host: &web_sdk_host http://localhost:9050
 
+# @ignored
 global:
   # Global image registry to override all container image registries
   # If set, all container images will be pulled from this registry
@@ -91,6 +92,7 @@ hyperswitch-web:
                 name: hyperswitch-web
                 port:
                   number: 80
+
 # @ignored
 hyperswitch-app:
   initDB:
@@ -124,16 +126,15 @@ hyperswitch-app:
       subversion: v1
   server:
     replicas: 1
-    run_env: sandbox
     secrets:
       # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
       forex_api_key: forex_api_key
       forex_fallback_api_key: forex_fallback_api_key
-    configs:
-      locker:
-        locker_enabled: true
-      email:
-        active_email_client: SMTP
+    locker:
+      locker_enabled: true
+    run_env: sandbox
+    email:
+      active_email_client: SMTP
   controlCenter:
     env:
       default__features__email: "true"
@@ -187,6 +188,7 @@ hyperswitch-app:
   vector:
     tolerations: []
 
+# @ignored
 hyperswitch-monitoring:
   enabled: true
   # Pass global imageRegistry to monitoring subcharts
