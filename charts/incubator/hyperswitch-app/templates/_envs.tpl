@@ -52,7 +52,7 @@
 - name: ROUTER__EMAIL__ALLOWED_UNVERIFIED_DAYS
   value: "{{ .Values.server.configs.email.allowed_unverified_days }}"
 - name: RUN_ENV
-  value: {{ .Values.server.run_env }}
+  value: {{ if eq .Values.server.run_env "production" }}"production"{{ else }}"sandbox"{{ end }}
 {{- end -}}
 
 {{/* Define environment variables for KeyManager configuration */}}

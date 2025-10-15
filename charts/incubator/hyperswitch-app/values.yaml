@@ -175,7 +175,7 @@ server:
   env:
     binary: router
     host: hyperswitch
-  # -- Processor URLs will be decided based on this config, Eg: sandbox or production
+  # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
   # Secrets to be used by the hyperswitch application
   secrets:
@@ -315,7 +315,6 @@ server:
     user_auth_methods:
       encryption_key: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
 
-
   # Config Settings (for ConfigMap creation)
   configs:
     chat:
@@ -450,6 +449,10 @@ server:
     encryption_management:
       # -- Encryption manager client to be used
       encryption_manager: no_encryption
+      # encryption_manager: aws_kms
+      # aws_kms:
+      #   key_id: "kms_key_id"
+      #   region: "kms_region"
     events:
       # -- The event sink to push events supports kafka or logs (stdout)
       source: kafka
@@ -559,7 +562,6 @@ server:
     kv_config:
       ttl: 900
       soft_kill: false
-
     lock_settings:
       # -- Delay between retries in milliseconds
       delay_between_retries_in_milliseconds: 500
@@ -759,9 +761,15 @@ server:
     secrets_management:
       # -- Secrets manager client to be used
       secrets_manager: no_encryption
-      hc_vault:
-        url: http://vault:8200
-        token: vault_token
+      # secrets_manager: aws_kms
+      # aws_kms:
+      #   # The AWS key ID used by the KMS SDK for decrypting data.
+      #   key_id: "kms_key_id"
+      #   # The AWS region used by the KMS SDK for decrypting data.
+      #   region: "kms_region"
+      # hc_vault:
+      #   url: http://vault:8200
+      #   token: vault_token
     # Server configuration
     server:
       host: 0.0.0.0
@@ -1236,7 +1244,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 hyperswitch-card-vault:
-  enabled: false
+  enabled: true
   initDB:
     checkPGisUp:
       imageRegistry: docker.io

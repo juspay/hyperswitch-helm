@@ -7,7 +7,9 @@ data:
   router.toml: |
     {{- if eq .Values.server.run_env "production" -}}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
-    {{- else -}}
+    {{- else if eq .Values.server.run_env "sandbox" -}}
     {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
+    {{- else -}}
+    {{ .Files.Get "configs/router-integ.toml" | nindent 4 }}
     {{- end }}
 {{- end }}
