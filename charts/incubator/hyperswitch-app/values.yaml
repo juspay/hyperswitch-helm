@@ -362,7 +362,7 @@ server:
         enabled: true
     connector_request_reference_id_config:
       # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
-      merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1','merchant_id_2']
+      merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1', 'merchant_id_2']
     connectors:
       # Hyperswitch Vault Configuration
       hyperswitch_vault:

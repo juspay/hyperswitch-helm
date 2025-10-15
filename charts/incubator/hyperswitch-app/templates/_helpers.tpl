@@ -218,7 +218,7 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
   {{- $keyMapping := include "hyperswitch.configKeyToHelperMapping" . | fromYaml -}}
 
   {{- range $key, $value := $config -}}
-    {{- $envKey := printf "%s__%s" $prefix ($key | upper) -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
     {{- $configPath := $key -}}
     {{- if $currentPath -}}
       {{- $configPath = printf "%s.%s" $currentPath $key -}}
