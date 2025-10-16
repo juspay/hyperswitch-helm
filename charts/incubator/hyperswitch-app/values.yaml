@@ -70,8 +70,6 @@ services:
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
-  # Number of replicas to be used for the application by default (for server and consumer)
-  replicas: 3
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
