@@ -120,6 +120,9 @@ global:
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
+  # Ingress Configurations for hyperswitch router
+  ingress:
+    enabled: false
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
@@ -923,6 +926,9 @@ drainer:
 controlCenter:
   # -- Number of replicas to be used for the application
   replicas: 1
+  # -- Ingress Configurations for control center
+  ingress:
+    enabled: false
   # -- Wait time allowed for the deployment before the deployment is marked as failed
   # @ignored
   progressDeadlineSeconds: 600
