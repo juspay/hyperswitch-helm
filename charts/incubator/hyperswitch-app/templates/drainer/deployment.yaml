@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hyperswitch-drainer-{{ .Values.services.drainer.version | replace "." "o" }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "drainer.namespace" . }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
     app: hyperswitch-drainer

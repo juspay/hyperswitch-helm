@@ -31,6 +31,25 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/*
+Allow the release namespace to be overridden for multi-namespace deployments
+*/}}
+
+{{- define "drainer.namespace" -}}
+{{- if .Values.namespaceOverride }}
+{{- .Values.namespaceOverride }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}
+
+{{- define "controlCenter.namespace" -}}
+{{- if .Values.namespaceOverride }}
+{{- .Values.namespaceOverride }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}
 
 {{/* Redis configuration validation template */}}
 {{- define "validate.redis.config" -}}

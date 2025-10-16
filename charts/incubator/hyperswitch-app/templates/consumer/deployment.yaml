@@ -61,6 +61,9 @@ spec:
                   - -c
                   - pkill -15 node
           env:
+            - name: BINARY
+              value: {{ .Values.consumer.env.binary }}
+          {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           {{- include "keymanager.envs" . | nindent 12 }}

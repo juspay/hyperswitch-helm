@@ -797,6 +797,7 @@ server:
     enabled: false
     # -- KeyManager service URL
     url: ""
+
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application
@@ -834,7 +835,7 @@ consumer:
     eks.amazonaws.com/role-arn:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
-    binary: consumer
+    binary: scheduler
 
 # @ignored
 producer:
@@ -867,7 +868,7 @@ producer:
     eks.amazonaws.com/role-arn:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
-    binary: producer
+    binary: scheduler
 
 # @ignored
 drainer:
@@ -895,6 +896,8 @@ drainer:
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-drainer
+  # -- Namespace override for the drainer
+  namespaceOverride: ""
   # -- service account annotations to be used
   serviceAccountAnnotations:
     eks.amazonaws.com/role-arn:
@@ -953,6 +956,9 @@ controlCenter:
   # @ignored
   labels:
     app: hyperswitch-control-center
+  # -- Namespace override for the control center
+  # @ignored
+  namespaceOverride: ""
   # -- service account annotations to be used
   # @ignored
   serviceAccountAnnotations:

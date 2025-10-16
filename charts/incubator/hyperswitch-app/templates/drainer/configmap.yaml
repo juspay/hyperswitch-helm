@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: drainer-cm-{{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "drainer.namespace" . }}
 data:
   drainer.toml: |
     {{ tpl (.Files.Get "configs/drainer.toml") . | nindent 4 }}

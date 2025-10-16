@@ -55,6 +55,22 @@
   value: {{ if eq .Values.server.run_env "production" }}"production"{{ else }}"sandbox"{{ end }}
 {{- end -}}
 
+{{- define "metadata.envs" -}}
+- name: POD_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.name
+- name: SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.labels['app']
+- name: VERSION_VALUE
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.labels['version']
+{{- end -}}
+
+
 {{/* Define environment variables for KeyManager configuration */}}
 {{- define "keymanager.envs" -}}
 {{- if .Values.server.keymanager }}
