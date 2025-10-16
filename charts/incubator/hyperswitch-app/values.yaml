@@ -788,6 +788,9 @@ server:
       two_factor_auth_expiry_in_secs: '300'
       force_cookies: false
 
+  # Addition Configs to override mounted production/sandbox/integration_test.toml configs
+  additional_configs: {}
+
   # KeyManager configuration
   keymanager:
     # -- Enable or disable keymanager
