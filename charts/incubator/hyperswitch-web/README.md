@@ -49,7 +49,7 @@ assets
 | podLabels | object | `{}` | pod labels |
 | podSecurityContext | object | `{}` | pod security context |
 | replicaCount | int | `1` | deployment/statefulset replicas |
-| sdkDemo.annotations."deployment.kubernetes.io/revision" | string | `"1"` |  |
+| sdkDemo.annotations | object | `{}` |  |
 | sdkDemo.enabled | bool | `true` |  |
 | sdkDemo.env.binary | string | `"sdk"` |  |
 | sdkDemo.env.host | string | `"hyperswitch-sdk-demo"` |  |

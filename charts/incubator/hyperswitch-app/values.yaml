@@ -93,8 +93,7 @@ global:
   podAnnotations:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the all the deployments and their pods
   labels:
     managedBy: hyperswitch
@@ -162,8 +161,7 @@ server:
   podAnnotations:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-server
@@ -823,8 +821,7 @@ consumer:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
   labels:
@@ -858,8 +855,7 @@ producer:
   podAnnotations:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-producer
@@ -891,8 +887,7 @@ drainer:
   podAnnotations:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-drainer
@@ -950,8 +945,7 @@ controlCenter:
     traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
   labels:
