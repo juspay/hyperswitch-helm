@@ -68,11 +68,9 @@ spec:
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: misc-cm-{{.Release.Name }}
+                name: hyperswitch-cm-{{.Release.Name }}
             - secretRef:
-                name: producer-secret-{{.Release.Name }}
-            - secretRef:
-                name: hyperswitch-secrets
+                name: hyperswitch-secrets-{{.Release.Name }}
           resources:
             requests:
               cpu: 100m

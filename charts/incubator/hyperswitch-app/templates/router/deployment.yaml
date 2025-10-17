@@ -71,11 +71,9 @@ spec:
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: misc-cm-{{ .Release.Name }}
+                name: hyperswitch-cm-{{ .Release.Name }}
             - secretRef:
-                name: router-secret-{{ .Release.Name }}
-            - secretRef:
-                name: hyperswitch-secrets
+                name: hyperswitch-secrets-{{ .Release.Name }}
           livenessProbe:
           {{- toYaml (default .Values.global.livenessProbe .Values.server.livenessProbe) | nindent 12 }}
           readinessProbe:
