@@ -27,7 +27,7 @@ spec:
         version: {{ include "version.suffix" .Values.services.producer.version }}
       annotations:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
-        checksum/producer-secret: {{ include (print $.Template.BasePath "/producer/secret.yaml") . | sha256sum }}
+        checksum/hyperswitch-cm: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
         checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
     spec:
       {{- with (default .Values.global.tolerations .Values.producer.tolerations) }}
