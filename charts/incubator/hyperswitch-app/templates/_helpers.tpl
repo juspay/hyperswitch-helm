@@ -228,7 +228,35 @@ payment_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
 {{- end -}}
 
-{{/* Convert YAML config to environment variables for ConfigMap */}}
+{{/* Helper: Check if a config value is a secret field (_secret) */}}
+{{- define "hyperswitch.isSecretField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if hasKey $value "_secret" -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Helper: Check if a config value is a reference field (_secretRef or _configRef) */}}
+{{- define "hyperswitch.isReferenceField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if or (hasKey $value "_secretRef") (hasKey $value "_configRef") -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
 {{- define "hyperswitch.configToEnvVars" -}}
   {{- $config := .config -}}
   {{- $prefix := .prefix -}}
@@ -244,8 +272,12 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
     {{- end -}}
 
     {{- if kindIs "map" $value -}}
-      {{/* Recursively process nested objects */}}
-      {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
+      {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
+      {{- if and (eq $isSecret "false") (eq $isReference "false") -}}
+        {{/* Recursively process normal nested objects */}}
+        {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
     {{- else if kindIs "slice" $value -}}
       {{/* Handle arrays by joining with commas */}}
       {{- $arrayValue := $value | join "," -}}
@@ -255,10 +287,79 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
       {{- if and (hasKey $keyMapping $configPath) (or (eq $value "") (eq $value nil)) -}}
         {{- $helperFunc := get $keyMapping $configPath -}}
         {{- $helperValue := include $helperFunc $context -}}
-        {{- printf "%s: %q\n" $envKey $helperValue -}}
+        {{- printf "%s: %q\n" $envKey ($helperValue | toString) -}}
       {{- else -}}
         {{/* Handle primitive values with proper YAML quoting */}}
         {{- printf "%s: %q\n" $envKey ($value | toString) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to secret data (base64 encoded) for _secret fields */}}
+{{- define "hyperswitch.configToSecrets" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
+      {{- if eq $isSecret "true" -}}
+        {{/* Handle _secret field */}}
+        {{- $secretValue := get $value "_secret" -}}
+        {{- printf "%s: %s\n" $envKey ($secretValue | b64enc) -}}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to environment variables with valueFrom for _secretRef/_configRef fields */}}
+{{- define "hyperswitch.configToEnvRefs" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
+      {{- if eq $isReference "true" -}}
+        {{/* Handle _secretRef or _configRef field */}}
+        {{- if hasKey $value "_secretRef" -}}
+          {{- $ref := get $value "_secretRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $ref.name }}
+      key: {{ $ref.key }}
+        {{- else if hasKey $value "_configRef" -}}
+          {{- $ref := get $value "_configRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    configMapKeyRef:
+      name: {{ $ref.name }}
+      key: {{ $ref.key }}
+        {{- end }}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
       {{- end -}}
     {{- end -}}
   {{- end -}}

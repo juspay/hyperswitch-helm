@@ -5,6 +5,7 @@
     secretKeyRef:
       name: {{ include "clickhouse.secret" . }}
       key: {{ include "clickhouse.secret.password" . }}
+{{- if not .Values.server.configs.analytics.sqlx.password }}
 - name: ROUTER__ANALYTICS__SQLX__PASSWORD
   valueFrom:
     secretKeyRef:
@@ -14,6 +15,7 @@
       {{- else if .Values.externalPostgresql.enabled }}
       key: primaryPassword
       {{- end }}
+{{- end }}
 - name: ROUTER__MASTER_DATABASE__PASSWORD
   valueFrom:
     secretKeyRef:
@@ -79,6 +81,21 @@
 {{- if .Values.server.keymanager.url }}
 - name: ROUTER__KEY_MANAGER__URL
   value: "{{ .Values.server.keymanager.url }}"
+{{- end }}
+{{- end }}
+{{- end -}}
+
+{{/* Generate environment variables from external secrets configuration */}}
+{{- define "external.secrets.envs" -}}
+{{- if .Values.global.useExternalSecrets.enabled }}
+{{- range $secretName, $mappings := .Values.global.useExternalSecrets.secrets }}
+{{- range $mapping := $mappings }}
+- name: {{ $mapping.envName }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $secretName }}
+      key: {{ $mapping.secretKey }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end -}}

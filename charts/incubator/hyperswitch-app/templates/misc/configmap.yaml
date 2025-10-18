@@ -2,10 +2,20 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hyperswitch-cm-{{.Release.Name }}
+  name: hyperswitch-configs
 data:
+  # Database configs:
+  ROUTER__MASTER_DATABASE__DBNAME: {{ include "postgresql.database" . }}
+  ROUTER__MASTER_DATABASE__HOST: {{ include "postgresql.host" . }}
+  ROUTER__MASTER_DATABASE__PORT: {{ include "postgresql.port" . | quote }}
+  ROUTER__MASTER_DATABASE__USERNAME: {{ include "postgresql.username" . }}
+  ROUTER__REPLICA_DATABASE__DBNAME: {{ include "postgresql.database" . }}
+  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.host" . }}
+  ROUTER__REPLICA_DATABASE__PORT: {{ include "postgresql.port" . | quote }}
+  ROUTER__REPLICA_DATABASE__USERNAME: {{ include "postgresqlreplica.username" . }}
+  # Redis configs
+  ROUTER__REDIS__HOST: {{ include "redis.host" . }}
+  ROUTER__REDIS__PORT: {{ include "redis.port" . | quote }}
   # Configs from values.server.configs will be generated as environment variables with prefix ROUTER_
   {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 2 }}
-  # Additional Configs to override mounted production/sandbox/integration_test.toml configs
-  {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.server.additional_configs "prefix" "ROUTER" "context" .) | nindent 2 }}
 {{- end }}

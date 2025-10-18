@@ -26,8 +26,8 @@ spec:
         kubectl.kubernetes.io/restartedAt: "2023-09-20T12:11:41+05:30"
         traffic.sidecar.istio.io/excludeOutboundIPRanges: {{ default .Values.global.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges .Values.server.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges }}
         checksum/router-config: {{ include (print $.Template.BasePath "/router/configmap.yaml") . | sha256sum }}
-        checksum/hyperswitch-cm: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
-        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+        checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.server.labels.app }}
         version: {{ include "version.suffix" .Values.services.router.version }}
@@ -67,13 +67,20 @@ spec:
               value: {{ .Values.server.env.binary }}
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
+          {{- if .Values.global.useExternalSecrets.enabled }}
+          {{- include "external.secrets.envs" . | nindent 12 }}
+          {{- else }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- end }}
           {{- include "keymanager.envs" . | nindent 12 }}
+          {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: hyperswitch-cm-{{ .Release.Name }}
+                name: hyperswitch-configs
+          {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
-                name: hyperswitch-secrets-{{ .Release.Name }}
+                name: hyperswitch-secrets
+          {{- end }}
           livenessProbe:
           {{- toYaml (default .Values.global.livenessProbe .Values.server.livenessProbe) | nindent 12 }}
           readinessProbe:
@@ -93,11 +100,11 @@ spec:
           volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
-              name: hyperswitch-config
+              name: router-config
               subPath: router.toml
             {{- else }}
             - mountPath: /local/config/sandbox.toml
-              name: hyperswitch-config
+              name: router-config
               subPath: router.toml
             {{- end }}
       dnsPolicy: ClusterFirst
@@ -110,5 +117,5 @@ spec:
         - configMap:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
-          name: hyperswitch-config
+          name: router-config
 {{- end }}

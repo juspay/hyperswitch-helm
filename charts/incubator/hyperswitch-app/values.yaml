@@ -112,8 +112,23 @@ global:
     [server]
     host = 0.0.0.0
 
-  # -- secrets to be used by the hyperswitch application
-  secrets:
+  # External Secrets Configuration
+  # When enabled, all local secret creation is disabled and external secrets are used instead
+  # Use this to define mapping of secrets created by external secret operators
+  useExternalSecrets:
+    # -- Enable external secrets integration
+    enabled: false
+    # -- Configuration for external secrets mapping
+    # Each secret name maps to a list of environment variables
+    secrets:
+      # Example: hyperswitch-secrets contains application secrets
+      # # -- Name of the external secret
+      # hyperswitch-secrets:
+      #   # -- List of environment variables to map from the external secret
+      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
+      #     secretKey: admin_api_key
+      #   - envName: ROUTER__SECRETS__JWT_SECRET
+      #     secretKey: jwt_secret
 
 server:
   # -- Number of replicas to be used for the application
@@ -176,145 +191,15 @@ server:
     host: hyperswitch
   # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
-  # Secrets to be used by the hyperswitch application
-  secrets:
-    # -- admin API key for admin authentication.
-    # @section -- App Server Secrets
-    admin_api_key: test_admin
-    # -- JWT secret used for user authentication.
-    # @section -- App Server Secrets
-    jwt_secret: test_admin
-    # -- Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.
-    # @section -- App Server Secrets
-    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
-    # -- Recon Admin API key for recon admin authentication.
-    # @section -- App Server Secrets
-    recon_admin_api_key: test_admin
-    # -- KMS key id for encryption and decryption
-    # @section -- App Server Secrets
-    kms_key_id: kms_key_id
-    # -- AWS KMS region
-    # @section -- App Server Secrets
-    kms_key_region: us-east-1
-    # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
-    # @section -- App Server Secrets
-    # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
-    kms_jwekey_vault_encryption_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
-      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
-      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
-      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
-      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
-      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
-      YQIDAQAB
-      -----END PUBLIC KEY-----
-    # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
-    # @section -- App Server Secrets
-    # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
-    kms_jwekey_vault_private_key: |
-      -----BEGIN PRIVATE KEY-----
-      MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
-      +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
-      W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
-      PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
-      dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
-      1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
-      t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
-      dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
-      qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
-      WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
-      ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
-      9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
-      yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
-      R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
-      3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
-      gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
-      mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
-      kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
-      FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
-      z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
-      BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
-      vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
-      XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
-      KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
-      3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
-      49IwF6OHTk+8yjEF1c5ngQ==
-      -----END PRIVATE KEY-----
-    # @section -- App Server Secrets
-    kms_jwekey_tunnel_private_key: dummy_val
-    # @section -- App Server Secrets
-    kms_jwekey_rust_locker_encryption_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
-      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
-      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
-      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
-      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
-      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
-      YQIDAQAB
-      -----END PUBLIC KEY-----
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_client_id: dummy_val
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_client_secret: dummy_val
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_partner_id: dummy_val
-    # -- Encryption key for redis temp locker
-    # @section -- App Server Secrets
-    redis_temp_locker_encryption_key: dummy_val
-    # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
-    # @section -- App Server Secrets
-    apple_pay_merchant_cert: dummy_val
-    # -- Private key generated by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_merchant_cert_key: dummy_val
-    # -- Payment Processing Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Payment Processing Certificate
-    # @section -- App Server Secrets
-    apple_pay_ppc: dummy_val
-    # -- Private key generated by Elliptic-curve prime256v1 curve. You can use `openssl ecparam -out private.key -name prime256v1 -genkey` to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_ppc_key: dummy_val
-    # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_cert: dummy_val
-    # -- Private key generate by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_cert_key: dummy_val
-    # -- Refer to config.example.toml to learn how you can generate this value
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_id: dummy_val
-    # -- Api key for making request to foreign exchange Api, Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
-    # @section -- App Server Secrets
-    forex_api_key: dummy_val
-    # -- Forex Api key for the fallback service
-    # @section -- App Server Secrets
-    forex_fallback_api_key: dummy_val
-    # -- # Payment method auth key used for authorization
-    # @section -- App Server Secrets
-    pm_auth_key: dummy_val
-    # -- API key hashing key.
-    # @section -- App Server Secrets
-    api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-    # -- Encryption key used for encrypting data in user_authentication_methods table
-    # @section -- App Server Secrets
-    keymanager:
-      ca: "sample_ca"
-      cert: "sample_cert"
-    # -- Clickhouse password (optional)
-    # @section -- App Server Secrets
-    analytics_clickhouse_password: ''
-    # -- Username and password for the email smtp server (optional)
-    # @section -- App Server Secrets
-    email:
-      smtp_username: ''
-      smtp_password: ''
-    # -- Encryption key used for user_auth_methods table
-    # @section -- App Server Secrets
-    user_auth_methods:
-      encryption_key: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
 
   # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
   configs:
     chat:
       # Enable or disable chat features
@@ -334,10 +219,34 @@ server:
         username: default
         # -- Clickhouse password (optional)
         # @section -- App Server Secrets
-        # password: '' --- moved to secrets section ---
+        password:
+          _secret: ''
       # -- The Analytics source/strategy to be used
       source: clickhouse
       sqlx:
+        # -- Database name
+        dbname:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__DBNAME
+        # -- Database host
+        host:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__HOST
+        # -- Database port
+        port:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__PORT
+        # -- Database username
+        username:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__USERNAME
+        # -- Database password
+        # When commented out, will use the same password as master database
+        # password: ''
         # -- Timeout for database connection in seconds
         connection_timeout: 10
         # -- Number of connections to keep open
@@ -348,6 +257,35 @@ server:
     applepay_merchant_configs:
       # -- Apple pay gateway merchant endpoint
       applepay_endpoint: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
+      # @section -- App Server Secrets
+      merchant_cert:
+        _secret: dummy_val
+      # -- Private key generate by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
+      # @section -- App Server Secrets
+      merchant_cert_key:
+        _secret: dummy_val
+      # -- Refer to config.example.toml to learn how you can generate this value
+      # @section -- App Server Secrets
+      common_merchant_identifier:
+        _secret: dummy_val
+    applepay_decrypt_keys:
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
+      # @section -- App Server Secrets
+      apple_pay_merchant_cert:
+        _secret: dummy_val
+      # -- Private key generated by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_merchant_cert_key:
+        _secret: dummy_val
+      # -- Payment Processing Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Payment Processing Certificate
+      # @section -- App Server Secrets
+      apple_pay_ppc:
+        _secret: dummy_val
+      # -- Private key generated by Elliptic-curve prime256v1 curve. You can use `openssl ecparam -out private.key -name prime256v1 -genkey` to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_ppc_key:
+        _secret: dummy_val
     cell_information:
       # -- Default CellID for Global Cell Information
       id: '12345'
@@ -359,6 +297,15 @@ server:
     connector_onboarding:
       paypal:
         enabled: true
+        # @section -- App Server Secrets
+        client_id:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        client_secret:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        partner_id:
+          _secret: dummy_val
     connector_request_reference_id_config:
       # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
       merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1', 'merchant_id_2']
@@ -436,11 +383,14 @@ server:
         # -- Host of the smtp server
         # @section -- App Server Secrets
         host: mailhog
-        # -- Username for the smtp server
-        # username: '' --- moved to secrets section ---
+        # -- Username for the SMTP server.
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # username: ''
         # -- Password for the smtp server
         # @section -- App Server Secrets
-        # password: '' --- moved to secrets section ---
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # password:
+        #   _secret: ''
         # -- Port of the smtp server
         port: '1025'
         # -- timeout for the smtp server connection
@@ -486,6 +436,14 @@ server:
         # Kafka topic to be used for Revenue Recovery Events
         revenue_recovery_topic: topic
     forex_api:
+      # -- Api key for making request to foreign exchange Api, Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+      # @section -- App Server Secrets
+      api_key:
+        _secret: dummy_val
+      # -- Forex Api key for the fallback service
+      # @section -- App Server Secrets
+      fallback_api_key:
+        _secret: dummy_val
       # Expiration time for data in cache as well as redis in seconds
       data_expiration_delay_in_seconds: 21600
       # Redis remains write locked for 100 s once the acquire_redis_lock is called
@@ -582,6 +540,10 @@ server:
       mock_locker: false
       # -- Time to live for storage entries in locker
       ttl_for_storage_in_secs: 220752000
+      # -- Encryption key for redis temp locker
+      # @section -- App Server Secrets
+      redis_temp_locker_encryption_key:
+        _secret: dummy_val
     log:
       console:
         enabled: true
@@ -659,6 +621,10 @@ server:
         sessionizer_payment_intents: sessionizer-payment-intent-events
         sessionizer_refunds: sessionizer-refund-events
     payment_method_auth:
+      # -- # Payment method auth key used for authorization
+      # @section -- App Server Secrets
+      pm_auth_key:
+        _secret: dummy_val
       # -- Redis expiry time in milliseconds
       redis_expiry: 900
     paze_decrypt_keys:
@@ -697,14 +663,12 @@ server:
       default_ttl: 300
       # -- Whether or not to disable the automatic backpressure features when pipelining is enabled.
       disable_auto_backpressure: false
-      host: 127.0.0.1
       # -- The maximum number of frames that will be fed to a socket before flushing.
       max_feed_count: 200
       # -- The maximum number of in-flight commands (per connection) before backpressure will be applied.
       max_in_flight_commands: 5000
       # -- Number of connections to keep open
       pool_size: 5
-      port: 6379
       # -- Delay between reconnection attempts, in milliseconds
       reconnect_delay: 5
       # -- Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
@@ -786,9 +750,118 @@ server:
       totp_issuer_name: Hyperswitch Sandbox
       two_factor_auth_expiry_in_secs: '300'
       force_cookies: false
-
-  # Addition Configs to override mounted production/sandbox/integration_test.toml configs
-  additional_configs: {}
+    file_upload_config:
+      bucket_name: "bucket"
+      region: "us-east-1"
+    # KMS Configuration
+    kms:
+      # -- AWS KMS region
+      key_region: us-east-1
+      # -- KMS key id for encryption and decryption
+      # @section -- App Server Secrets
+      key_id:
+        _secret: kms_key_id
+    # JWE Keys
+    jwekey:
+      # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+      vault_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+      # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
+      vault_private_key:
+        _secret: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
+          +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
+          W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
+          PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
+          dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
+          1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
+          t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
+          dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
+          qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
+          WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
+          ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
+          9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
+          yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
+          R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
+          3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
+          gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
+          mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
+          kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
+          FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
+          z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
+          BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
+          vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
+          XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
+          KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
+          3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
+          49IwF6OHTk+8yjEF1c5ngQ==
+          -----END PRIVATE KEY-----
+      # @section -- App Server Secrets
+      tunnel_private_key:
+        _secret: dummy_val
+      # @section -- App Server Secrets
+      rust_locker_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+    api_keys:
+      # -- API key hashing key.
+      # @section -- App Server Secrets
+      hash_key:
+        _secret: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    # -- Encryption key used for encrypting data in user_authentication_methods table
+    # @section -- App Server Secrets
+    key_manager:
+      ca:
+        _secret: "sample_ca"
+      cert:
+        _secret: "sample_cert"
+    # -- Encryption key used for user_auth_methods table
+    # @section -- App Server Secrets
+    user_auth_methods:
+      encryption_key:
+        _secret: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+    # Application Secrets
+    secrets:
+      # -- admin API key for admin authentication.
+      # @section -- App Server Secrets
+      admin_api_key:
+        _secret: test_admin
+      # -- JWT secret used for user authentication.
+      # @section -- App Server Secrets
+      jwt_secret:
+        _secret: test_admin
+      # -- Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.
+      # @section -- App Server Secrets
+      master_enc_key:
+        _secret: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+      # -- Recon Admin API key for recon admin authentication.
+      # @section -- App Server Secrets
+      recon_admin_api_key:
+        _secret: test_admin
+      migration_encryption_timestamp:
+        _secret: "1685510751"
 
   # KeyManager configuration
   keymanager:

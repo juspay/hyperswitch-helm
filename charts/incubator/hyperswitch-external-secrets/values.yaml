@@ -1,0 +1,184 @@
+# Hyperswitch External Secrets Chart
+# Standalone chart to manage Hyperswitch secrets using External Secrets Operator
+
+# Global configuration
+global:
+  # -- Target namespace for secrets (will use release namespace if not specified)
+  namespace: ""
+  # -- Common labels to apply to all resources
+  labels:
+    app.kubernetes.io/component: external-secrets
+    app.kubernetes.io/part-of: hyperswitch
+
+# ClusterSecretStore configuration
+clusterSecretStore:
+  # -- Enable ClusterSecretStore creation
+  enabled: true
+  # -- Name of the ClusterSecretStore
+  name: "hyperswitch-cluster-secret-store"
+  # -- Provider for the ClusterSecretStore (aws, vault, azure, gcp)
+  provider: "aws"
+
+  # AWS Secrets Manager configuration
+  aws:
+    # -- AWS region
+    region: "us-west-2"
+    # -- AWS Secrets Manager service
+    service: "SecretsManager"
+    # -- JWT authentication configuration for AWS IRSA
+    auth:
+      jwt:
+        # -- Kubernetes service account to use for JWT authentication
+        serviceAccountRef:
+          name: "hyperswitch-eso-sa"
+          # For ClusterSecretStore, specify namespace where SA exists
+          namespace: "hyperswitch"
+
+  # Vault configuration (alternative to AWS)
+  vault:
+    # -- Vault server URL
+    server: "https://vault.example.com"
+    # -- Vault API version
+    version: "v2"
+    # -- Path where secrets are stored in Vault
+    path: "hyperswitch"
+    # -- JWT authentication configuration for Vault
+    auth:
+      jwt:
+        # -- Path where JWT auth is mounted in Vault
+        path: "jwt"
+        # -- Role to use for JWT authentication
+        role: "hyperswitch-role"
+        # -- Kubernetes service account to use for JWT authentication
+        serviceAccountRef:
+          name: "hyperswitch-eso-sa"
+          namespace: "hyperswitch"
+
+# Service Account configuration
+serviceAccount:
+  # -- Create a service account for External Secrets Operator
+  create: true
+  # -- Name of the service account
+  name: "hyperswitch-eso-sa"
+  # -- Annotations for the service account (e.g., IAM role ARN for IRSA)
+  annotations:
+    eks.amazonaws.com/role-arn: ""
+  # -- Labels for the service account
+  labels: {}
+
+# External Secrets configuration
+externalSecrets:
+  # -- Refresh interval for external secrets (default: 1h)
+  refreshInterval: "1h"
+
+  # Main Hyperswitch application secrets
+  hyperswitchSecrets:
+    # -- Enable Hyperswitch application secrets
+    enabled: true
+    # -- External store path for application secrets
+    remotePath: "hyperswitch/application"
+    # -- Kubernetes secret name to create (hyperswitch-app expects this name)
+    secretName: "hyperswitch-secrets"
+    # -- Target namespace (defaults to release namespace)
+    namespace: ""
+
+  # External PostgreSQL database secrets
+  externalPostgresql:
+    # -- Enable external PostgreSQL secrets
+    enabled: false
+    # -- External store path for PostgreSQL secrets
+    remotePath: "hyperswitch/external-postgresql"
+    # -- Kubernetes secret name to create
+    secretName: "external-postgresql"
+    # -- Target namespace (defaults to release namespace)
+    namespace: ""
+
+  # External Redis secrets
+  externalRedis:
+    # -- Enable external Redis secrets
+    enabled: false
+    # -- External store path for Redis secrets
+    remotePath: "hyperswitch/external-redis"
+    # -- Kubernetes secret name to create
+    secretName: "ext-redis"
+    # -- Target namespace (defaults to release namespace)
+    namespace: ""
+
+# Secret mappings configuration - defines which keys to fetch from external store
+secretMappings:
+  # Hyperswitch application secrets mapping
+  hyperswitchSecrets:
+    # Core application secrets
+    admin_api_key: "ROUTER__SECRETS__ADMIN_API_KEY"
+    jwt_secret: "ROUTER__SECRETS__JWT_SECRET"
+    master_enc_key: "ROUTER__SECRETS__MASTER_ENC_KEY"
+    recon_admin_api_key: "ROUTER__SECRETS__RECON_ADMIN_API_KEY"
+
+    # KMS and encryption secrets
+    kms_key_id: "ROUTER__KMS__KEY_ID"
+    kms_key_region: "ROUTER__KMS__REGION"
+    api_hash_key: "ROUTER__API_KEYS__HASH_KEY"
+    kms_encrypted_api_hash_key: "ROUTER__API_KEYS__KMS_ENCRYPTED_HASH_KEY"
+
+    # Payment and authentication
+    pm_auth_key: "ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY"
+    redis_temp_locker_encryption_key: "ROUTER__LOCKER__REDIS_TEMP_LOCKER_ENCRYPTION_KEY"
+
+    # JWE keys
+    tunnel_private_key: "ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY"
+    vault_encryption_key: "ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY"
+    vault_private_key: "ROUTER__JWEKEY__VAULT_PRIVATE_KEY"
+    rust_locker_encryption_key: "ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY"
+
+    # Apple Pay secrets
+    apple_pay_merchant_cert: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT"
+    apple_pay_merchant_cert_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT_KEY"
+    apple_pay_ppc: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC"
+    apple_pay_ppc_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC_KEY"
+    apple_pay_merchant_conf_cert: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT"
+    apple_pay_merchant_conf_cert_key: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT_KEY"
+    apple_pay_merchant_conf_merchant_id: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__COMMON_MERCHANT_IDENTIFIER"
+
+    # Connector secrets
+    paypal_client_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID"
+    paypal_client_secret: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET"
+    paypal_partner_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID"
+
+    # Email configuration
+    smtp_username: "ROUTER__EMAIL__SMTP__USERNAME"
+    smtp_password: "ROUTER__EMAIL__SMTP__PASSWORD"
+
+    # External API keys
+    forex_api_key: "ROUTER__FOREX_API__API_KEY"
+    forex_fallback_api_key: "ROUTER__FOREX_API__FALLBACK_API_KEY"
+
+    # User authentication
+    user_auth_encryption_key: "ROUTER__USER_AUTH_METHODS__ENCRYPTION_KEY"
+
+    # Key manager
+    keymanager_ca: "ROUTER__KEY_MANAGER__CA"
+    keymanager_cert: "ROUTER__KEY_MANAGER__CERT"
+
+    # Analytics
+    analytics_clickhouse_password: "ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD"
+
+  # External PostgreSQL secrets mapping
+  externalPostgresql:
+    primary_host: "primaryHost"
+    primary_port: "primaryPort"
+    primary_username: "primaryUsername"
+    primary_password: "primaryPassword"
+    primary_plain_password: "primaryPlainPassword"
+    primary_database: "primaryDatabase"
+    readonly_host: "readOnlyHost"
+    readonly_port: "readOnlyPort"
+    readonly_username: "readOnlyUsername"
+    readonly_password: "readOnlyPassword"
+    readonly_database: "readOnlyDatabase"
+
+  # External Redis secrets mapping
+  externalRedis:
+    host: "host"
+    port: "port"
+    username: "username"
+    password: "password"

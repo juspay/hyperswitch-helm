@@ -1,0 +1,27 @@
+{{- if .Values.externalSecrets.externalRedis.enabled }}
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: {{ .Values.externalSecrets.externalRedis.secretName }}
+  namespace: {{ .Values.externalSecrets.externalRedis.namespace | default (include "hyperswitch-external-secrets.namespace" .) }}
+  labels:
+    {{- include "hyperswitch-external-secrets.labels" . | nindent 4 }}
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  refreshInterval: {{ .Values.externalSecrets.refreshInterval }}
+  secretStoreRef:
+    name: {{ include "hyperswitch-external-secrets.clusterSecretStoreName" . }}
+    kind: ClusterSecretStore
+  target:
+    name: {{ .Values.externalSecrets.externalRedis.secretName }}
+    creationPolicy: Owner
+  data:
+    {{- range $remoteKey, $localKey := .Values.secretMappings.externalRedis }}
+    - secretKey: {{ $localKey }}
+      remoteRef:
+        key: {{ $.Values.externalSecrets.externalRedis.remotePath }}
+        property: {{ $remoteKey }}
+    {{- end }}
+{{- end }}

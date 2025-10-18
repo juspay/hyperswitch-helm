@@ -27,8 +27,8 @@ spec:
         version: {{ include "version.suffix" .Values.services.producer.version }}
       annotations:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
-        checksum/hyperswitch-cm: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
-        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+        checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
     spec:
       {{- with (default .Values.global.tolerations .Values.producer.tolerations) }}
       tolerations:
@@ -64,13 +64,20 @@ spec:
               value: {{ .Values.producer.env.binary }}
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
+          {{- if .Values.global.useExternalSecrets.enabled }}
+          {{- include "external.secrets.envs" . | nindent 12 }}
+          {{- else }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- end }}
           {{- include "keymanager.envs" . | nindent 12 }}
+          {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: hyperswitch-cm-{{.Release.Name }}
+                name: hyperswitch-configs
+          {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
-                name: hyperswitch-secrets-{{.Release.Name }}
+                name: hyperswitch-secrets
+          {{- end }}
           resources:
             requests:
               cpu: 100m

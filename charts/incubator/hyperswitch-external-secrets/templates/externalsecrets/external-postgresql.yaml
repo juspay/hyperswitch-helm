@@ -1,0 +1,27 @@
+{{- if .Values.externalSecrets.externalPostgresql.enabled }}
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: {{ .Values.externalSecrets.externalPostgresql.secretName }}
+  namespace: {{ .Values.externalSecrets.externalPostgresql.namespace | default (include "hyperswitch-external-secrets.namespace" .) }}
+  labels:
+    {{- include "hyperswitch-external-secrets.labels" . | nindent 4 }}
+    {{- with .Values.global.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  refreshInterval: {{ .Values.externalSecrets.refreshInterval }}
+  secretStoreRef:
+    name: {{ include "hyperswitch-external-secrets.clusterSecretStoreName" . }}
+    kind: ClusterSecretStore
+  target:
+    name: {{ .Values.externalSecrets.externalPostgresql.secretName }}
+    creationPolicy: Owner
+  data:
+    {{- range $remoteKey, $localKey := .Values.secretMappings.externalPostgresql }}
+    - secretKey: {{ $localKey }}
+      remoteRef:
+        key: {{ $.Values.externalSecrets.externalPostgresql.remotePath }}
+        property: {{ $remoteKey }}
+    {{- end }}
+{{- end }}
