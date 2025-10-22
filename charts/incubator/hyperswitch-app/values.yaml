@@ -118,7 +118,7 @@ global:
   useExternalSecrets:
     # -- Enable external secrets integration
     enabled: false
-    # -- Configuration for external secrets mapping
+    # -- Configuration for external secrets mapping (Optional)
     # Each secret name maps to a list of environment variables
     secrets:
       # Example: hyperswitch-secrets contains application secrets
