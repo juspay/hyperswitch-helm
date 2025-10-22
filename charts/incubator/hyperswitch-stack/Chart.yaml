@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.2.15
+version: 0.2.16
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -25,16 +25,16 @@ appVersion: "1.16.0"
 dependencies:
   - name: hyperswitch-app
     version: 0.2.13
-    repository: "file://../hyperswitch-app"
+    repository: "https://juspay.github.io/hyperswitch-helm"
   - name: hyperswitch-web
     version: 0.2.12
-    repository: "file://../hyperswitch-web"
+    repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-web.enabled
   - name: hyperswitch-monitoring
     version: 0.1.4
-    repository: "file://../hyperswitch-monitoring"
+    repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-monitoring.enabled
   - name: hyperswitch-ucs
     version: 0.1.2
-    repository: "file://../hyperswitch-ucs"
+    repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-ucs.enabled
