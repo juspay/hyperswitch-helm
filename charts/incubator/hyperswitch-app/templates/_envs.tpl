@@ -9,31 +9,19 @@
 - name: ROUTER__ANALYTICS__SQLX__PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "postgresql.secret" . }}
-      {{- if .Values.postgresql.enabled }}
-      key: password
-      {{- else if .Values.externalPostgresql.enabled }}
-      key: primaryPassword
-      {{- end }}
+      name: {{ include "postgresql.master.password.secret" . }}
+      key: {{ include "postgresql.master.password.key" . }}
 {{- end }}
 - name: ROUTER__MASTER_DATABASE__PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "postgresql.secret" . }}
-      {{- if .Values.postgresql.enabled }}
-      key: password
-      {{- else if .Values.externalPostgresql.enabled }}
-      key: primaryPassword
-      {{- end }}
+      name: {{ include "postgresql.master.password.secret" . }}
+      key: {{ include "postgresql.master.password.key" . }}
 - name: ROUTER__REPLICA_DATABASE__PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "postgresql.secret" . }}
-      {{- if .Values.postgresql.enabled }}
-      key: password
-      {{- else if .Values.externalPostgresql.enabled }}
-      key: primaryPassword
-      {{- end }}
+      name: {{ include "postgresql.replica.password.secret" . }}
+      key: {{ include "postgresql.replica.password.key" . }}
 {{- end -}}
 
 {{/* Define environment variables for PostgreSQL secrets */}}
@@ -41,12 +29,8 @@
 - name: DRAINER__MASTER_DATABASE__PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "postgresql.secret" . }}
-      {{- if .Values.postgresql.enabled }}
-      key: password
-      {{- else if .Values.externalPostgresql.enabled }}
-      key: primaryPassword
-      {{- end }}
+      name: {{ include "postgresql.master.password.secret" . }}
+      key: {{ include "postgresql.master.password.key" . }}
 {{- end -}}
 
 {{/* Generic secret enviornnement variables */}}

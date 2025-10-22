@@ -167,6 +167,147 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- end -}}
 {{- end -}}
 
+{{/* =====================================================
+     POSTGRESQL PASSWORD SECRET REFERENCE HELPERS
+     ===================================================== */}}
+
+{{/* Common helper: Get default PostgreSQL secret name for internal/external */}}
+{{- define "postgresql.default.secret.name" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- include "externalPostgresql.secret.name" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Common helper: Check if a password config uses _secretRef */}}
+{{- define "postgresql.password.uses.secretRef" -}}
+  {{- $passwordConfig := . -}}
+  {{- if and (kindIs "map" $passwordConfig) (hasKey $passwordConfig "_secretRef") -}}
+    {{- printf "true" -}}
+  {{- else -}}
+    {{- printf "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Password Secret Name */}}
+{{- define "postgresql.master.password.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.primary.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Password Secret Key */}}
+{{- define "postgresql.master.password.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "password" -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.primary.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "primaryPassword" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Plain Password Secret Name */}}
+{{- define "postgresql.master.plainPassword.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.secret" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $plainPasswordConfig := .Values.externalPostgresql.primary.auth.plainpassword -}}
+    {{- if and $plainPasswordConfig (eq (include "postgresql.password.uses.secretRef" $plainPasswordConfig) "true") -}}
+      {{- printf "%s" $plainPasswordConfig._secretRef.name -}}
+    {{- else if and $plainPasswordConfig (not (kindIs "map" $plainPasswordConfig)) -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.secret" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Plain Password Secret Key */}}
+{{- define "postgresql.master.plainPassword.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.key" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $plainPasswordConfig := .Values.externalPostgresql.primary.auth.plainpassword -}}
+    {{- if and $plainPasswordConfig (eq (include "postgresql.password.uses.secretRef" $plainPasswordConfig) "true") -}}
+      {{- printf "%s" $plainPasswordConfig._secretRef.key -}}
+    {{- else if and $plainPasswordConfig (not (kindIs "map" $plainPasswordConfig)) -}}
+      {{- printf "primaryPlainPassword" -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.key" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Replica Password Secret Name */}}
+{{- define "postgresql.replica.password.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.readOnly.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Replica Password Secret Key */}}
+{{- define "postgresql.replica.password.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "password" -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.readOnly.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "readOnlyPassword" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 {{/* Define the clickhouse secret when enabled */}}
 {{- define "clickhouse.secret" -}}
   {{- if .Values.clickhouse.enabled -}}

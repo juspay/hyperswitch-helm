@@ -57,10 +57,6 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "postgresql.secret" . }}
-                  {{- if .Values.postgresql.enabled }}
-                  key: password
-                  {{- else if .Values.externalPostgresql.enabled }}
-                  key: primaryPlainPassword
-                  {{- end }}
+                  name: {{ include "postgresql.master.plainPassword.secret" . }}
+                  key: {{ include "postgresql.master.plainPassword.key" . }}
 {{- end }}

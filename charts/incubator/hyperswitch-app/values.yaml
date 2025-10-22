@@ -1269,6 +1269,12 @@ externalPostgresql:
     # -- External postgres host
     # @section -- Dependencies configuration
     host: "postgresql-ext"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password and plainpassword fields.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
     auth:
       # -- master DB username
       # @section -- Dependencies configuration
@@ -1289,6 +1295,12 @@ externalPostgresql:
     # -- External postgres read only host
     # @section -- Dependencies configuration
     host: "postgres-service"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password field.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
     auth:
       # -- replica DB username
       # @section -- Dependencies configuration
@@ -1296,9 +1308,6 @@ externalPostgresql:
       # -- replica DB password
       # @section -- Dependencies configuration
       password: "hyperswitch"
-      # -- replica DB plainpassword
-      # @section -- Dependencies configuration
-      plainpassword:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
