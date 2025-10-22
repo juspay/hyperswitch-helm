@@ -1,9 +1,16 @@
 # Hyperswitch External Secrets Chart
 # Standalone chart to manage Hyperswitch secrets using External Secrets Operator
 #
+# PREREQUISITES:
+# =============
+# 1. External Secrets Operator must be installed first:
+#    helm repo add external-secrets https://charts.external-secrets.io
+#    helm install external-secrets external-secrets/external-secrets \
+#      -n external-secrets-system --create-namespace
+#
 # INTEGRATION WITH HYPERSWITCH-APP CHART:
 # =====================================
-# This chart creates external secrets that can be consumed by the hyperswitch-app chart.
+# This chart creates secret resources from external secret managers.
 #
 # To use external secrets instead of hardcoded values in hyperswitch-app:
 # 1. Deploy this external-secrets chart first
@@ -53,31 +60,31 @@ clusterSecretStore:
     # -- JWT authentication configuration for AWS IRSA
     auth:
       jwt:
-        # -- Kubernetes service account to use for JWT authentication
+        # -- Kubernetes service account to use for JWT authentication (defaults to chart's internal service account)
         serviceAccountRef:
-          name: "hyperswitch-eso-sa"
-          # For ClusterSecretStore, specify namespace where SA exists
-          namespace: "hyperswitch"
+          name: ""  # Uses serviceAccount.name if empty
+          # For ClusterSecretStore, specify namespace where SA exists (defaults to release namespace)
+          namespace: ""  # Uses release namespace if empty
 
   # Vault configuration (alternative to AWS)
-  vault:
-    # -- Vault server URL
-    server: "https://vault.example.com"
-    # -- Vault API version
-    version: "v2"
-    # -- Path where secrets are stored in Vault
-    path: "hyperswitch"
-    # -- JWT authentication configuration for Vault
-    auth:
-      jwt:
-        # -- Path where JWT auth is mounted in Vault
-        path: "jwt"
-        # -- Role to use for JWT authentication
-        role: "hyperswitch-role"
-        # -- Kubernetes service account to use for JWT authentication
-        serviceAccountRef:
-          name: "hyperswitch-eso-sa"
-          namespace: "hyperswitch"
+  # vault:
+  #   # -- Vault server URL
+  #   server: "https://vault.example.com"
+  #   # -- Vault API version
+  #   version: "v2"
+  #   # -- Path where secrets are stored in Vault
+  #   path: "hyperswitch"
+  #   # -- JWT authentication configuration for Vault
+  #   auth:
+  #     jwt:
+  #       # -- Path where JWT auth is mounted in Vault
+  #       path: "jwt"
+  #       # -- Role to use for JWT authentication
+  #       role: "hyperswitch-role"
+  #       # -- Kubernetes service account to use for JWT authentication (defaults to chart's internal service account)
+  #       serviceAccountRef:
+  #         name: ""  # Uses serviceAccount.name if empty
+  #         namespace: ""  # Uses release namespace if empty
 
 # Service Account configuration
 serviceAccount:
@@ -93,126 +100,70 @@ serviceAccount:
 
 # External Secrets configuration
 externalSecrets:
-  # -- Refresh interval for external secrets (default: 1h)
+  # -- Global refresh interval for all external secrets (default: 1h)
   refreshInterval: "1h"
 
-  # Main Hyperswitch application secrets
-  hyperswitchSecrets:
-    # -- Enable Hyperswitch application secrets
-    enabled: true
-    # -- External store path for application secrets
-    remotePath: "hyperswitch/application"
-    # -- Kubernetes secret name to create (hyperswitch-app expects this name)
-    secretName: "hyperswitch-secrets"
-    # -- Target namespace (defaults to release namespace)
-    namespace: ""
+  # -- Generic secrets configuration map
+  # Each key represents a unique secret identifier, value contains the secret configuration
+  secrets:
+    # Main Hyperswitch application secrets
+    hyperswitch-secrets:
+      # -- Enable this external secret
+      enabled: true
+      # -- Kubernetes secret name to create (hyperswitch-app expects this name)
+      secretName: "hyperswitch-secrets-1"
+      # -- Target namespace (defaults to release namespace if empty)
+      namespace: "hyperswitch"
+      # -- External store path for application secrets
+      remotePath: "hyperswitch/application"
+      # -- Secret key mappings (remoteKey: localKey)
+      mappings:
+        # Core application secrets (from configs.secrets)
+        admin_api_key: "ROUTER__SECRETS__ADMIN_API_KEY"
+        jwt_secret: "ROUTER__SECRETS__JWT_SECRET"
+        master_enc_key: "ROUTER__SECRETS__MASTER_ENC_KEY"
+        recon_admin_api_key: "ROUTER__SECRETS__RECON_ADMIN_API_KEY"
+        migration_encryption_timestamp: "ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP"
+        # API keys (from configs.api_keys)
+        api_hash_key: "ROUTER__API_KEYS__HASH_KEY"
+        # KMS configuration (from configs.kms)
+        kms_key_id: "ROUTER__KMS__KEY_ID"
+        # JWE keys (from configs.jwekey)
+        tunnel_private_key: "ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY"
+        vault_encryption_key: "ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY"
+        vault_private_key: "ROUTER__JWEKEY__VAULT_PRIVATE_KEY"
+        rust_locker_encryption_key: "ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY"
+        # Apple Pay decrypt keys (from configs.applepay_decrypt_keys)
+        apple_pay_merchant_cert: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT"
+        apple_pay_merchant_cert_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT_KEY"
+        apple_pay_ppc: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC"
+        apple_pay_ppc_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC_KEY"
+        # Apple Pay merchant configs (from configs.applepay_merchant_configs)
+        apple_pay_merchant_conf_cert: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT"
+        apple_pay_merchant_conf_cert_key: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT_KEY"
+        apple_pay_merchant_conf_merchant_id: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__COMMON_MERCHANT_IDENTIFIER"
+        # Connector onboarding secrets (from configs.connector_onboarding.paypal)
+        paypal_client_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID"
+        paypal_client_secret: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET"
+        paypal_partner_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID"
+        # Email configuration (from configs.email.smtp)
+        smtp_username: "ROUTER__EMAIL__SMTP__USERNAME"
+        smtp_password: "ROUTER__EMAIL__SMTP__PASSWORD"
+        # Forex API keys (from configs.forex_api)
+        forex_api_key: "ROUTER__FOREX_API__API_KEY"
+        forex_fallback_api_key: "ROUTER__FOREX_API__FALLBACK_API_KEY"
+        # Locker configuration (from configs.locker)
+        redis_temp_locker_encryption_key: "ROUTER__LOCKER__REDIS_TEMP_LOCKER_ENCRYPTION_KEY"
+        # Payment method authentication (from configs.payment_method_auth)
+        pm_auth_key: "ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY"
+        # Key manager (from configs.key_manager)
+        keymanager_ca: "ROUTER__KEY_MANAGER__CA"
+        keymanager_cert: "ROUTER__KEY_MANAGER__CERT"
+        # User authentication (from configs.user_auth_methods)
+        user_auth_encryption_key: "ROUTER__USER_AUTH_METHODS__ENCRYPTION_KEY"
+        # Analytics configuration (from configs.analytics.clickhouse.password)
+        analytics_clickhouse_password: "ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD"
+        # Database password (from configs.analytics.sqlx.password)
+        analytics_sqlx_password: "ROUTER__ANALYTICS__SQLX__PASSWORD"
 
-  # External PostgreSQL database secrets
-  externalPostgresql:
-    # -- Enable external PostgreSQL secrets
-    enabled: false
-    # -- External store path for PostgreSQL secrets
-    remotePath: "hyperswitch/external-postgresql"
-    # -- Kubernetes secret name to create
-    secretName: "external-postgresql"
-    # -- Target namespace (defaults to release namespace)
-    namespace: ""
 
-  # External Redis secrets
-  externalRedis:
-    # -- Enable external Redis secrets
-    enabled: false
-    # -- External store path for Redis secrets
-    remotePath: "hyperswitch/external-redis"
-    # -- Kubernetes secret name to create
-    secretName: "ext-redis"
-    # -- Target namespace (defaults to release namespace)
-    namespace: ""
-
-# Secret mappings configuration - defines which keys to fetch from external store
-# These mappings align with the _secret fields in hyperswitch-app chart's values.yaml
-secretMappings:
-  # Hyperswitch application secrets mapping
-  hyperswitchSecrets:
-    # Core application secrets (from configs.secrets)
-    admin_api_key: "ROUTER__SECRETS__ADMIN_API_KEY"
-    jwt_secret: "ROUTER__SECRETS__JWT_SECRET"
-    master_enc_key: "ROUTER__SECRETS__MASTER_ENC_KEY"
-    recon_admin_api_key: "ROUTER__SECRETS__RECON_ADMIN_API_KEY"
-    migration_encryption_timestamp: "ROUTER__SECRETS__MIGRATION_ENCRYPTION_TIMESTAMP"
-
-    # API keys (from configs.api_keys)
-    api_hash_key: "ROUTER__API_KEYS__HASH_KEY"
-
-    # KMS configuration (from configs.kms)
-    kms_key_id: "ROUTER__KMS__KEY_ID"
-
-    # JWE keys (from configs.jwekey)
-    tunnel_private_key: "ROUTER__JWEKEY__TUNNEL_PRIVATE_KEY"
-    vault_encryption_key: "ROUTER__JWEKEY__VAULT_ENCRYPTION_KEY"
-    vault_private_key: "ROUTER__JWEKEY__VAULT_PRIVATE_KEY"
-    rust_locker_encryption_key: "ROUTER__JWEKEY__RUST_LOCKER_ENCRYPTION_KEY"
-
-    # Apple Pay decrypt keys (from configs.applepay_decrypt_keys)
-    apple_pay_merchant_cert: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT"
-    apple_pay_merchant_cert_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_MERCHANT_CERT_KEY"
-    apple_pay_ppc: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC"
-    apple_pay_ppc_key: "ROUTER__APPLEPAY_DECRYPT_KEYS__APPLE_PAY_PPC_KEY"
-
-    # Apple Pay merchant configs (from configs.applepay_merchant_configs)
-    apple_pay_merchant_conf_cert: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT"
-    apple_pay_merchant_conf_cert_key: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__MERCHANT_CERT_KEY"
-    apple_pay_merchant_conf_merchant_id: "ROUTER__APPLEPAY_MERCHANT_CONFIGS__COMMON_MERCHANT_IDENTIFIER"
-
-    # Connector onboarding secrets (from configs.connector_onboarding.paypal)
-    paypal_client_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_ID"
-    paypal_client_secret: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__CLIENT_SECRET"
-    paypal_partner_id: "ROUTER__CONNECTOR_ONBOARDING__PAYPAL__PARTNER_ID"
-
-    # Email configuration (from configs.email.smtp)
-    smtp_username: "ROUTER__EMAIL__SMTP__USERNAME"
-    smtp_password: "ROUTER__EMAIL__SMTP__PASSWORD"
-
-    # Forex API keys (from configs.forex_api)
-    forex_api_key: "ROUTER__FOREX_API__API_KEY"
-    forex_fallback_api_key: "ROUTER__FOREX_API__FALLBACK_API_KEY"
-
-    # Locker configuration (from configs.locker)
-    redis_temp_locker_encryption_key: "ROUTER__LOCKER__REDIS_TEMP_LOCKER_ENCRYPTION_KEY"
-
-    # Payment method authentication (from configs.payment_method_auth)
-    pm_auth_key: "ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY"
-
-    # Key manager (from configs.key_manager)
-    keymanager_ca: "ROUTER__KEY_MANAGER__CA"
-    keymanager_cert: "ROUTER__KEY_MANAGER__CERT"
-
-    # User authentication (from configs.user_auth_methods)
-    user_auth_encryption_key: "ROUTER__USER_AUTH_METHODS__ENCRYPTION_KEY"
-
-    # Analytics configuration (from configs.analytics.clickhouse.password)
-    analytics_clickhouse_password: "ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD"
-
-    # Database password (from configs.analytics.sqlx.password)
-    analytics_sqlx_password: "ROUTER__ANALYTICS__SQLX__PASSWORD"
-
-  # External PostgreSQL secrets mapping
-  externalPostgresql:
-    primary_host: "primaryHost"
-    primary_port: "primaryPort"
-    primary_username: "primaryUsername"
-    primary_password: "primaryPassword"
-    primary_plain_password: "primaryPlainPassword"
-    primary_database: "primaryDatabase"
-    readonly_host: "readOnlyHost"
-    readonly_port: "readOnlyPort"
-    readonly_username: "readOnlyUsername"
-    readonly_password: "readOnlyPassword"
-    readonly_database: "readOnlyDatabase"
-
-  # External Redis secrets mapping
-  externalRedis:
-    host: "host"
-    port: "port"
-    username: "username"
-    password: "password"

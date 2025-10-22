@@ -9,12 +9,9 @@ keywords:
   - external-secrets
   - secrets-management
   - kubernetes
-home: https://github.com/juspay/hyperswitch-helm
-sources:
-  - https://github.com/juspay/hyperswitch-helm
-maintainers:
-  - name: Hyperswitch Team
-    email: hyperswitch@juspay.in
-annotations:
-  category: Security
 dependencies: []
+
+
+
+
+
