@@ -54,7 +54,7 @@ spec:
       containers:
         - name: hyperswitch-drainer
           {{- $registry := .Values.global.imageRegistry | default .Values.services.drainer.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.drainer.image }}"
+          image: "{{ $registry }}/{{ .Values.services.drainer.image }}:{{ .Values.services.drainer.version }}"
           imagePullPolicy: Always
           command:
             - /local/bin/drainer

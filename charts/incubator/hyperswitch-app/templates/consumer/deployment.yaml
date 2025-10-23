@@ -51,7 +51,7 @@ spec:
       containers:
         - name: hyperswitch-consumer
           {{- $registry := .Values.global.imageRegistry | default .Values.services.consumer.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.consumer.image }}"
+          image: "{{ $registry }}/{{ .Values.services.consumer.image }}:{{ .Values.services.consumer.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

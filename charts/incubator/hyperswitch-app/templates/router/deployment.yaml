@@ -52,7 +52,7 @@ spec:
       containers:
         - name: hyperswitch-router
           {{- $registry := .Values.global.imageRegistry | default .Values.services.router.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.router.image }}"
+          image: "{{ $registry }}/{{ .Values.services.router.image }}:{{ .Values.services.router.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

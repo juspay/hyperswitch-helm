@@ -41,7 +41,7 @@ spec:
       containers:
         - name: hyperswitch-control-center
           {{- $registry := .Values.global.imageRegistry | default .Values.services.controlCenter.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.controlCenter.image }}"
+          image: "{{ $registry }}/{{ .Values.services.controlCenter.image }}:{{ .Values.services.controlCenter.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

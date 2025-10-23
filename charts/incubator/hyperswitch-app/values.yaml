@@ -9,7 +9,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Router image
     # @section -- Services
-    image: juspaydotin/hyperswitch-router:v1.117.0
+    image: juspaydotin/hyperswitch-router
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
@@ -23,7 +23,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Consumer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-consumer:v1.117.0
+    image: juspaydotin/hyperswitch-consumer
   producer:
     enabled: true
     # -- Producer version
@@ -34,7 +34,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Producer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-producer:v1.117.0
+    image: juspaydotin/hyperswitch-producer
   drainer:
     enabled: true
     # -- Drainer version
@@ -45,16 +45,18 @@ services:
     imageRegistry: docker.juspay.io
     # -- Drainer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-drainer:v1.117.0
+    image: juspaydotin/hyperswitch-drainer
   controlCenter:
     enabled: true
+    # -- Control Center version
+    # @section -- Services
+    version: v1.37.4
     # -- Control Center image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
     # -- Control Center image
-    version: v1.37.4
     # @section -- Services
-    image: juspaydotin/hyperswitch-control-center:v1.37.4
+    image: juspaydotin/hyperswitch-control-center
   sdk:
     # -- SDK host
     # @section -- Services
