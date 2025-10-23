@@ -29,9 +29,9 @@ jobs:
       - name: Determine hyperswitch branch/tag
         id: determine_ref
         run: |
-          if [ -n "${{ inputs.hyperswitch_branch }}" ]; then
+          if [ -n "${{ inputs.hyperswitch_tag }}" ]; then
             # Use user-provided input
-            REF="${{ inputs.hyperswitch_branch }}"
+            REF="${{ inputs.hyperswitch_tag }}"
             echo "Using user-specified branch/tag: $REF"
           else
             # Fetch latest tag from hyperswitch repository using GraphQL API
