@@ -1,0 +1,196 @@
+name: Sync Hyperswitch Updates
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Allow manual triggering with branch selection
+    inputs:
+      hyperswitch_branch:
+        description: 'Branch or tag of hyperswitch repository (e.g., main, develop, v1.118.0). If not specified, uses latest tag by commit date.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sync-hyperswitch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Determine hyperswitch branch/tag
+        id: determine_ref
+        run: |
+          if [ -n "${{ inputs.hyperswitch_branch }}" ]; then
+            # Use user-provided input
+            REF="${{ inputs.hyperswitch_branch }}"
+            echo "Using user-specified branch/tag: $REF"
+          else
+            # Fetch latest tag from hyperswitch repository using GraphQL API
+            echo "Fetching latest tag from hyperswitch repository using GraphQL API..."
+
+            # GraphQL query to get the most recent tag by commit date
+            QUERY='query {
+              repository(owner: "juspay", name: "hyperswitch") {
+                refs(
+                  refPrefix: "refs/tags/"
+                  first: 1
+                  orderBy: {field: TAG_COMMIT_DATE, direction: DESC}
+                ) {
+                  edges {
+                    node {
+                      name
+                    }
+                  }
+                }
+              }
+            }'
+
+            # Execute GraphQL query
+            REF=$(curl -s -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+                      -H "Content-Type: application/json" \
+                      -X POST \
+                      -d "{\"query\":\"$(echo "$QUERY" | tr '\n' ' ' | sed 's/"/\\"/g')\"}" \
+                      https://api.github.com/graphql | \
+                  jq -r '.data.repository.refs.edges[0].node.name')
+
+            if [ -z "$REF" ] || [ "$REF" = "null" ]; then
+              echo "Failed to fetch latest tag via GraphQL, falling back to main"
+              REF="main"
+            else
+              echo "Using latest tag from GraphQL: $REF"
+            fi
+          fi
+          echo "target_ref=$REF" >> $GITHUB_OUTPUT
+
+      - name: Clone hyperswitch repository
+        uses: actions/checkout@v4
+        with:
+          repository: juspay/hyperswitch
+          path: hyperswitch-repo
+          ref: ${{ steps.determine_ref.outputs.target_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create target directory if it doesn't exist
+        run: |
+          mkdir -p charts/incubator/hyperswitch-app/configs
+
+      - name: Copy configuration files
+        run: |
+          # Copy files from hyperswitch repo to our repo
+          cp hyperswitch-repo/config/deployments/integration_test.toml charts/incubator/hyperswitch-app/configs/router-integ.toml
+          cp hyperswitch-repo/config/deployments/sandbox.toml charts/incubator/hyperswitch-app/configs/router-sandbox.toml
+          cp hyperswitch-repo/config/deployments/production.toml charts/incubator/hyperswitch-app/configs/router-production.toml
+
+      - name: Update service versions in values.yaml
+        run: |
+          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
+
+          echo "Updating service versions with hyperswitch reference: $SOURCE_REF"
+
+          # Install yq for reliable YAML processing
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+          # Update each service version using specific YAML paths
+          yq eval ".services.router.version = \"router-$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.consumer.version = \"consumer-$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.producer.version = \"producer-$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.drainer.version = \"drainer-$SOURCE_REF\"" -i $VALUES_FILE
+
+          echo "Service versions updated successfully"
+
+      - name: Cleanup hyperswitch repository
+        run: |
+          rm -rf hyperswitch-repo
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Check for both tracked file changes and untracked files
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "No changes detected"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            # Show what changed for debugging
+            echo "Git status:"
+            git status --porcelain
+          fi
+
+      - name: Generate tag
+        id: generate_tag
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+
+          # Use the same tag as hyperswitch repo
+          NEW_TAG="$SOURCE_REF"
+
+          # Check if tag already exists in current repo
+          if git tag -l | grep -q "^${NEW_TAG}$"; then
+            echo "❌ Tag $NEW_TAG already exists in current repository!"
+            echo "This indicates the configuration has already been synced from this hyperswitch version."
+            exit 1
+          fi
+
+          echo "Using hyperswitch tag: $NEW_TAG"
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+      - name: Configure Git
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml
+          git commit -m "chore: sync hyperswitch updates from ${{ steps.determine_ref.outputs.target_ref }}
+
+          Configuration files:
+          - Updated router-integ.toml from integration_test.toml
+          - Updated router-sandbox.toml from sandbox.toml
+          - Updated router-production.toml from production.toml
+
+          Service versions:
+          - Updated all service versions to ${{ steps.determine_ref.outputs.target_ref }}
+
+          Source: https://github.com/juspay/hyperswitch/tree/${{ steps.determine_ref.outputs.target_ref }}/config/deployments
+          Source ref: ${{ steps.determine_ref.outputs.target_ref }}
+          Tag: ${{ steps.generate_tag.outputs.tag }}"
+
+      - name: Create and push tag
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git tag "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD --tags
+
+      - name: Summary
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          echo "✅ Hyperswitch updates synced successfully!"
+          echo "🌿 Source ref: ${{ steps.determine_ref.outputs.target_ref }}"
+          echo "📁 Configuration files updated:"
+          echo "   - charts/incubator/hyperswitch-app/configs/router-integ.toml"
+          echo "   - charts/incubator/hyperswitch-app/configs/router-sandbox.toml"
+          echo "   - charts/incubator/hyperswitch-app/configs/router-production.toml"
+          echo "📋 Service versions updated:"
+          echo "   - charts/incubator/hyperswitch-app/values.yaml"
+          echo "🏷️  Tagged with: ${{ steps.generate_tag.outputs.tag }}"
+
+      - name: No changes summary
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "ℹ️  No changes detected - hyperswitch updates are already up to date"
