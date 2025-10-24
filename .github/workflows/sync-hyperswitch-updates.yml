@@ -90,12 +90,13 @@ jobs:
           cp hyperswitch-repo/config/deployments/sandbox.toml charts/incubator/hyperswitch-app/configs/router-sandbox.toml
           cp hyperswitch-repo/config/deployments/production.toml charts/incubator/hyperswitch-app/configs/router-production.toml
 
-      - name: Update service versions in values.yaml
+      - name: Update service versions and chart version
         run: |
           SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
           VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
+          CHART_FILE="charts/incubator/hyperswitch-app/Chart.yaml"
 
-          echo "Updating service versions with hyperswitch reference: $SOURCE_REF"
+          echo "Updating service versions and chart version with hyperswitch reference: $SOURCE_REF"
 
           # Install yq for reliable YAML processing
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
@@ -107,7 +108,10 @@ jobs:
           yq eval ".services.producer.version = \"producer-$SOURCE_REF\"" -i $VALUES_FILE
           yq eval ".services.drainer.version = \"drainer-$SOURCE_REF\"" -i $VALUES_FILE
 
-          echo "Service versions updated successfully"
+          # Update chart version to match hyperswitch version
+          yq eval ".version = \"$SOURCE_REF\"" -i $CHART_FILE
+
+          echo "Service versions and chart version updated successfully"
 
       - name: Cleanup hyperswitch repository
         run: |
@@ -156,7 +160,7 @@ jobs:
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml
+          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
           git commit -m "chore: sync hyperswitch updates from ${{ steps.determine_ref.outputs.target_ref }}
 
           Configuration files:
@@ -166,6 +170,9 @@ jobs:
 
           Service versions:
           - Updated all service versions to ${{ steps.determine_ref.outputs.target_ref }}
+
+          Chart version:
+          - Updated chart version to ${{ steps.determine_ref.outputs.target_ref }}
 
           Source: https://github.com/juspay/hyperswitch/tree/${{ steps.determine_ref.outputs.target_ref }}/config/deployments
           Source ref: ${{ steps.determine_ref.outputs.target_ref }}
@@ -188,6 +195,8 @@ jobs:
           echo "   - charts/incubator/hyperswitch-app/configs/router-production.toml"
           echo "📋 Service versions updated:"
           echo "   - charts/incubator/hyperswitch-app/values.yaml"
+          echo "📦 Chart version updated:"
+          echo "   - charts/incubator/hyperswitch-app/Chart.yaml"
           echo "🏷️  Tagged with: ${{ steps.generate_tag.outputs.tag }}"
 
       - name: No changes summary
