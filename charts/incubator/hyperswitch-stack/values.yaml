@@ -15,7 +15,6 @@ services:
   sdk:
     host: &web_sdk_host http://localhost:9050
 
-# @ignored
 global:
   # Global image registry to override all container image registries
   # If set, all container images will be pulled from this registry
@@ -92,7 +91,6 @@ hyperswitch-web:
                 name: hyperswitch-web
                 port:
                   number: 80
-
 # @ignored
 hyperswitch-app:
   initDB:
@@ -188,7 +186,6 @@ hyperswitch-app:
   vector:
     tolerations: []
 
-# @ignored
 hyperswitch-monitoring:
   enabled: true
   # Pass global imageRegistry to monitoring subcharts
