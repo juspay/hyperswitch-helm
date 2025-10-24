@@ -31,6 +31,7 @@ jobs:
 
       - name: Add helm repos
         run: |
+          helm repo add hyperswitch https://juspay.github.io/hyperswitch-helm
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo add opentelemetry https://open-telemetry.github.io/opentelemetry-helm-charts

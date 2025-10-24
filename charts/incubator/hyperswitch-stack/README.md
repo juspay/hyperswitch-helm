@@ -210,3 +210,12 @@ task pihh
 # To update readme file
 task ur
 ```
+
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-app | 0.2.13 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-monitoring | 0.1.4 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.2 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-web | 0.2.12 |
