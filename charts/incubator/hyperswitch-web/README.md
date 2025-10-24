@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.12](https://img.shields.io/badge/Version-0.2.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
+![Version: 0.2.13](https://img.shields.io/badge/Version-0.2.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -49,7 +49,7 @@ assets
 | podLabels | object | `{}` | pod labels |
 | podSecurityContext | object | `{}` | pod security context |
 | replicaCount | int | `1` | deployment/statefulset replicas |
-| sdkDemo.annotations."deployment.kubernetes.io/revision" | string | `"1"` |  |
+| sdkDemo.annotations | object | `{}` |  |
 | sdkDemo.enabled | bool | `true` |  |
 | sdkDemo.env.binary | string | `"sdk"` |  |
 | sdkDemo.env.host | string | `"hyperswitch-sdk-demo"` |  |
