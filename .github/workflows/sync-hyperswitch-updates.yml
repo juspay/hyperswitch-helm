@@ -20,11 +20,16 @@ jobs:
   sync-hyperswitch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current repository
+      - name: Checkout daily-releases branch
         uses: actions/checkout@v4
         with:
+          ref: daily-releases
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+
+      - name: Merge latest changes from main
+        run: |
+          git merge origin/main -X theirs --no-edit
 
       - name: Determine hyperswitch branch/tag
         id: determine_ref
