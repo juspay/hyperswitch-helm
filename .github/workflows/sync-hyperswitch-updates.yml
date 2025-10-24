@@ -29,6 +29,7 @@ jobs:
 
       - name: Merge latest changes from main
         run: |
+          git fetch origin main
           git merge origin/main -X theirs --no-edit
 
       - name: Determine hyperswitch branch/tag
