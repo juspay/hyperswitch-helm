@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: consumer-cm-{{ .Release.Name }}
+  name: {{ include "hyperswitch.consumer.fullname" . }}-cm
 data: 
   consumer.toml: |
     {{- if eq .Values.server.run_env "production" -}}

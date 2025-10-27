@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hyperswitch-alb-ingress
+  name: {{ include "hyperswitch.router.fullname" . }}-ingress
   namespace:  {{ .Release.Namespace }}
   annotations:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
@@ -30,7 +30,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hyperswitch-server
+                name: {{ include "hyperswitch.router.fullname" . }}
                 port:
                   number: 80
 {{- end }}

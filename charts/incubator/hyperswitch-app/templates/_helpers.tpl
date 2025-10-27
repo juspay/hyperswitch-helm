@@ -151,9 +151,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/* Define the clickhouse secret when enabled */}}
 {{- define "clickhouse.secret" -}}
   {{- if .Values.clickhouse.enabled -}}
-    {{- printf "clickhouse" -}}
+    {{- include "clickhouse.fullname" . -}}
   {{- else -}}
-    {{- printf "hyperswitch-secrets" -}}
+    {{- include "hyperswitch.secrets.name" . -}}
   {{- end -}}
 {{- end -}}
 
@@ -171,9 +171,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   {{- printf "%s/web/%s/%s/HyperLoader.js" .Values.services.sdk.host .Values.services.sdk.version .Values.services.sdk.subversion -}}
 {{- end -}}
 
-{{/* Define the ClickHouse host */}}
+{{/* Define the ClickHouse host (hostname only, used for clickhouse-client) */}}
 {{- define "clickhouse.host" -}}
-{{ .Values.clickhouse.host | default "clickhouse" }}
+{{- include "clickhouse.fullname" . -}}
+{{- end -}}
+
+{{/* Define the ClickHouse URL (http://hostname:port, used for analytics configuration) */}}
+{{- define "clickhouse.url" -}}
+{{- printf "http://%s:8123" (include "clickhouse.fullname" .) -}}
 {{- end -}}
 
 {{/* Define the OpenTelemetry Collector endpoint when metrics or traces are enabled */}}
@@ -196,9 +201,158 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   {{- end -}}
 {{- end -}}
 
-{{/* 
+{{/*
 Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 */}}
 {{- define "version.suffix" -}}
 {{- . | replace "." "o" -}}
+{{- end -}}
+
+{{/*
+Component name helpers - allows configurable naming for each service
+*/}}
+
+{{/* Router component name */}}
+{{- define "hyperswitch.router.name" -}}
+{{- default "hyperswitch-server" .Values.server.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Router full name */}}
+{{- define "hyperswitch.router.fullname" -}}
+{{- if .Values.server.fullnameOverride -}}
+{{- .Values.server.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "hyperswitch-server" .Values.server.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Consumer component name */}}
+{{- define "hyperswitch.consumer.name" -}}
+{{- default "hyperswitch-consumer" .Values.consumer.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Consumer full name */}}
+{{- define "hyperswitch.consumer.fullname" -}}
+{{- if .Values.consumer.fullnameOverride -}}
+{{- .Values.consumer.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "hyperswitch-consumer" .Values.consumer.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Producer component name */}}
+{{- define "hyperswitch.producer.name" -}}
+{{- default "hyperswitch-producer" .Values.producer.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Producer full name */}}
+{{- define "hyperswitch.producer.fullname" -}}
+{{- if .Values.producer.fullnameOverride -}}
+{{- .Values.producer.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "hyperswitch-producer" .Values.producer.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Drainer component name */}}
+{{- define "hyperswitch.drainer.name" -}}
+{{- default "hyperswitch-drainer" .Values.drainer.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Drainer full name */}}
+{{- define "hyperswitch.drainer.fullname" -}}
+{{- if .Values.drainer.fullnameOverride -}}
+{{- .Values.drainer.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "hyperswitch-drainer" .Values.drainer.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Control Center component name */}}
+{{- define "hyperswitch.controlCenter.name" -}}
+{{- default "hyperswitch-control-center" .Values.controlCenter.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Control Center full name */}}
+{{- define "hyperswitch.controlCenter.fullname" -}}
+{{- if .Values.controlCenter.fullnameOverride -}}
+{{- .Values.controlCenter.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "hyperswitch-control-center" .Values.controlCenter.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Secrets name */}}
+{{- define "hyperswitch.secrets.name" -}}
+{{- if .Values.global.secretsNameOverride -}}
+{{- .Values.global.secretsNameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-secrets" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Router service account name */}}
+{{- define "hyperswitch.server.serviceAccountName" -}}
+{{- if .Values.server.serviceAccount.name -}}
+{{- .Values.server.serviceAccount.name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-hyperswitch-router" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Control Center service account name */}}
+{{- define "hyperswitch.controlCenter.serviceAccountName" -}}
+{{- if .Values.controlCenter.serviceAccount.name -}}
+{{- .Values.controlCenter.serviceAccount.name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-hyperswitch-control-center" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/* External Redis secret name */}}
+{{- define "externalRedis.secret.name" -}}
+{{- printf "ext-redis-%s" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* DB migration job name */}}
+{{- define "hyperswitch.db.job.name" -}}
+{{- printf "%s-hyperswitch-create-db-%s" .Release.Name (regexReplaceAll "\\." .Values.services.router.version "-") | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Clickhouse fullname - matches Bitnami subchart default naming */}}
+{{- define "clickhouse.fullname" -}}
+{{- $fullname := printf "%s-clickhouse" .Release.Name -}}
+{{- if and .Values.clickhouse (hasKey .Values.clickhouse "fullnameOverride") -}}
+{{- if and .Values.clickhouse.fullnameOverride (ne .Values.clickhouse.fullnameOverride "") -}}
+{{- $fullname = .Values.clickhouse.fullnameOverride -}}
+{{- end -}}
+{{- end -}}
+{{- $fullname | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Kafka fullname - matches Bitnami subchart default naming */}}
+{{- define "kafka.fullname" -}}
+{{- $fullname := printf "%s-kafka" .Release.Name -}}
+{{- if and .Values.kafka (hasKey .Values.kafka "fullnameOverride") -}}
+{{- if and .Values.kafka.fullnameOverride (ne .Values.kafka.fullnameOverride "") -}}
+{{- $fullname = .Values.kafka.fullnameOverride -}}
+{{- end -}}
+{{- end -}}
+{{- $fullname | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/* Mailhog fullname - matches mailhog subchart default naming */}}
+{{- define "mailhog.fullname" -}}
+{{- $fullname := printf "%s-mailhog" .Release.Name -}}
+{{- if and .Values.mailhog (hasKey .Values.mailhog "fullnameOverride") -}}
+{{- if and .Values.mailhog.fullnameOverride (ne .Values.mailhog.fullnameOverride "") -}}
+{{- $fullname = .Values.mailhog.fullnameOverride -}}
+{{- end -}}
+{{- end -}}
+{{- $fullname | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

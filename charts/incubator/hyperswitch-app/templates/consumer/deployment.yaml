@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.consumer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-consumer-{{ include "version.suffix" .Values.services.consumer.version }}
+  name: {{ include "hyperswitch.consumer.fullname" . }}-{{ include "version.suffix" .Values.services.consumer.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.consumer.progressDeadlineSeconds }}
@@ -66,9 +66,9 @@ spec:
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - secretRef:
-                name: consumer-secret-{{ .Release.Name }}
+                name: {{ include "hyperswitch.consumer.fullname" . }}-secret
             - secretRef:
-                name: hyperswitch-secrets
+                name: {{ include "hyperswitch.secrets.name" . }}
           resources:
             requests:
               cpu: 100m
@@ -93,11 +93,11 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch.router.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.consumer.terminationGracePeriodSeconds }}
       volumes:
         - configMap:
             defaultMode: 420
-            name: consumer-cm-{{ .Release.Name }}
+            name: {{ include "hyperswitch.consumer.fullname" . }}-cm-{{ .Release.Name }}
           name: hyperswitch-config
 {{- end }}

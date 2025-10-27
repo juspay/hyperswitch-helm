@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hyperswitch-card-vault-{{ .Release.Name }}
+  name: {{ include "hyperswitch-card-vault.deployment.name" . }}-{{ include "version.suffix" .Values.server.version }}
   namespace: {{ .Release.Namespace }}
   {{- with (default .Values.global.annotations .Values.server.annotations) }}
   annotations:
@@ -57,7 +57,7 @@ spec:
             - name: LOCKER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__DATABASE__PASSWORD
             - name: LOCKER__DATABASE__HOST
               value: {{ include "locker-psql.host" . }}
@@ -74,17 +74,17 @@ spec:
             - name: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__SECRETS__LOCKER_PRIVATE_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__TENANT_SECRETS__PUBLIC__MASTER_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__SCHEMA
               value: {{ .Values.tenant_secrets.public.schema | quote }}
@@ -94,12 +94,12 @@ spec:
             - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
             - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
             {{- else if eq .Values.backend "vault" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
@@ -109,7 +109,7 @@ spec:
             - name: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__TOKEN
             {{- end }}
             - name: LOCKER__CACHE__MAX_CAPACITY
@@ -122,28 +122,28 @@ spec:
             - name: LOCKER__EXTERNAL_KEY_MANAGER__CERT
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__EXTERNAL_KEY_MANAGER__CERT
             {{- end }}
             {{- if .Values.secrets.api_client.identity }}
             - name: LOCKER__API_CLIENT__IDENTITY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__API_CLIENT__IDENTITY
             {{- end }}
             {{- if .Values.secrets.tls.certificate }}
             - name: LOCKER__TLS__CERTIFICATE
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__TLS__CERTIFICATE
             {{- end }}
             {{- if .Values.secrets.tls.private_key }}
             - name: LOCKER__TLS__PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__TLS__PRIVATE_KEY
             {{- end }}
             {{- if .Values.server.extra.env }}
@@ -204,11 +204,11 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccount: hyperswitch-vault-role
-      serviceAccountName: hyperswitch-vault-role
+      serviceAccount: {{ include "hyperswitch-card-vault.sa.name" . }}
+      serviceAccountName: {{ include "hyperswitch-card-vault.sa.name" . }}
       terminationGracePeriodSeconds: 120
       volumes:
         - configMap:
             defaultMode: 420
-            name: hyperswitch-vault-config-{{ .Release.Name }}
+            name: {{ include "hyperswitch-card-vault.configmap.name" . }}
           name: hyperswitch-vault-config

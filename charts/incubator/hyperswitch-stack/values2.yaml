@@ -1,0 +1,114 @@
+
+# --- Global Settings ---
+global:
+  tolerations: []
+  affinity: {}
+
+# --- Service URLs ---
+# Update these with your actual domain names
+services:
+  router:
+    host: &router_host https://apigw.snektulz.work  # Backend API URL
+  sdk:
+    host: &web_sdk_host https://jsgw.snektulz.work  # SDK/Web URL (without version path)
+
+# --- Hyperswitch App Configuration ---
+hyperswitch-app:
+  # Initialize database on first install
+  initDB:
+    enable: true
+
+  # Service images (using stable v1.117.0 from default registry)
+  services:
+    router:
+      version: v1.117.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-router:v1.117.0
+      host: *router_host
+    consumer:
+      version: v1.117.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-consumer:v1.117.0
+    producer:
+      version: v1.117.0
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-producer:v1.117.0
+    drainer:
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-drainer:v1.117.0
+      version: v1.117.0
+    controlCenter:
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-control-center:v1.37.4
+    sdk:
+      host: *web_sdk_host
+      version: 0.126.0
+      subversion: v1
+
+  # Server configuration
+  server:
+    # User base URL (used for email links to dashboard)
+    user:
+      base_url: https://quench.snektulz.work
+
+  # Card Vault (Locker) configuration
+  hyperswitch-card-vault:
+    enabled: true
+    initDB:
+      enable: true
+    server:
+      imageRegistry: docker.juspay.io
+      image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
+      tenant_secrets:
+        hyperswitch:
+          master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
+          public_key: ""
+          schema: "public"
+
+  # Mailhog for testing emails (disable in production)
+  mailhog:
+    enabled: true
+
+  # Disable ingress (you should configure this separately for your domain)
+  ingress:
+    enabled: false
+
+# --- Hyperswitch Web (SDK) Configuration ---
+hyperswitch-web:
+  enabled: true
+  image:
+    pullPolicy: IfNotPresent
+
+  # Auto-build configuration
+  autoBuild:
+    enable: true
+    forceBuild: true
+    gitCloneParam:
+      gitVersion: 0.126.0
+    nginxConfig:
+      extraPath: v1
+    buildParam:
+      envSdkUrl: *web_sdk_host
+      envBackendUrl: *router_host
+      envLogsUrl: http://localhost:3103
+
+  # Disable ingress (configure separately)
+  ingress:
+    enabled: false
+
+# --- Monitoring Configuration ---
+hyperswitch-monitoring:
+  enabled: true
+  kube-prometheus-stack:
+    grafana:
+      ingress:
+        enabled: false
+  loki:
+    singleBinary:
+      ingress:
+        enabled: false
+
+# --- Hyperswitch UCS (Unified Connector Service) ---
+# Disabled by default - only enable if you need it
+hyperswitch-ucs:
+  enabled: false

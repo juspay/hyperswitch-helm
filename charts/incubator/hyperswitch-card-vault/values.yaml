@@ -11,6 +11,14 @@ global:
   # Node affinity to be added to all resources
   affinity: {}
 
+# Override names for card vault resources
+# -- Override service account name (defaults to {release-name}-vault-role)
+serviceAccountNameOverride: null
+# -- Override service name (defaults to {release-name}-vault)
+serviceNameOverride: null
+# -- Override deployment name (defaults to {release-name}-card-vault)
+deploymentNameOverride: null
+
 # Backend selection: aws, vault, or local
 backend: local
 
@@ -161,6 +169,8 @@ postgresql:
   image:
     repository: bitnamilegacy/postgresql
     tag: 16.1.0-debian-11-r18
+  # Note: nameOverride should include release name to avoid conflicts
+  # Use: --set postgresql.nameOverride=locker-db or fullnameOverride={release-name}-locker-db
   nameOverride: locker-db
   auth:
     username: db_user

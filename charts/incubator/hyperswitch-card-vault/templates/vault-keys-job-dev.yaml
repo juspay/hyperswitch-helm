@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: hyperswitch-vault-keys-config-{{ .Release.Name }}
+  name: {{ include "hyperswitch-card-vault.keys.configmap.name" . }}
   labels:
     app: hyperswitch-vault-keys
   annotations:
@@ -27,19 +27,19 @@ spec:
             - |-
               set -e
               echo "Posting key1..."
-              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key1 \
+              curl -X POST http://{{ include "hyperswitch-card-vault.service.url" . }}/custodian/key1 \
                 -H "Content-Type: application/json" \
                 -H "x-tenant-id: public" \
                 -d '{"key": "{{ .Values.vaultKeysJob.keys.key1 }}"}'
-              
+
               echo "Posting key2..."
-              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key2 \
+              curl -X POST http://{{ include "hyperswitch-card-vault.service.url" . }}/custodian/key2 \
                 -H "Content-Type: application/json" \
                 -H "x-tenant-id: public" \
                 -d '{"key": "{{ .Values.vaultKeysJob.keys.key2 }}"}'
-              
+
               echo "Calling decrypt endpoint..."
-              curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/decrypt \
+              curl -X POST http://{{ include "hyperswitch-card-vault.service.url" . }}/custodian/decrypt \
                 -H "Content-Type: application/json" \
                 -H "x-tenant-id: public"
           resources:

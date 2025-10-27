@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sdk.fullname" . }}
+  name: {{ include "sdk.fullname" . }}-{{ include "hyperswitch-web.version.suffix" . }}
   labels:
     {{- include "sdk.labels" . | nindent 4 }}
+    version: {{ include "hyperswitch-web.version.suffix" . }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -95,18 +96,21 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.envFrom }}
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+            - name: nginx-html-volume
+              mountPath: /usr/share/nginx/html
           envFrom:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            - configMapRef:
+                name: {{ include "sdk.fullname" . }}-nginx
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: nginx-config-volume
+          configMap:
+            name: {{ include "sdk.fullname" . }}-nginx
+        - name: nginx-html-volume
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

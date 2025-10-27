@@ -42,7 +42,7 @@
       SLEEP_SECONDS=5;
       attempt=0;
       while true; do
-        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/health)
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://{{ include "hyperswitch-card-vault.service.url" . }}/health)
         if [ "$HTTP_STATUS" = "200" ]; then
           echo " Vault service is healthy.";
           break;

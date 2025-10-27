@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: hyperswitch-create-locker-db-{{ regexReplaceAll "\\." .Values.server.version "-" }}
+  name: {{ include "hyperswitch-card-vault.migration.name" . }}
   labels:
     app: hyperswitch-create-locker-db-{{ regexReplaceAll "\\." .Values.server.version "-" }}
   annotations:
@@ -64,6 +64,6 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: locker-secrets-{{ .Release.Name }}
+                  name: {{ include "hyperswitch-card-vault.secrets.name" . }}
                   key: LOCKER__DATABASE__PASSWORD
 {{- end }}

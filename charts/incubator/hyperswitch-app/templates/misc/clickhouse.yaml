@@ -4,10 +4,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: clickhouse-script
-  namespace: hyperswitch
+  name: {{ include "clickhouse.fullname" . }}-script
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: clickhouse
+    app: {{ include "clickhouse.fullname" . }}
 data:
   init.sql: |-
     CREATE TABLE IF NOT EXISTS api_events_queue (
@@ -37,7 +37,7 @@ data:
       `http_method` LowCardinality(String),
       `url_path` Nullable(String),
       `dispute_id` Nullable(String)
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-api-log-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -304,7 +304,7 @@ data:
       `directory_server_id` Nullable(String),
       `acquirer_country_code` Nullable(String),
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-authentication-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -475,7 +475,7 @@ data:
       `method` LowCardinality(String),
       `dispute_id` Nullable(String),
       `refund_id` Nullable(String)
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-outgoing-connector-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -659,7 +659,7 @@ data:
       `merchant_connector_id` Nullable(String),
       `organization_id` String,
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-dispute-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -795,7 +795,7 @@ data:
       `last_step` LowCardinality(String),
       `payment_capture_method` LowCardinality(String),
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-fraud-check-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -922,7 +922,7 @@ data:
       `status_code` Nullable(UInt16),
       `delivery_attempt` LowCardinality(String),
       `created_at_timestamp` DateTime64(3)
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-outgoing-webhook-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -1136,7 +1136,7 @@ data:
       `profile_id` String,
       `card_network` Nullable(String),
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-payment-attempt-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -1324,7 +1324,7 @@ data:
       `last_synced` Nullable(DateTime) CODEC(T64, LZ4),
       `organization_id` String,
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-payment-intent-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -1456,7 +1456,7 @@ data:
       `business_label` Nullable(String),
       `merchant_connector_id` Nullable(String),
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-payout-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -1597,7 +1597,7 @@ data:
       `organization_id` String,
       `profile_id` String,
       `sign_flag` Int8
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = '{{ include "kafka.fullname" . }}:29092',
     kafka_topic_list = 'hyperswitch-refund-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
@@ -1956,9 +1956,9 @@ data:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: hypers-v1-clickhouse-init
+  name: {{ include "clickhouse.fullname" . }}-init
   labels:
-    app: hypers-v1-clickhouse-init
+    app: {{ include "clickhouse.fullname" . }}-init
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
@@ -1991,14 +1991,14 @@ spec:
               fi
               
               echo "Executing ClickHouse init scripts..."
-              cat /docker-entrypoint-initdb.d/*.sql | clickhouse-client --host=clickhouse --user default --password "$CLICKHOUSE_ADMIN_PASSWORD" --multiquery
+              cat /docker-entrypoint-initdb.d/*.sql | clickhouse-client --host={{ include "clickhouse.fullname" . }} --user default --password "$CLICKHOUSE_ADMIN_PASSWORD" --multiquery
               
               echo "ClickHouse initialization completed."
           env:
             - name: CLICKHOUSE_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: clickhouse
+                  name: {{ include "clickhouse.fullname" . }}
                   key: admin-password
           volumeMounts:
             - name: init-scripts
@@ -2006,6 +2006,6 @@ spec:
       volumes:
         - name: init-scripts
           configMap:
-            name: clickhouse-script
+            name: {{ include "clickhouse.fullname" . }}-script
 
 {{- end }}

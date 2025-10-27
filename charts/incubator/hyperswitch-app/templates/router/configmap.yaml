@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: router-cm-{{.Release.Name }}
+  name: {{ include "hyperswitch.router.fullname" . }}-cm-{{.Release.Name }}
 data:
   router.toml: |
     {{- if eq .Values.server.run_env "production" -}}

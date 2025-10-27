@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: producer-cm-{{.Release.Name }}
+  name: {{ include "hyperswitch.producer.fullname" . }}-cm-{{.Release.Name }}
 data:
   producer.toml: |
     

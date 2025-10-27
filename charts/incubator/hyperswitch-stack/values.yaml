@@ -40,7 +40,6 @@ global:
 
 # @ignored
 hyperswitch-web:
-  fullnameOverride: "hyperswitch-web"
   enabled: true
   sdkDemo:
     enabled: false

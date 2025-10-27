@@ -1,5 +1,11 @@
 # Hyperswitch Monitoring Stack Configuration
 
+# Override names for monitoring chart resources
+# -- Override the base name for all resources (defaults to 'hyperswitch-monitoring')
+nameOverride: null
+# -- Override the full name for all resources (defaults to {release-name}-hyperswitch-monitoring)
+fullnameOverride: null
+
 # Global configuration
 global:
   # Global image registry that can override all imageRegistry fields
@@ -16,6 +22,17 @@ global:
 kube-prometheus-stack:
   enabled: true
 
+  # Note: The kube-prometheus-stack subchart creates Prometheus/Alertmanager CRDs
+  # The Prometheus Operator automatically prefixes StatefulSet names with the resource type:
+  # - CRD name: {release-name}-kube-promethe-prometheus
+  # - StatefulSet name: prometheus-{release-name}-kube-promethe-prometheus
+  # This is expected behavior and ensures the operator can manage multiple instances
+
+  # Override to use shorter, cleaner names
+  # Format: {release-name}-prometheus (operator adds prefix: prometheus-{release-name}-prometheus)
+  nameOverride: ""
+  fullnameOverride: ""
+
   # Prometheus Operator configurations
   prometheusOperator:
     admissionWebhooks:
@@ -26,6 +43,10 @@ kube-prometheus-stack:
 
   alertmanager:
     enabled: true
+    # Use fullnameOverride to control the Alertmanager CRD name
+    # The operator will create StatefulSet: alertmanager-{this-value}
+    # Leave empty to use default: {release-name}-kube-promethe-alertmanager
+    fullnameOverride: ""
     alertmanagerSpec:
       # Tolerations for Alertmanager pods
       tolerations: []
@@ -33,6 +54,10 @@ kube-prometheus-stack:
   # Prometheus configuration
   prometheus:
     enabled: true
+    # Use fullnameOverride to control the Prometheus CRD name
+    # The operator will create StatefulSet: prometheus-{this-value}
+    # Leave empty to use default: {release-name}-kube-promethe-prometheus
+    fullnameOverride: ""
     prometheusSpec:
       # Tolerations for Prometheus pods
       tolerations: []
@@ -143,7 +168,9 @@ kube-prometheus-stack:
 # Loki configuration
 loki:
   enabled: true
-  fullnameOverride: "loki"
+  # Note: fullnameOverride should include release name to avoid conflicts with ClusterRole
+  # Use: --set loki.fullnameOverride={release-name}-loki when installing multiple releases
+  fullnameOverride: ""
   global:
     image:
       registry: null
@@ -210,6 +237,14 @@ loki:
     enabled: false
   resultsCache:
     enabled: false
+
+  # Loki Canary configuration
+  # Note: Loki canary does not support fullnameOverride and always uses "loki-canary" as the base name
+  # This results in DaemonSet name: loki-canary (without release prefix)
+  # This is a known limitation of the Loki chart
+  lokiCanary:
+    enabled: true
+    kind: DaemonSet
 
 # Promtail configuration
 promtail:

@@ -235,3 +235,82 @@ true
 false
 {{- end -}}
 {{- end -}}
+
+{{/*
+Card Vault service account name
+*/}}
+{{- define "hyperswitch-card-vault.sa.name" -}}
+{{- if .Values.serviceAccountNameOverride -}}
+{{- .Values.serviceAccountNameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-vault-role" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Card Vault service name
+*/}}
+{{- define "hyperswitch-card-vault.service.name" -}}
+{{- if .Values.serviceNameOverride -}}
+{{- .Values.serviceNameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-hyperswitch-vault" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Convert version format from v0.6.5 to v0o6o5 for Kubernetes labels
+*/}}
+{{- define "version.suffix" -}}
+{{- . | replace "." "o" -}}
+{{- end -}}
+
+{{/*
+Card Vault deployment name
+*/}}
+{{- define "hyperswitch-card-vault.deployment.name" -}}
+{{- if .Values.deploymentNameOverride -}}
+{{- .Values.deploymentNameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-hyperswitch-card-vault" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Card Vault configmap name
+*/}}
+{{- define "hyperswitch-card-vault.configmap.name" -}}
+{{- printf "%s-hyperswitch-vault-cm" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Card Vault secrets name
+*/}}
+{{- define "hyperswitch-card-vault.secrets.name" -}}
+{{- printf "%s-hyperswitch-vault-secrets" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Card Vault migration job name
+*/}}
+{{- define "hyperswitch-card-vault.migration.name" -}}
+{{- printf "%s-create-locker-db-%s" .Release.Name (regexReplaceAll "\\." .Values.server.version "-") | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Card Vault keys job configmap name
+*/}}
+{{- define "hyperswitch-card-vault.keys.configmap.name" -}}
+{{- printf "%s-vault-keys-config" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Card Vault service URL for internal access
+*/}}
+{{- define "hyperswitch-card-vault.service.url" -}}
+{{- if .Values.vaultKeysJob.checkVaultService.host -}}
+{{- .Values.vaultKeysJob.checkVaultService.host -}}
+{{- else -}}
+{{- printf "%s.%s.svc.cluster.local" (include "hyperswitch-card-vault.service.name" .) .Release.Namespace -}}
+{{- end -}}
+{{- end -}}

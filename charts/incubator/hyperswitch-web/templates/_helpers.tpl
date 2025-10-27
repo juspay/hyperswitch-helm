@@ -8,18 +8,14 @@ Expand the name of the chart.
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
+Format: {release-name}-hyperswitch-web
 */}}
 {{- define "sdk.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
+{{- $name := default "hyperswitch-web" .Values.nameOverride }}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
 {{- end }}
 {{- end }}
 
@@ -90,4 +86,30 @@ Ngnix deployment sdk path
 {{/* Define the name for hyperswitch sdk subversion */}}
 {{- define "hyperswitch-sdk.subversion" -}}
 {{- printf "%s" .Values.autoBuild.nginxConfig.extraPath -}}
+{{- end -}}
+
+{{/* Define the fullname for hyperswitch SDK demo app */}}
+{{- define "hyperswitch-sdk-demo.fullname" -}}
+{{- if .Values.sdkDemo.nameOverride }}
+{{- .Values.sdkDemo.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-hyperswitch-sdk-demo" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end -}}
+
+{{/* Version suffix helper for hyperswitch-web */}}
+{{- define "hyperswitch-web.version.suffix" -}}
+{{- $version := .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion -}}
+{{- printf "v%s" ($version | replace "." "o") -}}
+{{- end -}}
+
+{{/* Version suffix helper for SDK demo app - extracts version from image tag */}}
+{{- define "hyperswitch-sdk-demo.version.suffix" -}}
+{{- $image := .Values.services.sdkDemo.image -}}
+{{- $version := "unknown" -}}
+{{- if contains ":" $image -}}
+{{- $parts := split ":" $image -}}
+{{- $version = $parts._1 | replace "." "o" -}}
+{{- end -}}
+{{- printf "%s" $version -}}
 {{- end -}}

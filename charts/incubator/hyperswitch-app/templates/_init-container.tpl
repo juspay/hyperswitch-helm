@@ -61,8 +61,8 @@
     - name: CLICKHOUSE_ADMIN_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: clickhouse
-          key: admin-password
+          name: {{ include "clickhouse.secret" . }}
+          key: {{ include "clickhouse.secret.password" . }}
   args:
   - >
     MAX_ATTEMPTS={{ .Values.initCH.checkCHisUp.maxAttempt }};

@@ -6,12 +6,12 @@ metadata:
   annotations:
     {{- toYaml .Values.server.annotations | nindent 4 }}
   {{- end }}
-  name: hyperswitch-vault-role
+  name: {{ include "hyperswitch-card-vault.sa.name" . }}
   namespace: {{ .Release.Namespace }}
 {{- else }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: hyperswitch-vault-role
+  name: {{ include "hyperswitch-card-vault.sa.name" . }}
   namespace: {{ .Release.Namespace }}
 {{- end }}

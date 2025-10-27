@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-control-center-{{ include "version.suffix" .Values.services.controlCenter.version }}
+  name: {{ include "hyperswitch.controlCenter.fullname" . }}-{{ include "version.suffix" .Values.services.controlCenter.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
@@ -83,6 +83,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch.controlCenter.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ .Values.controlCenter.terminationGracePeriodSeconds }}
 {{- end }}

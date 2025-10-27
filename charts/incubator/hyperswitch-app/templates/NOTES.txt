@@ -6,11 +6,11 @@
        echo "Using port-forwarding to access the services."
 
        # Port-forwarding commands
-       kubectl port-forward service/hyperswitch-server 8080:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
-       kubectl port-forward service/hyperswitch-control-center 9000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}hyperswitch-server 8080:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}hyperswitch-control-center 9000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/{{ .Release.Name }}-grafana 3000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/{{ .Release.Name }}-vector 3103:3103 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
-       kubectl port-forward service/mailhog 8025:8025 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
+       kubectl port-forward service/{{ .Release.Name }}mailhog 8025:8025 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
 
        echo "======================================================"
        echo " App server running on: http://localhost:8080      "

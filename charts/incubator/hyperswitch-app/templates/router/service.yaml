@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hyperswitch-server
+  name: {{ include "hyperswitch.router.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   internalTrafficPolicy: Cluster
@@ -19,7 +19,7 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    app: hyperswitch-server
+    app: {{ .Values.server.labels.app }}
   sessionAffinity: None
   type: ClusterIP
 {{- end }}

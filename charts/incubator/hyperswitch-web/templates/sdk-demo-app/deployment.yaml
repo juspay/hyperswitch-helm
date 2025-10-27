@@ -7,7 +7,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   generation: 1
-  name: {{ .Values.sdkDemo.labels.app }}-v0o35o4
+  name: {{ include "hyperswitch-sdk-demo.fullname" . }}-{{ include "hyperswitch-sdk-demo.version.suffix" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ .Values.sdkDemo.progressDeadlineSeconds}}
@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.sdkDemo.labels.app }}
-      version: v0o35o4
+      version: {{ include "hyperswitch-sdk-demo.version.suffix" . }}
   strategy:
   {{- with .Values.sdkDemo.strategy }}
     {{- toYaml . | nindent 4 }}
@@ -26,7 +26,7 @@ spec:
       creationTimestamp: null
       labels:
         app: {{ .Values.sdkDemo.labels.app }}
-        version: v0o35o4
+        version: {{ include "hyperswitch-sdk-demo.version.suffix" . }}
     spec:
       affinity:
         nodeAffinity:

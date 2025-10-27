@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: hyperswitch-create-db-{{ regexReplaceAll "\\." .Values.services.router.version "-" }}
+  name: {{ include "hyperswitch.db.job.name" . }}
   labels:
-    app: hyperswitch-create-db-{{ regexReplaceAll "\\." .Values.services.router.version "-" }}
+    app: {{ include "hyperswitch.db.job.name" . }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded

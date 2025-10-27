@@ -70,6 +70,8 @@ services:
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
+  # -- Override for global secrets name
+  secretsNameOverride: null
   # Number of replicas to be used for the application by default (for server and consumer)
   replicas: 3
   # Wait time allowed for the deployment before the deployment is marked as failed
@@ -119,6 +121,27 @@ global:
   secrets:
 
 server:
+  # -- Override the name of the router/server component
+  nameOverride: null
+  # -- Override the full name of the router/server component
+  fullnameOverride: null
+
+  # ServiceAccount configuration for router/server
+  # Note: This ServiceAccount is shared by router, consumer, producer, and drainer components
+  serviceAccount:
+    # -- Specifies whether a ServiceAccount should be created
+    create: true
+    # -- Annotations to add to the ServiceAccount (e.g., eks.amazonaws.com/role-arn for IRSA)
+    # Overrides global.serviceAccountAnnotations
+    annotations: {}
+    # -- The name of the ServiceAccount to use
+    # If not set and create is true, a name is generated using the pattern: {release-name}-hyperswitch-router
+    # If create is false, you must provide an existing ServiceAccount name
+    name: null
+
+  # -- DEPRECATED: Use server.serviceAccount.name instead. Override the service account name for router/server
+  # This field is kept for backwards compatibility and takes precedence over serviceAccount.name if set
+  serviceAccountNameOverride: null
   # -- Number of replicas to be used for the application
   replicas: 1
   # Wait time allowed for the deployment before the deployment is marked as failed
@@ -767,6 +790,11 @@ server:
     url: ""
 # @ignored
 consumer:
+  # -- Override the name of the consumer component
+  nameOverride: null
+  # -- Override the full name of the consumer component
+  fullnameOverride: null
+  # Note: Consumer shares the router/server ServiceAccount (configured in server.serviceAccount)
   # -- Number of replicas to be used for the application
   replicas: 1
   # -- Wait time allowed for the deployment before the deployment is marked as failed
@@ -806,6 +834,11 @@ consumer:
 
 # @ignored
 producer:
+  # -- Override the name of the producer component
+  nameOverride: null
+  # -- Override the full name of the producer component
+  fullnameOverride: null
+  # Note: Producer shares the router/server ServiceAccount (configured in server.serviceAccount)
   # -- Number of replicas to be used for the application
   replicas: 1
   # -- Wait time allowed for the deployment before the deployment is marked as failed
@@ -839,6 +872,11 @@ producer:
 
 # @ignored
 drainer:
+  # -- Override the name of the drainer component
+  nameOverride: null
+  # -- Override the full name of the drainer component
+  fullnameOverride: null
+  # Note: Drainer shares the router/server ServiceAccount (configured in server.serviceAccount)
   # -- Number of replicas to be used for the drainer
   replicas: 0
   # -- Wait time allowed for the deployment before the deployment is marked as failed
@@ -891,6 +929,19 @@ drainer:
     loop_interval: 500
 
 controlCenter:
+  # -- Override the name of the control center component
+  nameOverride: null
+  # -- Override the full name of the control center component
+  fullnameOverride: null
+
+  # ServiceAccount configuration
+  serviceAccount:
+    # -- Specifies whether a ServiceAccount should be created
+    create: true
+    # -- Annotations to add to the ServiceAccount (overrides global.serviceAccountAnnotations)
+    annotations: {}
+    # -- The name of the ServiceAccount to use. If not set and create is true, a name is generated
+    name: null
   # -- Number of replicas to be used for the application
   replicas: 1
   # -- Wait time allowed for the deployment before the deployment is marked as failed
@@ -1230,7 +1281,9 @@ kafka:
   enabled: true
   # -- Name of the Kafka sub-chart
   # @section -- Dependencies configuration
-  fullnameOverride: "kafka0"
+  # Note: This should be set to include release name to avoid conflicts.
+  # Use: --set kafka.fullnameOverride={release-name}-kafka when installing
+  fullnameOverride: ""
 
   controller:
     # -- Number of replicas to be used for controller
@@ -1297,7 +1350,9 @@ clickhouse:
   resourcesPreset: "none"
   # -- Name of the Clickhouse sub-chart
   # @section -- Dependencies configuration
-  fullnameOverride: "clickhouse"
+  # Note: This should be set to include release name to avoid conflicts.
+  # Use: --set clickhouse.fullnameOverride={release-name}-clickhouse when installing
+  fullnameOverride: ""
   auth:
     # -- Clickhouse username
     # @section -- Dependencies configuration
@@ -1345,7 +1400,9 @@ mailhog:
   enabled: true
   # -- Name of the Mailhog sub-chart
   # @section -- Dependencies configuration
-  fullnameOverride: "mailhog"
+  # Note: This should be set to include release name to avoid conflicts.
+  # Use: --set mailhog.fullnameOverride={release-name}-mailhog when installing
+  fullnameOverride: ""
 
 
 # https://artifacthub.io/packages/helm/vector/vector

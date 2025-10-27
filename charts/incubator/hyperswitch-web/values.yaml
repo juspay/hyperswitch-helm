@@ -4,8 +4,16 @@ global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
 
+# Override names for hyperswitch-web resources
+# -- Override the base name for all resources (defaults to 'hyperswitch-web')
+nameOverride: null
+# -- Override the full name for all resources (defaults to {release-name}-hyperswitch-web)
+fullnameOverride: null
+
 sdkDemo:
   enabled: true
+  # -- Override the name for SDK demo resources (defaults to {release-name}-hyperswitch-sdk-demo)
+  nameOverride: null
   # Number of replicas to be used for the application
   replicas: 1
   # Wait time allowed for the deployment before the deployment is marked as failed
@@ -171,23 +179,6 @@ autoscaling:
   # -- autoscaling target memory utilization
   targetMemoryUtilizationPercentage: 80
 
-# -- Additional volumes on the output Deployment definition.
-# @ignored
-volumes:
-  - name: nginx-config-volume
-    configMap:
-      name: hyperswitch-web-nginx
-  - name: nginx-html-volume
-    emptyDir: {}
-
-# -- Additional volumeMounts on the output Deployment definition.
-# @ignored
-volumeMounts:
-  - name: nginx-config-volume
-    mountPath: /etc/nginx/conf.d/default.conf
-    subPath: default.conf
-  - name: nginx-html-volume
-    mountPath: /usr/share/nginx/html
 # -- Environment variables for hyperswitch-web application
 env:
   # -- hyperswitch-web environment (sandbox/prod)
@@ -204,10 +195,6 @@ env:
   visaApiKeyId: ""
   # -- Visa API certificate PEM
   visaApiCertificatePem: ""
-
-envFrom:
-  - configMapRef:
-      name: hyperswitch-web-nginx
 
 # -- Node selector
 # @ignored

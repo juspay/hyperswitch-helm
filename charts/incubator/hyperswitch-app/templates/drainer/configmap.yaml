@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: drainer-cm-{{ .Release.Name }}
+  name: {{ include "hyperswitch.drainer.fullname" . }}-cm-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 data:
   drainer.toml: |

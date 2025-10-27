@@ -1,0 +1,88 @@
+# Ultra-minimal values.yaml for hyperswitch-stack
+# Uses Docker Hub public images (no authentication required)
+# Replace the URLs with your actual domain names
+
+# --- Service URLs (CHANGE THESE!) ---
+services:
+  router:
+    host: &router_host https://apigw.snektulz.work
+  sdk:
+    host: &web_sdk_host https://jsgw.snektulz.work
+
+# --- Hyperswitch App ---
+hyperswitch-app:
+  initDB:
+    enable: true
+
+  services:
+    router:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-router:v1.117.0
+      host: *router_host
+    consumer:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-consumer:v1.117.0
+    producer:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-producer:v1.117.0
+    drainer:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-drainer:v1.117.0
+    controlCenter:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-control-center:v1.37.4
+    sdk:
+      host: *web_sdk_host
+      version: 0.126.0
+
+  server:
+    # Fix for calida connector error - required!
+    connectors:
+      calida:
+        base_url: "https://dev.eorder.reloadhero.com/"
+    # User base URL for dashboard email links
+    user:
+      base_url: https://quench.snektulz.work
+
+  controlCenter:
+    env:
+      apiBaseUrl: *router_host
+      default__endpoints__api_url: *router_host
+      default__endpoints__sdk_url: *web_sdk_host
+      NEXT_PUBLIC_API_BASE_URL: *router_host
+      NEXT_PUBLIC_APP_URL: https://quench.snektulz.work
+      NEXT_PUBLIC_SDK_HOST: *web_sdk_host
+
+  hyperswitch-card-vault:
+    enabled: true
+    initDB:
+      enable: true
+    server:
+      imageRegistry: docker.io
+      image: juspaydotin/hyperswitch-card-vault:v0.6.5
+
+  ingress:
+    enabled: false
+
+# --- Hyperswitch Web ---
+hyperswitch-web:
+  enabled: true
+  autoBuild:
+    enable: true
+    forceBuild: true
+    gitCloneParam:
+      gitVersion: 0.126.0
+    buildParam:
+      envSdkUrl: *web_sdk_host
+      envBackendUrl: *router_host
+
+  ingress:
+    enabled: false
+
+# --- Monitoring ---
+hyperswitch-monitoring:
+  enabled: false  # Disable monitoring to minimize resource usage
+
+# --- UCS ---
+hyperswitch-ucs:
+  enabled: false

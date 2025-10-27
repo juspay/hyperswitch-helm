@@ -42,5 +42,5 @@ data:
     {{- end }}
 kind: ConfigMap
 metadata:
-  name: hyperswitch-vault-config-{{ .Release.Name }}
+  name: {{ include "hyperswitch-card-vault.configmap.name" . }}
   namespace: {{ .Release.Namespace }}

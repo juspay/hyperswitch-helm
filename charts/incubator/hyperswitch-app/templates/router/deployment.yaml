@@ -6,7 +6,7 @@ metadata:
     {{- with (default .Values.global.annotations .Values.server.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-server-{{ include "version.suffix" .Values.services.router.version }}
+  name: {{ include "hyperswitch.router.fullname" . }}-{{ include "version.suffix" .Values.services.router.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
@@ -70,11 +70,11 @@ spec:
           {{- include "keymanager.envs" . | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: router-cm-{{ .Release.Name }}
+                name: {{ include "hyperswitch.router.fullname" . }}-cm
             - secretRef:
-                name: router-secret-{{ .Release.Name }}
+                name: {{ include "hyperswitch.router.fullname" . }}-secret
             - secretRef:
-                name: hyperswitch-secrets
+                name: {{ include "hyperswitch.secrets.name" . }}
           livenessProbe:
           {{- toYaml (default .Values.global.livenessProbe .Values.server.livenessProbe) | nindent 12 }}
           readinessProbe:
@@ -105,11 +105,11 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch.server.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ default .Values.global.terminationGracePeriodSeconds .Values.server.terminationGracePeriodSeconds  }}
       volumes:
         - configMap:
             defaultMode: 420
-            name: router-cm-{{.Release.Name }}
+            name: {{ include "hyperswitch.router.fullname" . }}-cm-{{.Release.Name }}
           name: hyperswitch-config
 {{- end }}

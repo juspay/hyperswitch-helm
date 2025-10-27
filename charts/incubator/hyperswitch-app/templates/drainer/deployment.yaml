@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hyperswitch-drainer-{{ .Values.services.drainer.version | replace "." "o" }}
+  name: {{ include "hyperswitch.drainer.fullname" . }}-{{ .Values.services.drainer.version | replace "." "o" }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
@@ -87,7 +87,7 @@ spec:
             {{- end }}
           envFrom:
             - secretRef:
-                name: drainer-secret-{{ .Release.Name }}
+                name: {{ include "hyperswitch.drainer.fullname" . }}-secret
           volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
@@ -101,5 +101,5 @@ spec:
       volumes:
         - name: hyperswitch-config
           configMap:
-            name: drainer-cm-{{ .Release.Name }}
+            name: {{ include "hyperswitch.drainer.fullname" . }}-cm-{{ .Release.Name }}
 {{- end }}

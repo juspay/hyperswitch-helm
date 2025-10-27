@@ -1,11 +1,11 @@
-{{- if .Values.services.router.enabled }}
+{{- if and .Values.services.router.enabled .Values.server.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: {{ include "hyperswitch.router.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+  {{- with (coalesce .Values.server.serviceAccount.annotations .Values.global.serviceAccountAnnotations .Values.global.annotations) }}
   annotations:
-  {{- with (default .Values.global.annotations .Values.server.serviceAccountAnnotations) }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  name: hyperswitch-router-role
-  namespace: {{ .Release.Namespace }}
 {{- end }}
