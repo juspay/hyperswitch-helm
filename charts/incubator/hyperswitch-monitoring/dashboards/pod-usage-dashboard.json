@@ -383,7 +383,7 @@
             "uid": "${prometheus_data_source}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\", pod!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
           "legendFormat": "{{pod}} - usage",
           "range": true,
           "refId": "A"
@@ -535,7 +535,7 @@
             "uid": "${prometheus_data_source}"
           },
           "editorMode": "code",
-          "expr": "sum(container_memory_working_set_bytes{container!=\"\", pod!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}) by (pod)",
+          "expr": "sum(container_memory_working_set_bytes{pod!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}) by (pod)",
           "legendFormat": "{{pod}} - usage",
           "range": true,
           "refId": "A"
@@ -785,7 +785,7 @@
             "uid": "${prometheus_data_source}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_fs_reads_bytes_total{container!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
+          "expr": "sum(rate(container_fs_reads_bytes_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
           "legendFormat": "{{pod}} - read",
           "range": true,
           "refId": "A"
@@ -796,7 +796,7 @@
             "uid": "${prometheus_data_source}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_fs_writes_bytes_total{container!=\"\", namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
+          "expr": "sum(rate(container_fs_writes_bytes_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])) by (pod)",
           "hide": false,
           "legendFormat": "{{pod}} - write",
           "range": true,
