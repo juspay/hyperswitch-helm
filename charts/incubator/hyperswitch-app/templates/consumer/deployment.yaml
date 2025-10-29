@@ -80,9 +80,9 @@ spec:
                 name: hyperswitch-secrets
           {{- end }}
           resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
+            {{- with (default .Values.global.resources .Values.consumer.resources) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             privileged: false
           terminationMessagePath: /dev/termination-log

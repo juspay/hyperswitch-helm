@@ -170,6 +170,14 @@ server:
     periodSeconds: 60
     successThreshold: 1
     timeoutSeconds: 1
+  # -- Resource requests and limits for the router/server
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
   # Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -887,6 +895,14 @@ consumer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Resource requests and limits for the consumer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
   # Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -924,6 +940,14 @@ producer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Resource requests and limits for the producer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
   # -- Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -956,6 +980,14 @@ drainer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Resource requests and limits for the drainer
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
   # -- Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -977,14 +1009,6 @@ drainer:
   # -- Environment variables that are to be used by the hyperswitch drainer service
   env:
     binary: drainer
-  # -- Resource requests and limits for the drainer
-  resources:
-    requests:
-      memory: "256Mi"
-      cpu: "100m"
-    limits:
-      memory: "512Mi"
-      cpu: "500m"
   # -- Drainer configuration
   config:
     # -- Specifies the stream name to be used by the drainer

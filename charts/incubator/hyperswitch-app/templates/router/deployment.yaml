@@ -92,9 +92,9 @@ spec:
               name: http
               protocol: TCP
           resources:
-            requests:
-              cpu: 200m
-              memory: 500Mi
+            {{- with (default .Values.global.resources .Values.server.resources) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             privileged: false
           terminationMessagePath: /dev/termination-log
