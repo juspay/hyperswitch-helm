@@ -1,10 +1,5 @@
 {{/* Define environment variables for PostgreSQL secrets */}}
 {{- define "postgresql.secrets.envs" -}}
-- name: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ include "clickhouse.secret" . }}
-      key: {{ include "clickhouse.secret.password" . }}
 {{- if not .Values.server.configs.analytics.sqlx.password }}
 - name: ROUTER__ANALYTICS__SQLX__PASSWORD
   valueFrom:
