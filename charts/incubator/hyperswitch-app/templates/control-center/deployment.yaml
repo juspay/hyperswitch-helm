@@ -22,6 +22,10 @@ spec:
     {{- end }}
   template:
     metadata:
+      annotations:
+        {{- with (default .Values.global.podAnnotations .Values.controlCenter.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.controlCenter.labels.app }}
         version: {{ include "version.suffix" .Values.services.controlCenter.version }}

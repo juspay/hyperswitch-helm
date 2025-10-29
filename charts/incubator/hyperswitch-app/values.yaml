@@ -90,8 +90,8 @@ global:
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments
   annotations: {}
   # -- Labels to be added to the all the deployments and their pods
@@ -184,8 +184,8 @@ server:
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -911,8 +911,8 @@ consumer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
   annotations: {}
@@ -954,8 +954,8 @@ producer:
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -994,8 +994,8 @@ drainer:
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -1046,8 +1046,8 @@ controlCenter:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
   annotations: {}

@@ -29,6 +29,9 @@ spec:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.podAnnotations .Values.producer.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with (default .Values.global.tolerations .Values.producer.tolerations) }}
       tolerations:

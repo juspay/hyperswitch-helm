@@ -25,11 +25,12 @@ spec:
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/restartedAt: "2023-09-20T12:11:41+05:30"
-        traffic.sidecar.istio.io/excludeOutboundIPRanges: {{ default .Values.global.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges .Values.server.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges }}
         checksum/router-config: {{ include (print $.Template.BasePath "/router/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.podAnnotations .Values.server.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.server.labels.app }}
         version: {{ include "version.suffix" .Values.services.router.version }}

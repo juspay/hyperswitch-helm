@@ -23,10 +23,12 @@ spec:
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/restartedAt: "2023-04-21T14:21:23+05:30"
         checksum/consumer-config: {{ include (print $.Template.BasePath "/consumer/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.podAnnotations .Values.consumer.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.consumer.labels.app }}
         version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
