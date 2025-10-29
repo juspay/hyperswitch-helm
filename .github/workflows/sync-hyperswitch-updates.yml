@@ -1,6 +1,8 @@
 name: Sync Hyperswitch Updates
 
 on:
+  repository_dispatch:
+    types: [sync-hyperswitch-updates]
   workflow_dispatch:
     # Allow manual triggering with branch selection
     inputs:
@@ -74,24 +76,33 @@ jobs:
           fi
           echo "target_ref=$REF" >> $GITHUB_OUTPUT
 
-      - name: Clone hyperswitch repository
-        uses: actions/checkout@v4
-        with:
-          repository: juspay/hyperswitch
-          path: hyperswitch-repo
-          ref: ${{ steps.determine_ref.outputs.target_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create target directory if it doesn't exist
+      - name: Download configuration files
         run: |
+          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          BASE_URL="https://raw.githubusercontent.com/juspay/hyperswitch/${SOURCE_REF}/config/deployments"
+
+          echo "Downloading configuration files from hyperswitch ref: $SOURCE_REF"
+
+          # Create target directory
           mkdir -p charts/incubator/hyperswitch-app/configs
 
-      - name: Copy configuration files
-        run: |
-          # Copy files from hyperswitch repo to our repo
-          cp hyperswitch-repo/config/deployments/integration_test.toml charts/incubator/hyperswitch-app/configs/router-integ.toml
-          cp hyperswitch-repo/config/deployments/sandbox.toml charts/incubator/hyperswitch-app/configs/router-sandbox.toml
-          cp hyperswitch-repo/config/deployments/production.toml charts/incubator/hyperswitch-app/configs/router-production.toml
+          # Download specific configuration files directly
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3.raw" \
+               -L "${BASE_URL}/integration_test.toml" \
+               -o charts/incubator/hyperswitch-app/configs/router-integ.toml
+
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3.raw" \
+               -L "${BASE_URL}/sandbox.toml" \
+               -o charts/incubator/hyperswitch-app/configs/router-sandbox.toml
+
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3.raw" \
+               -L "${BASE_URL}/production.toml" \
+               -o charts/incubator/hyperswitch-app/configs/router-production.toml
+
+          echo "✅ Configuration files downloaded successfully"
 
       - name: Update service versions and chart version
         run: |
@@ -106,19 +117,16 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
 
           # Update each service version using specific YAML paths
-          yq eval ".services.router.version = \"router-$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.consumer.version = \"consumer-$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.producer.version = \"producer-$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.drainer.version = \"drainer-$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.router.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.consumer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.producer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
 
           # Update chart version to match hyperswitch version
           yq eval ".version = \"$SOURCE_REF\"" -i $CHART_FILE
 
           echo "Service versions and chart version updated successfully"
 
-      - name: Cleanup hyperswitch repository
-        run: |
-          rm -rf hyperswitch-repo
 
       - name: Check for changes
         id: check_changes
@@ -166,6 +174,8 @@ jobs:
           git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
           git commit -m "chore: sync hyperswitch updates from ${{ steps.determine_ref.outputs.target_ref }}
 
+          Hyperswitch version: ${{ steps.determine_ref.outputs.target_ref }}
+
           Configuration files:
           - Updated router-integ.toml from integration_test.toml
           - Updated router-sandbox.toml from sandbox.toml
@@ -190,19 +200,19 @@ jobs:
       - name: Summary
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          echo "✅ Hyperswitch updates synced successfully!"
-          echo "🌿 Source ref: ${{ steps.determine_ref.outputs.target_ref }}"
-          echo "📁 Configuration files updated:"
+          echo "Hyperswitch updates synced successfully!"
+          echo "Source ref: ${{ steps.determine_ref.outputs.target_ref }}"
+          echo "Configuration files updated:"
           echo "   - charts/incubator/hyperswitch-app/configs/router-integ.toml"
           echo "   - charts/incubator/hyperswitch-app/configs/router-sandbox.toml"
           echo "   - charts/incubator/hyperswitch-app/configs/router-production.toml"
-          echo "📋 Service versions updated:"
+          echo "Service versions updated:"
           echo "   - charts/incubator/hyperswitch-app/values.yaml"
-          echo "📦 Chart version updated:"
+          echo "Chart version updated:"
           echo "   - charts/incubator/hyperswitch-app/Chart.yaml"
-          echo "🏷️  Tagged with: ${{ steps.generate_tag.outputs.tag }}"
+          echo "Tagged with: ${{ steps.generate_tag.outputs.tag }}"
 
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'
         run: |
-          echo "ℹ️  No changes detected - hyperswitch updates are already up to date"
+          echo "No changes detected - hyperswitch updates are already up to date"

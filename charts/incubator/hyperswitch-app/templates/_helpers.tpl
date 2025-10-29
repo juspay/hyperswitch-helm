@@ -35,20 +35,25 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Allow the release namespace to be overridden for multi-namespace deployments
 */}}
 
-{{- define "drainer.namespace" -}}
-{{- if .Values.namespaceOverride }}
-{{- .Values.namespaceOverride }}
+{{/* Generic namespace helper for components */}}
+{{- define "component.namespace" -}}
+{{- $component := .component -}}
+{{- $override := index .Values $component "namespaceOverride" | default "" -}}
+{{- if $override }}
+{{- $override }}
 {{- else }}
 {{- .Release.Namespace }}
 {{- end }}
 {{- end }}
 
-{{- define "controlCenter.namespace" -}}
-{{- if .Values.namespaceOverride }}
-{{- .Values.namespaceOverride }}
-{{- else }}
-{{- .Release.Namespace }}
+{{/* Drainer namespace helper */}}
+{{- define "drainer.namespace" -}}
+{{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "drainer") }}
 {{- end }}
+
+{{/* Control Center namespace helper */}}
+{{- define "controlCenter.namespace" -}}
+{{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "controlCenter") }}
 {{- end }}
 
 {{/* Redis configuration validation template */}}
