@@ -10,7 +10,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default .Values.global.replicas .Values.server.replicas }}
+  {{- end }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
