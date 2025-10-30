@@ -65,6 +65,8 @@ spec:
           env:
             - name: BINARY
               value: {{ .Values.producer.env.binary }}
+            - name: SCHEDULER_FLOW
+              value: producer
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- if .Values.global.useExternalSecrets.enabled }}
