@@ -10,7 +10,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default .Values.global.replicas .Values.server.replicas }}
+  {{- end }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -23,11 +25,12 @@ spec:
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/restartedAt: "2023-09-20T12:11:41+05:30"
-        traffic.sidecar.istio.io/excludeOutboundIPRanges: {{ default .Values.global.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges .Values.server.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges }}
         checksum/router-config: {{ include (print $.Template.BasePath "/router/configmap.yaml") . | sha256sum }}
-        checksum/router-secret: {{ include (print $.Template.BasePath "/router/secret.yaml") . | sha256sum }}
-        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+        checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.podAnnotations .Values.server.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.server.labels.app }}
         version: {{ include "version.suffix" .Values.services.router.version }}
@@ -52,7 +55,7 @@ spec:
       containers:
         - name: hyperswitch-router
           {{- $registry := .Values.global.imageRegistry | default .Values.services.router.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.router.image }}"
+          image: "{{ $registry }}/{{ .Values.services.router.image }}:{{ .Values.services.router.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -65,16 +68,22 @@ spec:
             {{/* TODO this env can be static ? */}}
             - name: BINARY
               value: {{ .Values.server.env.binary }}
+          {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
+          {{- if .Values.global.useExternalSecrets.enabled }}
+          {{- include "external.secrets.envs" . | nindent 12 }}
+          {{- else }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- end }}
           {{- include "keymanager.envs" . | nindent 12 }}
+          {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: router-cm-{{ .Release.Name }}
-            - secretRef:
-                name: router-secret-{{ .Release.Name }}
+                name: hyperswitch-configs
+          {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
                 name: hyperswitch-secrets
+          {{- end }}
           livenessProbe:
           {{- toYaml (default .Values.global.livenessProbe .Values.server.livenessProbe) | nindent 12 }}
           readinessProbe:
@@ -84,9 +93,9 @@ spec:
               name: http
               protocol: TCP
           resources:
-            requests:
-              cpu: 200m
-              memory: 500Mi
+            {{- with (default .Values.global.resources .Values.server.resources) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             privileged: false
           terminationMessagePath: /dev/termination-log
@@ -94,11 +103,11 @@ spec:
           volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
-              name: hyperswitch-config
+              name: router-config
               subPath: router.toml
             {{- else }}
             - mountPath: /local/config/sandbox.toml
-              name: hyperswitch-config
+              name: router-config
               subPath: router.toml
             {{- end }}
       dnsPolicy: ClusterFirst
@@ -111,5 +120,5 @@ spec:
         - configMap:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
-          name: hyperswitch-config
+          name: router-config
 {{- end }}

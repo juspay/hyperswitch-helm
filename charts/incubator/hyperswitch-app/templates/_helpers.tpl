@@ -31,6 +31,30 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/*
+Allow the release namespace to be overridden for multi-namespace deployments
+*/}}
+
+{{/* Generic namespace helper for components */}}
+{{- define "component.namespace" -}}
+{{- $component := .component -}}
+{{- $override := index .Values $component "namespaceOverride" | default "" -}}
+{{- if $override }}
+{{- $override }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}
+
+{{/* Drainer namespace helper */}}
+{{- define "drainer.namespace" -}}
+{{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "drainer") }}
+{{- end }}
+
+{{/* Control Center namespace helper */}}
+{{- define "controlCenter.namespace" -}}
+{{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "controlCenter") }}
+{{- end }}
 
 {{/* Redis configuration validation template */}}
 {{- define "validate.redis.config" -}}
@@ -148,21 +172,144 @@ app.kubernetes.io/instance: {{ .Release.Name }}
   {{- end -}}
 {{- end -}}
 
-{{/* Define the clickhouse secret when enabled */}}
-{{- define "clickhouse.secret" -}}
-  {{- if .Values.clickhouse.enabled -}}
-    {{- printf "clickhouse" -}}
-  {{- else -}}
-    {{- printf "hyperswitch-secrets" -}}
+{{/* =====================================================
+     POSTGRESQL PASSWORD SECRET REFERENCE HELPERS
+     ===================================================== */}}
+
+{{/* Common helper: Get default PostgreSQL secret name for internal/external */}}
+{{- define "postgresql.default.secret.name" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- include "externalPostgresql.secret.name" . -}}
   {{- end -}}
 {{- end -}}
 
-{{/* Define the clickhouse password when enabled */}}
-{{- define "clickhouse.secret.password" -}}
-  {{- if .Values.clickhouse.enabled -}}
-    {{- printf "admin-password" -}}
+{{/* Common helper: Check if a password config uses _secretRef */}}
+{{- define "postgresql.password.uses.secretRef" -}}
+  {{- $passwordConfig := . -}}
+  {{- if and (kindIs "map" $passwordConfig) (hasKey $passwordConfig "_secretRef") -}}
+    {{- printf "true" -}}
   {{- else -}}
-    {{- printf "ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD" -}}
+    {{- printf "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Password Secret Name */}}
+{{- define "postgresql.master.password.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.primary.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Password Secret Key */}}
+{{- define "postgresql.master.password.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "password" -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.primary.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "primaryPassword" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Plain Password Secret Name */}}
+{{- define "postgresql.master.plainPassword.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.secret" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $plainPasswordConfig := .Values.externalPostgresql.primary.auth.plainpassword -}}
+    {{- if and $plainPasswordConfig (eq (include "postgresql.password.uses.secretRef" $plainPasswordConfig) "true") -}}
+      {{- printf "%s" $plainPasswordConfig._secretRef.name -}}
+    {{- else if and $plainPasswordConfig (not (kindIs "map" $plainPasswordConfig)) -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.secret" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Master Plain Password Secret Key */}}
+{{- define "postgresql.master.plainPassword.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.key" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $plainPasswordConfig := .Values.externalPostgresql.primary.auth.plainpassword -}}
+    {{- if and $plainPasswordConfig (eq (include "postgresql.password.uses.secretRef" $plainPasswordConfig) "true") -}}
+      {{- printf "%s" $plainPasswordConfig._secretRef.key -}}
+    {{- else if and $plainPasswordConfig (not (kindIs "map" $plainPasswordConfig)) -}}
+      {{- printf "primaryPlainPassword" -}}
+    {{- else -}}
+      {{- include "postgresql.master.password.key" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Replica Password Secret Name */}}
+{{- define "postgresql.replica.password.secret" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.readOnly.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.name -}}
+    {{- else -}}
+      {{- include "postgresql.default.secret.name" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PostgreSQL Replica Password Secret Key */}}
+{{- define "postgresql.replica.password.key" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "password" -}}
+    {{- end -}}
+  {{- else if .Values.externalPostgresql.enabled -}}
+    {{- $passwordConfig := .Values.externalPostgresql.readOnly.auth.password -}}
+    {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
+      {{- printf "%s" $passwordConfig._secretRef.key -}}
+    {{- else -}}
+      {{- printf "readOnlyPassword" -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
@@ -178,27 +325,170 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{/* Define the OpenTelemetry Collector endpoint when metrics or traces are enabled */}}
 {{- define "opentelemetry-collector.url" -}}
-  {{- $telemetryConfig := .Values.server.log.telemetry -}}
+  {{- $telemetryConfig := .Values.server.configs.log.telemetry -}}
   {{- if or $telemetryConfig.metrics_enabled $telemetryConfig.traces_enabled -}}
-    {{- if $telemetryConfig.external_otel_collector_endpoint -}}
-      {{- $telemetryConfig.external_otel_collector_endpoint -}}
-    {{- else if $telemetryConfig.autoConfigureOtelEndpoint -}}
-      {{- /* 
-        When autoConfigureOtelEndpoint is true, construct the endpoint using the release name.
-        This is typically set to true when deployed via hyperswitch-stack with monitoring enabled.
+    {{- if and $telemetryConfig.otel_exporter_otlp_endpoint (ne $telemetryConfig.otel_exporter_otlp_endpoint "") -}}
+      {{- $telemetryConfig.otel_exporter_otlp_endpoint -}}
+    {{- else -}}
+      {{- /*
+        When otel_exporter_otlp_endpoint is empty, auto-configure the endpoint using the release name.
+        This is typically used when deployed via hyperswitch-stack with monitoring enabled.
       */}}
       {{- printf "http://%s-opentelemetry-collector.%s.svc.cluster.local:4317" .Release.Name .Release.Namespace -}}
-    {{- else -}}
-      {{- fail "Could not obtain OpenTelemetry Collector URL. Please specify either `external_otel_collector_endpoint` or use hyperswitch-monitoring chart & enable `autoConfigureOtelEndpoint`" -}}
     {{- end -}}
   {{- else -}}
-    {{- print "" -}}  
+    {{- print "" -}}
   {{- end -}}
 {{- end -}}
 
-{{/* 
+{{/*
 Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 */}}
 {{- define "version.suffix" -}}
 {{- . | replace "." "o" -}}
+{{- end -}}
+
+{{/* Define mapping of config keys to helper functions */}}
+{{- define "hyperswitch.configKeyToHelperMapping" -}}
+generic_link.payment_method_collect.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+generic_link.payout_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+payment_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
+log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
+{{- end -}}
+
+{{/* Helper: Check if a config value is a secret field (_secret) */}}
+{{- define "hyperswitch.isSecretField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if hasKey $value "_secret" -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Helper: Check if a config value is a reference field (_secretRef or _configRef) */}}
+{{- define "hyperswitch.isReferenceField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if or (hasKey $value "_secretRef") (hasKey $value "_configRef") -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
+{{- define "hyperswitch.configToEnvVars" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+  {{- $keyMapping := include "hyperswitch.configKeyToHelperMapping" . | fromYaml -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
+      {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
+      {{- if and (eq $isSecret "false") (eq $isReference "false") -}}
+        {{/* Recursively process normal nested objects */}}
+        {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
+    {{- else if kindIs "slice" $value -}}
+      {{/* Handle arrays by joining with commas */}}
+      {{- $arrayValue := $value | join "," -}}
+      {{- printf "%s: %q\n" $envKey $arrayValue -}}
+    {{- else -}}
+      {{/* Check if this path has a helper function mapping and value is empty */}}
+      {{- if and (hasKey $keyMapping $configPath) (or (eq $value "") (eq $value nil)) -}}
+        {{- $helperFunc := get $keyMapping $configPath -}}
+        {{- $helperValue := include $helperFunc $context -}}
+        {{- printf "%s: %q\n" $envKey ($helperValue | toString) -}}
+      {{- else -}}
+        {{/* Handle primitive values with proper YAML quoting */}}
+        {{- printf "%s: %q\n" $envKey ($value | toString) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to secret data (base64 encoded) for _secret fields */}}
+{{- define "hyperswitch.configToSecrets" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
+      {{- if eq $isSecret "true" -}}
+        {{/* Handle _secret field */}}
+        {{- $secretValue := get $value "_secret" -}}
+        {{- printf "%s: %s\n" $envKey ($secretValue | b64enc) -}}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to environment variables with valueFrom for _secretRef/_configRef fields */}}
+{{- define "hyperswitch.configToEnvRefs" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
+      {{- if eq $isReference "true" -}}
+        {{/* Handle _secretRef or _configRef field */}}
+        {{- if hasKey $value "_secretRef" -}}
+          {{- $ref := get $value "_secretRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $ref.name }}
+      key: {{ $ref.key }}
+        {{- else if hasKey $value "_configRef" -}}
+          {{- $ref := get $value "_configRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    configMapKeyRef:
+      name: {{ $ref.name }}
+      key: {{ $ref.key }}
+        {{- end }}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

@@ -23,10 +23,12 @@ spec:
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/restartedAt: "2023-04-21T14:21:23+05:30"
         checksum/consumer-config: {{ include (print $.Template.BasePath "/consumer/configmap.yaml") . | sha256sum }}
-        checksum/consumer-secret: {{ include (print $.Template.BasePath "/consumer/secret.yaml") . | sha256sum }}
-        checksum/misc-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+        checksum/hyperswitch-secrets: {{ include (print $.Template.BasePath "/misc/secrets.yaml") . | sha256sum }}
+        {{- with (default .Values.global.podAnnotations .Values.consumer.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.consumer.labels.app }}
         version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
@@ -51,7 +53,7 @@ spec:
       containers:
         - name: hyperswitch-consumer
           {{- $registry := .Values.global.imageRegistry | default .Values.services.consumer.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.consumer.image }}"
+          image: "{{ $registry }}/{{ .Values.services.consumer.image }}:{{ .Values.services.consumer.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -61,23 +63,33 @@ spec:
                   - -c
                   - pkill -15 node
           env:
+            - name: BINARY
+              value: {{ .Values.consumer.env.binary }}
+          {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
+          {{- if .Values.global.useExternalSecrets.enabled }}
+          {{- include "external.secrets.envs" . | nindent 12 }}
+          {{- else }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
+          {{- end }}
           {{- include "keymanager.envs" . | nindent 12 }}
+          {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
-            - secretRef:
-                name: consumer-secret-{{ .Release.Name }}
+            - configMapRef:
+                name: hyperswitch-configs
+          {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
                 name: hyperswitch-secrets
+          {{- end }}
           resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
+            {{- with (default .Values.global.resources .Values.consumer.resources) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           securityContext:
             privileged: false
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          volumeMounts: 
+          volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
               name: hyperswitch-config
@@ -88,7 +100,7 @@ spec:
               subPath: consumer.toml
             {{- end }}
 
-            
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

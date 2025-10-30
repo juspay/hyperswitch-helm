@@ -9,7 +9,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Router image
     # @section -- Services
-    image: juspaydotin/hyperswitch-router:v1.117.0
+    image: juspaydotin/hyperswitch-router
     # -- Router host
     # @section -- Services
     host: &router_host http://localhost:8080
@@ -23,7 +23,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Consumer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-consumer:v1.117.0
+    image: juspaydotin/hyperswitch-consumer
   producer:
     enabled: true
     # -- Producer version
@@ -34,7 +34,7 @@ services:
     imageRegistry: docker.juspay.io
     # -- Producer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-producer:v1.117.0
+    image: juspaydotin/hyperswitch-producer
   drainer:
     enabled: true
     # -- Drainer version
@@ -45,16 +45,18 @@ services:
     imageRegistry: docker.juspay.io
     # -- Drainer image
     # @section -- Services
-    image: juspaydotin/hyperswitch-drainer:v1.117.0
+    image: juspaydotin/hyperswitch-drainer
   controlCenter:
     enabled: true
+    # -- Control Center version
+    # @section -- Services
+    version: v1.37.4
     # -- Control Center image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
     # -- Control Center image
-    version: v1.37.4
     # @section -- Services
-    image: juspaydotin/hyperswitch-control-center:v1.37.4
+    image: juspaydotin/hyperswitch-control-center
   sdk:
     # -- SDK host
     # @section -- Services
@@ -70,8 +72,6 @@ services:
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
-  # Number of replicas to be used for the application by default (for server and consumer)
-  replicas: 3
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
@@ -90,11 +90,10 @@ global:
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the all the deployments and their pods
   labels:
     managedBy: hyperswitch
@@ -115,12 +114,30 @@ global:
     [server]
     host = 0.0.0.0
 
-  # -- secrets to be used by the hyperswitch application
-  secrets:
+  # External Secrets Configuration
+  # When enabled, all local secret creation is disabled and external secrets are used instead
+  # Use this to define mapping of secrets created by external secret operators
+  useExternalSecrets:
+    # -- Enable external secrets integration
+    enabled: false
+    # -- Configuration for external secrets mapping (Optional)
+    # Each secret name maps to a list of environment variables
+    secrets:
+      # Example: hyperswitch-secrets contains application secrets
+      # # -- Name of the external secret
+      # hyperswitch-secrets:
+      #   # -- List of environment variables to map from the external secret
+      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
+      #     secretKey: admin_api_key
+      #   - envName: ROUTER__SECRETS__JWT_SECRET
+      #     secretKey: jwt_secret
 
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
+  # Ingress Configurations for hyperswitch router
+  ingress:
+    enabled: false
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
@@ -153,17 +170,24 @@ server:
     periodSeconds: 60
     successThreshold: 1
     timeoutSeconds: 1
+  # -- Resource requests and limits for the router/server
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
   # Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-server
@@ -175,596 +199,689 @@ server:
   env:
     binary: router
     host: hyperswitch
-  chat:
-    # Enable or disable chat features
-    enabled: false
-    # Hyperswitch ai workflow host
-    hyperswitch_ai_host: "http://0.0.0.0:8000"
-  secrets:
-    # -- admin API key for admin authentication.
-    # @section -- App Server Secrets
-    admin_api_key: test_admin
-    # -- JWT secret used for user authentication.
-    # @section -- App Server Secrets
-    jwt_secret: test_admin
-    # -- Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.
-    # @section -- App Server Secrets
-    master_enc_key: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
-    # -- Recon Admin API key for recon admin authentication.
-    # @section -- App Server Secrets
-    recon_admin_api_key: test_admin
-    # -- KMS key id for encryption and decryption
-    # @section -- App Server Secrets
-    kms_key_id: kms_key_id
-    # -- AWS KMS region
-    # @section -- App Server Secrets
-    kms_key_region: us-east-1
-    # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
-    # @section -- App Server Secrets
-    # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
-    kms_jwekey_vault_encryption_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
-      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
-      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
-      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
-      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
-      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
-      YQIDAQAB
-      -----END PUBLIC KEY-----
-    # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
-    # @section -- App Server Secrets
-    # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
-    kms_jwekey_vault_private_key: |
-      -----BEGIN PRIVATE KEY-----
-      MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
-      +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
-      W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
-      PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
-      dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
-      1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
-      t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
-      dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
-      qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
-      WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
-      ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
-      9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
-      yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
-      R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
-      3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
-      gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
-      mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
-      kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
-      FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
-      z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
-      BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
-      vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
-      XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
-      KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
-      3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
-      49IwF6OHTk+8yjEF1c5ngQ==
-      -----END PRIVATE KEY-----
-    # @section -- App Server Secrets
-    kms_jwekey_tunnel_private_key: dummy_val
-    # @section -- App Server Secrets
-    kms_jwekey_rust_locker_encryption_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
-      RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
-      DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
-      FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
-      QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
-      DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
-      YQIDAQAB
-      -----END PUBLIC KEY-----
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_client_id: dummy_val
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_client_secret: dummy_val
-    # @section -- App Server Secrets
-    kms_connector_onboarding_paypal_partner_id: dummy_val
-    # -- Encryption key for redis temp locker
-    # @section -- App Server Secrets
-    redis_temp_locker_encryption_key: dummy_val
-    # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
-    # @section -- App Server Secrets
-    apple_pay_merchant_cert: dummy_val
-    # -- Private key generated by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_merchant_cert_key: dummy_val
-    # -- Payment Processing Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Payment Processing Certificate
-    # @section -- App Server Secrets
-    apple_pay_ppc: dummy_val
-    # -- Private key generated by Elliptic-curve prime256v1 curve. You can use `openssl ecparam -out private.key -name prime256v1 -genkey` to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_ppc_key: dummy_val
-    # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_cert: dummy_val
-    # -- Private key generate by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_cert_key: dummy_val
-    # -- Refer to config.example.toml to learn how you can generate this value
-    # @section -- App Server Secrets
-    apple_pay_merchant_conf_merchant_id: dummy_val
-    # -- Api key for making request to foreign exchange Api, Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
-    # @section -- App Server Secrets
-    forex_api_key: dummy_val
-    # -- Forex Api key for the fallback service
-    # @section -- App Server Secrets
-    forex_fallback_api_key: dummy_val
-    # -- # Payment method auth key used for authorization
-    # @section -- App Server Secrets
-    pm_auth_key: dummy_val
-    # -- API key hashing key.
-    # @section -- App Server Secrets
-    api_hash_key: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-    # -- Encryption key used for encrypting data in user_authentication_methods table
-    # @section -- App Server Secrets
-    keymanager:
-      ca: "sample_ca"
-      cert: "sample_cert"
+  # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
+  run_env: sandbox
 
-  analytics:
-    clickhouse:
-      # -- Clickhouse database name
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    chat:
+      # Enable or disable chat features
+      enabled: false
+      # Hyperswitch ai workflow host
+      hyperswitch_ai_host: "http://0.0.0.0:8000"
+    analytics:
+      clickhouse:
+        # -- Clickhouse database name
+        # @section -- App Server Secrets
+        database_name: default
+        # -- Clickhouse host in http(s)://<URL>:<PORT> format
+        # @section -- App Server Secrets
+        host: http://clickhouse:8123
+        # -- Clickhouse username
+        # @section -- App Server Secrets
+        username: default
+        # -- Clickhouse password (optional)
+        # @section -- App Server Secrets
+        password:
+          _secretRef:
+            name: clickhouse
+            key: admin-password
+      # -- The Analytics source/strategy to be used
+      source: clickhouse
+      sqlx:
+        # -- Database name
+        dbname:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__DBNAME
+        # -- Database host
+        host:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__HOST
+        # -- Database port
+        port:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__PORT
+        # -- Database username
+        username:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__MASTER_DATABASE__USERNAME
+        # -- Database password
+        # When commented out, will use the same password as master database
+        # password: ''
+        # -- Timeout for database connection in seconds
+        connection_timeout: 10
+        # -- Number of connections to keep open
+        pool_size: 5
+        # -- Add the queue strategy used by the database bb8 client
+        queue_strategy: Fifo
+      forex_enabled: false
+    applepay_merchant_configs:
+      # -- Apple pay gateway merchant endpoint
+      applepay_endpoint: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
       # @section -- App Server Secrets
-      database: default
-      # -- Clickhouse host in http(s)://<URL>:<PORT> format
+      merchant_cert:
+        _secret: dummy_val
+      # -- Private key generate by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
       # @section -- App Server Secrets
-      host: http://clickhouse:8123
-      # -- Clickhouse username
+      merchant_cert_key:
+        _secret: dummy_val
+      # -- Refer to config.example.toml to learn how you can generate this value
       # @section -- App Server Secrets
-      username: default
-      # -- Clickhouse password (optional)
+      common_merchant_identifier:
+        _secret: dummy_val
+    applepay_decrypt_keys:
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
       # @section -- App Server Secrets
-      password: ''
-    # -- The Analytics source/strategy to be used
-    source: clickhouse
-    sqlx:
+      apple_pay_merchant_cert:
+        _secret: dummy_val
+      # -- Private key generated by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_merchant_cert_key:
+        _secret: dummy_val
+      # -- Payment Processing Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Payment Processing Certificate
+      # @section -- App Server Secrets
+      apple_pay_ppc:
+        _secret: dummy_val
+      # -- Private key generated by Elliptic-curve prime256v1 curve. You can use `openssl ecparam -out private.key -name prime256v1 -genkey` to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_ppc_key:
+        _secret: dummy_val
+    cell_information:
+      # -- Default CellID for Global Cell Information
+      id: '12345'
+    clone_connector_allowlist:
+      # Comma-separated list of allowed merchant IDs
+      merchant_ids: "merchant_ids"
+      # Comma-separated list of allowed connector names
+      connector_names: "stripe,adyen,paypal,checkout,braintree,cybersource,square,worldpay,klarna,noon,archipel"
+    connector_onboarding:
+      paypal:
+        enabled: true
+        # @section -- App Server Secrets
+        client_id:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        client_secret:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        partner_id:
+          _secret: dummy_val
+    connector_request_reference_id_config:
+      # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
+      merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1', 'merchant_id_2']
+    connectors:
+      # Hyperswitch Vault Configuration
+      hyperswitch_vault:
+        # base url to call hyperswitch vault service
+        base_url: "http://localhost:8080"
+      # -- Unified Authentication Service Configuration
+      unified_authentication_service:
+        # -- base url to call unified authentication service
+        base_url: "http://localhost:8080"
+    network_tokenization_service:
+      # base url to generate token
+      generate_token_url: "https://example.com/generate"
+      # base url to fetch token
+      fetch_token_url: "https://example.com/fetch"
+      # api key for token service
+      token_service_api_key: "api_key"
+      # public key to encrypt data for token service
+      public_key: "public_key"
+      # private key to decrypt response payload from token service
+      private_key: "private_key"
+      # key id to encrypt data for token service
+      key_id: "key_id"
+      # base url to delete token from token service
+      delete_token_url: "https://example.com/delete"
+      # base url to check token status from token service
+      check_token_status_url: "https://example.com/status"
+      # webhook source verification key to verify the webhook payload from token service
+      webhook_source_verification_key: "placeholder_webhook_key"
+    cors:
+      # -- List of methods that are allowed
+      allowed_methods: GET,POST,PUT,DELETE
+      origin: "https://hyperswti"
+      # -- Maximum time (in seconds) for which this CORS request may be cached.
+      max_age: 30
+      # -- If true, allows any origin to make requests
+      wildcard_origin: true
+    crm:
+      # Crm manager client to be used
+      crm_manager: "hubspot_proxy"
+      hubspot_proxy:
+        # Form ID for Hubspot integration
+        form_id: "form_id"
+        # Request URL for Hubspot API
+        request_url: "request_url"
+    email:
+      # -- The currently active email client
+      active_email_client: SMTP
+      # -- Number of days the api calls ( with jwt token ) can be made without verifying the email
+      allowed_unverified_days: 1
+      # -- AWS region used by AWS SES
+      # @section -- App Server Secrets
+      aws_region: us-east-1
+      aws_ses:
+        # -- The amazon resource name ( arn ) of the role which has permission to send emails
+        # @section -- App Server Secrets
+        email_role_arn: arn:aws:iam::123456789012:role/SendEmailRole
+        # -- An identifier for the assumed role session, used to uniquely identify a session.
+        # @section -- App Server Secrets
+        sts_role_session_name: SendEmailRole
+      # -- Recipient email for prod intent email
+      # @section -- App Server Secrets
+      prod_intent_recipient_email: business@example.com
+      # -- Recipient email for recon request email
+      # @section -- App Server Secrets
+      recon_recipient_email: recon@example.com
+      # -- Sender email
+      # @section -- App Server Secrets
+      sender_email: example@example.com
+      smtp:
+        # -- connection type to be used for the smtp server
+        connection: plaintext
+        # -- Host of the smtp server
+        # @section -- App Server Secrets
+        host: mailhog
+        # -- Username for the SMTP server.
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # username: ''
+        # -- Password for the smtp server
+        # @section -- App Server Secrets
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # password:
+        #   _secret: ''
+        # -- Port of the smtp server
+        port: '1025'
+        # -- timeout for the smtp server connection
+        timeout: 10
+    encryption_management:
+      # -- Encryption manager client to be used
+      encryption_manager: no_encryption
+      # encryption_manager: aws_kms
+      # aws_kms:
+      #   key_id: "kms_key_id"
+      #   region: "kms_region"
+    events:
+      # -- The event sink to push events supports kafka or logs (stdout)
+      source: kafka
+      kafka:
+        # -- Kafka topic to be used for incoming api events
+        api_logs_topic: hyperswitch-api-log-events
+        # -- Kafka topic to be used for PaymentAttempt events
+        attempt_analytics_topic: hyperswitch-payment-attempt-events
+        # -- Kafka topic to be used for Payment Audit events
+        audit_events_topic: hyperswitch-audit-events
+        # -- Kafka topic to be used for Authentication events
+        authentication_analytics_topic: hyperswitch-authentication-events
+        brokers: ['kafka0:29092']
+        # -- Kafka topic to be used for connector api events
+        connector_logs_topic: hyperswitch-outgoing-connector-events
+        # -- Kafka topic to be used for Consolidated events
+        consolidated_events_topic: hyperswitch-consolidated-events
+        # -- Kafka topic to be used for Dispute events
+        dispute_analytics_topic: hyperswitch-dispute-events
+        # -- Kafka topic to be used for Fraud Check events
+        fraud_check_analytics_topic: hyperswitch-fraud-check-events
+        # -- Kafka topic to be used for PaymentIntent events
+        intent_analytics_topic: hyperswitch-payment-intent-events
+        # -- Kafka topic to be used for outgoing webhook events
+        outgoing_webhook_logs_topic: hyperswitch-outgoing-webhook-events
+        # -- Kafka topic to be used for Payouts and PayoutAttempt events
+        payout_analytics_topic: hyperswitch-payout-events
+        # -- Kafka topic to be used for Refund events
+        refund_analytics_topic: hyperswitch-refund-events
+        # Kafka topic to be used for Routing events
+        routing_logs_topic: topic
+        # Kafka topic to be used for Revenue Recovery Events
+        revenue_recovery_topic: topic
+    forex_api:
+      # -- Api key for making request to foreign exchange Api, Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+      # @section -- App Server Secrets
+      api_key:
+        _secret: dummy_val
+      # -- Forex Api key for the fallback service
+      # @section -- App Server Secrets
+      fallback_api_key:
+        _secret: dummy_val
+      # Expiration time for data in cache as well as redis in seconds
+      data_expiration_delay_in_seconds: 21600
+      # Redis remains write locked for 100 s once the acquire_redis_lock is called
+      redis_lock_timeout_in_seconds: 100
+      # Time to expire for forex data stored in Redis
+      redis_ttl_in_seconds: 172800
+    generic_link:
+      payment_method_collect:
+        # -- Auto-generated from services.sdk. Override with custom URL if needed.
+        sdk_url: ''
+        expiry: "900"
+        ui_config:
+          logo: https://app.hyperswitch.io/HyperswitchFavicon.png
+          merchant_name: HyperSwitch
+          theme: '#4285F4'
+        enabled_payment_methods:
+          card: credit,debit
+          bank_transfer: ach,bacs,sepa
+          wallet: paypal,pix,venmo
+      payout_link:
+        # -- Auto-generated from services.sdk. Override with custom URL if needed.
+        sdk_url: ''
+        expiry: "900"
+        enabled_payment_methods:
+          card: credit,debit
+        ui_config:
+          logo: https://app.hyperswitch.io/HyperswitchFavicon.png
+          merchant_name: HyperSwitch
+          theme: '#4285F4'
+    payment_link:
+      # -- Auto-generated from services.sdk. Override with custom URL if needed.
+      sdk_url: ''
+    grpc_client:
+      # Dynamic Routing Client Configuration
+      dynamic_routing_client:
+        # -- Client Host
+        host: localhost
+        # -- Client Port
+        port: 7000
+        # -- Client Service Name
+        service: "dynamo"
+      unified_connector_service:
+        # Unified Connector Service Base URL
+        base_url: "http://localhost:8000"
+        # Connection Timeout Duration in Seconds
+        connection_timeout: "10"
+        # Comma-separated list of connectors that use UCS only
+        ucs_only_connectors: "paytm, phonepe"
+      # Revenue recovery client base url
+      recovery_decider_client:
+        # Base URL
+        base_url: "http://127.0.0.1:8080"
+    theme:
+      storage:
+        # -- Theme storage backend to be used
+        file_storage_backend: "aws_s3"
+        aws_s3:
+          # -- AWS region where the S3 bucket for theme storage is located
+          region: "bucket_region"
+          # -- AWS S3 bucket name for theme storage
+          bucket_name: "bucket"
+      email_config:
+        # -- Name of the entity to be showed in emails
+        entity_name: "HyperSwitch"
+        # -- Logo URL of the entity to be used in emails
+        entity_logo_url: "https://example.com/logo.png"
+        # -- Foreground color of email text
+        foreground_color: "#000000"
+        # -- Primary color of email body
+        primary_color: "#006DF9"
+        # -- Background color of email body
+        background_color: "#FFFFFF"
+    kv_config:
+      ttl: 900
+      soft_kill: false
+    lock_settings:
+      # -- Delay between retries in milliseconds
+      delay_between_retries_in_milliseconds: 500
+      # -- Seconds before the redis lock expires
+      redis_lock_expiry_seconds: 180
+    # Locker settings contain details for accessing a card locker, a
+    # PCI Compliant storage entity which stores payment method information
+    # like card details
+    locker:
+      # -- Locker host
+      host: http://hyperswitch-vault
+      # -- Rust Locker host
+      host_rs: null
+      # -- Boolean to enable or disable saving cards in locker
+      locker_enabled: true
+      # -- Key_id to sign basilisk hs locker
+      locker_signing_key_id: '1'
+      # -- Emulate a locker locally using Postgres
+      mock_locker: false
+      # -- Time to live for storage entries in locker
+      ttl_for_storage_in_secs: 220752000
+      # -- Encryption key for redis temp locker
+      # @section -- App Server Secrets
+      redis_temp_locker_encryption_key:
+        _secret: dummy_val
+    log:
+      console:
+        enabled: true
+        # -- Log level for console logs, ERROR, WARN, INFO, DEBUG
+        level: DEBUG
+        log_format: json
+      file:
+        enabled: false
+        level: DEBUG
+        log_format: json
+      # Telemetry configuration for metrics and traces
+      telemetry:
+        # -- Interval for collecting the metrics in background thread
+        bg_metrics_collection_interval_in_secs: 15
+        # -- boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
+        ignore_errors: false
+        # -- boolean [true or false], whether metrics are enabled
+        metrics_enabled: false
+        # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
+        # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
+        # If left empty, the endpoint will be auto-configured as: <release-name>-opentelemetry-collector.<namespace>.svc.cluster.local:4317
+        # when using hyperswitch-stack with monitoring enabled. Leave empty for auto-configuration or specify custom endpoint.
+        otel_exporter_otlp_endpoint: ''
+        # -- timeout (in milliseconds) for sending metrics and traces
+        otel_exporter_otlp_timeout: 5000
+        route_to_trace: ['*/confirm']
+        sampling_rate: 0.1
+        # -- boolean [true or false], whether traces are enabled
+        traces_enabled: false
+        # -- Set this to true for AWS X-ray compatible traces
+        use_xray_generator: false
+    # Controls whether merchant ID authentication is enabled.
+    # When enabled, payment endpoints will accept and require a x-merchant-id header in the request.
+    merchant_id_auth:
+      merchant_id_auth_enabled: false
+    # Main SQL data store credentials
+    master_database:
       # -- Timeout for database connection in seconds
       connection_timeout: 10
       # -- Number of connections to keep open
-      pool_size: 5
+      pool_size: '20'
       # -- Add the queue strategy used by the database bb8 client
       queue_strategy: Fifo
-    forex_enabled: false
-  applepay_merchant_configs:
-    # -- Apple pay gateway merchant endpoint
-    applepay_endpoint: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
-  cell_information:
-    # -- Default CellID for Global Cell Information
-    id: '12345'
-  clone_connector_allowlist:
-    # Comma-separated list of allowed merchant IDs
-    merchant_ids: "merchant_ids"
-    # Comma-separated list of allowed connector names
-    connector_names: "stripe,adyen,paypal,checkout,braintree,cybersource,square,worldpay,klarna,noon,archipel"
-  connector_onboarding:
-    paypal:
-      enabled: true
-  connector_request_reference_id_config:
-    # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
-    merchant_ids_send_payment_id_as_connector_request_id: "['merchant_id_1','merchant_id_2']"
-  connectors:
-    # Hyperswitch Vault Configuration
-    hyperswitch_vault:
-      # base url to call hyperswitch vault service
-      base_url: "http://localhost:8080"
-    # -- Unified Authentication Service Configuration
-    unified_authentication_service:
-      # -- base url to call unified authentication service
-      base_url: "http://localhost:8080"
-  network_tokenization_service:
-    # base url to generate token
-    generate_token_url: "https://example.com/generate"
-    # base url to fetch token
-    fetch_token_url: "https://example.com/fetch"
-    # api key for token service
-    token_service_api_key: "api_key"
-    # public key to encrypt data for token service
-    public_key: "public_key"
-    # private key to decrypt response payload from token service
-    private_key: "private_key"
-    # key id to encrypt data for token service
-    key_id: "key_id"
-    # base url to delete token from token service
-    delete_token_url: "https://example.com/delete"
-    # base url to check token status from token service
-    check_token_status_url: "https://example.com/status"
-    # webhook source verification key to verify the webhook payload from token service
-    webhook_source_verification_key: "placeholder_webhook_key"
-  cors:
-    # -- List of methods that are allowed
-    allowed_methods: GET,POST,PUT,DELETE
-    origin: "https://hyperswti"
-    # -- Maximum time (in seconds) for which this CORS request may be cached.
-    max_age: 30
-    # -- If true, allows any origin to make requests
-    wildcard_origin: true
-  crm:
-    # Crm manager client to be used
-    crm_manager: "hubspot_proxy"
-    hubspot_proxy:
-      # Form ID for Hubspot integration
-      form_id: "form_id"
-      # Request URL for Hubspot API
-      request_url: "request_url"
-  email:
-    # -- The currently active email client
-    active_email_client: SMTP
-    # -- Number of days the api calls ( with jwt token ) can be made without verifying the email
-    allowed_unverified_days: 1
-    # -- AWS region used by AWS SES
-    # @section -- App Server Secrets
-    aws_region: us-east-1
-    aws_ses:
-      # -- The amazon resource name ( arn ) of the role which has permission to send emails
-      # @section -- App Server Secrets
-      email_role_arn: arn:aws:iam::123456789012:role/SendEmailRole
-      # -- An identifier for the assumed role session, used to uniquely identify a session.
-      # @section -- App Server Secrets
-      sts_role_session_name: SendEmailRole
-    # -- Recipient email for prod intent email
-    # @section -- App Server Secrets
-    prod_intent_recipient_email: business@example.com
-    # -- Recipient email for recon request email
-    # @section -- App Server Secrets
-    recon_recipient_email: recon@example.com
-    # -- Sender email
-    # @section -- App Server Secrets
-    sender_email: example@example.com
-    smtp:
-      # -- connection type to be used for the smtp server
-      connection: plaintext
-      # -- Host of the smtp server
-      # @section -- App Server Secrets
-      host: mailhog
-      # -- Username for the smtp server
-      username: ''
-      # -- Password for the smtp server
-      # @section -- App Server Secrets
-      password: ''
-      # -- Port of the smtp server
-      port: '1025'
-      # -- timeout for the smtp server connection
-      timeout: 10
-  encryption_management:
-    # -- Encryption manager client to be used
-    encryption_manager: no_encryption
-  events:
-    # -- The event sink to push events supports kafka or logs (stdout)
-    source: kafka
-    kafka:
-      # -- Kafka topic to be used for incoming api events
-      api_logs_topic: hyperswitch-api-log-events
-      # -- Kafka topic to be used for PaymentAttempt events
-      attempt_analytics_topic: hyperswitch-payment-attempt-events
-      # -- Kafka topic to be used for Payment Audit events
-      audit_events_topic: hyperswitch-audit-events
-      # -- Kafka topic to be used for Authentication events
-      authentication_analytics_topic: hyperswitch-authentication-events
-      brokers: "['kafka0:29092']"
-      # -- Kafka topic to be used for connector api events
-      connector_logs_topic: hyperswitch-outgoing-connector-events
-      # -- Kafka topic to be used for Consolidated events
-      consolidated_events_topic: hyperswitch-consolidated-events
-      # -- Kafka topic to be used for Dispute events
-      dispute_analytics_topic: hyperswitch-dispute-events
-      # -- Kafka topic to be used for Fraud Check events
-      fraud_check_analytics_topic: hyperswitch-fraud-check-events
-      # -- Kafka topic to be used for PaymentIntent events
-      intent_analytics_topic: hyperswitch-payment-intent-events
-      # -- Kafka topic to be used for outgoing webhook events
-      outgoing_webhook_logs_topic: hyperswitch-outgoing-webhook-events
-      # -- Kafka topic to be used for Payouts and PayoutAttempt events
-      payout_analytics_topic: hyperswitch-payout-events
-      # -- Kafka topic to be used for Refund events
-      refund_analytics_topic: hyperswitch-refund-events
-      # Kafka topic to be used for Routing events
-      routing_logs_topic: topic
-      # Kafka topic to be used for Revenue Recovery Events
-      revenue_recovery_topic: topic
-  forex_api:
-    # Expiration time for data in cache as well as redis in seconds
-    data_expiration_delay_in_seconds: 21600
-    # Redis remains write locked for 100 s once the acquire_redis_lock is called
-    redis_lock_timeout_in_seconds: 100
-    # Time to expire for forex data stored in Redis
-    redis_ttl_in_seconds: 172800
-  generic_link:
-    payment_method_collect:
-      ui_config:
-        logo: https://app.hyperswitch.io/HyperswitchFavicon.png
-        merchant_name: HyperSwitch
-        theme: '#4285F4'
-      enabled_payment_methods:
-        card: credit,debit
-        bank_transfer: ach,bacs,sepa
-        wallet: paypal,pix,venmo
-    payout_link:
-      enabled_payment_methods:
-        card: credit,debit
-      ui_config:
-        logo: https://app.hyperswitch.io/HyperswitchFavicon.png
-        merchant_name: HyperSwitch
-        theme: '#4285F4'
-  grpc_client:
-    # Dynamic Routing Client Configuration
-    dynamic_routing_client:
-      # -- Client Host
-      host: localhost
-      # -- Client Port
-      port: 7000
-      # -- Client Service Name
-      service: "dynamo"
-    unified_connector_service:
-      # Unified Connector Service Base URL
-      base_url: "http://localhost:8000"
-      # Connection Timeout Duration in Seconds
-      connection_timeout: "10"
-      # Comma-separated list of connectors that use UCS only
-      ucs_only_connectors: "paytm, phonepe"
-    # Revenue recovery client base url
-    recovery_decider_client:
-      # Base URL
-      base_url: "http://127.0.0.1:8080"
-  theme:
-    storage:
-      # -- Theme storage backend to be used
-      file_storage_backend: "aws_s3"
-      aws_s3:
-        # -- AWS region where the S3 bucket for theme storage is located
-        region: "bucket_region"
-        # -- AWS S3 bucket name for theme storage
-        bucket_name: "bucket"
-    email_config:
-      # -- Name of the entity to be showed in emails
-      entity_name: "HyperSwitch"
-      # -- Logo URL of the entity to be used in emails
-      entity_logo: "https://example.com/logo.png"
-      # -- Foreground color of email text
-      foreground_color: "#000000"
-      # -- Primary color of email body
-      primary_color: "#006DF9"
-      # -- Background color of email body
-      background_color: "#FFFFFF"
-  kv_config:
-    tls: 900
-    soft_kill: false
-
-  lock_settings:
-    # -- Delay between retries in milliseconds
-    delay_between_retries_in_milliseconds: 500
-    # -- Seconds before the redis lock expires
-    redis_lock_expiry_seconds: 180
-  # Locker settings contain details for accessing a card locker, a
-  # PCI Compliant storage entity which stores payment method information
-  # like card details
-  locker:
-    # -- Locker host
-    host: http://hyperswitch-vault
-    # -- Rust Locker host
-    host_rs: null
-    # -- Boolean to enable or disable saving cards in locker
-    locker_enabled: true
-    # -- Key_id to sign basilisk hs locker
-    locker_signing_key_id: '1'
-    # -- Emulate a locker locally using Postgres
-    mock_locker: false
-    # -- Time to live for storage entries in locker
-    ttl_for_storage_in_secs: 220752000
-  log:
-    console:
-      enabled: true
-      # -- Log level for console logs, ERROR, WARN, INFO, DEBUG
-      level: DEBUG
-      log_format: json
-    file:
+    multitenancy:
       enabled: false
-      level: DEBUG
-      log_format: json
-    # Telemetry configuration for metrics and traces
-    telemetry:
-      # -- Interval for collecting the metrics in background thread
-      bg_metrics_collection_interval_in_secs: 15
-      # -- boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
-      ignore_errors: false
-      # -- boolean [true or false], whether metrics are enabled
-      metrics_enabled: false
-      # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
-      # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
-      # The value of `external_otel_collector_endpoint` will be considered even if the `hyperswitch-monitoring` chart is enabled.
-      external_otel_collector_endpoint: ""
-      # -- Enable this when using hyperswitch-stack with monitoring.
-      # Auto-configures endpoint as: <release-name>-opentelemetry-collector.<namespace>.svc.cluster.local:4317
-      # Leave false for standalone deployments or when using external collectors.
-      autoConfigureOtelEndpoint: false
-      # -- timeout (in milliseconds) for sending metrics and traces
-      otel_exporter_otlp_timeout: 5000
-      route_to_trace: "['*/confirm']"
-      sampling_rate: 0.1
-      # -- boolean [true or false], whether traces are enabled
-      traces_enabled: false
-      # -- Set this to true for AWS X-ray compatible traces
-      use_xray_generator: false
-  # Controls whether merchant ID authentication is enabled.
-  # When enabled, payment endpoints will accept and require a x-merchant-id header in the request.
-  merchant_id_auth:
-    merchant_id_auth_enabled: false
-  # Main SQL data store credentials
-  master_database:
-    # -- Timeout for database connection in seconds
-    connection_timeout: 10
-    # -- Number of connections to keep open
-    pool_size: '20'
-    # -- Add the queue strategy used by the database bb8 client
-    queue_strategy: Fifo
-  multitenancy:
-    enabled: false
-    global_tenant:
-      clickhouse_database: default
-      redis_key_prefix: ""
-      schema: public
-      tenant_id: "global"
-    tenants:
-      public:
-        base_url: "http://localhost:8080"
-        schema: public
-        accounts_schema: "public"
+      global_tenant:
+        clickhouse_database: default
         redis_key_prefix: ""
-        clickhouse_database: "default"
-        user:
-          control_center_url: "http://localhost:9000"
-  opensearch:
-    auth:
-      auth: basic
-      username: admin
-      password: admin
-      region: eu-central-1
-    host: https://localhost:9200
-    enabled: false
-    indexes:
-      disputes: hyperswitch-dispute-events
-      payment_attempts: hyperswitch-payment-attempt-events
-      payment_intents: hyperswitch-payment-intent-events
-      refunds: hyperswitch-refund-events
-      sessionizer_disputes: sessionizer-dispute-events
-      sessionizer_payment_attempts: sessionizer-payment-attempt-events
-      sessionizer_payment_intents: sessionizer-payment-intent-events
-      sessionizer_refunds: sessionizer-refund-events
-  payment_method_auth:
-    # -- Redis expiry time in milliseconds
-    redis_expiry: 900
-  paze_decrypt_keys:
-    # -- Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
+        schema: public
+        tenant_id: "global"
+      tenants:
+        public:
+          base_url: "http://localhost:8080"
+          schema: public
+          accounts_schema: "public"
+          redis_key_prefix: ""
+          clickhouse_database: "default"
+          user:
+            control_center_url: "http://localhost:9000"
+    opensearch:
+      auth:
+        auth: basic
+        username: admin
+        password: admin
+        region: eu-central-1
+      host: https://localhost:9200
+      enabled: false
+      indexes:
+        disputes: hyperswitch-dispute-events
+        payment_attempts: hyperswitch-payment-attempt-events
+        payment_intents: hyperswitch-payment-intent-events
+        refunds: hyperswitch-refund-events
+        sessionizer_disputes: sessionizer-dispute-events
+        sessionizer_payment_attempts: sessionizer-payment-attempt-events
+        sessionizer_payment_intents: sessionizer-payment-intent-events
+        sessionizer_refunds: sessionizer-refund-events
+    payment_method_auth:
+      # -- # Payment method auth key used for authorization
+      # @section -- App Server Secrets
+      pm_auth_key:
+        _secret: dummy_val
+      # -- Redis expiry time in milliseconds
+      redis_expiry: 900
+    paze_decrypt_keys:
+      # -- Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
+      # @section -- App Server Secrets
+      paze_private_key: PAZE_PRIVATE_KEY
+      # -- PEM Passphrase used for generating Private Key File cakey.pem
+      # @section -- App Server Secrets
+      paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
+    google_pay_decrypt_keys:
+      google_pay_root_signing_keys: GOOGLE_PAY_ROOT_SIGNING_KEYS
+    proxy:
+      # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
+      bypass_proxy_hosts: "localhost, cluster.local"
+      enabled: false
+      # -- Outgoing proxy http URL to proxy the HTTP traffic
+      http_url: http://proxy_http_url
+      # -- Outgoing proxy https URL to proxy the HTTPS traffic
+      https_url: https://proxy_https_url
+    proxy_status_mapping:
+      # If enabled, the http status code of the connector will be proxied in the response
+      proxy_connector_http_status_code: false
+    # Redis credentials
+    redis:
+      # -- Whether or not the client should automatically pipeline commands across tasks when possible.
+      auto_pipeline: true
+      # -- boolean
+      cluster_enabled: false
+      # -- List of redis cluster urls
+      cluster_urls: ['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']
+      # -- An optional timeout to apply to all commands. In seconds
+      default_command_timeout: 30
+      # -- Default TTL for hashes entries, in seconds
+      default_hash_ttl: 900
+      # -- Default TTL for entries, in seconds
+      default_ttl: 300
+      # -- Whether or not to disable the automatic backpressure features when pipelining is enabled.
+      disable_auto_backpressure: false
+      # -- The maximum number of frames that will be fed to a socket before flushing.
+      max_feed_count: 200
+      # -- The maximum number of in-flight commands (per connection) before backpressure will be applied.
+      max_in_flight_commands: 5000
+      # -- Number of connections to keep open
+      pool_size: 5
+      # -- Delay between reconnection attempts, in milliseconds
+      reconnect_delay: 5
+      # -- Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
+      reconnect_max_attempts: 5
+      # -- Default number of entries to read from stream if not provided in stream read options
+      stream_read_count: 1
+      # -- An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.
+      unresponsive_timeout: 10
+      # -- RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
+      use_legacy_version: false
+    # Replica SQL data store credentials
+    replica_database:
+      # -- Timeout for database connection in seconds
+      connection_timeout: 10
+      # -- Number of connections to keep open
+      pool_size: '20'
+      # -- Add the queue strategy used by the database bb8 client
+      queue_strategy: Fifo
+    report_download_config:
+      # -- Config to download dispute report
+      dispute_function: report_download_config_dispute_function
+      # -- Config to download payment report
+      payment_function: report_download_config_payment_function
+      # -- Config to download refund report
+      refund_function: report_download_config_refund_function
+      # -- Region of the bucket
+      region: report_download_config_region
+      # -- Config to authentication function
+      authentication_function: report_download_config_authentication_function
+    revenue_recovery:
+      # monitoring threshold -  120 days
+      monitoring_threshold_in_seconds: 10368000
+      retry_algorithm_type: "cascading"
+      redis_ttl_in_seconds: 3888000
+      # Card specific configuration for Revenue Recovery
+      card_config:
+        amex:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+        mastercard:
+          max_retries_per_day: 10
+          max_retry_count_for_thirty_day: 35
+        visa:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+        discover:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+      # Timestamp configuration for Revenue Recovery
+      recovery_timestamp:
+        # number of hours added to start time for Decider service of Revenue Recovery
+        initial_timestamp_in_hours: 1
+    secrets_management:
+      # -- Secrets manager client to be used
+      secrets_manager: no_encryption
+      # secrets_manager: aws_kms
+      # aws_kms:
+      #   # The AWS key ID used by the KMS SDK for decrypting data.
+      #   key_id: "kms_key_id"
+      #   # The AWS region used by the KMS SDK for decrypting data.
+      #   region: "kms_region"
+      # hc_vault:
+      #   url: http://vault:8200
+      #   token: vault_token
+    # Server configuration
+    server:
+      host: 0.0.0.0
+      port: 8080
+      # -- HTTP Request body limit. Defaults to 32kB
+      request_body_limit: 32768
+      # -- This is the grace time (in seconds) given to the actix-server to stop the execution
+      # -- For more details: https://actix.rs/docs/server/#graceful-shutdown
+      shutdown_timeout: 30
+      workers: 8
+    user:
+      base_url: http://localhost:9000
+      force_two_factor_auth: false
+      password_validity_in_days: '90'
+      totp_issuer_name: Hyperswitch Sandbox
+      two_factor_auth_expiry_in_secs: '300'
+      force_cookies: false
+    file_upload_config:
+      bucket_name: "bucket"
+      region: "us-east-1"
+    # KMS Configuration
+    kms:
+      # -- AWS KMS region
+      key_region: us-east-1
+      # -- KMS key id for encryption and decryption
+      # @section -- App Server Secrets
+      key_id:
+        _secret: kms_key_id
+    # JWE Keys
+    jwekey:
+      # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+      vault_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+      # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
+      vault_private_key:
+        _secret: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
+          +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
+          W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
+          PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
+          dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
+          1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
+          t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
+          dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
+          qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
+          WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
+          ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
+          9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
+          yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
+          R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
+          3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
+          gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
+          mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
+          kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
+          FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
+          z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
+          BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
+          vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
+          XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
+          KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
+          3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
+          49IwF6OHTk+8yjEF1c5ngQ==
+          -----END PRIVATE KEY-----
+      # @section -- App Server Secrets
+      tunnel_private_key:
+        _secret: dummy_val
+      # @section -- App Server Secrets
+      rust_locker_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+    api_keys:
+      # -- API key hashing key.
+      # @section -- App Server Secrets
+      hash_key:
+        _secret: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    # -- Encryption key used for encrypting data in user_authentication_methods table
     # @section -- App Server Secrets
-    paze_private_key: PAZE_PRIVATE_KEY
-    # -- PEM Passphrase used for generating Private Key File cakey.pem
+    key_manager:
+      ca:
+        _secret: "sample_ca"
+      cert:
+        _secret: "sample_cert"
+    # -- Encryption key used for user_auth_methods table
     # @section -- App Server Secrets
-    paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
-  google_pay_decrypt_keys:
-    google_pay_root_signing_keys: GOOGLE_PAY_ROOT_SIGNING_KEYS
-  proxy:
-    # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
-    bypass_proxy_hosts: "localhost, cluster.local"
-    enabled: false
-    # -- Outgoing proxy http URL to proxy the HTTP traffic
-    http_url: http://proxy_http_url
-    # -- Outgoing proxy https URL to proxy the HTTPS traffic
-    https_url: https://proxy_https_url
-  proxy_status_mapping:
-    # If enabled, the http status code of the connector will be proxied in the response
-    proxy_connector_http_status_code: false
-  # Redis credentials
-  redis:
-    # -- Whether or not the client should automatically pipeline commands across tasks when possible.
-    auto_pipeline: true
-    # -- boolean
-    cluster_enabled: false
-    # -- List of redis cluster urls
-    cluster_urls: "['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']"
-    # -- An optional timeout to apply to all commands. In seconds
-    default_command_timeout: 30
-    # -- Default TTL for hashes entries, in seconds
-    default_hash_ttl: 900
-    # -- Default TTL for entries, in seconds
-    default_ttl: 300
-    # -- Whether or not to disable the automatic backpressure features when pipelining is enabled.
-    disable_auto_backpressure: false
-    host: 127.0.0.1
-    # -- The maximum number of frames that will be fed to a socket before flushing.
-    max_feed_count: 200
-    # -- The maximum number of in-flight commands (per connection) before backpressure will be applied.
-    max_in_flight_commands: 5000
-    # -- Number of connections to keep open
-    pool_size: 5
-    port: 6379
-    # -- Delay between reconnection attempts, in milliseconds
-    reconnect_delay: 5
-    # -- Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
-    reconnect_max_attempts: 5
-    # -- Default number of entries to read from stream if not provided in stream read options
-    stream_read_count: 1
-    # -- An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.
-    unresponsive_timeout: 10
-    # -- RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
-    use_legacy_version: false
-  # Replica SQL data store credentials
-  replica_database:
-    # -- Timeout for database connection in seconds
-    connection_timeout: 10
-    # -- Number of connections to keep open
-    pool_size: '20'
-    # -- Add the queue strategy used by the database bb8 client
-    queue_strategy: Fifo
-  report_download_config:
-    # -- Config to download dispute report
-    dispute_function: report_download_config_dispute_function
-    # -- Config to download payment report
-    payment_function: report_download_config_payment_function
-    # -- Config to download refund report
-    refund_function: report_download_config_refund_function
-    # -- Region of the bucket
-    region: report_download_config_region
-    # -- Config to authentication function
-    authentication_function: report_download_config_authentication_function
-  revenue_recovery:
-    # monitoring threshold -  120 days
-    monitoring_threshold_in_seconds: 10368000
-    retry_algorithm_type: "cascading"
-    redis_ttl_in_seconds: 3888000
-    # Card specific configuration for Revenue Recovery
-    card_config:
-      amex:
-        max_retries_per_day: 20
-        max_retry_count_for_thirty_day: 20
-      mastercard:
-        max_retries_per_day: 10
-        max_retry_count_for_thirty_day: 35
-      visa:
-        max_retries_per_day: 20
-        max_retry_count_for_thirty_day: 20
-      discover:
-        max_retries_per_day: 20
-        max_retry_count_for_thirty_day: 20
-    # Timestamp configuration for Revenue Recovery
-    recovery_timestamp:
-      # number of hours added to start time for Decider service of Revenue Recovery
-      initial_timestamp_in_hours: 1
-  # -- Processor URLs will be decided based on this config, Eg: sandbox or production
-  run_env: sandbox
-  secrets_management:
-    # -- Secrets manager client to be used
-    secrets_manager: no_encryption
-    hc_vault:
-      url: http://vault:8200
-      token: vault_token
-  # Server configuration
-  server:
-    host: 0.0.0.0
-    port: 8080
-    # -- HTTP Request body limit. Defaults to 32kB
-    request_body_limit: 32768
-    # -- This is the grace time (in seconds) given to the actix-server to stop the execution
-    # -- For more details: https://actix.rs/docs/server/#graceful-shutdown
-    shutdown_timeout: 30
-    workers: 8
-  user:
-    base_url: http://localhost:9000
-    force_two_factor_auth: false
-    password_validity_in_days: '90'
-    totp_issuer_name: Hyperswitch Sandbox
-    two_factor_auth_expiry_in_secs: '300'
-    force_cookies: false
-  user_auth_methods:
-    encryption_key: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+    user_auth_methods:
+      encryption_key:
+        _secret: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+    # Application Secrets
+    secrets:
+      # -- admin API key for admin authentication.
+      # @section -- App Server Secrets
+      admin_api_key:
+        _secret: test_admin
+      # -- JWT secret used for user authentication.
+      # @section -- App Server Secrets
+      jwt_secret:
+        _secret: test_admin
+      # -- Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.
+      # @section -- App Server Secrets
+      master_enc_key:
+        _secret: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+      # -- Recon Admin API key for recon admin authentication.
+      # @section -- App Server Secrets
+      recon_admin_api_key:
+        _secret: test_admin
+      migration_encryption_timestamp:
+        _secret: "1685510751"
+
   # KeyManager configuration
   keymanager:
     # -- Enable or disable keymanager
     enabled: false
     # -- KeyManager service URL
     url: ""
+
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application
@@ -778,6 +895,14 @@ consumer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Resource requests and limits for the consumer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
   # Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
@@ -786,12 +911,11 @@ consumer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
   labels:
@@ -802,7 +926,7 @@ consumer:
     eks.amazonaws.com/role-arn:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
-    binary: consumer
+    binary: scheduler
 
 # @ignored
 producer:
@@ -816,17 +940,24 @@ producer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+  # -- Resource requests and limits for the producer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
   # -- Specify affinity for nodes to which the pods should start on
   # @ignored
   affinity: {}
   # -- The time kubernetes will wait after sending the termination signal to the pods
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels:
     app: hyperswitch-producer
@@ -835,7 +966,7 @@ producer:
     eks.amazonaws.com/role-arn:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
-    binary: producer
+    binary: scheduler
 
 # @ignored
 drainer:
@@ -849,26 +980,6 @@ drainer:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
-  # -- Specify affinity for nodes to which the pods should start on
-  # @ignored
-  affinity: {}
-  # -- The time kubernetes will wait after sending the termination signal to the pods
-  terminationGracePeriodSeconds: 30
-  # -- Annotations that are to be added to the pods (extends global configuration)
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
-  # -- Annotations that are to be added the the deployments (extends global configuration)
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
-  labels:
-    app: hyperswitch-drainer
-  # -- service account annotations to be used
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
-  # -- Environment variables that are to be used by the hyperswitch drainer service
-  env:
-    binary: drainer
   # -- Resource requests and limits for the drainer
   resources:
     requests:
@@ -877,6 +988,27 @@ drainer:
     limits:
       memory: "512Mi"
       cpu: "500m"
+  # -- Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods (extends global configuration)
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments (extends global configuration)
+  annotations: {}
+  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  labels:
+    app: hyperswitch-drainer
+  # -- Namespace override for the drainer
+  namespaceOverride: ""
+  # -- service account annotations to be used
+  serviceAccountAnnotations:
+    eks.amazonaws.com/role-arn:
+  # -- Environment variables that are to be used by the hyperswitch drainer service
+  env:
+    binary: drainer
   # -- Drainer configuration
   config:
     # -- Specifies the stream name to be used by the drainer
@@ -893,6 +1025,9 @@ drainer:
 controlCenter:
   # -- Number of replicas to be used for the application
   replicas: 1
+  # -- Ingress Configurations for control center
+  ingress:
+    enabled: false
   # -- Wait time allowed for the deployment before the deployment is marked as failed
   # @ignored
   progressDeadlineSeconds: 600
@@ -911,16 +1046,18 @@ controlCenter:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
-  podAnnotations:
-    traffic_sidecar_istio_io_excludeOutboundIPRanges: 10.23.6.12/32
+  podAnnotations: {}
+    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
-  annotations:
-    deployment.kubernetes.io/revision: "1"
+  annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
   labels:
     app: hyperswitch-control-center
+  # -- Namespace override for the control center
+  # @ignored
+  namespaceOverride: ""
   # -- service account annotations to be used
   # @ignored
   serviceAccountAnnotations:
@@ -1160,6 +1297,12 @@ externalPostgresql:
     # -- External postgres host
     # @section -- Dependencies configuration
     host: "postgresql-ext"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password and plainpassword fields.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
     auth:
       # -- master DB username
       # @section -- Dependencies configuration
@@ -1180,6 +1323,12 @@ externalPostgresql:
     # -- External postgres read only host
     # @section -- Dependencies configuration
     host: "postgres-service"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password field.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
     auth:
       # -- replica DB username
       # @section -- Dependencies configuration
@@ -1187,9 +1336,6 @@ externalPostgresql:
       # -- replica DB password
       # @section -- Dependencies configuration
       password: "hyperswitch"
-      # -- replica DB plainpassword
-      # @section -- Dependencies configuration
-      plainpassword:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
@@ -1319,7 +1465,7 @@ clickhouse:
   # @section -- Dependencies configuration
   replicaCount: 1
   zookeeper:
-    image: 
+    image:
       repository: bitnamilegacy/zookeeper
     # -- Zookerper replica count
     # @section -- Dependencies configuration

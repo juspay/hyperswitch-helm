@@ -7,7 +7,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   name: hyperswitch-control-center-{{ include "version.suffix" .Values.services.controlCenter.version }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "controlCenter.namespace" . }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
   replicas: {{ default .Values.global.replicas .Values.controlCenter.replicas }}
@@ -22,6 +22,10 @@ spec:
     {{- end }}
   template:
     metadata:
+      annotations:
+        {{- with (default .Values.global.podAnnotations .Values.controlCenter.podAnnotations) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         app: {{ .Values.controlCenter.labels.app }}
         version: {{ include "version.suffix" .Values.services.controlCenter.version }}
@@ -41,7 +45,7 @@ spec:
       containers:
         - name: hyperswitch-control-center
           {{- $registry := .Values.global.imageRegistry | default .Values.services.controlCenter.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.controlCenter.image }}"
+          image: "{{ $registry }}/{{ .Values.services.controlCenter.image }}:{{ .Values.services.controlCenter.version }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
