@@ -5,6 +5,6 @@ metadata:
   name: drainer-cm-{{ .Release.Name }}
   namespace: {{ include "drainer.namespace" . }}
 data:
-  drainer.toml: |
-    {{ tpl (.Files.Get "configs/drainer.toml") . | nindent 4 }}
+  # Configs from values.drainer.configs will be generated as environment variables with prefix DRAINER_
+  {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.drainer.configs "prefix" "DRAINER" "context" .) | nindent 2 }}
 {{- end }}

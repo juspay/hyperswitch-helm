@@ -56,14 +56,6 @@ spec:
           {{- $registry := .Values.global.imageRegistry | default .Values.services.drainer.imageRegistry }}
           image: "{{ $registry }}/{{ .Values.services.drainer.image }}:{{ .Values.services.drainer.version }}"
           imagePullPolicy: Always
-          command:
-            - /local/bin/drainer
-            - -f
-            {{- if eq .Values.server.run_env "production" }}
-            - /local/config/production.toml
-            {{- else }}
-            - /local/config/sandbox.toml
-            {{- end }}
           ports:
             - containerPort: 8080
               name: http
@@ -90,22 +82,10 @@ spec:
             {{- end }}
             {{- end }}
           envFrom:
+            - configMapRef:
+                name: drainer-cm-{{ .Release.Name }}
           {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
-          volumeMounts:
-            {{- if eq .Values.server.run_env "production" }}
-            - mountPath: /local/config/production.toml
-              name: hyperswitch-config
-              subPath: drainer.toml
-            {{- else }}
-            - mountPath: /local/config/sandbox.toml
-              name: hyperswitch-config
-              subPath: drainer.toml
-            {{- end }}
-      volumes:
-        - name: hyperswitch-config
-          configMap:
-            name: drainer-cm-{{ .Release.Name }}
 {{- end }}

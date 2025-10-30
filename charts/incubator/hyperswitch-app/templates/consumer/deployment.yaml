@@ -77,6 +77,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: hyperswitch-configs
+            - configMapRef:
+                name: consumer-cm-{{ .Release.Name }}
           {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
                 name: hyperswitch-secrets
@@ -110,6 +112,6 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: consumer-cm-{{ .Release.Name }}
+            name: router-cm-{{ .Release.Name }}
           name: hyperswitch-config
 {{- end }}
