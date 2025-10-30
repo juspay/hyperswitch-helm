@@ -127,8 +127,10 @@ jobs:
           yq eval ".services.producer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
           yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
 
-          # Update chart version to match hyperswitch version
-          yq eval ".version = \"$SOURCE_REF\"" -i $CHART_FILE
+          # Update chart version to valid SemVer format with hyperswitch version as prerelease
+          CHART_VERSION="0.0.0-$SOURCE_REF"
+          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION"
+          yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
 
           echo "Service versions and chart version updated successfully"
 
@@ -184,7 +186,7 @@ jobs:
           - Updated all service versions to ${{ steps.determine_ref.outputs.target_ref }}
 
           Chart version:
-          - Updated chart version to ${{ steps.determine_ref.outputs.target_ref }}
+          - Updated chart version to 0.0.0-${{ steps.determine_ref.outputs.target_ref }}
 
           Source: https://github.com/juspay/hyperswitch/tree/${{ steps.determine_ref.outputs.target_ref }}/config/deployments
           Source ref: ${{ steps.determine_ref.outputs.target_ref }}
