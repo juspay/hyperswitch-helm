@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.10.30.0
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.10.30.0
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.10.30.0
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.10.30.0
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -67,7 +67,6 @@ services:
     # -- SDK subversion
     # @section -- Services
     subversion: v1
-
 # @ignored
 global:
   # Global image registry that can override all imageRegistry fields
@@ -91,13 +90,12 @@ global:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments
   annotations: {}
   # -- Labels to be added to the all the deployments and their pods
   labels:
     managedBy: hyperswitch
-
   # -- service account annotations to be used
   serviceAccountAnnotations:
     eks.amazonaws.com/role-arn:
@@ -109,11 +107,9 @@ global:
         fieldRef:
           apiVersion: v1
           fieldPath: metadata.name
-
   configMap: |
     [server]
     host = 0.0.0.0
-
   # External Secrets Configuration
   # When enabled, all local secret creation is disabled and external secrets are used instead
   # Use this to define mapping of secrets created by external secret operators
@@ -123,15 +119,14 @@ global:
     # -- Configuration for external secrets mapping (Optional)
     # Each secret name maps to a list of environment variables
     secrets:
-      # Example: hyperswitch-secrets contains application secrets
-      # # -- Name of the external secret
-      # hyperswitch-secrets:
-      #   # -- List of environment variables to map from the external secret
-      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
-      #     secretKey: admin_api_key
-      #   - envName: ROUTER__SECRETS__JWT_SECRET
-      #     secretKey: jwt_secret
-
+    # Example: hyperswitch-secrets contains application secrets
+    # # -- Name of the external secret
+    # hyperswitch-secrets:
+    #   # -- List of environment variables to map from the external secret
+    #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
+    #     secretKey: admin_api_key
+    #   - envName: ROUTER__SECRETS__JWT_SECRET
+    #     secretKey: jwt_secret
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -185,7 +180,7 @@ server:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -201,7 +196,6 @@ server:
     host: hyperswitch
   # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
-
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
@@ -874,14 +868,12 @@ server:
         _secret: test_admin
       migration_encryption_timestamp:
         _secret: "1685510751"
-
   # KeyManager configuration
   keymanager:
     # -- Enable or disable keymanager
     enabled: false
     # -- KeyManager service URL
     url: ""
-
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application
@@ -912,7 +904,7 @@ consumer:
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
   annotations: {}
@@ -927,7 +919,6 @@ consumer:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
-
 # @ignored
 producer:
   # -- Number of replicas to be used for the application
@@ -955,7 +946,7 @@ producer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -967,7 +958,6 @@ producer:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
-
 # @ignored
 drainer:
   # -- Number of replicas to be used for the drainer
@@ -995,7 +985,7 @@ drainer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -1021,7 +1011,6 @@ drainer:
     shutdown_interval: 1000
     # -- Specifies how much time to wait after checking all the possible streams in completed (in milliseconds)
     loop_interval: 500
-
 controlCenter:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -1047,7 +1036,7 @@ controlCenter:
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
   annotations: {}
@@ -1189,7 +1178,6 @@ controlCenter:
     # -- Mix panel token
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1213,7 +1201,6 @@ redis:
     # -- enable or disable sentinel
     # @section -- Dependencies configuration
     sentinel: false
-
 externalRedis:
   # -- Link this service to an external Redis server
   # @section -- Dependencies configuration
@@ -1231,7 +1218,6 @@ externalRedis:
     # -- redis password
     # @section -- Dependencies configuration
     password: ""
-
 redisMiscConfig:
   checkRedisIsUp:
     initContainer:
@@ -1239,7 +1225,6 @@ redisMiscConfig:
       imageRegistry: docker.io
       image: bitnamilegacy/redis:7.2.3-debian-11-r2
       maxAttempt: 60
-
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
@@ -1288,7 +1273,6 @@ postgresql:
         # -- CPU resource requests
         # @section -- Dependencies configuration
         cpu: 100m
-
 externalPostgresql:
   # -- Link this service to an external Postgres server
   # @section -- Dependencies configuration
@@ -1339,34 +1323,29 @@ externalPostgresql:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
-
 initDB:
   enable: true
   checkPGisUp:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags  # tags or heads
+  refs: tags # tags or heads
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
-
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
-
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-
 hyperswitch-card-vault:
   enabled: true
   initDB:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
-
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -1377,7 +1356,6 @@ kafka:
   # -- Name of the Kafka sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "kafka0"
-
   controller:
     # -- Number of replicas to be used for controller
     # @section -- Dependencies configuration
@@ -1428,7 +1406,6 @@ kafka:
   extraConfig: |
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1
-
 initCH:
   checkCHisUp:
     imageRegistry: docker.io
@@ -1483,7 +1460,6 @@ clickhouse:
   extraVolumes:
     - name: initdb-scripts
       emptyDir: {}
-
 # https://artifacthub.io/packages/helm/codecentric/mailhog
 mailhog:
   # -- Enable Bitnami Mailhog sub-chart helm installation for email testing
@@ -1492,8 +1468,6 @@ mailhog:
   # -- Name of the Mailhog sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
-
-
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation
@@ -1506,7 +1480,6 @@ vector:
       value: "kafka0:29092"
   # @ignored
   customConfig:
-
     acknowledgements:
       enabled: true
     # enrichment_tables:
@@ -1520,11 +1493,9 @@ vector:
     #       publishable_key: string
     #       merchant_id: string
 
-
     api:
       enabled: true
       address: 0.0.0.0:8686
-
     sources:
       kafka_tx_events:
         type: kafka
@@ -1537,7 +1508,6 @@ vector:
           - hyperswitch-dispute-events
         decoding:
           codec: json
-
       sessionized_kafka_tx_events:
         type: kafka
         bootstrap_servers: kafka0:29092
@@ -1546,60 +1516,50 @@ vector:
           - ^sessionizer
         decoding:
           codec: json
-
       app_logs:
         type: docker_logs
         include_labels:
           - "logs=promtail"
-
       vector_metrics:
         type: internal_metrics
-
       node_metrics:
         type: host_metrics
-
       sdk_source:
         type: http_server
         address: 0.0.0.0:3103
         encoding: json
-
     transforms:
       events_create_ts:
         inputs:
-        - kafka_tx_events
+          - kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
         type: remap
-
       plus_1_events:
         type: filter
         inputs:
           - events_create_ts
           - sessionized_events_create_ts
         condition: ".sign_flag == 1"
-
       hs_server_logs:
         type: filter
         inputs:
           - app_logs
         condition: '.labels."com.docker.compose.service" == "hyperswitch-server"'
-
       parsed_hs_server_logs:
         type: remap
         inputs:
           - app_logs
         source: |-
           .message = parse_json!(.message)
-
       sessionized_events_create_ts:
         type: remap
         inputs:
-        - sessionized_kafka_tx_events
+          - sessionized_kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
-
       sdk_transformed:
         type: throttle
         inputs:
@@ -1607,7 +1567,6 @@ vector:
         key_field: "{{ .payment_id }}{{ .merchant_id }}"
         threshold: 1000
         window_secs: 60
-
       amend_sdk_logs:
         type: remap
         inputs:
@@ -1620,7 +1579,6 @@ vector:
           # .merchant_id = row.merchant_id
 
           .after_transform = now()
-
     sinks:
       opensearch_events_1:
         type: elasticsearch
@@ -1648,7 +1606,6 @@ vector:
             - sign_flag
         bulk:
           index: "vector-{{ .topic }}"
-
       opensearch_events_2:
         type: elasticsearch
         inputs:
@@ -1676,7 +1633,6 @@ vector:
         bulk:
           # Add a date suffixed index for better grouping
           index: "vector-{{ .topic }}-%Y-%m-%d"
-
       opensearch_events_3:
         type: elasticsearch
         inputs:
@@ -1703,7 +1659,6 @@ vector:
             - sign_flag
         bulk:
           index: "{{ .topic }}"
-
       opensearch_logs:
         type: elasticsearch
         inputs:
@@ -1722,7 +1677,6 @@ vector:
           # Add a date suffixed index for better grouping
           # index: "vector-{{ .topic }}-%Y-%m-%d"
           index: "logs-{{ .container_name }}-%Y-%m-%d"
-
       log_events:
         type: loki
         inputs:
@@ -1735,7 +1689,6 @@ vector:
           job: kafka
         encoding:
           codec: json
-
       log_app_loki:
         type: loki
         inputs:
@@ -1748,13 +1701,11 @@ vector:
           stream: "{{ .stream }}"
         encoding:
           codec: json
-
       metrics:
         type: prometheus_exporter
         inputs:
           - vector_metrics
           - node_metrics
-
       sdk_sink:
         type: kafka
         encoding:

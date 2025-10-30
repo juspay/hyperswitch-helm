@@ -1,0 +1,24 @@
+dependencies:
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 18.6.1
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.5.38
+- name: hyperswitch-card-vault
+  repository: https://juspay.github.io/hyperswitch-helm
+  version: 0.1.4
+- name: kafka
+  repository: https://charts.bitnami.com/bitnami
+  version: 31.0.0
+- name: clickhouse
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.3.3
+- name: mailhog
+  repository: https://codecentric.github.io/helm-charts
+  version: 4.0.0
+- name: vector
+  repository: https://helm.vector.dev
+  version: 0.37.0
+digest: sha256:be66615f9b93561684e50297e91398ebecbf6360dd66cfac415e37b7646cfae9
+generated: "2025-10-30T18:41:59.456477849Z"
