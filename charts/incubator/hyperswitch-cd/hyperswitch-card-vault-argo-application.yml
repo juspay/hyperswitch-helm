@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hyperswitch-card-vault-prod-app-set
+  labels:
+     app: hyperswitch-card-vault-prod-set
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: local-as1
+        url: https://kubernetes.default.svc
+        helm_value: values.yaml
+  template:
+      metadata:
+        name: 'hyperswitch-card-vault-prod-app-{{cluster}}'
+      spec:
+        project: default
+        source:
+          path: charts/incubator/hyperswitch-card-vault
+          repoURL: 'https://github.com/juspay/hyperswitch-helm.git'
+          targetRevision: HEAD
+          helm:
+            valueFiles:
+              - '{{helm_value}}'
+        destination:
+          server: '{{url}}'
+          namespace: hyperswitch-card-vault-prod
+        syncPolicy:
+          syncOptions:
+          - CreateNamespace=true
+          automated:
+            selfHeal: true
+            prune: true
