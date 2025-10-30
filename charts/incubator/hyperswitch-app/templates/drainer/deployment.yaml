@@ -81,6 +81,7 @@ spec:
               {{- toYaml $value | nindent 14 }}
             {{- end }}
             {{- end }}
+            {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.drainer.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: drainer-cm-{{ .Release.Name }}

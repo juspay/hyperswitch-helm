@@ -951,7 +951,7 @@ consumer:
         # Port on which the server will listen for incoming requests
         port: 3000
         # Host IP address to bind the server to
-        host: "127.0.0.1"
+        host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
 
@@ -1025,7 +1025,7 @@ producer:
         # Port on which the server will listen for incoming requests
         port: 3000
         # Host IP address to bind the server to
-        host: "127.0.0.1"
+        host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
 
