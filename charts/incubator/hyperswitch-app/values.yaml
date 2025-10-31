@@ -138,6 +138,26 @@ server:
   # Ingress Configurations for hyperswitch router
   ingress:
     enabled: false
+    annotations:
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+      alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+      alb.ingress.kubernetes.io/group.name: hyperswitch-alb-ingress-group
+      alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
+      alb.ingress.kubernetes.io/healthcheck-path: /health
+      alb.ingress.kubernetes.io/healthcheck-port: "8080"
+      alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+      alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "2"
+      alb.ingress.kubernetes.io/healthy-threshold-count: "5"
+      alb.ingress.kubernetes.io/ip-address-type: ipv4
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/load-balancer-name: hyperswitch
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/security-groups: "{{ .Values.loadBalancer.targetSecurityGroup }}"
+      alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+      alb.ingress.kubernetes.io/target-type: ip
+    className: alb
+    host: null
+    tls: []
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
@@ -300,7 +320,7 @@ server:
         _secret: dummy_val
     cell_information:
       # -- Default CellID for Global Cell Information
-      id: '12345'
+      id: "12345"
     clone_connector_allowlist:
       # Comma-separated list of allowed merchant IDs
       merchant_ids: "merchant_ids"
@@ -320,7 +340,8 @@ server:
           _secret: dummy_val
     connector_request_reference_id_config:
       # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
-      merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1', 'merchant_id_2']
+      merchant_ids_send_payment_id_as_connector_request_id:
+        ["merchant_id_1", "merchant_id_2"]
     connectors:
       # Hyperswitch Vault Configuration
       hyperswitch_vault:
@@ -404,7 +425,7 @@ server:
         # password:
         #   _secret: ''
         # -- Port of the smtp server
-        port: '1025'
+        port: "1025"
         # -- timeout for the smtp server connection
         timeout: 10
     encryption_management:
@@ -426,7 +447,7 @@ server:
         audit_events_topic: hyperswitch-audit-events
         # -- Kafka topic to be used for Authentication events
         authentication_analytics_topic: hyperswitch-authentication-events
-        brokers: ['kafka0:29092']
+        brokers: ["kafka0:29092"]
         # -- Kafka topic to be used for connector api events
         connector_logs_topic: hyperswitch-outgoing-connector-events
         # -- Kafka topic to be used for Consolidated events
@@ -465,29 +486,29 @@ server:
     generic_link:
       payment_method_collect:
         # -- Auto-generated from services.sdk. Override with custom URL if needed.
-        sdk_url: ''
+        sdk_url: ""
         expiry: "900"
         ui_config:
           logo: https://app.hyperswitch.io/HyperswitchFavicon.png
           merchant_name: HyperSwitch
-          theme: '#4285F4'
+          theme: "#4285F4"
         enabled_payment_methods:
           card: credit,debit
           bank_transfer: ach,bacs,sepa
           wallet: paypal,pix,venmo
       payout_link:
         # -- Auto-generated from services.sdk. Override with custom URL if needed.
-        sdk_url: ''
+        sdk_url: ""
         expiry: "900"
         enabled_payment_methods:
           card: credit,debit
         ui_config:
           logo: https://app.hyperswitch.io/HyperswitchFavicon.png
           merchant_name: HyperSwitch
-          theme: '#4285F4'
+          theme: "#4285F4"
     payment_link:
       # -- Auto-generated from services.sdk. Override with custom URL if needed.
-      sdk_url: ''
+      sdk_url: ""
     grpc_client:
       # Dynamic Routing Client Configuration
       dynamic_routing_client:
@@ -547,7 +568,7 @@ server:
       # -- Boolean to enable or disable saving cards in locker
       locker_enabled: true
       # -- Key_id to sign basilisk hs locker
-      locker_signing_key_id: '1'
+      locker_signing_key_id: "1"
       # -- Emulate a locker locally using Postgres
       mock_locker: false
       # -- Time to live for storage entries in locker
@@ -578,10 +599,10 @@ server:
         # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
         # If left empty, the endpoint will be auto-configured as: <release-name>-opentelemetry-collector.<namespace>.svc.cluster.local:4317
         # when using hyperswitch-stack with monitoring enabled. Leave empty for auto-configuration or specify custom endpoint.
-        otel_exporter_otlp_endpoint: ''
+        otel_exporter_otlp_endpoint: ""
         # -- timeout (in milliseconds) for sending metrics and traces
         otel_exporter_otlp_timeout: 5000
-        route_to_trace: ['*/confirm']
+        route_to_trace: ["*/confirm"]
         sampling_rate: 0.1
         # -- boolean [true or false], whether traces are enabled
         traces_enabled: false
@@ -596,7 +617,7 @@ server:
       # -- Timeout for database connection in seconds
       connection_timeout: 10
       # -- Number of connections to keep open
-      pool_size: '20'
+      pool_size: "20"
       # -- Add the queue strategy used by the database bb8 client
       queue_strategy: Fifo
     multitenancy:
@@ -666,7 +687,7 @@ server:
       # -- boolean
       cluster_enabled: false
       # -- List of redis cluster urls
-      cluster_urls: ['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']
+      cluster_urls: ["redis.cluster.uri-1:8080", "redis.cluster.uri-2:4115"]
       # -- An optional timeout to apply to all commands. In seconds
       default_command_timeout: 30
       # -- Default TTL for hashes entries, in seconds
@@ -696,7 +717,7 @@ server:
       # -- Timeout for database connection in seconds
       connection_timeout: 10
       # -- Number of connections to keep open
-      pool_size: '20'
+      pool_size: "20"
       # -- Add the queue strategy used by the database bb8 client
       queue_strategy: Fifo
     report_download_config:
@@ -758,9 +779,9 @@ server:
     user:
       base_url: http://localhost:9000
       force_two_factor_auth: false
-      password_validity_in_days: '90'
+      password_validity_in_days: "90"
       totp_issuer_name: Hyperswitch Sandbox
-      two_factor_auth_expiry_in_secs: '300'
+      two_factor_auth_expiry_in_secs: "300"
       force_cookies: false
     file_upload_config:
       bucket_name: "bucket"
@@ -1178,6 +1199,20 @@ controlCenter:
   # -- Ingress Configurations for control center
   ingress:
     enabled: false
+    annotations:
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+      alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
+      alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
+      alb.ingress.kubernetes.io/ip-address-type: ipv4
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/security-groups: "{{ .Values.loadBalancer.targetSecurityGroup }}"
+      alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
+      alb.ingress.kubernetes.io/target-type: ip
+    className: alb
+    host: null
+    tls: []
   # -- Wait time allowed for the deployment before the deployment is marked as failed
   # @ignored
   progressDeadlineSeconds: 600
@@ -1447,6 +1482,8 @@ externalPostgresql:
     # -- External postgres host
     # @section -- Dependencies configuration
     host: "postgresql-ext"
+    # -- External postgres port
+    port: 5432
     # You can optionally use _secretRef to reference a secret key from a secret
     # instead of adding direct values here for password and plainpassword fields.
     # Eg: password:
@@ -1473,6 +1510,8 @@ externalPostgresql:
     # -- External postgres read only host
     # @section -- Dependencies configuration
     host: "postgres-service"
+    # -- External postgres port
+    port: 5432
     # You can optionally use _secretRef to reference a secret key from a secret
     # instead of adding direct values here for password field.
     # Eg: password:
@@ -1496,7 +1535,7 @@ initDB:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags  # tags or heads
+  refs: tags # tags or heads
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
@@ -1643,7 +1682,6 @@ mailhog:
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
 
-
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation
@@ -1656,7 +1694,6 @@ vector:
       value: "kafka0:29092"
   # @ignored
   customConfig:
-
     acknowledgements:
       enabled: true
     # enrichment_tables:
@@ -1669,7 +1706,6 @@ vector:
     #     schema:
     #       publishable_key: string
     #       merchant_id: string
-
 
     api:
       enabled: true
@@ -1716,7 +1752,7 @@ vector:
     transforms:
       events_create_ts:
         inputs:
-        - kafka_tx_events
+          - kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
@@ -1745,7 +1781,7 @@ vector:
       sessionized_events_create_ts:
         type: remap
         inputs:
-        - sessionized_kafka_tx_events
+          - sessionized_kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()

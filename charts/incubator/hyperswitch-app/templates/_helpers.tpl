@@ -122,12 +122,20 @@ Allow the release namespace to be overridden for multi-namespace deployments
 
 {{/* Select Postgres master port Internal or External */}}
 {{- define "postgresql.port" -}}
-    {{- printf "5432" -}}
+    {{- if .Values.postgresql.enabled }}
+      {{- "5432" -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- .Values.externalPostgresql.primary.port -}}
+    {{- end -}}
 {{- end -}}
 
 {{/* Select Postgres replica port Internal or External */}}
 {{- define "postgresqlreplica.port" -}}
-    {{- printf "5432" -}}
+    {{- if .Values.postgresql.enabled }}
+      {{- "5432" -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- .Values.externalPostgresql.readonly.port -}}
+    {{- end -}}
 {{- end -}}
 
 {{/* Select Postgres master database Internal or External */}}
