@@ -919,6 +919,34 @@ consumer:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    scheduler:
+      consumer_group: "scheduler_group"
+      # Specifies how much time to wait while re-attempting shutdown for a service (in milliseconds)
+      graceful_shutdown_interval: 60000
+      # Specifies how much time to wait before starting the defined behaviour of producer or consumer (in milliseconds)0
+      loop_interval: 3000
+      stream: "scheduler_stream"
+      consumer:
+        consumer_group: "scheduler_group"
+        # This flag decides if the consumer should actively consume task
+        disabled: false
+      server:
+        # Port on which the server will listen for incoming requests
+        port: 3000
+        # Host IP address to bind the server to
+        host: "0.0.0.0"
+        # Number of actix workers to handle incoming requests concurrently
+        workers: 1
+
 # @ignored
 producer:
   # -- Number of replicas to be used for the application
@@ -958,6 +986,41 @@ producer:
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    scheduler:
+      consumer_group: "scheduler_group"
+      # Specifies how much time to wait while re-attempting shutdown for a service (in milliseconds)
+      graceful_shutdown_interval: 60000
+      # Specifies how much time to wait before starting the defined behaviour of producer or consumer (in milliseconds)
+      loop_interval: 30000
+      stream: "scheduler_stream"
+      producer:
+        # Specifies the batch size the producer will push under a single entry in the redis queue
+        batch_size: 50
+        # The following keys defines the producer lock that is created in redis with
+        lock_key: "producer_locking_key"
+        # the ttl being the expiry (in seconds)
+        lock_ttl: 160
+        # Lower limit for fetching entries from redis queue (in seconds)
+        lower_fetch_limit: 900
+        # Upper limit for fetching entries from the redis queue (in seconds)0
+        upper_fetch_limit: 0
+      server:
+        # Port on which the server will listen for incoming requests
+        port: 3000
+        # Host IP address to bind the server to
+        host: "0.0.0.0"
+        # Number of actix workers to handle incoming requests concurrently
+        workers: 1
+
 # @ignored
 drainer:
   # -- Number of replicas to be used for the drainer
@@ -999,18 +1062,108 @@ drainer:
   # -- Environment variables that are to be used by the hyperswitch drainer service
   env:
     binary: drainer
-  # -- Drainer configuration
-  config:
-    # -- Specifies the stream name to be used by the drainer
-    stream_name: "DRAINER_STREAM"
-    # -- Specifies the number of partitions the stream will be divided into
-    num_partitions: 64
-    # -- Specifies the maximum number of entries that would be read from redis stream in one call
-    max_read_count: 100
-    # -- Specifies how much time to wait, while waiting for threads to complete execution (in milliseconds)
-    shutdown_interval: 1000
-    # -- Specifies how much time to wait after checking all the possible streams in completed (in milliseconds)
-    loop_interval: 500
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.drainer.loop_interval -> CONFIGS_DRAINER_LOOP_INTERVAL
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    drainer:
+      loop_interval: 500
+      max_read_count: 100
+      num_partitions: 64
+      shutdown_interval: 1000
+      stream_name: "drainer_stream"
+    secrets_management:
+      secrets_manager:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER
+      aws_kms:
+        key_id:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
+        region:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__REGION
+    encryption_management:
+      encryption_manager:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__ENCRYPTION_MANAGEMENT__ENCRYPTION_MANAGER
+      aws_kms:
+        key_id:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__KEY_ID
+        region:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__REGION
+    log:
+      console:
+        enabled:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__LOG__CONSOLE__ENABLED
+        level:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__LOG__CONSOLE__LEVEL
+        log_format:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__LOG__CONSOLE__LOG_FORMAT
+      telemetry:
+        metrics_enabled:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__LOG__TELEMETRY__METRICS_ENABLED
+        otel_exporter_otlp_endpoint:
+          _configRef:
+            name: hyperswitch-configs
+            key: ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT
+    master_database:
+      dbname:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__MASTER_DATABASE__DBNAME
+      host:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__MASTER_DATABASE__HOST
+      pool_size: 3
+      port:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__MASTER_DATABASE__PORT
+      username:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__MASTER_DATABASE__USERNAME
+    redis:
+      cluster_enabled: false
+      cluster_urls: ["redis.cluster.uri-1:8080", "redis.cluster.uri-2:4115"]
+      default_ttl: 300
+      host:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__REDIS__HOST
+      pool_size: 5
+      port:
+        _configRef:
+          name: hyperswitch-configs
+          key: ROUTER__REDIS__PORT
+      reconnect_delay: 5
+      reconnect_max_attempts: 5
+      stream_read_count: 1
+      use_legacy_version: false
+
 controlCenter:
   # -- Number of replicas to be used for the application
   replicas: 1

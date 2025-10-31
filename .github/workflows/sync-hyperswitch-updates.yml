@@ -134,6 +134,21 @@ jobs:
 
           echo "Service versions and chart version updated successfully"
 
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Helm dependency update
+        run: |
+          CHART_DIR="charts/incubator/hyperswitch-app"
+
+          echo "Updating chart dependencies for air-gapped deployment..."
+          cd $CHART_DIR
+          helm dependency update
+          cd ../../..
+
+          echo "✅ Chart dependencies updated and ready for air-gapped deployments"
 
       - name: Check for changes
         id: check_changes
@@ -173,6 +188,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
+          git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
           git commit -m "chore: sync hyperswitch updates from ${{ steps.determine_ref.outputs.target_ref }}
 
           Hyperswitch version: ${{ steps.determine_ref.outputs.target_ref }}
@@ -211,6 +227,9 @@ jobs:
           echo "   - charts/incubator/hyperswitch-app/values.yaml"
           echo "Chart version updated:"
           echo "   - charts/incubator/hyperswitch-app/Chart.yaml"
+          echo "Dependencies updated for air-gapped deployments:"
+          echo "   - charts/incubator/hyperswitch-app/charts/"
+          echo "   - charts/incubator/hyperswitch-app/Chart.lock"
           echo "Tagged with: ${{ steps.generate_tag.outputs.tag }}"
 
       - name: No changes summary

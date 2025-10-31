@@ -4,13 +4,6 @@ kind: ConfigMap
 metadata:
   name: consumer-cm-{{ .Release.Name }}
 data:
-  consumer.toml: |
-    {{ .Files.Get "configs/consumer.toml" | nindent 4 }}
-    {{- if eq .Values.server.run_env "production" -}}
-    {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
-    {{- else if eq .Values.server.run_env "sandbox" -}}
-    {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
-    {{- else -}}
-    {{ .Files.Get "configs/router-integ.toml" | nindent 4 }}
-    {{- end }}
+  # Configs from values.consumer.configs will be generated as environment variables with prefix ROUTER_
+  {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.consumer.configs "prefix" "ROUTER" "context" .) | nindent 2 }}
 {{- end }}
