@@ -65,6 +65,8 @@ spec:
           env:
             - name: BINARY
               value: {{ .Values.consumer.env.binary }}
+            - name: SCHEDULER_FLOW
+              value: consumer
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- if .Values.global.useExternalSecrets.enabled }}
@@ -74,9 +76,12 @@ spec:
           {{- end }}
           {{- include "keymanager.envs" . | nindent 12 }}
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
+          {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.consumer.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: hyperswitch-configs
+            - configMapRef:
+                name: consumer-cm-{{ .Release.Name }}
           {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
                 name: hyperswitch-secrets
@@ -110,6 +115,6 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: consumer-cm-{{ .Release.Name }}
+            name: router-cm-{{ .Release.Name }}
           name: hyperswitch-config
 {{- end }}
