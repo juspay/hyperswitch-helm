@@ -89,4 +89,5 @@ spec:
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
+      serviceAccountName: hyperswitch-router-role
 {{- end }}
