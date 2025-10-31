@@ -38,10 +38,11 @@ spec:
           #language=sh
           args:
             - |-
+              set -eu
               curl -L -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
               tar -xzvf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
               cd hyperswitch
-              diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
+              diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$DBNAME run
               echo "Completed hyperswitch database migration"
           env:
             - name: REFERENCE
@@ -50,6 +51,8 @@ spec:
               value: {{ .Values.services.router.version }}
             - name: POSTGRES_HOST
               value: {{ include "postgresql.host" . }}
+            - name: POSTGRES_PORT
+              value: {{ include "postgresql.port" . | quote }}
             - name: DBNAME
               value: {{ include "postgresql.database" . }}
             - name: POSTGRES_USER

@@ -12,11 +12,13 @@
     secretKeyRef:
       name: {{ include "postgresql.master.password.secret" . }}
       key: {{ include "postgresql.master.password.key" . }}
+{{- if .Values.externalPostgresql.readOnly.enabled }}
 - name: ROUTER__REPLICA_DATABASE__PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ include "postgresql.replica.password.secret" . }}
       key: {{ include "postgresql.replica.password.key" . }}
+{{- end -}}
 {{- end -}}
 
 {{/* Define environment variables for PostgreSQL secrets */}}
