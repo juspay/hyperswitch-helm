@@ -1538,7 +1538,7 @@ initDB:
   refs: tags # tags or heads
   migration:
     imageRegistry: docker.io
-    image: christophwurst/diesel-cli:latest
+    image: willsquire/diesel-cli:latest
 
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
