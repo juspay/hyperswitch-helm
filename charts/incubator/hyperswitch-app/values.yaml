@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: 2025.10.30.0
+    version: 2025.10.31.0
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: 2025.10.30.0
+    version: 2025.10.31.0
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: 2025.10.30.0
+    version: 2025.10.31.0
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: 2025.10.30.0
+    version: 2025.10.31.0
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -946,7 +946,6 @@ consumer:
         host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
-
 # @ignored
 producer:
   # -- Number of replicas to be used for the application
@@ -1020,7 +1019,6 @@ producer:
         host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
-
 # @ignored
 drainer:
   # -- Number of replicas to be used for the drainer
@@ -1163,7 +1161,6 @@ drainer:
       reconnect_max_attempts: 5
       stream_read_count: 1
       use_legacy_version: false
-
 controlCenter:
   # -- Number of replicas to be used for the application
   replicas: 1
