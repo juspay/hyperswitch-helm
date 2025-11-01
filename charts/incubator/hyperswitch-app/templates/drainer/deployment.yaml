@@ -6,7 +6,7 @@ metadata:
   namespace: {{ include "drainer.namespace" . }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
-    app: hyperswitch-drainer
+    app: {{ .Values.drainer.labels.app }}
     version: {{ .Values.services.drainer.version | replace "." "o" }}
 spec:
   replicas: {{ .Values.drainer.replicas }}
@@ -15,7 +15,7 @@ spec:
     {{- toYaml (.Values.drainer.strategy | default .Values.global.strategy) | nindent 4 }}
   selector:
     matchLabels:
-      app: hyperswitch-drainer
+      app: {{ .Values.drainer.labels.app }}
       version: {{ .Values.services.drainer.version | replace "." "o" }}
   template:
     metadata:
@@ -26,7 +26,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app: hyperswitch-drainer
+        app: {{ .Values.drainer.labels.app }}
         version: {{ .Values.services.drainer.version | replace "." "o" }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.drainer.labels | default .Values.global.labels) }}

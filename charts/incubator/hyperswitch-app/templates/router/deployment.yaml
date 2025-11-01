@@ -6,6 +6,10 @@ metadata:
     {{- with (default .Values.global.annotations .Values.server.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app: {{ .Values.server.labels.app }}
+    version: {{ include "version.suffix" .Values.services.router.version }}
   name: hyperswitch-server-{{ include "version.suffix" .Values.services.router.version }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -34,6 +38,10 @@ spec:
       labels:
         app: {{ .Values.server.labels.app }}
         version: {{ include "version.suffix" .Values.services.router.version }}
+        {{- include "hyperswitch.labels" . | nindent 8 }}
+        {{- with (.Values.server.labels | default .Values.global.labels) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
       tolerations:
