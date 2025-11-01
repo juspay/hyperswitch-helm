@@ -6,6 +6,10 @@ metadata:
     {{- with (default .Values.global.annotations .Values.consumer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app: {{ .Values.consumer.labels.app }}
+    version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
   name: hyperswitch-consumer-{{ include "version.suffix" .Values.services.consumer.version }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -32,6 +36,10 @@ spec:
       labels:
         app: {{ .Values.consumer.labels.app }}
         version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
+        {{- include "hyperswitch.labels" . | nindent 8 }}
+        {{- with (.Values.consumer.labels | default .Values.global.labels) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with (default .Values.global.tolerations .Values.consumer.tolerations) }}
       tolerations:
