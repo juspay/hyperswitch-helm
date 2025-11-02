@@ -1520,6 +1520,7 @@ hyperswitch-card-vault:
 
 # External Secrets Operator Configuration
 # This section configures the External Secrets Operator resources (ServiceAccount, SecretStore, ExternalSecret)
+# NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
 externalSecretsOperator:
   # -- Enable External Secrets Operator resources
   enabled: false
