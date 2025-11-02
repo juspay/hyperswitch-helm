@@ -40,9 +40,13 @@ jobs:
         id: determine_ref
         run: |
           if [ -n "${{ inputs.hyperswitch_tag }}" ]; then
-            # Use user-provided input
+            # Use user-provided input (from workflow_dispatch)
             REF="${{ inputs.hyperswitch_tag }}"
             echo "Using user-specified branch/tag: $REF"
+          elif [ -n "${{ github.event.client_payload.hyperswitch_tag }}" ]; then
+            # Use tag from repository_dispatch client_payload
+            REF="${{ github.event.client_payload.hyperswitch_tag }}"
+            echo "Using repository_dispatch hyperswitch_tag: $REF"
           else
             # Fetch latest tag from hyperswitch repository using GraphQL API
             echo "Fetching latest tag from hyperswitch repository using GraphQL API..."
