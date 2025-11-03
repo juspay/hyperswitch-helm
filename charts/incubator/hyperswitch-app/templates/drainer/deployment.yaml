@@ -81,7 +81,7 @@ spec:
               {{- toYaml $value | nindent 14 }}
             {{- end }}
             {{- end }}
-            {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.drainer.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
+            {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.drainer.configs "prefix" "DRAINER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: drainer-cm-{{ .Release.Name }}
@@ -89,4 +89,5 @@ spec:
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
+      serviceAccountName: hyperswitch-router-role
 {{- end }}
