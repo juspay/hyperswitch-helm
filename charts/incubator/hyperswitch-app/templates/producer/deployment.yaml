@@ -6,6 +6,10 @@ metadata:
     {{- with (default .Values.global.annotations .Values.producer.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app: {{ .Values.producer.labels.app }}
+    version: {{ include "version.suffix" .Values.services.producer.version }}
   name: hyperswitch-producer-{{ include "version.suffix" .Values.services.producer.version }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -25,6 +29,10 @@ spec:
       labels:
         app: {{ .Values.producer.labels.app }}
         version: {{ include "version.suffix" .Values.services.producer.version }}
+        {{- include "hyperswitch.labels" . | nindent 8 }}
+        {{- with (.Values.producer.labels | default .Values.global.labels) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/producer-config: {{ include (print $.Template.BasePath "/producer/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
