@@ -113,6 +113,7 @@ global:
   # External Secrets Configuration
   # When enabled, all local secret creation is disabled and external secrets are used instead
   # Use this to define mapping of secrets created by external secret operators
+  # Additionally you can enable external secret operator deployment using externalSecretsOperator.enabled
   useExternalSecrets:
     # -- Enable external secrets integration
     enabled: false
@@ -1496,6 +1497,77 @@ hyperswitch-card-vault:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+
+# External Secrets Operator Configuration
+# This section configures the External Secrets Operator resources (ServiceAccount, SecretStore, ExternalSecret)
+# NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
+externalSecretsOperator:
+  # -- Enable External Secrets Operator resources
+  enabled: false
+
+  # ServiceAccount configuration for IRSA
+  serviceAccount:
+    # -- Create service account
+    create: true
+    # -- Annotations for the service account (e.g., IRSA role)
+    annotations: {}
+    # -- Extra labels for the service account
+    extraLabels: {}
+    # -- Name of the service account (default: hyperswitch-eso-sa)
+    name: ""
+
+  # SecretStore configuration
+  secretStore:
+    # -- Name of the SecretStore
+    name: "hyperswitch-secret-store"
+    # -- Provider configuration (matches External Secrets Operator format)
+    # You can use any supported provider here see: https://external-secrets.io/latest/
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-eso-sa
+      # gcpsm:
+      #   auth:
+      #     secretRef:
+      #       secretAccessKeySecretRef:
+      #         name: gcpsm-secret
+      #         key: secret-access-credentials
+      #   projectID: myproject
+
+  # ExternalSecret configuration
+  externalSecrets:
+    # -- List of external secrets to create
+    # You can define multiple secrets here
+    secrets:
+      - name: "hyperswitch-secrets"
+        # -- Target secret name in Kubernetes
+        targetName: "hyperswitch-secrets"
+        # -- Refresh interval
+        refreshInterval: "1h"
+        # -- Creation policy
+        creationPolicy: "Owner"
+        # -- Extract configuration (use dataFrom.extract for full secret)
+        dataFrom:
+          - extract:
+              key: "HyperswitchKmsDataSecret"
+        # -- Individual data mappings (use data for specific keys)
+        # data:
+        #   - secretKey: "admin_api_key"
+        #     remoteRef:
+        #       key: "hyperswitch/admin"
+        #       property: "api_key"
+
+      # - name: "database-secrets"
+      #   targetName: "database-secrets"
+      #   dataFrom:
+      #     - extract:
+      #         key: "HyperswitchDatabaseSecret"
+
+
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -1618,6 +1690,7 @@ mailhog:
   # -- Name of the Mailhog sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
+
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation

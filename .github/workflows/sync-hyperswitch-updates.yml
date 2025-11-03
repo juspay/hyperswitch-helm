@@ -40,9 +40,13 @@ jobs:
         id: determine_ref
         run: |
           if [ -n "${{ inputs.hyperswitch_tag }}" ]; then
-            # Use user-provided input
+            # Use user-provided input (from workflow_dispatch)
             REF="${{ inputs.hyperswitch_tag }}"
             echo "Using user-specified branch/tag: $REF"
+          elif [ -n "${{ github.event.client_payload.hyperswitch_tag }}" ]; then
+            # Use tag from repository_dispatch client_payload
+            REF="${{ github.event.client_payload.hyperswitch_tag }}"
+            echo "Using repository_dispatch hyperswitch_tag: $REF"
           else
             # Fetch latest tag from hyperswitch repository using GraphQL API
             echo "Fetching latest tag from hyperswitch repository using GraphQL API..."
@@ -73,8 +77,9 @@ jobs:
                   jq -r '.data.repository.refs.edges[0].node.name')
 
             if [ -z "$REF" ] || [ "$REF" = "null" ]; then
-              echo "Failed to fetch latest tag via GraphQL, falling back to main"
-              REF="main"
+              echo "❌ Failed to fetch latest tag via GraphQL API"
+              echo "Cannot proceed without a valid hyperswitch tag"
+              exit 1
             else
               echo "Using latest tag from GraphQL: $REF"
             fi
@@ -110,6 +115,7 @@ jobs:
           echo "✅ Configuration files downloaded successfully"
 
       - name: Update service versions and chart version
+        id: update_versions
         run: |
           SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
           VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
@@ -128,9 +134,13 @@ jobs:
           yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
 
           # Update chart version to valid SemVer format with hyperswitch version as prerelease
-          CHART_VERSION="0.0.0-$SOURCE_REF"
-          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION"
+          # Read current chart version from main branch as prefix
+          CURRENT_VERSION=$(yq eval ".version" $CHART_FILE)
+          CHART_VERSION="$CURRENT_VERSION-$SOURCE_REF"
+          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION (using current version $CURRENT_VERSION as prefix)"
           yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
+
+          echo "chart_version=$CHART_VERSION" >> $GITHUB_OUTPUT
 
           echo "Service versions and chart version updated successfully"
 
@@ -143,12 +153,12 @@ jobs:
         run: |
           CHART_DIR="charts/incubator/hyperswitch-app"
 
-          echo "Updating chart dependencies for air-gapped deployment..."
+          echo "Updating chart dependencies..."
           cd $CHART_DIR
           helm dependency update
           cd ../../..
 
-          echo "✅ Chart dependencies updated and ready for air-gapped deployments"
+          echo "✅ Chart dependencies updated"
 
       - name: Check for changes
         id: check_changes
@@ -173,14 +183,6 @@ jobs:
 
           # Use the same tag as hyperswitch repo
           NEW_TAG="$SOURCE_REF"
-
-          # Check if tag already exists in current repo
-          if git tag -l | grep -q "^${NEW_TAG}$"; then
-            echo "❌ Tag $NEW_TAG already exists in current repository!"
-            echo "This indicates the configuration has already been synced from this hyperswitch version."
-            exit 1
-          fi
-
           echo "Using hyperswitch tag: $NEW_TAG"
           echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
@@ -202,7 +204,7 @@ jobs:
           - Updated all service versions to ${{ steps.determine_ref.outputs.target_ref }}
 
           Chart version:
-          - Updated chart version to 0.0.0-${{ steps.determine_ref.outputs.target_ref }}
+          - Updated chart version to ${{ steps.update_versions.outputs.chart_version }}
 
           Source: https://github.com/juspay/hyperswitch/tree/${{ steps.determine_ref.outputs.target_ref }}/config/deployments
           Source ref: ${{ steps.determine_ref.outputs.target_ref }}
@@ -211,8 +213,8 @@ jobs:
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git tag "${{ steps.generate_tag.outputs.tag }}"
-          git push origin HEAD --tags
+          git tag -f "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}" --force
 
       - name: Summary
         if: steps.check_changes.outputs.changes == 'true'
