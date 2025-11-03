@@ -134,10 +134,10 @@ jobs:
           yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
 
           # Update chart version to valid SemVer format with hyperswitch version as prerelease
-          # Read current chart version from main branch as prefix
-          CURRENT_VERSION=$(yq eval ".version" $CHART_FILE)
-          CHART_VERSION="$CURRENT_VERSION-$SOURCE_REF"
-          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION (using current version $CURRENT_VERSION as prefix)"
+          # Read chart version from main branch as prefix
+          MAIN_CHART_VERSION=$(git show origin/main:$CHART_FILE | yq eval ".version" -)
+          CHART_VERSION="$MAIN_CHART_VERSION-$SOURCE_REF"
+          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"
           yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
 
           echo "chart_version=$CHART_VERSION" >> $GITHUB_OUTPUT
