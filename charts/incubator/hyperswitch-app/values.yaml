@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: 2025.10.31.0
+    version: 2025.10.31.2
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: 2025.10.31.0
+    version: 2025.10.31.2
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: 2025.10.31.0
+    version: 2025.10.31.2
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: 2025.10.31.0
+    version: 2025.10.31.2
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1497,14 +1497,12 @@ hyperswitch-card-vault:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
-
 # External Secrets Operator Configuration
 # This section configures the External Secrets Operator resources (ServiceAccount, SecretStore, ExternalSecret)
 # NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
 externalSecretsOperator:
   # -- Enable External Secrets Operator resources
   enabled: false
-
   # ServiceAccount configuration for IRSA
   serviceAccount:
     # -- Create service account
@@ -1515,7 +1513,6 @@ externalSecretsOperator:
     extraLabels: {}
     # -- Name of the service account (default: hyperswitch-eso-sa)
     name: ""
-
   # SecretStore configuration
   secretStore:
     # -- Name of the SecretStore
@@ -1530,14 +1527,13 @@ externalSecretsOperator:
           jwt:
             serviceAccountRef:
               name: hyperswitch-eso-sa
-      # gcpsm:
-      #   auth:
-      #     secretRef:
-      #       secretAccessKeySecretRef:
-      #         name: gcpsm-secret
-      #         key: secret-access-credentials
-      #   projectID: myproject
-
+              # gcpsm:
+              #   auth:
+              #     secretRef:
+              #       secretAccessKeySecretRef:
+              #         name: gcpsm-secret
+              #         key: secret-access-credentials
+              #   projectID: myproject
   # ExternalSecret configuration
   externalSecrets:
     # -- List of external secrets to create
@@ -1554,20 +1550,17 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-        # -- Individual data mappings (use data for specific keys)
-        # data:
-        #   - secretKey: "admin_api_key"
-        #     remoteRef:
-        #       key: "hyperswitch/admin"
-        #       property: "api_key"
-
-      # - name: "database-secrets"
-      #   targetName: "database-secrets"
-      #   dataFrom:
-      #     - extract:
-      #         key: "HyperswitchDatabaseSecret"
-
-
+              # -- Individual data mappings (use data for specific keys)
+              # data:
+              #   - secretKey: "admin_api_key"
+              #     remoteRef:
+              #       key: "hyperswitch/admin"
+              #       property: "api_key"
+    # - name: "database-secrets"
+    #   targetName: "database-secrets"
+    #   dataFrom:
+    #     - extract:
+    #         key: "HyperswitchDatabaseSecret"
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -1690,7 +1683,6 @@ mailhog:
   # -- Name of the Mailhog sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
-
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation
