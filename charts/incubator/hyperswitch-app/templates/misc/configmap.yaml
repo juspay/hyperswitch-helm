@@ -2,7 +2,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hyperswitch-configs
+  name: {{ .Release.Name }}-hyperswitch-configs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/component: config-map
 data:
   # Database configs:
   ROUTER__MASTER_DATABASE__DBNAME: {{ include "postgresql.database" . }}
