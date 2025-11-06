@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: 2025.11.06.0
+    version: caf5927
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: 2025.11.06.0
+    version: caf5927
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: 2025.11.06.0
+    version: caf5927
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: 2025.11.06.0
+    version: caf5927
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -117,22 +117,20 @@ global:
     # -- Configuration for external secrets mapping (Optional)
     # Each secret name maps to a list of environment variables
     secrets:
-      # Example: hyperswitch-secrets contains application secrets
-      # # -- Name of the external secret
-      # hyperswitch-secrets:
-      #   # -- List of environment variables to map from the external secret
-      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
-      #     secretKey: admin_api_key
-      #   - envName: ROUTER__SECRETS__JWT_SECRET
-      #     secretKey: jwt_secret
-
+    # Example: hyperswitch-secrets contains application secrets
+    # # -- Name of the external secret
+    # hyperswitch-secrets:
+    #   # -- List of environment variables to map from the external secret
+    #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
+    #     secretKey: admin_api_key
+    #   - envName: ROUTER__SECRETS__JWT_SECRET
+    #     secretKey: jwt_secret
 # -- Common references for templated resource names
 _references:
   # -- Hyperswitch secrets reference with release name prefix
   secrets: &hyperswitch_secrets "{{ .Release.Name }}-hyperswitch-secrets"
   # -- Hyperswitch configs reference with release name prefix
   configs: &hyperswitch_configs "{{ .Release.Name }}-hyperswitch-configs"
-
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -1334,7 +1332,6 @@ controlCenter:
     # -- Mix panel token
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1490,13 +1487,11 @@ initDB:
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
-
 # -- Istio configuration
 # @section -- Istio
 istio:
   # -- Enable Istio resources
   enabled: false
-
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
@@ -1525,7 +1520,6 @@ istio:
     #     retries:
     #       attempts: 3
     #       perTryTimeout: 10s
-
   # -- DestinationRule configuration
   destinationRule:
     # -- Router DestinationRule configuration
@@ -1546,7 +1540,6 @@ istio:
       #   outlierDetection:
       #     consecutiveGatewayErrors: 5
       #     interval: 30s
-
     # -- Control Center DestinationRule configuration
     controlCenter:
       # -- Traffic policy configuration for control center - rendered directly as YAML
@@ -1562,7 +1555,6 @@ istio:
       #     http:
       #       http1MaxPendingRequests: 32
       #       http2MaxRequests: 500
-
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
 autoscaling:
@@ -1629,19 +1621,17 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-        # -- Individual data mappings (use data for specific keys)
-        # data:
-        #   - secretKey: "admin_api_key"
-        #     remoteRef:
-        #       key: "hyperswitch/admin"
-        #       property: "api_key"
-
-      # - name: "database-secrets"
-      #   targetName: "database-secrets"
-      #   dataFrom:
-      #     - extract:
-      #         key: "HyperswitchDatabaseSecret"
-
+              # -- Individual data mappings (use data for specific keys)
+              # data:
+              #   - secretKey: "admin_api_key"
+              #     remoteRef:
+              #       key: "hyperswitch/admin"
+              #       property: "api_key"
+    # - name: "database-secrets"
+    #   targetName: "database-secrets"
+    #   dataFrom:
+    #     - extract:
+    #         key: "HyperswitchDatabaseSecret"
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -2014,4 +2004,3 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
-
