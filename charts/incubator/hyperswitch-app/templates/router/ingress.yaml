@@ -30,7 +30,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hyperswitch-server
+                name: {{ include "hyperswitch-server.name" . }}
                 port:
                   number: 80
 {{- end }}

@@ -6,29 +6,59 @@
 # Define `hyperswitch.labels` template
 {{- define "hyperswitch.labels" -}}
 helm.sh/chart: {{ include "hyperswitch.chart" . }}
-{{ include "hyperswitch.selectorLabels" . }}
+helm.sh/version: {{ .Chart.Version | quote }}
 {{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+helm.sh/app-version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/name: {{ include "hyperswitch.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
-
-# Define `hyperswitch.selectorLabels` template
-{{- define "hyperswitch.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "hyperswitch.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
-
-# Define `hyperswitch.name` template
-{{- define "hyperswitch.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 # Define `hyperswitch.chart` template
 {{- define "hyperswitch.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
+*/}}
+{{- define "version.suffix" -}}
+{{- . | replace "." "o" -}}
+{{- end -}}
+
+# Define `hyperswitch-server.name` template
+{{- define "hyperswitch-server.name" -}}
+{{- printf "%s-hyperswitch-server" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+# Define `hyperswitch-consumer.name` template
+{{- define "hyperswitch-consumer.name" -}}
+{{- printf "%s-hyperswitch-consumer" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+# Define `hyperswitch-producer.name` template
+{{- define "hyperswitch-producer.name" -}}
+{{- printf "%s-hyperswitch-producer" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+# Define `hyperswitch-drainer.name` template
+{{- define "hyperswitch-drainer.name" -}}
+{{- printf "%s-hyperswitch-drainer" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+# Define `hyperswitch-control-center.name` template
+{{- define "hyperswitch-control-center.name" -}}
+{{- printf "%s-hyperswitch-control-center" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+# Define `hyperswitch-router-sa.name` template
+{{- define "hyperswitch-router-sa.name" -}}
+{{- default (printf "%s-hyperswitch-router-role" .Release.Name) .Values.server.serviceAccount.name -}}
+{{- end -}}
+
+# Define `hyperswitch-control-center-sa.name` template
+{{- define "hyperswitch-control-center-sa.name" -}}
+{{- default (printf "%s-hyperswitch-control-center-sa" .Release.Name) .Values.controlCenter.serviceAccount.name -}}
 {{- end -}}
 
 {{/*
@@ -339,13 +369,6 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- else -}}
     {{- print "" -}}
   {{- end -}}
-{{- end -}}
-
-{{/*
-Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
-*/}}
-{{- define "version.suffix" -}}
-{{- . | replace "." "o" -}}
 {{- end -}}
 
 {{/* Define mapping of config keys to helper functions */}}
