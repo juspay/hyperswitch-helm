@@ -117,14 +117,22 @@ global:
     # -- Configuration for external secrets mapping (Optional)
     # Each secret name maps to a list of environment variables
     secrets:
-    # Example: hyperswitch-secrets contains application secrets
-    # # -- Name of the external secret
-    # hyperswitch-secrets:
-    #   # -- List of environment variables to map from the external secret
-    #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
-    #     secretKey: admin_api_key
-    #   - envName: ROUTER__SECRETS__JWT_SECRET
-    #     secretKey: jwt_secret
+      # Example: hyperswitch-secrets contains application secrets
+      # # -- Name of the external secret
+      # hyperswitch-secrets:
+      #   # -- List of environment variables to map from the external secret
+      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
+      #     secretKey: admin_api_key
+      #   - envName: ROUTER__SECRETS__JWT_SECRET
+      #     secretKey: jwt_secret
+
+# -- Common references for templated resource names
+_references:
+  # -- Hyperswitch secrets reference with release name prefix
+  secrets: &hyperswitch_secrets "{{ .Release.Name }}-hyperswitch-secrets"
+  # -- Hyperswitch configs reference with release name prefix
+  configs: &hyperswitch_configs "{{ .Release.Name }}-hyperswitch-configs"
+
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -238,22 +246,22 @@ server:
         # -- Database name
         dbname:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__DBNAME
         # -- Database host
         host:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__HOST
         # -- Database port
         port:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__PORT
         # -- Database username
         username:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__USERNAME
         # -- Database password
         # When commented out, will use the same password as master database
@@ -1070,71 +1078,71 @@ drainer:
     secrets_management:
       secrets_manager:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER
       aws_kms:
         key_id:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
         region:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__REGION
     encryption_management:
       encryption_manager:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__ENCRYPTION_MANAGEMENT__ENCRYPTION_MANAGER
       aws_kms:
         key_id:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__KEY_ID
         region:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__REGION
     log:
       console:
         enabled:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__ENABLED
         level:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__LEVEL
         log_format:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__LOG_FORMAT
       telemetry:
         metrics_enabled:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__TELEMETRY__METRICS_ENABLED
         otel_exporter_otlp_endpoint:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT
     master_database:
       dbname:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__DBNAME
       host:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__HOST
       pool_size: 3
       port:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__PORT
       username:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__USERNAME
     redis:
       cluster_enabled: false
@@ -1142,12 +1150,12 @@ drainer:
       default_ttl: 300
       host:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__REDIS__HOST
       pool_size: 5
       port:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__REDIS__PORT
       reconnect_delay: 5
       reconnect_max_attempts: 5
@@ -1326,17 +1334,7 @@ controlCenter:
     # -- Mix panel token
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
-# Service Account configuration for Hyperswitch Applications
-serviceAccount:
-  # -- Service account creation for the application
-  create: true
-  # -- Service account name for the application ( default: <release-name>-hyperswitch-router-role)
-  name: ""
-  # -- Annotations to be added to the service account
-  annotations:
-    eks.amazonaws.com/role-arn: my-role-arn
-  # -- Labels to be added to the service account
-  labels: {}
+
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1492,6 +1490,79 @@ initDB:
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
+
+# -- Istio configuration
+# @section -- Istio
+istio:
+  # -- Enable Istio resources
+  enabled: false
+
+  # -- VirtualService configuration
+  virtualService:
+    # -- Create VirtualService
+    create: false
+    # -- Hosts for the VirtualService
+    hosts: []
+    # -- Gateways for the VirtualService
+    gateways: []
+    # -- HTTP routing rules - rendered directly as YAML
+    http: []
+    # Example:
+    # hosts:
+    #   - hyperswitch.example.com
+    # gateways:
+    #   - istio-system/gateway
+    # http:
+    #   - match:
+    #     - uri:
+    #         prefix: /
+    #     route:
+    #     - destination:
+    #         host: <release-name>-hyperswitch-server
+    #         port:
+    #           number: 80
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+
+  # -- DestinationRule configuration
+  destinationRule:
+    # -- Router DestinationRule configuration
+    router:
+      # -- Traffic policy configuration for router - rendered directly as YAML
+      trafficPolicy: {}
+      # Example:
+      # trafficPolicy:
+      #   loadBalancer:
+      #     simple: LEAST_CONN
+      #   connectionPool:
+      #     tcp:
+      #       maxConnections: 100
+      #       connectTimeout: 30s
+      #     http:
+      #       http1MaxPendingRequests: 64
+      #       http2MaxRequests: 1000
+      #   outlierDetection:
+      #     consecutiveGatewayErrors: 5
+      #     interval: 30s
+
+    # -- Control Center DestinationRule configuration
+    controlCenter:
+      # -- Traffic policy configuration for control center - rendered directly as YAML
+      trafficPolicy: {}
+      # Example:
+      # trafficPolicy:
+      #   loadBalancer:
+      #     simple: ROUND_ROBIN
+      #   connectionPool:
+      #     tcp:
+      #       maxConnections: 50
+      #       connectTimeout: 30s
+      #     http:
+      #       http1MaxPendingRequests: 32
+      #       http2MaxRequests: 500
+
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
 autoscaling:
@@ -1558,17 +1629,19 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-              # -- Individual data mappings (use data for specific keys)
-              # data:
-              #   - secretKey: "admin_api_key"
-              #     remoteRef:
-              #       key: "hyperswitch/admin"
-              #       property: "api_key"
-    # - name: "database-secrets"
-    #   targetName: "database-secrets"
-    #   dataFrom:
-    #     - extract:
-    #         key: "HyperswitchDatabaseSecret"
+        # -- Individual data mappings (use data for specific keys)
+        # data:
+        #   - secretKey: "admin_api_key"
+        #     remoteRef:
+        #       key: "hyperswitch/admin"
+        #       property: "api_key"
+
+      # - name: "database-secrets"
+      #   targetName: "database-secrets"
+      #   dataFrom:
+      #     - extract:
+      #         key: "HyperswitchDatabaseSecret"
+
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -1941,3 +2014,4 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
+
