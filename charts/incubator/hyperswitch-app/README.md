@@ -155,227 +155,227 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1682">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1741">clickhouse.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1679">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1738">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1689">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1748">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1671">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1730">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1675">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1734">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1704">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L1763">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1695">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1754">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1692">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1751">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1701">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1760">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1454">externalPostgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1442">externalPostgresql.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Postgres server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1477">externalPostgresql.primary.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1465">externalPostgresql.primary.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1471">externalPostgresql.primary.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1459">externalPostgresql.primary.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1474">externalPostgresql.primary.auth.plainpassword</a></div></td>
+    <td><div><a href="./values.yaml#L1462">externalPostgresql.primary.auth.plainpassword</a></div></td>
     <td><div><code>null</code></div></td>
     <td>master DB plainpassword</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1468">externalPostgresql.primary.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1456">externalPostgresql.primary.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>master DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1458">externalPostgresql.primary.host</a></div></td>
+    <td><div><a href="./values.yaml#L1446">externalPostgresql.primary.host</a></div></td>
     <td><div><code>"postgresql-ext"</code></div></td>
     <td>External postgres host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1500">externalPostgresql.readOnly.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1488">externalPostgresql.readOnly.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1497">externalPostgresql.readOnly.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1485">externalPostgresql.readOnly.auth.password</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1494">externalPostgresql.readOnly.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1482">externalPostgresql.readOnly.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>replica DB username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1481">externalPostgresql.readOnly.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1469">externalPostgresql.readOnly.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>External postgres read only host enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1484">externalPostgresql.readOnly.host</a></div></td>
+    <td><div><a href="./values.yaml#L1472">externalPostgresql.readOnly.host</a></div></td>
     <td><div><code>"postgres-service"</code></div></td>
     <td>External postgres read only host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1386">externalRedis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1374">externalRedis.auth.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>auth enabled or disabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1392">externalRedis.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1380">externalRedis.auth.password</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1389">externalRedis.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1377">externalRedis.auth.username</a></div></td>
     <td><div><code>""</code></div></td>
     <td>redis username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1379">externalRedis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1367">externalRedis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Link this service to an external Redis server</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1382">externalRedis.host</a></div></td>
+    <td><div><a href="./values.yaml#L1370">externalRedis.host</a></div></td>
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1618">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1677">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1613">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1672">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1605">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1664">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1608">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1667">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1637">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1696">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1649">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1708">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1645">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1704">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1641">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1700">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1653">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1712">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1632">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1691">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1627">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1686">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1720">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1779">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1723">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1782">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1424">postgresql.architecture</a></div></td>
+    <td><div><a href="./values.yaml#L1412">postgresql.architecture</a></div></td>
     <td><div><code>"replication"</code></div></td>
     <td>Postgresql architecture: replication or standalone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1406">postgresql.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1394">postgresql.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>enable Bitnami postgresql sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1421">postgresql.global.postgresql.auth.database</a></div></td>
+    <td><div><a href="./values.yaml#L1409">postgresql.global.postgresql.auth.database</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql database</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1418">postgresql.global.postgresql.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1406">postgresql.global.postgresql.auth.password</a></div></td>
     <td><div><code>"ZGJwYXNzd29yZDEx"</code></div></td>
     <td>Postgresql password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1415">postgresql.global.postgresql.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1403">postgresql.global.postgresql.auth.username</a></div></td>
     <td><div><code>"hyperswitch"</code></div></td>
     <td>Postgresql username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1435">postgresql.primary.name</a></div></td>
+    <td><div><a href="./values.yaml#L1423">postgresql.primary.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>postgres primary name</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1440">postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1428">postgresql.primary.resources.requests.cpu</a></div></td>
     <td><div><code>"150m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1444">postgresql.readReplicas.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1432">postgresql.readReplicas.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of read replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1449">postgresql.readReplicas.resources.requests.cpu</a></div></td>
+    <td><div><a href="./values.yaml#L1437">postgresql.readReplicas.resources.requests.cpu</a></div></td>
     <td><div><code>"100m"</code></div></td>
     <td>CPU resource requests</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1431">postgresql.replication.numSynchronousReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1419">postgresql.replication.numSynchronousReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of synchronous replicas</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1428">postgresql.replication.synchronousCommit</a></div></td>
+    <td><div><a href="./values.yaml#L1416">postgresql.replication.synchronousCommit</a></div></td>
     <td><div><code>"off"</code></div></td>
     <td>synchronous_commit parameter</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1371">redis.auth.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1359">redis.auth.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable redis auth</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1374">redis.auth.sentinel</a></div></td>
+    <td><div><a href="./values.yaml#L1362">redis.auth.sentinel</a></div></td>
     <td><div><code>false</code></div></td>
     <td>enable or disable sentinel</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1356">redis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1344">redis.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>- enable Bitnami redis sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1363">redis.master.count</a></div></td>
+    <td><div><a href="./values.yaml#L1351">redis.master.count</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for master</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1367">redis.replica.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1355">redis.replica.replicaCount</a></div></td>
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1729">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1788">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1733">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1792">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -490,6 +490,35 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><a href="./values.yaml#L1338">controlCenter.env.mixpanelToken</a></div></td>
     <td><div><code>"dd4da7f62941557e716fbc0a19f9cc7e"</code></div></td>
     <td>Mix panel token</td>
+  </tr></tbody>
+</table>
+<h3>Istio</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="./values.yaml#L1503">istio</a></div></td>
+    <td><div><code>{
+  "destinationRule": {
+    "controlCenter": {
+      "trafficPolicy": {}
+    },
+    "router": {
+      "trafficPolicy": {}
+    }
+  },
+  "enabled": false,
+  "virtualService": {
+    "create": false,
+    "gateways": [],
+    "hosts": [],
+    "http": []
+  }
+}</code></div></td>
+    <td>Istio configuration</td>
   </tr></tbody>
 </table>
 <h3>App Server Secrets</h3>
@@ -782,39 +811,39 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 </thead>
 
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1517">autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1577">autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1519">autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1579">autoscaling.maxReplicas</a></div></td>
     <td><div><code>10</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1518">autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1578">autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1520">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L1580">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1668">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1727">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1684">clickhouse.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1743">clickhouse.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1685">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1744">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1672">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1731">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1698">clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1757">clickhouse.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
@@ -1038,11 +1067,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>""</code></div></td>
     <td>Service account name for the application ( default: <release-name>-hyperswitch-control-center-role)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1534">externalSecretsOperator.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1594">externalSecretsOperator.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable External Secrets Operator resources</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1573">externalSecretsOperator.externalSecrets.secrets</a></div></td>
+    <td><div><a href="./values.yaml#L1633">externalSecretsOperator.externalSecrets.secrets</a></div></td>
     <td><div><code>[
   {
     "creationPolicy": "Owner",
@@ -1060,11 +1089,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>List of external secrets to create You can define multiple secrets here</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1580">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1640">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
     <td><div><code>"Owner"</code></div></td>
     <td>Creation policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1582">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
+    <td><div><a href="./values.yaml#L1642">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
     <td><div><code>[
   {
     "extract": {
@@ -1074,19 +1103,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Extract configuration (use dataFrom.extract for full secret)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1578">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
+    <td><div><a href="./values.yaml#L1638">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
     <td><div><code>"1h"</code></div></td>
     <td>Refresh interval</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1576">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
+    <td><div><a href="./values.yaml#L1636">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Target secret name in Kubernetes</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1550">externalSecretsOperator.secretStore.name</a></div></td>
+    <td><div><a href="./values.yaml#L1610">externalSecretsOperator.secretStore.name</a></div></td>
     <td><div><code>"hyperswitch-secret-store"</code></div></td>
     <td>Name of the SecretStore</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1553">externalSecretsOperator.secretStore.provider</a></div></td>
+    <td><div><a href="./values.yaml#L1613">externalSecretsOperator.secretStore.provider</a></div></td>
     <td><div><code>{
   "aws": {
     "auth": {
@@ -1102,127 +1131,187 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1541">externalSecretsOperator.serviceAccount.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L1601">externalSecretsOperator.serviceAccount.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Annotations for the service account (e.g., IRSA role)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1539">externalSecretsOperator.serviceAccount.create</a></div></td>
+    <td><div><a href="./values.yaml#L1599">externalSecretsOperator.serviceAccount.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Create service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1543">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1603">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Extra labels for the service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1545">externalSecretsOperator.serviceAccount.name</a></div></td>
+    <td><div><a href="./values.yaml#L1605">externalSecretsOperator.serviceAccount.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the service account (default: hyperswitch-eso-sa)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1523">hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1583">hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1527">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1587">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1526">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1586">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1664">initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1723">initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1663">initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1722">initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1665">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1724">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1506">initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1494">initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1505">initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1493">initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1507">initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1495">initDB.checkPGisUp.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1503">initDB.enable</a></div></td>
+    <td><div><a href="./values.yaml#L1491">initDB.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1511">initDB.migration.image</a></div></td>
+    <td><div><a href="./values.yaml#L1499">initDB.migration.image</a></div></td>
     <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1510">initDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1498">initDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1508">initDB.refs</a></div></td>
+    <td><div><a href="./values.yaml#L1496">initDB.refs</a></div></td>
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1619">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1537">istio.destinationRule</a></div></td>
+    <td><div><code>{
+  "controlCenter": {
+    "trafficPolicy": {}
+  },
+  "router": {
+    "trafficPolicy": {}
+  }
+}</code></div></td>
+    <td>DestinationRule configuration</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1558">istio.destinationRule.controlCenter</a></div></td>
+    <td><div><code>{
+  "trafficPolicy": {}
+}</code></div></td>
+    <td>Control Center DestinationRule configuration</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1560">istio.destinationRule.controlCenter.trafficPolicy</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Traffic policy configuration for control center - rendered directly as YAML</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1539">istio.destinationRule.router</a></div></td>
+    <td><div><code>{
+  "trafficPolicy": {}
+}</code></div></td>
+    <td>Router DestinationRule configuration</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1541">istio.destinationRule.router.trafficPolicy</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td>Traffic policy configuration for router - rendered directly as YAML</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1505">istio.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable Istio resources</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1508">istio.virtualService</a></div></td>
+    <td><div><code>{
+  "create": false,
+  "gateways": [],
+  "hosts": [],
+  "http": []
+}</code></div></td>
+    <td>VirtualService configuration</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1510">istio.virtualService.create</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Create VirtualService</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1514">istio.virtualService.gateways</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Gateways for the VirtualService</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1512">istio.virtualService.hosts</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Hosts for the VirtualService</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1516">istio.virtualService.http</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>HTTP routing rules - rendered directly as YAML</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1678">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1614">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1673">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1657">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1716">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1602">kafka.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1661">kafka.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/kafka"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1624">kafka.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1683">kafka.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1514">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L1574">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1408">postgresql.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1396">postgresql.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1409">postgresql.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1397">postgresql.image.tag</a></div></td>
     <td><div><code>"16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1358">redis.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1346">redis.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/redis"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1359">redis.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1347">redis.image.tag</a></div></td>
     <td><div><code>"7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1397">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
+    <td><div><a href="./values.yaml#L1385">redisMiscConfig.checkRedisIsUp.initContainer.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1399">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
+    <td><div><a href="./values.yaml#L1387">redisMiscConfig.checkRedisIsUp.initContainer.image</a></div></td>
     <td><div><code>"bitnamilegacy/redis:7.2.3-debian-11-r2"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1398">redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1386">redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1400">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1388">redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
     <td></td>
   </tr><tr>
@@ -2169,24 +2258,6 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><a href="./values.yaml#L182">server.terminationGracePeriodSeconds</a></div></td>
     <td><div><code>30</code></div></td>
     <td>The time kubernetes will wait after sending the termination signal to the pods</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1347">serviceAccount.annotations</a></div></td>
-    <td><div><code>{
-  "eks.amazonaws.com/role-arn": "my-role-arn"
-}</code></div></td>
-    <td>Annotations to be added to the service account</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1343">serviceAccount.create</a></div></td>
-    <td><div><code>true</code></div></td>
-    <td>Service account creation for the application</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1350">serviceAccount.labels</a></div></td>
-    <td><div><code>{}</code></div></td>
-    <td>Labels to be added to the service account</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1345">serviceAccount.name</a></div></td>
-    <td><div><code>""</code></div></td>
-    <td>Service account name for the application ( default: <release-name>-hyperswitch-router-role)</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L17">services.consumer.enabled</a></div></td>
     <td><div><code>true</code></div></td>
