@@ -129,6 +129,13 @@ global:
       #   - envName: ROUTER__SECRETS__JWT_SECRET
       #     secretKey: jwt_secret
 
+# -- Common references for templated resource names
+_references:
+  # -- Hyperswitch secrets reference with release name prefix
+  secrets: &hyperswitch_secrets "{{ .Release.Name }}-hyperswitch-secrets"
+  # -- Hyperswitch configs reference with release name prefix
+  configs: &hyperswitch_configs "{{ .Release.Name }}-hyperswitch-configs"
+
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -243,22 +250,22 @@ server:
         # -- Database name
         dbname:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__DBNAME
         # -- Database host
         host:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__HOST
         # -- Database port
         port:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__PORT
         # -- Database username
         username:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__MASTER_DATABASE__USERNAME
         # -- Database password
         # When commented out, will use the same password as master database
@@ -1079,71 +1086,71 @@ drainer:
     secrets_management:
       secrets_manager:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER
       aws_kms:
         key_id:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
         region:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__REGION
     encryption_management:
       encryption_manager:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__ENCRYPTION_MANAGEMENT__ENCRYPTION_MANAGER
       aws_kms:
         key_id:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__KEY_ID
         region:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__REGION
     log:
       console:
         enabled:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__ENABLED
         level:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__LEVEL
         log_format:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__LOG_FORMAT
       telemetry:
         metrics_enabled:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__TELEMETRY__METRICS_ENABLED
         otel_exporter_otlp_endpoint:
           _configRef:
-            name: hyperswitch-configs
+            name: *hyperswitch_configs
             key: ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT
     master_database:
       dbname:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__DBNAME
       host:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__HOST
       pool_size: 3
       port:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__PORT
       username:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__MASTER_DATABASE__USERNAME
     redis:
       cluster_enabled: false
@@ -1151,12 +1158,12 @@ drainer:
       default_ttl: 300
       host:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__REDIS__HOST
       pool_size: 5
       port:
         _configRef:
-          name: hyperswitch-configs
+          name: *hyperswitch_configs
           key: ROUTER__REDIS__PORT
       reconnect_delay: 5
       reconnect_max_attempts: 5

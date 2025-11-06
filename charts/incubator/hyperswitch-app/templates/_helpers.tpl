@@ -498,15 +498,15 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
 - name: {{ $envKey }}
   valueFrom:
     secretKeyRef:
-      name: {{ $ref.name }}
-      key: {{ $ref.key }}
+      name: {{ tpl $ref.name $context }}
+      key: {{ tpl $ref.key $context }}
         {{- else if hasKey $value "_configRef" -}}
           {{- $ref := get $value "_configRef" }}
 - name: {{ $envKey }}
   valueFrom:
     configMapKeyRef:
-      name: {{ $ref.name }}
-      key: {{ $ref.key }}
+      name: {{ tpl $ref.name $context }}
+      key: {{ tpl $ref.key $context }}
         {{- end }}
       {{- else -}}
         {{/* Recursively process nested objects */}}

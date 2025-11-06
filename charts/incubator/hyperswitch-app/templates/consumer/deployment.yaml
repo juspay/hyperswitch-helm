@@ -88,12 +88,12 @@ spec:
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.consumer.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: hyperswitch-configs
+                name: {{ .Release.Name }}-hyperswitch-configs
             - configMapRef:
                 name: consumer-cm-{{ .Release.Name }}
           {{- if not .Values.global.useExternalSecrets.enabled }}
             - secretRef:
-                name: hyperswitch-secrets
+                name: {{ .Release.Name }}-hyperswitch-secrets
           {{- end }}
           resources:
             {{- with (default .Values.global.resources .Values.consumer.resources) }}
