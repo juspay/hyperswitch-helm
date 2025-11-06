@@ -1326,7 +1326,6 @@ controlCenter:
     # -- Mix panel token
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
-
 # Service Account configuration for Hyperswitch Applications
 serviceAccount:
   # -- Service account creation for the application
@@ -1338,7 +1337,6 @@ serviceAccount:
     eks.amazonaws.com/role-arn: my-role-arn
   # -- Labels to be added to the service account
   labels: {}
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
