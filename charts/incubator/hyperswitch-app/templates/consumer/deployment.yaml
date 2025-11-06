@@ -8,9 +8,11 @@ metadata:
     {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
-    app: {{ .Values.consumer.labels.app }}
-    version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
-  name: hyperswitch-consumer-{{ include "version.suffix" .Values.services.consumer.version }}
+    app.kubernetes.io/name: {{ include "hyperswitch-consumer.name" . }}
+    app.kubernetes.io/version: {{ .Values.services.consumer.version }}
+    app: {{ include "hyperswitch-consumer.name" . }}
+    version: {{ include "version.suffix" .Values.services.consumer.version }}
+  name: {{ include "hyperswitch-consumer.name" . }}-{{ include "version.suffix" .Values.services.consumer.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.consumer.progressDeadlineSeconds }}
@@ -18,8 +20,8 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.consumer.labels.app }}
-      version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
+      app: {{ include "hyperswitch-consumer.name" . }}
+      version: {{ include "version.suffix" .Values.services.consumer.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.consumer.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -34,8 +36,8 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app: {{ .Values.consumer.labels.app }}
-        version: consumer-{{ include "version.suffix" .Values.services.consumer.version }}
+        app: {{ include "hyperswitch-consumer.name" . }}
+        version: {{ include "version.suffix" .Values.services.consumer.version }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.consumer.labels | default .Values.global.labels) }}
         {{- toYaml . | nindent 8 }}
@@ -117,7 +119,7 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
       terminationGracePeriodSeconds: {{ .Values.consumer.terminationGracePeriodSeconds }}
       volumes:
         - configMap:

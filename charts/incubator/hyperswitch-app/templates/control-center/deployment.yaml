@@ -6,7 +6,13 @@ metadata:
     {{- with (default .Values.global.annotations .Values.controlCenter.annotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: hyperswitch-control-center-{{ include "version.suffix" .Values.services.controlCenter.version }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "hyperswitch-control-center.name" . }}
+    app.kubernetes.io/version: {{ .Values.services.controlCenter.version}}
+    app: {{ include "hyperswitch-control-center.name" . }}
+    version: {{ include "version.suffix" .Values.services.controlCenter.version }}
+  name: {{ include "hyperswitch-control-center.name" . }}-{{ include "version.suffix" .Values.services.controlCenter.version }}
   namespace: {{ include "controlCenter.namespace" . }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
@@ -14,7 +20,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.controlCenter.labels.app }}
+      app: {{ include "hyperswitch-control-center.name" . }}
       version: {{ include "version.suffix" .Values.services.controlCenter.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.controlCenter.strategy) }}
@@ -27,7 +33,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app: {{ .Values.controlCenter.labels.app }}
+        app: {{ include "hyperswitch-control-center.name" . }}
         version: {{ include "version.suffix" .Values.services.controlCenter.version }}
     spec:
       {{- with (default .Values.global.tolerations .Values.controlCenter.tolerations) }}
@@ -87,6 +93,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch-control-center-sa.name" . }}
       terminationGracePeriodSeconds: {{ .Values.controlCenter.terminationGracePeriodSeconds }}
 {{- end }}

@@ -8,9 +8,11 @@ metadata:
     {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
-    app: {{ .Values.server.labels.app }}
+    app.kubernetes.io/name: {{ include "hyperswitch-server.name" . }}
+    app.kubernetes.io/version: {{ .Values.services.router.version }}
+    app: {{ include "hyperswitch-server.name" . }}
     version: {{ include "version.suffix" .Values.services.router.version }}
-  name: hyperswitch-server-{{ include "version.suffix" .Values.services.router.version }}
+  name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
@@ -20,7 +22,7 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: {{ .Values.server.labels.app }}
+      app: {{ include "hyperswitch-server.name" . }}
       version: {{ include "version.suffix" .Values.services.router.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.server.strategy) }}
@@ -36,7 +38,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app: {{ .Values.server.labels.app }}
+        app: {{ include "hyperswitch-server.name" . }}
         version: {{ include "version.suffix" .Values.services.router.version }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.server.labels | default .Values.global.labels) }}
@@ -121,7 +123,7 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
       terminationGracePeriodSeconds: {{ default .Values.global.terminationGracePeriodSeconds .Values.server.terminationGracePeriodSeconds  }}
       volumes:
         - configMap:
