@@ -96,9 +96,6 @@ global:
   # -- Labels to be added to the all the deployments and their pods
   labels:
     managedBy: hyperswitch
-  # -- service account annotations to be used
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
   # -- Environmant variables that are to be used by the hyperswitch application services
   env:
     pod_name:
@@ -185,11 +182,18 @@ server:
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
-  labels:
-    app: hyperswitch-server
-  # -- service account annotations to be used
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn: my-role-arn
+  labels: {}
+  # Service Account configuration for Hyperswitch Router
+  serviceAccount:
+    # -- Service account creation for the application
+    create: true
+    # -- Service account name for the application ( default: <release-name>-hyperswitch-router-role)
+    name: ""
+    # -- Annotations to be added to the service account
+    annotations:
+      eks.amazonaws.com/role-arn: my-role-arn
+    # -- Labels to be added to the service account
+    labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   # @ignored
   env:
@@ -911,12 +915,7 @@ consumer:
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
-  labels:
-    app: hyperswitch-consumer
-  # -- service account annotations to be used
-  # @ignored
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+  labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
@@ -978,11 +977,7 @@ producer:
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
-  labels:
-    app: hyperswitch-producer
-  # -- service account annotations to be used
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
+  labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
   env:
     binary: scheduler
@@ -1051,13 +1046,9 @@ drainer:
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
-  labels:
-    app: hyperswitch-drainer
+  labels: {}
   # -- Namespace override for the drainer
   namespaceOverride: ""
-  # -- service account annotations to be used
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
   # -- Environment variables that are to be used by the hyperswitch drainer service
   env:
     binary: drainer
@@ -1193,15 +1184,21 @@ controlCenter:
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   # @ignored
-  labels:
-    app: hyperswitch-control-center
+  labels: {}
+  # Service Account configuration for Hyperswitch Control Center
+  serviceAccount:
+    # -- Service account creation for the application
+    create: true
+    # -- Service account name for the application ( default: <release-name>-hyperswitch-control-center-role)
+    name: ""
+    # -- Annotations to be added to the service account
+    annotations:
+      eks.amazonaws.com/role-arn: my-role-arn
+    # -- Labels to be added to the service account
+    labels: {}
   # -- Namespace override for the control center
   # @ignored
   namespaceOverride: ""
-  # -- service account annotations to be used
-  # @ignored
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn:
   env:
     # --
     binary: dashboard
@@ -1329,6 +1326,19 @@ controlCenter:
     # -- Mix panel token
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
+
+# Service Account configuration for Hyperswitch Applications
+serviceAccount:
+  # -- Service account creation for the application
+  create: true
+  # -- Service account name for the application ( default: <release-name>-hyperswitch-router-role)
+  name: ""
+  # -- Annotations to be added to the service account
+  annotations:
+    eks.amazonaws.com/role-arn: my-role-arn
+  # -- Labels to be added to the service account
+  labels: {}
+
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation

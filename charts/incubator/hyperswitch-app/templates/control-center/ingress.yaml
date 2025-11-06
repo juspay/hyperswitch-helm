@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hyperswitch-control-center-ingress
+  name: {{ .Release.Name }}-hyperswitch-control-center-ingress
   namespace:  {{ include "controlCenter.namespace" . }}
   annotations:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
@@ -24,7 +24,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hyperswitch-control-center
+                name: {{ include "hyperswitch-control-center.name" . }}
                 port:
                   number: 80
 {{- end }}

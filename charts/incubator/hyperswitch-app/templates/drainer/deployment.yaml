@@ -2,12 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hyperswitch-drainer-{{ .Values.services.drainer.version | replace "." "o" }}
+  name: {{ include "hyperswitch-drainer.name" . }}-{{ .Values.services.drainer.version | replace "." "o" }}
   namespace: {{ include "drainer.namespace" . }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
-    app: {{ .Values.drainer.labels.app }}
-    version: {{ .Values.services.drainer.version | replace "." "o" }}
+    app.kubernetes.io/name: {{ include "hyperswitch-drainer.name" . }}
+    app.kubernetes.io/version: {{ .Values.services.drainer.version }}
+    app: {{ include "hyperswitch-drainer.name" . }}
+    version: {{ include "version.suffix" .Values.services.drainer.version }}
 spec:
   replicas: {{ .Values.drainer.replicas }}
   progressDeadlineSeconds: {{ .Values.drainer.progressDeadlineSeconds | default .Values.global.progressDeadlineSeconds }}
@@ -15,8 +17,8 @@ spec:
     {{- toYaml (.Values.drainer.strategy | default .Values.global.strategy) | nindent 4 }}
   selector:
     matchLabels:
-      app: {{ .Values.drainer.labels.app }}
-      version: {{ .Values.services.drainer.version | replace "." "o" }}
+      app: {{ include "hyperswitch-drainer.name" . }}
+      version: {{ include "version.suffix" .Values.services.drainer.version }}
   template:
     metadata:
       annotations:
@@ -26,8 +28,8 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        app: {{ .Values.drainer.labels.app }}
-        version: {{ .Values.services.drainer.version | replace "." "o" }}
+        app: {{ include "hyperswitch-drainer.name" . }}
+        version: {{ include "version.suffix" .Values.services.drainer.version }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.drainer.labels | default .Values.global.labels) }}
         {{- toYaml . | nindent 8 }}
@@ -89,5 +91,5 @@ spec:
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
-      serviceAccountName: hyperswitch-router-role
+      serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
 {{- end }}
