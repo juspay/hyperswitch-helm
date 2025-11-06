@@ -1,0 +1,23 @@
+{{- if and .Values.istio.enabled .Values.istio.virtualService.create }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}-hyperswitch-vs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-virtual-service
+spec:
+  {{- if .Values.istio.virtualService.hosts }}
+  hosts:
+  {{- toYaml .Values.istio.virtualService.hosts | nindent 2 }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.gateways }}
+  gateways:
+  {{- toYaml .Values.istio.virtualService.gateways | nindent 2 }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.http }}
+  http:
+  {{- toYaml .Values.istio.virtualService.http | nindent 2 }}
+  {{- end }}
+{{- end }}

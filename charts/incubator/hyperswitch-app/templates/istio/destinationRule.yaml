@@ -1,0 +1,35 @@
+{{- if and .Values.istio.enabled .Values.services.router.enabled }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ include "hyperswitch-server.name" . }}-dr
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-destination-rule
+spec:
+  host: {{ include "hyperswitch-server.name" . }}
+  {{- if .Values.istio.destinationRule.router.trafficPolicy }}
+  trafficPolicy:
+  {{- toYaml .Values.istio.destinationRule.router.trafficPolicy | nindent 4 }}
+  {{- end }}
+{{- end }}
+
+{{- if and .Values.istio.enabled .Values.services.controlCenter.enabled }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ include "hyperswitch-control-center.name" . }}-dr
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-destination-rule
+spec:
+  host: {{ include "hyperswitch-control-center.name" . }}
+  {{- if .Values.istio.destinationRule.controlCenter.trafficPolicy }}
+  trafficPolicy:
+  {{- toYaml .Values.istio.destinationRule.controlCenter.trafficPolicy | nindent 4 }}
+  {{- end }}
+{{- end }}

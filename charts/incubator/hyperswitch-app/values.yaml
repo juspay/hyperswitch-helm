@@ -1344,18 +1344,6 @@ controlCenter:
     # @section -- Control Center configs
     mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
 
-# Service Account configuration for Hyperswitch Applications
-serviceAccount:
-  # -- Service account creation for the application
-  create: true
-  # -- Service account name for the application ( default: <release-name>-hyperswitch-router-role)
-  name: ""
-  # -- Annotations to be added to the service account
-  annotations:
-    eks.amazonaws.com/role-arn: my-role-arn
-  # -- Labels to be added to the service account
-  labels: {}
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1517,6 +1505,78 @@ initDB:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
 
+# -- Istio configuration
+# @section -- Istio
+istio:
+  # -- Enable Istio resources
+  enabled: false
+
+  # -- VirtualService configuration
+  virtualService:
+    # -- Create VirtualService
+    create: false
+    # -- Hosts for the VirtualService
+    hosts: []
+    # -- Gateways for the VirtualService
+    gateways: []
+    # -- HTTP routing rules - rendered directly as YAML
+    http: []
+    # Example:
+    # hosts:
+    #   - hyperswitch.example.com
+    # gateways:
+    #   - istio-system/gateway
+    # http:
+    #   - match:
+    #     - uri:
+    #         prefix: /
+    #     route:
+    #     - destination:
+    #         host: <release-name>-hyperswitch-server
+    #         port:
+    #           number: 80
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+
+  # -- DestinationRule configuration
+  destinationRule:
+    # -- Router DestinationRule configuration
+    router:
+      # -- Traffic policy configuration for router - rendered directly as YAML
+      trafficPolicy: {}
+      # Example:
+      # trafficPolicy:
+      #   loadBalancer:
+      #     simple: LEAST_CONN
+      #   connectionPool:
+      #     tcp:
+      #       maxConnections: 100
+      #       connectTimeout: 30s
+      #     http:
+      #       http1MaxPendingRequests: 64
+      #       http2MaxRequests: 1000
+      #   outlierDetection:
+      #     consecutiveGatewayErrors: 5
+      #     interval: 30s
+
+    # -- Control Center DestinationRule configuration
+    controlCenter:
+      # -- Traffic policy configuration for control center - rendered directly as YAML
+      trafficPolicy: {}
+      # Example:
+      # trafficPolicy:
+      #   loadBalancer:
+      #     simple: ROUND_ROBIN
+      #   connectionPool:
+      #     tcp:
+      #       maxConnections: 50
+      #       connectTimeout: 30s
+      #     http:
+      #       http1MaxPendingRequests: 32
+      #       http2MaxRequests: 500
+
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
 
@@ -1601,7 +1661,6 @@ externalSecretsOperator:
       #   dataFrom:
       #     - extract:
       #         key: "HyperswitchDatabaseSecret"
-
 
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
@@ -2002,3 +2061,4 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
+
