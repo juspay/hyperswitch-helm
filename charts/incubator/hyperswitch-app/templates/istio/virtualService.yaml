@@ -16,8 +16,45 @@ spec:
   gateways:
   {{- toYaml .Values.istio.virtualService.gateways | nindent 2 }}
   {{- end }}
-  {{- if .Values.istio.virtualService.http }}
+  {{- if or .Values.istio.virtualService.http.router .Values.istio.virtualService.http.controlCenter }}
   http:
-  {{- toYaml .Values.istio.virtualService.http | nindent 2 }}
+  {{- if .Values.istio.virtualService.http.router }}
+  {{- range .Values.istio.virtualService.http.router }}
+  - match:
+    {{- toYaml .match | nindent 4 }}
+    route:
+      - destination:
+          host: {{ include "hyperswitch-server.name" . }}
+          subset: {{ include "version.suffix" $.Values.services.router.version }}
+          port:
+            number: 80
+    {{- if .timeout }}
+    timeout: {{ .timeout }}
+    {{- end }}
+    {{- if .retries }}
+    retries:
+      {{- toYaml .retries | nindent 6 }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.istio.virtualService.http.controlCenter }}
+  {{- range .Values.istio.virtualService.http.controlCenter }}
+  - match:
+    {{- toYaml .match | nindent 4 }}
+    route:
+      - destination:
+          host: {{ include "hyperswitch-control-center.name" . }}
+          subset: {{ include "version.suffix" .Values.services.controlCenter.version }}
+          port:
+            number: 80
+    {{- if .timeout }}
+    timeout: {{ .timeout }}
+    {{- end }}
+    {{- if .retries }}
+    retries:
+      {{- toYaml .retries | nindent 6 }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}

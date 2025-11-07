@@ -1519,26 +1519,43 @@ istio:
     hosts: []
     # -- Gateways for the VirtualService
     gateways: []
-    # -- HTTP routing rules - rendered directly as YAML
-    http: []
+    # -- HTTP routing rules
+    http:
+      router:
+        - match: []
+          timeout: 50s
+          retries: {}
+      controlCenter:
+        - match: []
+          timeout: 50s
+          retries: {}
     # Example:
     # hosts:
     #   - hyperswitch.example.com
     # gateways:
     #   - istio-system/gateway
     # http:
-    #   - match:
-    #     - uri:
-    #         prefix: /
-    #     route:
-    #     - destination:
-    #         host: <release-name>-hyperswitch-server
-    #         port:
-    #           number: 80
-    #     timeout: 30s
-    #     retries:
-    #       attempts: 3
-    #       perTryTimeout: 10s
+    #   router:
+    #     - match:
+    #         - uri:
+    #             prefix: /api/
+    #       timeout: 30s
+    #       retries:
+    #         attempts: 3
+    #         perTryTimeout: 10s
+    #     - match:
+    #         - uri:
+    #             exact: /health
+    #       timeout: 10s
+    #       retries: {}
+    #   controlCenter:
+    #     - match:
+    #         - uri:
+    #             prefix: /
+    #       timeout: 30s
+    #       retries:
+    #         attempts: 2
+    #         perTryTimeout: 15s
 
   # -- DestinationRule configuration
   destinationRule:
