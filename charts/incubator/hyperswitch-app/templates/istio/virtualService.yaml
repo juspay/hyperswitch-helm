@@ -20,7 +20,7 @@ spec:
   http:
   {{- range .Values.istio.virtualService.http }}
   {{- range $serviceName, $serviceConfig := . }}
-  {{- if eq $serviceName "router" }}
+  {{- if and (eq $serviceName "router") $.Values.services.router.enabled }}
   {{- range $serviceConfig.rules }}
   - match:
     {{- toYaml .match | nindent 4 }}
@@ -41,7 +41,7 @@ spec:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
   {{- end }}
-  {{- else if eq $serviceName "controlCenter" }}
+  {{- else if and (eq $serviceName "controlCenter") $.Values.services.controlCenter.enabled }}
   {{- range $serviceConfig.rules }}
   - match:
     {{- toYaml .match | nindent 4 }}
