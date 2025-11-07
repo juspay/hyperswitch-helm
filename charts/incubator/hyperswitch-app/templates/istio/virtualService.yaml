@@ -16,18 +16,23 @@ spec:
   gateways:
   {{- toYaml .Values.istio.virtualService.gateways | nindent 2 }}
   {{- end }}
-  {{- if or .Values.istio.virtualService.http.router .Values.istio.virtualService.http.controlCenter }}
+  {{- if .Values.istio.virtualService.http }}
   http:
-  {{- if .Values.istio.virtualService.http.router }}
-  {{- range .Values.istio.virtualService.http.router }}
+  {{- range .Values.istio.virtualService.http }}
+  {{- range $serviceName, $serviceConfig := . }}
+  {{- if eq $serviceName "router" }}
+  {{- range $serviceConfig.rules }}
   - match:
     {{- toYaml .match | nindent 4 }}
     route:
       - destination:
-          host: {{ include "hyperswitch-server.name" . }}
+          host: {{ include "hyperswitch-server.name" $ }}
           subset: {{ include "version.suffix" $.Values.services.router.version }}
           port:
             number: 80
+        {{- if .weight }}
+        weight: {{ .weight }}
+        {{- end }}
     {{- if .timeout }}
     timeout: {{ .timeout }}
     {{- end }}
@@ -36,17 +41,19 @@ spec:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
   {{- end }}
-  {{- end }}
-  {{- if .Values.istio.virtualService.http.controlCenter }}
-  {{- range .Values.istio.virtualService.http.controlCenter }}
+  {{- else if eq $serviceName "controlCenter" }}
+  {{- range $serviceConfig.rules }}
   - match:
     {{- toYaml .match | nindent 4 }}
     route:
       - destination:
-          host: {{ include "hyperswitch-control-center.name" . }}
-          subset: {{ include "version.suffix" .Values.services.controlCenter.version }}
+          host: {{ include "hyperswitch-control-center.name" $ }}
+          subset: {{ include "version.suffix" $.Values.services.controlCenter.version }}
           port:
             number: 80
+        {{- if .weight }}
+        weight: {{ .weight }}
+        {{- end }}
     {{- if .timeout }}
     timeout: {{ .timeout }}
     {{- end }}
@@ -54,6 +61,8 @@ spec:
     retries:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
+  {{- end }}
+  {{- end }}
   {{- end }}
   {{- end }}
   {{- end }}

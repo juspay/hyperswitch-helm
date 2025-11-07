@@ -1514,48 +1514,59 @@ istio:
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
-    create: false
+    create: true
     # -- Hosts for the VirtualService
     hosts: []
     # -- Gateways for the VirtualService
     gateways: []
-    # -- HTTP routing rules
+    # -- HTTP routing rules (ordered list)
+    # Note: Rules are processed in the order they appear in this list.
+    # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      router:
-        - match: []
-          timeout: 50s
-          retries: {}
-      controlCenter:
-        - match: []
-          timeout: 50s
-          retries: {}
+      - router:
+          rules:
+            - match: []
+              weight: 100
+              timeout: 50s
+              retries: {}
+      - controlCenter:
+          rules:
+            - match: []
+              weight: 100
+              timeout: 50s
+              retries: {}
     # Example:
     # hosts:
     #   - hyperswitch.example.com
     # gateways:
     #   - istio-system/gateway
     # http:
-    #   router:
-    #     - match:
-    #         - uri:
-    #             prefix: /api/
-    #       timeout: 30s
-    #       retries:
-    #         attempts: 3
-    #         perTryTimeout: 10s
-    #     - match:
-    #         - uri:
-    #             exact: /health
-    #       timeout: 10s
-    #       retries: {}
-    #   controlCenter:
-    #     - match:
-    #         - uri:
-    #             prefix: /
-    #       timeout: 30s
-    #       retries:
-    #         attempts: 2
-    #         perTryTimeout: 15s
+    #   - router:
+    #       rules:
+    #         - match:
+    #             - uri:
+    #                 prefix: /api/
+    #           weight: 100
+    #           timeout: 30s
+    #           retries:
+    #             attempts: 3
+    #             perTryTimeout: 10s
+    #         - match:
+    #             - uri:
+    #                 exact: /health
+    #           weight: 100
+    #           timeout: 10s
+    #           retries: {}
+    #   - controlCenter:
+    #       rules:
+    #         - match:
+    #             - uri:
+    #                 prefix: /
+    #           weight: 100
+    #           timeout: 30s
+    #           retries:
+    #             attempts: 2
+    #             perTryTimeout: 15s
 
   # -- DestinationRule configuration
   destinationRule:
