@@ -1,4 +1,5 @@
 {{- if .Values.services.router.enabled }}
+# Stable Service - Primary service for production traffic
 apiVersion: v1
 kind: Service
 metadata:
@@ -22,4 +23,31 @@ spec:
     app: {{ include "hyperswitch-server.name" . }}
   sessionAffinity: None
   type: ClusterIP
+---
+{{- if and .Values.server.rollout.enabled .Values.server.rollout.canary.canaryService }}
+# Canary Service - Used for canary deployments with Argo Rollouts
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hyperswitch-server.name" . }}-canary
+  namespace: {{ .Release.Namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: {{ include "hyperswitch-server.name" . }}
+  sessionAffinity: None
+  type: ClusterIP
+{{- end }}
 {{- end }}

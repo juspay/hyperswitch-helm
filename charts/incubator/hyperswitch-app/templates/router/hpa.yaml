@@ -6,8 +6,15 @@ metadata:
   name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
 spec:
   scaleTargetRef:
+    {{- if .Values.server.rollout.enabled }}
+    # Target Argo Rollout resource when rollouts are enabled
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    {{- else }}
+    # Target standard Deployment when rollouts are disabled
     apiVersion: apps/v1
     kind: Deployment
+    {{- end }}
     name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
   minReplicas: 3
   maxReplicas: 5

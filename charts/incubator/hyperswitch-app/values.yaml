@@ -139,6 +139,60 @@ _references:
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
+
+  # Argo Rollouts configuration for progressive delivery
+  rollout:
+    # -- Enable Argo Rollouts (requires Argo Rollouts controller installed in cluster)
+    # When enabled, a Rollout resource will be created instead of a Deployment
+    # @section -- Argo Rollouts
+    enabled: false
+
+    # Canary deployment strategy configuration
+    canary:
+      # -- Enable canary service creation for traffic splitting
+      # @section -- Argo Rollouts
+      canaryService: true
+      # -- Enable stable service reference
+      # @section -- Argo Rollouts
+      stableService: true
+      # -- Enable traffic routing (requires service mesh like Istio)
+      # @section -- Argo Rollouts
+      trafficRouting: false
+
+      # Canary rollout steps - progressive traffic shifting
+      # @section -- Argo Rollouts
+      steps:
+        # Step 1: Route 20% traffic to canary
+        - setWeight: 20
+        - pause:
+            duration: 2m
+        # Step 2: Route 40% traffic to canary
+        - setWeight: 40
+        - pause:
+            duration: 2m
+        # Step 3: Route 60% traffic to canary
+        - setWeight: 60
+        - pause:
+            duration: 2m
+        # Step 4: Route 80% traffic to canary
+        - setWeight: 80
+        - pause:
+            duration: 2m
+        # Step 5: Route 100% traffic to canary (full rollout)
+        - setWeight: 100
+
+      # Analysis configuration for automated rollout decisions
+      # @section -- Argo Rollouts
+      analysis:
+        # -- Enable analysis during rollout
+        enabled: false
+        # -- Analysis templates to run during canary
+        templates: []
+        # Example:
+        # templates:
+        #   - templateName: success-rate
+        #   - templateName: latency-check
+
   # Ingress Configurations for hyperswitch router
   ingress:
     enabled: false

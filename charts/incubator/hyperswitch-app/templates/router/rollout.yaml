@@ -1,6 +1,6 @@
-{{- if and .Values.services.router.enabled (not .Values.server.rollout.enabled) }}
-apiVersion: apps/v1
-kind: Deployment
+{{- if and .Values.services.router.enabled .Values.server.rollout.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   annotations:
     {{- with (default .Values.global.annotations .Values.server.annotations) }}
@@ -15,7 +15,6 @@ metadata:
   name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
   namespace: {{ .Release.Namespace }}
 spec:
-  progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default .Values.global.replicas .Values.server.replicas }}
   {{- end }}
@@ -24,10 +23,47 @@ spec:
     matchLabels:
       app: {{ include "hyperswitch-server.name" . }}
       version: {{ include "version.suffix" .Values.services.router.version }}
+
+  # Argo Rollout Strategy - Canary
   strategy:
-    {{- with (default .Values.global.strategy .Values.server.strategy) }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+    canary:
+      {{- if .Values.server.rollout.canary.canaryService }}
+      canaryService: {{ include "hyperswitch-server.name" . }}-canary
+      {{- end }}
+      {{- if .Values.server.rollout.canary.stableService }}
+      stableService: {{ include "hyperswitch-server.name" . }}
+      {{- end }}
+      {{- if .Values.server.rollout.canary.trafficRouting }}
+      {{- if .Values.istio.enabled }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ include "hyperswitch-server.name" . }}
+            routes:
+              - primary
+      {{- end }}
+      {{- end }}
+      steps:
+      {{- range .Values.server.rollout.canary.steps }}
+      - setWeight: {{ .setWeight }}
+      {{- if .pause }}
+      - pause:
+          {{- if .pause.duration }}
+          duration: {{ .pause.duration }}
+          {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.server.rollout.canary.analysis }}
+      {{- if .Values.server.rollout.canary.analysis.templates }}
+      - analysis:
+          templates:
+          {{- range .Values.server.rollout.canary.analysis.templates }}
+          - templateName: {{ .templateName }}
+          {{- end }}
+      {{- end }}
+      {{- end }}
+
+  # Pod template (same as deployment)
   template:
     metadata:
       annotations:
