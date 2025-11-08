@@ -18,6 +18,52 @@ spec:
   {{- end }}
   {{- if .Values.istio.virtualService.http }}
   http:
-  {{- toYaml .Values.istio.virtualService.http | nindent 2 }}
+  {{- range .Values.istio.virtualService.http }}
+  {{- range $serviceName, $serviceConfig := . }}
+  {{- if and (eq $serviceName "router") $.Values.services.router.enabled }}
+  {{- range $serviceConfig.rules }}
+  - match:
+    {{- toYaml .match | nindent 4 }}
+    route:
+      - destination:
+          host: {{ include "hyperswitch-server.name" $ }}
+          subset: {{ include "version.suffix" $.Values.services.router.version }}
+          port:
+            number: 80
+        {{- if .weight }}
+        weight: {{ .weight }}
+        {{- end }}
+    {{- if .timeout }}
+    timeout: {{ .timeout }}
+    {{- end }}
+    {{- if .retries }}
+    retries:
+      {{- toYaml .retries | nindent 6 }}
+    {{- end }}
+  {{- end }}
+  {{- else if and (eq $serviceName "controlCenter") $.Values.services.controlCenter.enabled }}
+  {{- range $serviceConfig.rules }}
+  - match:
+    {{- toYaml .match | nindent 4 }}
+    route:
+      - destination:
+          host: {{ include "hyperswitch-control-center.name" $ }}
+          subset: {{ include "version.suffix" $.Values.services.controlCenter.version }}
+          port:
+            number: 80
+        {{- if .weight }}
+        weight: {{ .weight }}
+        {{- end }}
+    {{- if .timeout }}
+    timeout: {{ .timeout }}
+    {{- end }}
+    {{- if .retries }}
+    retries:
+      {{- toYaml .retries | nindent 6 }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}

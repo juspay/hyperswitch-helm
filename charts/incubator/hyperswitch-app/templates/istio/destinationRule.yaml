@@ -10,6 +10,10 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-server.name" . }}
+  subsets:
+  - name: {{ include "version.suffix" .Values.services.router.version }}
+    labels:
+      version: {{ include "version.suffix" .Values.services.router.version }}
   {{- if .Values.istio.destinationRule.router.trafficPolicy }}
   trafficPolicy:
   {{- toYaml .Values.istio.destinationRule.router.trafficPolicy | nindent 4 }}
@@ -28,6 +32,10 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-control-center.name" . }}
+  subsets:
+  - name: {{ include "version.suffix" .Values.services.controlCenter.version }}
+    labels:
+      version: {{ include "version.suffix" .Values.services.controlCenter.version }}
   {{- if .Values.istio.destinationRule.controlCenter.trafficPolicy }}
   trafficPolicy:
   {{- toYaml .Values.istio.destinationRule.controlCenter.trafficPolicy | nindent 4 }}
