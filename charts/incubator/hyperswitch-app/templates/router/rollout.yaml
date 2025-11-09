@@ -9,9 +9,7 @@ metadata:
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
     app.kubernetes.io/name: {{ include "hyperswitch-server.name" . }}
-    app.kubernetes.io/version: {{ .Values.services.router.version }}
     app: {{ include "hyperswitch-server.name" . }}
-    version: {{ include "version.suffix" .Values.services.router.version }}
   name: {{ include "hyperswitch-server.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
