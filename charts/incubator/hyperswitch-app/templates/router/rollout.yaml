@@ -20,7 +20,6 @@ spec:
   selector:
     matchLabels:
       app: {{ include "hyperswitch-server.name" . }}
-      version: {{ include "version.suffix" .Values.services.router.version }}
 
   # Argo Rollout Strategy - Canary
   strategy:

@@ -5,6 +5,10 @@ kind: Service
 metadata:
   name: {{ include "hyperswitch-server.name" . }}
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.server.rollout.enabled }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  {{- end }}
 spec:
   internalTrafficPolicy: Cluster
   ipFamilies:
@@ -31,6 +35,8 @@ kind: Service
 metadata:
   name: {{ include "hyperswitch-server.name" . }}-canary
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
 spec:
   internalTrafficPolicy: Cluster
   ipFamilies:
