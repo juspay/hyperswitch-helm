@@ -43,7 +43,7 @@ spec:
       trafficRouting:
         istio:
           virtualService:
-            name: {{ include "hyperswitch-server.name" . }}-vs
+            name: {{ .Release.Name }}-hyperswitch-vs
             routes:
               - "primary"
           destinationRule:
