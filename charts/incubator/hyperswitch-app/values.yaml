@@ -1509,32 +1509,49 @@ initDB:
 # @section -- Istio
 istio:
   # -- Enable Istio resources
-  enabled: false
+  enabled: true
 
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
     create: true
     # -- Hosts for the VirtualService
-    hosts: []
+    hosts:
+      - "hyperswitch.local"  # Add to /etc/hosts: 127.0.0.1 hyperswitch.local
     # -- Gateways for the VirtualService
-    gateways: []
+    gateways:
+      - "istio-system/hyperswitch-gateway"  # Use existing gateway
     # -- HTTP routing rules (ordered list)
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
       - router:
           rules:
-            - match: []
+            # API endpoints
+            - match:
+                - uri:
+                    prefix: /api/
               weight: 100
-              timeout: 50s
-              retries: {}
-      - controlCenter:
-          rules:
-            - match: []
+              timeout: 30s
+              retries:
+                attempts: 3
+                perTryTimeout: 10s
+            # Health check endpoint
+            - match:
+                - uri:
+                    exact: /health
               weight: 100
-              timeout: 50s
+              timeout: 5s
               retries: {}
+            # All other routes to router
+            - match:
+                - uri:
+                    prefix: /
+              weight: 100
+              timeout: 30s
+              retries:
+                attempts: 2
+                perTryTimeout: 15s
     # Example:
     # hosts:
     #   - hyperswitch.example.com
