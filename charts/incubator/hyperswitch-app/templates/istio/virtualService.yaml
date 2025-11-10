@@ -4,6 +4,11 @@ kind: VirtualService
 metadata:
   name: {{ .Release.Name }}-hyperswitch-vs
   namespace: {{ .Release.Namespace }}
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+  annotations:
+    # Ignore differences in weight values that Argo Rollouts manages during canary deployments
+    argocd.argoproj.io/sync-options: IgnoreExtraneous=true
+  {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-virtual-service
