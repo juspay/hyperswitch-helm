@@ -2,14 +2,9 @@ name: Sync Hyperswitch Updates
 
 on:
   repository_dispatch:
-    types: [sync-hyperswitch-updates]
-  workflow_dispatch:
-    # Allow manual triggering with branch selection
-    inputs:
-      hyperswitch_tag:
-        description: 'Tag to fetch updates from. If not specified, uses latest tag by commit date.'
-        required: false
-        type: string
+    types:
+      - sync-hyperswitch-updates       # daily-releases
+      - sync-custom-router-version     # custom-deployments
 
 permissions:
   contents: write
@@ -19,10 +14,32 @@ jobs:
   sync-hyperswitch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout daily-releases branch
+      - name: Determine sync configuration
+        id: config
+        run: |
+          EVENT_TYPE="${{ github.event.action }}"
+
+          if [ "$EVENT_TYPE" = "sync-hyperswitch-updates" ]; then
+            echo "branch=daily-releases" >> $GITHUB_OUTPUT
+            echo "update_all_services=true" >> $GITHUB_OUTPUT
+            echo "tag_prefix=" >> $GITHUB_OUTPUT
+            echo "sync_type=full" >> $GITHUB_OUTPUT
+            echo "Configured for full hyperswitch sync to daily-releases branch"
+          elif [ "$EVENT_TYPE" = "sync-custom-router-version" ]; then
+            echo "branch=custom-deployments" >> $GITHUB_OUTPUT
+            echo "update_all_services=false" >> $GITHUB_OUTPUT
+            echo "tag_prefix=cus-" >> $GITHUB_OUTPUT
+            echo "sync_type=router-only" >> $GITHUB_OUTPUT
+            echo "Configured for router-only sync to custom-deployments branch"
+          else
+            echo "❌ Unknown event type: $EVENT_TYPE"
+            exit 1
+          fi
+
+      - name: Checkout target branch
         uses: actions/checkout@v4
         with:
-          ref: daily-releases
+          ref: ${{ steps.config.outputs.branch }}
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
@@ -39,11 +56,7 @@ jobs:
       - name: Determine hyperswitch branch/tag
         id: determine_ref
         run: |
-          if [ -n "${{ inputs.hyperswitch_tag }}" ]; then
-            # Use user-provided input (from workflow_dispatch)
-            REF="${{ inputs.hyperswitch_tag }}"
-            echo "Using user-specified branch/tag: $REF"
-          elif [ -n "${{ github.event.client_payload.hyperswitch_tag }}" ]; then
+          if [ -n "${{ github.event.client_payload.hyperswitch_tag }}" ]; then
             # Use tag from repository_dispatch client_payload
             REF="${{ github.event.client_payload.hyperswitch_tag }}"
             echo "Using repository_dispatch hyperswitch_tag: $REF"
@@ -120,25 +133,36 @@ jobs:
           SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
           VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
           CHART_FILE="charts/incubator/hyperswitch-app/Chart.yaml"
+          UPDATE_ALL="${{ steps.config.outputs.update_all_services }}"
+          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
           echo "Updating service versions and chart version with hyperswitch reference: $SOURCE_REF"
+          echo "Update all services: $UPDATE_ALL"
+          echo "Tag prefix: $TAG_PREFIX"
 
           # Install yq for reliable YAML processing
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
-          # Update each service version using specific YAML paths
-          yq eval ".services.router.version = \"$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.consumer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.producer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
-          yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          if [ "$UPDATE_ALL" = "true" ]; then
+            # Update all service versions
+            echo "Updating all service versions to $SOURCE_REF"
+            yq eval ".services.router.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+            yq eval ".services.consumer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+            yq eval ".services.producer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+            yq eval ".services.drainer.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          else
+            # Update router service version
+            echo "Updating router service version to $SOURCE_REF"
+            yq eval ".services.router.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+          fi
 
           # Update chart version to valid SemVer format with hyperswitch version as prerelease
           # Read chart version from main branch as prefix
           MAIN_CHART_VERSION=$(git show origin/main:$CHART_FILE | yq eval ".version" -)
           # Replace dots with hyphens in SOURCE_REF to make it a single prerelease identifier
           SOURCE_REF_HYPHENATED=$(echo "$SOURCE_REF" | tr '.' '-')
-          CHART_VERSION="$MAIN_CHART_VERSION-$SOURCE_REF_HYPHENATED"
+          CHART_VERSION="$MAIN_CHART_VERSION-$TAG_PREFIX$SOURCE_REF_HYPHENATED"
           echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"
           yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
 
@@ -182,35 +206,53 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
-          # Use the same tag as hyperswitch repo
-          NEW_TAG="$SOURCE_REF"
-          echo "Using hyperswitch tag: $NEW_TAG"
+          # Use appropriate prefix with hyperswitch tag
+          NEW_TAG="$TAG_PREFIX$SOURCE_REF"
+          echo "Using tag: $NEW_TAG"
           echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
-          git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
-          git commit -m "chore: sync hyperswitch updates from ${{ steps.determine_ref.outputs.target_ref }}
+          SYNC_TYPE="${{ steps.config.outputs.sync_type }}"
+          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          TAG="${{ steps.generate_tag.outputs.tag }}"
 
-          Hyperswitch version: ${{ steps.determine_ref.outputs.target_ref }}
+          # Generate commit title and service update section based on sync type
+          if [ "$SYNC_TYPE" = "full" ]; then
+            COMMIT_TITLE="chore: sync hyperswitch updates from $SOURCE_REF"
+            SERVICE_SECTION="Service versions:
+          - Updated all service versions to $SOURCE_REF"
+          else
+            COMMIT_TITLE="chore: sync custom router version updates from $SOURCE_REF"
+            SERVICE_SECTION="Router version: $SOURCE_REF"
+          fi
+
+          # Build common commit message with conditional parts
+          COMMIT_MSG="$COMMIT_TITLE
+
+          Hyperswitch version: $SOURCE_REF
 
           Configuration files:
           - Updated router-integ.toml from integration_test.toml
           - Updated router-sandbox.toml from sandbox.toml
           - Updated router-production.toml from production.toml
 
-          Service versions:
-          - Updated all service versions to ${{ steps.determine_ref.outputs.target_ref }}
+          $SERVICE_SECTION
 
           Chart version:
-          - Updated chart version to ${{ steps.update_versions.outputs.chart_version }}
+          - Updated chart version to $CHART_VERSION
 
-          Source: https://github.com/juspay/hyperswitch/tree/${{ steps.determine_ref.outputs.target_ref }}/config/deployments
-          Source ref: ${{ steps.determine_ref.outputs.target_ref }}
-          Tag: ${{ steps.generate_tag.outputs.tag }}"
+          Source: https://github.com/juspay/hyperswitch/tree/$SOURCE_REF/config/deployments
+          Source ref: $SOURCE_REF
+          Tag: $TAG"
+
+          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
+          git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
+          git commit -m "$COMMIT_MSG"
 
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
@@ -221,20 +263,36 @@ jobs:
       - name: Summary
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          echo "Hyperswitch updates synced successfully!"
-          echo "Source ref: ${{ steps.determine_ref.outputs.target_ref }}"
+          SYNC_TYPE="${{ steps.config.outputs.sync_type }}"
+          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          TAG="${{ steps.generate_tag.outputs.tag }}"
+
+          echo "Hyperswitch sync completed successfully!"
+          echo "Sync type: $SYNC_TYPE"
+          echo "Target branch: ${{ steps.config.outputs.branch }}"
+          echo "Source ref: $SOURCE_REF"
+          echo "Chart version: $CHART_VERSION"
+          echo "Tag: $TAG"
+          echo ""
           echo "Configuration files updated:"
           echo "   - charts/incubator/hyperswitch-app/configs/router-integ.toml"
           echo "   - charts/incubator/hyperswitch-app/configs/router-sandbox.toml"
           echo "   - charts/incubator/hyperswitch-app/configs/router-production.toml"
-          echo "Service versions updated:"
-          echo "   - charts/incubator/hyperswitch-app/values.yaml"
-          echo "Chart version updated:"
+
+          if [ "$SYNC_TYPE" = "full" ]; then
+            echo "All service versions updated:"
+            echo "   - router, consumer, producer, drainer → $SOURCE_REF"
+          else
+            echo "Router service version updated:"
+            echo "   - router → $SOURCE_REF"
+          fi
+
+          echo "Chart updates:"
           echo "   - charts/incubator/hyperswitch-app/Chart.yaml"
           echo "Dependencies updated for air-gapped deployments:"
           echo "   - charts/incubator/hyperswitch-app/charts/"
           echo "   - charts/incubator/hyperswitch-app/Chart.lock"
-          echo "Tagged with: ${{ steps.generate_tag.outputs.tag }}"
 
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'
