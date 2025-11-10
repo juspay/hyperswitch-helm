@@ -73,7 +73,7 @@ services:
 argoRollouts:
   # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
   # When disabled, standard Kubernetes Deployment is used
-  enabled: false
+  enabled: true
 
   # Basic canary deployment configuration
   canary:
@@ -93,7 +93,7 @@ argoRollouts:
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
       istio:
-        enabled: false
+        enabled: true
         # -- DestinationRule subset names
         destinationRule:
           canarySubsetName: "canary"
