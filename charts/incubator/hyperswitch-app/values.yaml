@@ -1495,31 +1495,60 @@ istio:
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
-    create: false
+    create: true
     # -- Hosts for the VirtualService
     hosts: []
     # -- Gateways for the VirtualService
     gateways: []
-    # -- HTTP routing rules - rendered directly as YAML
-    http: []
+    # -- HTTP routing rules (ordered list)
+    # Note: Rules are processed in the order they appear in this list.
+    # Ensure specific routes (like /api/) come before catch-all routes (like /).
+    http:
+      - router:
+          rules:
+            - match: []
+              weight: 100
+              timeout: 50s
+              retries: {}
+      - controlCenter:
+          rules:
+            - match: []
+              weight: 100
+              timeout: 50s
+              retries: {}
     # Example:
     # hosts:
     #   - hyperswitch.example.com
     # gateways:
     #   - istio-system/gateway
     # http:
-    #   - match:
-    #     - uri:
-    #         prefix: /
-    #     route:
-    #     - destination:
-    #         host: <release-name>-hyperswitch-server
-    #         port:
-    #           number: 80
-    #     timeout: 30s
-    #     retries:
-    #       attempts: 3
-    #       perTryTimeout: 10s
+    #   - router:
+    #       rules:
+    #         - match:
+    #             - uri:
+    #                 prefix: /api/
+    #           weight: 100
+    #           timeout: 30s
+    #           retries:
+    #             attempts: 3
+    #             perTryTimeout: 10s
+    #         - match:
+    #             - uri:
+    #                 exact: /health
+    #           weight: 100
+    #           timeout: 10s
+    #           retries: {}
+    #   - controlCenter:
+    #       rules:
+    #         - match:
+    #             - uri:
+    #                 prefix: /
+    #           weight: 100
+    #           timeout: 30s
+    #           retries:
+    #             attempts: 2
+    #             perTryTimeout: 15s
+
   # -- DestinationRule configuration
   destinationRule:
     # -- Router DestinationRule configuration
