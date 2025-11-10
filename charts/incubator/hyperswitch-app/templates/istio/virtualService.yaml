@@ -6,8 +6,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
   annotations:
-    # Ignore differences in weight values that Argo Rollouts manages during canary deployments
-    argocd.argoproj.io/sync-options: IgnoreExtraneous=true
+    # Tell Argo CD to ignore weight changes managed by Argo Rollouts
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
   {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
