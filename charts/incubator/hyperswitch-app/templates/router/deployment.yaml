@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/version: {{ .Values.services.router.version }}
     app: {{ include "hyperswitch-server.name" . }}
     version: {{ include "version.suffix" .Values.services.router.version }}
-  name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
+  name: {{ include "hyperswitch-server.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
@@ -23,7 +23,7 @@ spec:
   selector:
     matchLabels:
       app: {{ include "hyperswitch-server.name" . }}
-      version: {{ include "version.suffix" .Values.services.router.version }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   strategy:
     {{- with (default .Values.global.strategy .Values.server.strategy) }}
     {{- toYaml . | nindent 4 }}

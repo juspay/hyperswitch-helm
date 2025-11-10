@@ -20,6 +20,7 @@ spec:
       targetPort: 8080
   selector:
     app: {{ include "hyperswitch-server.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
   sessionAffinity: None
   type: ClusterIP
 {{- end }}

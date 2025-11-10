@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/version: {{ .Values.services.controlCenter.version}}
     app: {{ include "hyperswitch-control-center.name" . }}
     version: {{ include "version.suffix" .Values.services.controlCenter.version }}
-  name: {{ include "hyperswitch-control-center.name" . }}-{{ include "version.suffix" .Values.services.controlCenter.version }}
+  name: {{ include "hyperswitch-control-center.name" . }}
   namespace: {{ include "controlCenter.namespace" . }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.controlCenter.progressDeadlineSeconds }}
@@ -21,7 +21,7 @@ spec:
   selector:
     matchLabels:
       app: {{ include "hyperswitch-control-center.name" . }}
-      version: {{ include "version.suffix" .Values.services.controlCenter.version }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   strategy:
     {{- with (default .Values.global.strategy .Values.controlCenter.strategy) }}
     {{- toYaml . | nindent 4 }}
@@ -35,6 +35,10 @@ spec:
       labels:
         app: {{ include "hyperswitch-control-center.name" . }}
         version: {{ include "version.suffix" .Values.services.controlCenter.version }}
+        {{- include "hyperswitch.labels" . | nindent 8 }}
+        {{- with (.Values.controlCenter.labels | default .Values.global.labels) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with (default .Values.global.tolerations .Values.controlCenter.tolerations) }}
       tolerations:
