@@ -1773,7 +1773,7 @@ clickhouse:
     username: "default"
     # -- Clickhouse password
     # @section -- Dependencies configuration
-    password: ""
+    password: "jhdvfvsnbdj"
   image:
     repository: bitnamilegacy/clickhouse
     tag: 24.3
