@@ -68,6 +68,40 @@ services:
     # @section -- Services
     subversion: v1
 
+# Argo Rollouts Configuration (Phase 1)
+# @section -- Argo Rollouts
+argoRollouts:
+  # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
+  # When disabled, standard Kubernetes Deployment is used
+  enabled: false
+
+  # Basic canary deployment configuration
+  canary:
+    # -- Canary deployment steps with traffic percentage and pause duration
+    steps:
+      - setWeight: 20
+      - pause:
+          duration: 5m
+      - setWeight: 50
+      - pause:
+          duration: 5m
+      - setWeight: 80
+      - pause:
+          duration: 5m
+
+    # Traffic routing via Istio (requires istio.enabled: true)
+    trafficRouting:
+      # -- Enable Istio traffic management for canary deployments
+      istio:
+        enabled: false
+        # -- DestinationRule subset names
+        destinationRule:
+          canarySubsetName: "canary"
+          stableSubsetName: "stable"
+
+  # -- Revision history limit for rollouts
+  revisionHistoryLimit: 3
+
 # @ignored
 global:
   # Global image registry that can override all imageRegistry fields
