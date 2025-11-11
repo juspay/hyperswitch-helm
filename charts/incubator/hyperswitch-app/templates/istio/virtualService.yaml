@@ -21,43 +21,27 @@ spec:
   gateways:
   {{- toYaml .Values.istio.virtualService.gateways | nindent 2 }}
   {{- end }}
-  {{- if .Values.istio.virtualService.http }}
+  {{- if and .Values.istio.virtualService.http .Values.services.router.enabled }}
   http:
   {{- range .Values.istio.virtualService.http }}
-  {{- range $serviceName, $serviceConfig := . }}
-  {{- if and (eq $serviceName "router") $.Values.services.router.enabled }}
-  {{- range $serviceConfig.rules }}
-  - {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled }}
-    name: primary  {{/* Named route required for Argo Rollouts */}}
+  - {{- if .name }}
+    name: {{ .name | quote }}
     {{- end }}
+    {{- if .match }}
     match:
-    {{- toYaml .match | nindent 4 }}
+      {{- toYaml .match | nindent 6 }}
+    {{- end }}
+    {{- if .rewrite }}
+    rewrite:
+      {{- toYaml .rewrite | nindent 6 }}
+    {{- end }}
     route:
-      {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled }}
-      # Argo Rollouts managed weight-based routing for canary deployments
-      - destination:
-          host: {{ include "hyperswitch-server.name" $ }}
-          subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
-          port:
-            number: 80
-        weight: 100  # Initial weight for stable version (Argo Rollouts will manage)
-      - destination:
-          host: {{ include "hyperswitch-server.name" $ }}
-          subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
-          port:
-            number: 80
-        weight: 0    # Initial weight for canary version (Argo Rollouts will manage)
-      {{- else }}
-      # Standard routing for regular deployments
-      - destination:
-          host: {{ include "hyperswitch-server.name" $ }}
-          subset: {{ include "version.suffix" $.Values.services.router.version }}
-          port:
-            number: 80
-        {{- if .weight }}
-        weight: {{ .weight }}
-        {{- end }}
-      {{- end }}
+    - destination:
+        host: {{ include "hyperswitch-server.name" $ }}
+        subset: {{ include "version.suffix" $.Values.services.router.version }}
+        port:
+          number: 80
+      weight: {{ .weight | default 100 }}
     {{- if .timeout }}
     timeout: {{ .timeout }}
     {{- end }}
@@ -65,30 +49,6 @@ spec:
     retries:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
-  {{- end }}
-  {{- else if and (eq $serviceName "controlCenter") $.Values.services.controlCenter.enabled }}
-  {{- range $serviceConfig.rules }}
-  - match:
-    {{- toYaml .match | nindent 4 }}
-    route:
-      - destination:
-          host: {{ include "hyperswitch-control-center.name" $ }}
-          subset: {{ include "version.suffix" $.Values.services.controlCenter.version }}
-          port:
-            number: 80
-        {{- if .weight }}
-        weight: {{ .weight }}
-        {{- end }}
-    {{- if .timeout }}
-    timeout: {{ .timeout }}
-    {{- end }}
-    {{- if .retries }}
-    retries:
-      {{- toYaml .retries | nindent 6 }}
-    {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
   {{- end }}
   {{- end }}
 {{- end }}

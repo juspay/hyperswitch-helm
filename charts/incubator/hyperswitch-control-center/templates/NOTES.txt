@@ -1,0 +1,16 @@
+1. Get the Hyperswitch Control Center URL:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- else }}
+   - Use port-forwarding to access the Control Center:
+     ```shell
+     kubectl port-forward service/{{ include "hyperswitch-control-center.fullname" . }} 9000:80 -n {{ .Release.Namespace }}
+     ```
+
+   - Control Center Dashboard: http://localhost:9000
+{{- end }}
+========================================================

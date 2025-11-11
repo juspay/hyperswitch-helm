@@ -5,60 +5,18 @@ kind: DestinationRule
 metadata:
   name: {{ include "hyperswitch-server.name" . }}-dr
   namespace: {{ .Release.Namespace }}
-  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
-  annotations:
-    # Tell Argo CD to ignore specific fields managed by Argo Rollouts
-    argocd.argoproj.io/sync-options: RespectIgnoreDifferences=true
-  {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-server.name" . }}
-  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
-  # Argo Rollouts subset configuration for canary deployments
-  subsets:
-  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
-    labels:
-      app: {{ include "hyperswitch-server.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
-  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
-    labels:
-      app: {{ include "hyperswitch-server.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
-  {{- else }}
-  # Standard version-based subset configuration
   subsets:
   - name: {{ include "version.suffix" .Values.services.router.version }}
     labels:
       version: {{ include "version.suffix" .Values.services.router.version }}
-  {{- end }}
-  {{- if .Values.istio.destinationRule.router.trafficPolicy }}
+  {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
-  {{- toYaml .Values.istio.destinationRule.router.trafficPolicy | nindent 4 }}
+  {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
   {{- end }}
 {{- end }}
 
-{{- if and .Values.istio.enabled .Values.services.controlCenter.enabled }}
----
-apiVersion: networking.istio.io/v1beta1
-kind: DestinationRule
-metadata:
-  name: {{ include "hyperswitch-control-center.name" . }}-dr
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "hyperswitch.labels" . | nindent 4 }}
-    app.kubernetes.io/component: istio-destination-rule
-spec:
-  host: {{ include "hyperswitch-control-center.name" . }}
-  subsets:
-  - name: {{ include "version.suffix" .Values.services.controlCenter.version }}
-    labels:
-      version: {{ include "version.suffix" .Values.services.controlCenter.version }}
-  {{- if .Values.istio.destinationRule.controlCenter.trafficPolicy }}
-  trafficPolicy:
-  {{- toYaml .Values.istio.destinationRule.controlCenter.trafficPolicy | nindent 4 }}
-  {{- end }}
-{{- end }}
