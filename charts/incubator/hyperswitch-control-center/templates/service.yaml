@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hyperswitch-control-center.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "hyperswitch-control-center.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "ClusterIP" }}
+  internalTrafficPolicy: Cluster
+  {{- end }}
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: 9000
+      protocol: TCP
+    {{- if .Values.service.httpsPort }}
+    - name: https
+      port: {{ .Values.service.httpsPort }}
+      targetPort: 9000
+      protocol: TCP
+    {{- end }}
+  selector:
+    {{- include "hyperswitch-control-center.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
