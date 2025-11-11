@@ -1389,7 +1389,10 @@ istio:
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - match: []
+      - name: primary
+        match:
+          - uri:
+              prefix: /
         weight: 100
         timeout: 50s
         retries: {}
