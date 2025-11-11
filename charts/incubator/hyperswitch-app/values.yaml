@@ -99,6 +99,20 @@ argoRollouts:
           canarySubsetName: "canary"
           stableSubsetName: "stable"
 
+      # Header-based routing for canary testing (official Argo Rollouts pattern)
+      # When enabled, requests with specific header route to canary, others to stable
+      headerRouting:
+        # -- Enable header-based canary routing
+        enabled: false
+        # -- Route name for managed header routing
+        routeName: "header-canary-route"
+        # -- Header matching rules
+        match:
+          - headerName: "X-Canary-Test"
+            headerValue:
+              exact: "true"
+        # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
+
   # -- Revision history limit for rollouts
   revisionHistoryLimit: 3
 

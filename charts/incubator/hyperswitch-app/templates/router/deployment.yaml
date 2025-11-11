@@ -41,11 +41,19 @@ spec:
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
       trafficRouting:
+        {{- if .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
+        # Header-based routing: use managedRoutes, let primary route be unmanaged fallback
+        managedRoutes:
+          - name: {{ .Values.argoRollouts.canary.trafficRouting.headerRouting.routeName }}
+        {{- end }}
         istio:
           virtualService:
             name: {{ .Release.Name }}-hyperswitch-vs
+            {{- if not .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
+            # Weight-based routing: manage the primary route weights
             routes:
               - "primary"
+            {{- end }}
           destinationRule:
             name: {{ include "hyperswitch-server.name" . }}-dr
             canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
