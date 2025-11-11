@@ -8,7 +8,7 @@
 {{- else }}
    - Use port-forwarding to access the Control Center:
      ```shell
-     kubectl port-forward service/{{ include "hyperswitch-control-center.fullname" . }} 9000:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+     kubectl port-forward service/{{ include "hyperswitch-control-center.fullname" . }} 9000:80 -n {{ .Release.Namespace }}
      ```
 
    - Control Center Dashboard: http://localhost:9000

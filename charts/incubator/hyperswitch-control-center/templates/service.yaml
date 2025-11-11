@@ -19,15 +19,13 @@ spec:
   ipFamilyPolicy: SingleStack
   ports:
     - name: http
-      port: {{ .Values.service.port }}
-      targetPort: 9000
+      port: 80
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
-    {{- if .Values.service.httpsPort }}
     - name: https
-      port: {{ .Values.service.httpsPort }}
-      targetPort: 9000
+      port: 443
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
-    {{- end }}
   selector:
     {{- include "hyperswitch-control-center.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
