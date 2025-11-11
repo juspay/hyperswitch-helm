@@ -41,27 +41,6 @@ spec:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
   {{- end }}
-  {{- else if and (eq $serviceName "controlCenter") $.Values.services.controlCenter.enabled }}
-  {{- range $serviceConfig.rules }}
-  - match:
-    {{- toYaml .match | nindent 4 }}
-    route:
-      - destination:
-          host: {{ include "hyperswitch-control-center.name" $ }}
-          subset: {{ include "version.suffix" $.Values.services.controlCenter.version }}
-          port:
-            number: 80
-        {{- if .weight }}
-        weight: {{ .weight }}
-        {{- end }}
-    {{- if .timeout }}
-    timeout: {{ .timeout }}
-    {{- end }}
-    {{- if .retries }}
-    retries:
-      {{- toYaml .retries | nindent 6 }}
-    {{- end }}
-  {{- end }}
   {{- end }}
   {{- end }}
   {{- end }}

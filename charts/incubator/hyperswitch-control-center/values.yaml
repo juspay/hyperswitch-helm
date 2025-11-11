@@ -160,6 +160,8 @@ affinity: {}
 # These will be converted to environment variables with double underscores
 # e.g., config.default.features.email becomes default__features__email
 config:
+  # Mixpanel tracking token
+  mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
   default:
     features:
       # Core features

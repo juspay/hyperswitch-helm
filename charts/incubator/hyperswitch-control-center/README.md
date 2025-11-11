@@ -196,6 +196,7 @@ After deployment, verify the Control Center is working:
 | config.default.theme.sidebar_primary_text_color | string | `"#1C6DEA"` |  |
 | config.default.theme.sidebar_secondary | string | `"#FFFFFF"` |  |
 | config.default.theme.sidebar_secondary_text_color | string | `"#525866"` |  |
+| config.mixpanelToken | string | `"dd4da7f62941557e716fbc0a19f9cc7e"` |  |
 | dependencies.clickhouse.enabled | string | `"false"` |  |
 | dependencies.router.host | string | `"http://localhost:8080"` |  |
 | dependencies.sdk.host | string | `"http://localhost:9050"` |  |
