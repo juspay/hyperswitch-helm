@@ -57,55 +57,6 @@ services:
     # @section -- Services
     subversion: v1
 
-# Argo Rollouts Configuration (Phase 1)
-# @section -- Argo Rollouts
-argoRollouts:
-  # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
-  # When disabled, standard Kubernetes Deployment is used
-  enabled: true
-
-  # Basic canary deployment configuration
-  canary:
-    # -- Canary deployment steps with traffic percentage and pause duration
-    steps:
-      - setWeight: 0
-      - pause:
-          duration: 1m
-      - setWeight: 0
-      - pause:
-          duration: 1m
-      - setWeight: 0
-      - pause:
-          duration: 1m
-      - setWeight: 100
-
-    # Traffic routing via Istio (requires istio.enabled: true)
-    trafficRouting:
-      # -- Enable Istio traffic management for canary deployments
-      istio:
-        enabled: true
-        # -- DestinationRule subset names
-        destinationRule:
-          canarySubsetName: "canary"
-          stableSubsetName: "stable"
-
-      # Header-based routing for canary testing (official Argo Rollouts pattern)
-      # When enabled, requests with specific header route to canary, others to stable
-      headerRouting:
-        # -- Enable header-based canary routing
-        enabled: true
-        # -- Route name for managed header routing
-        routeName: "header-canary-route"
-        # -- Header matching rules
-        match:
-          - headerName: "X-Canary-Test"
-            headerValue:
-              exact: "true"
-        # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
-
-  # -- Revision history limit for rollouts
-  revisionHistoryLimit: 3
-
 # @ignored
 global:
   # Global image registry that can override all imageRegistry fields
@@ -1208,7 +1159,6 @@ drainer:
       stream_read_count: 1
       use_legacy_version: false
 
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1374,7 +1324,7 @@ initDB:
 # @section -- Istio
 istio:
   # -- Enable Istio resources
-  enabled: true
+  enabled: false
 
   # -- VirtualService configuration
   virtualService:
@@ -1391,9 +1341,7 @@ istio:
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
       - name: primary
-        match:
-          - uri:
-              prefix: /
+        match: []
         weight: 100
         timeout: 50s
         retries: {}
@@ -1441,6 +1389,53 @@ istio:
     #     consecutiveGatewayErrors: 5
     #     interval: 30s
 
+# Argo Rollouts Configuration (Phase 1)
+# @section -- Argo Rollouts
+argoRollouts:
+  # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
+  # When disabled, standard Kubernetes Deployment is used
+  enabled: false
+
+  # Basic canary deployment configuration
+  canary:
+    # -- Canary deployment steps with traffic percentage and pause duration
+    steps:
+      - setWeight: 25
+      - pause:
+          duration: 1m
+      - setWeight: 50
+      - pause:
+          duration: 1m
+      - setWeight: 75
+      - pause:
+          duration: 1m
+      - setWeight: 100
+
+    # Traffic routing via Istio (requires istio.enabled: true)
+    trafficRouting:
+      # -- Enable Istio traffic management for canary deployments
+      istio:
+        enabled: true
+        # -- DestinationRule subset names
+        destinationRule:
+          canarySubsetName: "canary"
+          stableSubsetName: "stable"
+
+      # Header-based routing for canary testing
+      # When enabled, requests with specific header route to canary, others to stable
+      headerRouting:
+        # -- Enable header-based canary routing
+        enabled: false
+        # -- Route name for managed header routing
+        routeName: "header-canary-route"
+        # -- Header matching rules
+        match:
+          - headerName: "X-Canary-Test"
+            headerValue:
+              exact: "true"
+        # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
+  # -- Revision history limit for rollouts
+  revisionHistoryLimit: 3
 
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
