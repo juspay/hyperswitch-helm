@@ -1339,55 +1339,53 @@ istio:
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - router:
-          rules:
-            - match: []
-              weight: 100
-              timeout: 50s
-              retries: {}
+      - match: []
+        weight: 100
+        timeout: 50s
+        retries: {}
     # Example:
     # hosts:
     #   - hyperswitch.example.com
     # gateways:
     #   - istio-system/gateway
     # http:
-    #   - router:
-    #       rules:
-    #         - match:
-    #             - uri:
-    #                 prefix: /api/
-    #           weight: 100
-    #           timeout: 30s
-    #           retries:
-    #             attempts: 3
-    #             perTryTimeout: 10s
-    #         - match:
-    #             - uri:
-    #                 exact: /health
-    #           weight: 100
-    #           timeout: 10s
-    #           retries: {}
+    #   - name: "api-routes"
+    #     match:
+    #       - uri:
+    #           prefix: /api/
+    #     rewrite:
+    #       uri: /
+    #     weight: 100
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+    #   - name: "health-routes"
+    #     match:
+    #       - uri:
+    #           exact: /health
+    #     weight: 100
+    #     timeout: 10s
+    #     retries: {}
 
   # -- DestinationRule configuration
   destinationRule:
-    # -- Router DestinationRule configuration
-    router:
-      # -- Traffic policy configuration for router - rendered directly as YAML
-      trafficPolicy: {}
-      # Example:
-      # trafficPolicy:
-      #   loadBalancer:
-      #     simple: LEAST_CONN
-      #   connectionPool:
-      #     tcp:
-      #       maxConnections: 100
-      #       connectTimeout: 30s
-      #     http:
-      #       http1MaxPendingRequests: 64
-      #       http2MaxRequests: 1000
-      #   outlierDetection:
-      #     consecutiveGatewayErrors: 5
-      #     interval: 30s
+    # -- Traffic policy configuration for router - rendered directly as YAML
+    trafficPolicy: {}
+    # Example:
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: LEAST_CONN
+    #   connectionPool:
+    #     tcp:
+    #       maxConnections: 100
+    #       connectTimeout: 30s
+    #     http:
+    #       http1MaxPendingRequests: 64
+    #       http2MaxRequests: 1000
+    #   outlierDetection:
+    #     consecutiveGatewayErrors: 5
+    #     interval: 30s
 
 
 loadBalancer:

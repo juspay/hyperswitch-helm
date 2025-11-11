@@ -14,9 +14,9 @@ spec:
   - name: {{ include "version.suffix" .Values.services.router.version }}
     labels:
       version: {{ include "version.suffix" .Values.services.router.version }}
-  {{- if .Values.istio.destinationRule.router.trafficPolicy }}
+  {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
-  {{- toYaml .Values.istio.destinationRule.router.trafficPolicy | nindent 4 }}
+  {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
   {{- end }}
 {{- end }}
 
