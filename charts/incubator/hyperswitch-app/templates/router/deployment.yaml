@@ -38,13 +38,17 @@ spec:
   strategy:
     canary:
       steps:
-      - setHeaderRoute: # enable header based traffic routing where
-          name: "header-canary-route"
+      {{- if .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
+      - setHeaderRoute:
+          name: {{ .Values.argoRollouts.canary.trafficRouting.headerRouting.routeName | quote }}
           match:
-          - headerName: X-Canary-Test # Custom-Header1=Mozilla
+          {{- range .Values.argoRollouts.canary.trafficRouting.headerRouting.match }}
+          - headerName: {{ .headerName }}
             headerValue:
-              exact: canary
+              {{- toYaml .headerValue | nindent 14 }}
+          {{- end }}
       - pause: {}
+      {{- end }}
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
       trafficRouting:
@@ -56,9 +60,11 @@ spec:
         istio:
           virtualService:
             name: {{ .Release.Name }}-hyperswitch-vs
+            {{- if not .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
             # Weight-based routing: manage the primary route weights
             routes:
               - "primary"
+            {{- end }}
           destinationRule:
             name: {{ include "hyperswitch-server.name" . }}-dr
             canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
