@@ -38,17 +38,6 @@ spec:
   strategy:
     canary:
       steps:
-      {{- if .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
-      - setHeaderRoute:
-          name: {{ .Values.argoRollouts.canary.trafficRouting.headerRouting.routeName | quote }}
-          match:
-          {{- range .Values.argoRollouts.canary.trafficRouting.headerRouting.match }}
-          - headerName: {{ .headerName }}
-            headerValue:
-              {{- toYaml .headerValue | nindent 14 }}
-          {{- end }}
-      - pause: {}
-      {{- end }}
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
       trafficRouting:
