@@ -36,12 +36,29 @@ spec:
       {{- toYaml .rewrite | nindent 6 }}
     {{- end }}
     route:
+    {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+    # Argo Rollouts will manage these weights dynamically during canary deployment
+    - destination:
+        host: {{ include "hyperswitch-server.name" $ }}
+        subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+        port:
+          number: 80
+      weight: 100
+    - destination:
+        host: {{ include "hyperswitch-server.name" $ }}
+        subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+        port:
+          number: 80
+      weight: 0
+    {{- else }}
+    # Standard deployment routing
     - destination:
         host: {{ include "hyperswitch-server.name" $ }}
         subset: {{ include "version.suffix" $.Values.services.router.version }}
         port:
           number: 80
       weight: {{ .weight | default 100 }}
+    {{- end }}
     {{- if .timeout }}
     timeout: {{ .timeout }}
     {{- end }}
