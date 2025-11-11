@@ -38,6 +38,13 @@ spec:
   strategy:
     canary:
       steps:
+      - setHeaderRoute: # enable header based traffic routing where
+          name: "header-canary-route"
+          match:
+          - headerName: X-Canary-Test # Custom-Header1=Mozilla
+            headerValue:
+              exact: canary
+      - pause: {}
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
       trafficRouting:
