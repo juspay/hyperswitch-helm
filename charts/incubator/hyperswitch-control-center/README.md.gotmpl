@@ -1,0 +1,212 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Deploy Control Center on Kubernetes using Helm
+
+This chart deploys the Hyperswitch Control Center dashboard as a standalone service.
+
+### Prerequisites
+
+- Kubernetes 1.16+
+- Helm 3.0+
+- Running Hyperswitch Router service (for API communication)
+
+## Installation
+
+### Step 1 - Add Helm Repository
+
+```bash
+helm repo add hyperswitch https://juspay.github.io/hyperswitch-helm
+helm repo update
+```
+
+### Step 2 - Create Namespace (Optional)
+
+```bash
+kubectl create namespace hyperswitch
+```
+
+### Step 3 - Configure Dependencies
+
+Update the values.yaml to point to your Hyperswitch Router and SDK endpoints:
+
+```yaml
+dependencies:
+  router:
+    host: "http://your-hyperswitch-router:8080"
+  sdk:
+    host: "http://your-hyperswitch-sdk:9050"
+```
+
+### Step 4 - Install Control Center
+
+```bash
+helm install control-center hyperswitch/hyperswitch-control-center -n hyperswitch
+```
+
+## Configuration
+
+### Router Connection
+
+The Control Center requires connection to a Hyperswitch Router instance:
+
+```yaml
+dependencies:
+  router:
+    host: "http://hyperswitch-router.hyperswitch.svc.cluster.local:8080"
+```
+
+### Feature Flags
+
+Enable or disable Control Center features:
+
+```yaml
+config:
+  default:
+    features:
+      email: "true"
+      branding: "false"
+      analytics: "true"
+      # ... other features
+```
+
+### Access Control
+
+Configure ingress for external access:
+
+```yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: control-center.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+```
+
+### Istio Configuration
+
+For Istio service mesh integration:
+
+```yaml
+istio:
+  enabled: true
+  virtualService:
+    enabled: true
+    hosts:
+      - control-center.yourdomain.com
+    gateways:
+      - istio-system/gateway
+    http:
+      - name: "control-center-routes"
+        match:
+          - uri:
+              prefix: /
+```
+
+## Post-Deployment Verification
+
+After deployment, verify the Control Center is working:
+
+### Health Check
+- Access the Control Center dashboard
+- Verify connection to Router API
+
+### Functionality Check
+- Sign up/Sign in functionality
+- Create API keys
+- Configure payment processors
+
+{{ template "chart.valuesSection" . }}
+
+## Examples
+
+### Example 1: Basic Installation
+
+```yaml
+dependencies:
+  router:
+    host: "http://hyperswitch-router:8080"
+
+config:
+  default:
+    features:
+      email: "true"
+      analytics: "true"
+```
+
+### Example 2: Production with Ingress
+
+```yaml
+dependencies:
+  router:
+    host: "http://hyperswitch-router.hyperswitch.svc.cluster.local:8080"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: control-center.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: control-center-tls
+      hosts:
+        - control-center.yourdomain.com
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+```
+
+### Example 3: With Istio Service Mesh
+
+```yaml
+dependencies:
+  router:
+    host: "http://hyperswitch-router.hyperswitch.svc.cluster.local:8080"
+
+istio:
+  enabled: true
+  virtualService:
+    enabled: true
+    hosts:
+      - control-center.yourdomain.com
+    gateways:
+      - istio-system/gateway
+    http:
+      - name: "control-center-routes"
+        match:
+          - uri:
+              prefix: /
+        timeout: 30s
+        retries:
+          attempts: 3
+          perTryTimeout: 10s
+```
+
+## Support
+
+For issues and questions:
+- Documentation: https://docs.hyperswitch.io
+- GitHub Issues: https://github.com/juspay/hyperswitch-helm/issues
+- Community: Join our community discussions
+
+{{ template "helm-docs.versionFooter" . }}
