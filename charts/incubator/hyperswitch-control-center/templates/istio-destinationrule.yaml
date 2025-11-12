@@ -9,12 +9,6 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-control-center.fullname" . }}
-  {{- if .Values.image.tag }}
-  subsets:
-    - name: {{ include "version.suffix" .Values.image.tag }}
-      labels:
-        version: {{ include "version.suffix" .Values.image.tag }}
-  {{- end }}
   {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
     {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
