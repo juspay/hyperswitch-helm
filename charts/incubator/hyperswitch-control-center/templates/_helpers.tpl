@@ -70,7 +70,11 @@ Create the name of the service account to use
 
 {{/* Define the HyperLoader js URL */}}
 {{- define "hyperswitch-sdk.hyperloaderUrl" -}}
-  {{- printf "%s/web/%s/%s/HyperLoader.js" .Values.dependencies.sdk.host .Values.dependencies.sdk.version .Values.dependencies.sdk.subversion -}}
+{{- if .Values.dependencies.sdk.fullUrlOverride }}
+{{- .Values.dependencies.sdk.fullUrlOverride -}}
+{{- else }}
+{{- printf "%s/web/%s/%s/HyperLoader.js" .Values.dependencies.sdk.host .Values.dependencies.sdk.version .Values.dependencies.sdk.subversion -}}
+{{- end -}}
 {{- end -}}
 
 {{/*

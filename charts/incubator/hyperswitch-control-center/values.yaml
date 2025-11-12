@@ -17,9 +17,11 @@ dependencies:
     host: http://localhost:9050
     version: 0.126.0
     subversion: v1
+    # Full URL override for the HyperLoader.js | Eg: https://sdk.hyperswitch.io/web/0.126.0/v1/HyperLoader.js
+    fullUrlOverride: ""
   # For Audit Trail feature
   clickhouse:
-    enabled: "false"
+    enabled: false
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
@@ -184,7 +186,6 @@ config:
       user_journey_analytics: "false"
       # Security features
       totp: "false"
-      audit_trail: "false"
       authentication_analytics: "false"
       # Additional features
       compliance_certificate: "true"
