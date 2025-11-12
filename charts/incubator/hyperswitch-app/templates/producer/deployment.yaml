@@ -22,6 +22,7 @@ spec:
     matchLabels:
       app: {{ include "hyperswitch-producer.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
+      version: {{ include "version.suffix" .Values.services.producer.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.producer.strategy) }}
     {{- toYaml . | nindent 4 }}

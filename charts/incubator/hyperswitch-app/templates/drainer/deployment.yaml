@@ -19,6 +19,7 @@ spec:
     matchLabels:
       app: {{ include "hyperswitch-drainer.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
+      version: {{ include "version.suffix" .Values.services.drainer.version }}
   template:
     metadata:
       annotations:
