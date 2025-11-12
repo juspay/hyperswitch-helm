@@ -3,12 +3,17 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
+  name: {{ include "hyperswitch-server.name" . }}
 spec:
   scaleTargetRef:
+    {{- if .Values.argoRollouts.enabled }}
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    {{- else }}
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
+    {{- end }}
+    name: {{ include "hyperswitch-server.name" . }}
   minReplicas: 3
   maxReplicas: 5
   metrics:
