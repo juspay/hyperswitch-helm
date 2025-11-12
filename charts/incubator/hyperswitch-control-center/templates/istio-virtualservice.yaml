@@ -40,9 +40,6 @@ spec:
     route:
     - destination:
         host: {{ include "hyperswitch-control-center.fullname" $ }}
-        {{ if $.Values.image.tag }}
-        subset: {{ include "version.suffix" $.Values.image.tag }}
-        {{- end }}
         port:
           number: {{ $.Values.service.port }}
       {{- if .weight }}
