@@ -16,23 +16,27 @@ spec:
   gateways:
   {{- toYaml .Values.istio.virtualService.gateways | nindent 2 }}
   {{- end }}
-  {{- if .Values.istio.virtualService.http }}
+  {{- if and .Values.istio.virtualService.http .Values.services.router.enabled }}
   http:
   {{- range .Values.istio.virtualService.http }}
-  {{- range $serviceName, $serviceConfig := . }}
-  {{- if and (eq $serviceName "router") $.Values.services.router.enabled }}
-  {{- range $serviceConfig.rules }}
-  - match:
-    {{- toYaml .match | nindent 4 }}
+  - {{- if .name }}
+    name: {{ .name | quote }}
+    {{- end }}
+    {{- if .match }}
+    match:
+      {{- toYaml .match | nindent 6 }}
+    {{- end }}
+    {{- if .rewrite }}
+    rewrite:
+      {{- toYaml .rewrite | nindent 6 }}
+    {{- end }}
     route:
-      - destination:
-          host: {{ include "hyperswitch-server.name" $ }}
-          subset: {{ include "version.suffix" $.Values.services.router.version }}
-          port:
-            number: 80
-        {{- if .weight }}
-        weight: {{ .weight }}
-        {{- end }}
+    - destination:
+        host: {{ include "hyperswitch-server.name" $ }}
+        subset: {{ include "version.suffix" $.Values.services.router.version }}
+        port:
+          number: 80
+      weight: {{ .weight | default 100 }}
     {{- if .timeout }}
     timeout: {{ .timeout }}
     {{- end }}
@@ -40,30 +44,6 @@ spec:
     retries:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
-  {{- end }}
-  {{- else if and (eq $serviceName "controlCenter") $.Values.services.controlCenter.enabled }}
-  {{- range $serviceConfig.rules }}
-  - match:
-    {{- toYaml .match | nindent 4 }}
-    route:
-      - destination:
-          host: {{ include "hyperswitch-control-center.name" $ }}
-          subset: {{ include "version.suffix" $.Values.services.controlCenter.version }}
-          port:
-            number: 80
-        {{- if .weight }}
-        weight: {{ .weight }}
-        {{- end }}
-    {{- if .timeout }}
-    timeout: {{ .timeout }}
-    {{- end }}
-    {{- if .retries }}
-    retries:
-      {{- toYaml .retries | nindent 6 }}
-    {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
   {{- end }}
   {{- end }}
 {{- end }}

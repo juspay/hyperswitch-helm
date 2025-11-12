@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hyperswitch-control-center.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-control-center.labels" . | nindent 4 }}
+data:
+  # Core application configuration
+  binary: "dashboard"
+  apiBaseUrl: {{ .Values.dependencies.router.host | quote }}
+  sdkBaseUrl: {{ include "hyperswitch-sdk.hyperloaderUrl" . | quote }}
+  default__endpoints__api_url: {{ .Values.dependencies.router.host | quote }}
+  default__endpoints__sdk_url: {{ include "hyperswitch-sdk.hyperloaderUrl" . | quote }}
+  default__endpoints__apple_pay_certificate_url: {{ printf "%s/applepay-domain/apple-developer-merchantid-domain-association" .Values.dependencies.router.host | quote }}
+  default__features__audit_trail: {{ .Values.dependencies.clickhouse.enabled | quote }}
+
+  # Generated config from values.config
+  {{- include "hyperswitch-control-center.configEnvVars" (dict "config" .Values.config) | nindent 2 }}
