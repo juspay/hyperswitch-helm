@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.08.28.0-hotfix1
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.08.28.0-hotfix1
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.08.28.0-hotfix1
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.117.0
+    version: 2025.08.28.0-hotfix1
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1324,7 +1324,7 @@ initDB:
 # @section -- Istio
 istio:
   # -- Enable Istio resources
-  enabled: false
+  enabled: true
 
   # -- VirtualService configuration
   virtualService:
@@ -1341,7 +1341,9 @@ istio:
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
       - name: primary
-        match: []
+        match:
+          - uri:
+              prefix: /
         weight: 100
         timeout: 50s
         retries: {}
@@ -1394,7 +1396,7 @@ istio:
 argoRollouts:
   # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
   # When disabled, standard Kubernetes Deployment is used
-  enabled: false
+  enabled: true
 
   # Basic canary deployment configuration
   canary:
@@ -1425,7 +1427,7 @@ argoRollouts:
       # When enabled, requests with specific header route to canary, others to stable
       headerRouting:
         # -- Enable header-based canary routing
-        enabled: false
+        enabled: true
         # -- Route name for managed header routing
         routeName: "header-canary-route"
         # -- Header matching rules
