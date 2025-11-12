@@ -22,7 +22,6 @@ spec:
     matchLabels:
       app: {{ include "hyperswitch-consumer.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      version: {{ include "version.suffix" .Values.services.consumer.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.consumer.strategy) }}
     {{- toYaml . | nindent 4 }}
