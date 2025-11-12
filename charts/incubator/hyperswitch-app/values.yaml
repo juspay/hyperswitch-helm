@@ -46,6 +46,7 @@ services:
     # -- Drainer image
     # @section -- Services
     image: juspaydotin/hyperswitch-drainer
+
   sdk:
     # -- SDK host
     # @section -- Services
@@ -1324,26 +1325,21 @@ initDB:
 # @section -- Istio
 istio:
   # -- Enable Istio resources
-  enabled: true
+  enabled: false
 
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
     create: true
     # -- Hosts for the VirtualService
-    hosts:
-      - "hyperswitch.local"  # Add to /etc/hosts: 127.0.0.1 hyperswitch.local
+    hosts: []
     # -- Gateways for the VirtualService
-    gateways:
-      - "istio-system/hyperswitch-gateway"  # Use existing gateway
+    gateways: []
     # -- HTTP routing rules (ordered list)
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - name: primary
-        match:
-          - uri:
-              prefix: /
+      - match: []
         weight: 100
         timeout: 50s
         retries: {}
@@ -1396,7 +1392,7 @@ istio:
 argoRollouts:
   # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
   # When disabled, standard Kubernetes Deployment is used
-  enabled: true
+  enabled: false
 
   # Basic canary deployment configuration
   canary:
@@ -1428,7 +1424,7 @@ argoRollouts:
       # When enabled, requests with specific header route to canary, others to stable
       headerRouting:
         # -- Enable header-based canary routing
-        enabled: true
+        enabled: false
         # -- Route name for managed header routing
         routeName: "header-canary-route"
         # -- Header matching rules
