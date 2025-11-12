@@ -37,6 +37,7 @@ spec:
   # Argo Rollouts strategy configuration
   strategy:
     canary:
+      minReplicas: 2
       steps:
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
