@@ -143,7 +143,7 @@ server:
       port: 8080
       scheme: HTTP
     initialDelaySeconds: 5
-    periodSeconds: 60
+    periodSeconds: 5
     successThreshold: 1
     timeoutSeconds: 1
   # -- The readiness probe configuration for the pods
@@ -155,7 +155,7 @@ server:
       port: 8080
       scheme: HTTP
     initialDelaySeconds: 5
-    periodSeconds: 60
+    periodSeconds: 5
     successThreshold: 1
     timeoutSeconds: 1
   # -- Resource requests and limits for the router/server
