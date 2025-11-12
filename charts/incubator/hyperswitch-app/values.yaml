@@ -1402,6 +1402,8 @@ argoRollouts:
   canary:
     # -- Canary deployment steps with traffic percentage and pause duration
     steps:
+      - setCanaryScale:
+          replicas: 2
       - setWeight: 0
       - pause: {}
       - setWeight: 50
