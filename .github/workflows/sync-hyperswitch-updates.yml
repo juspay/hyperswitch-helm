@@ -189,16 +189,29 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          # Check for both tracked file changes and untracked files
-          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
-            echo "No changes detected"
+          # Check for uncommitted changes (staged, unstaged, untracked files)
+          UNCOMMITTED_CHANGES=$(git status --porcelain)
+
+          # Check for unpushed commits (local commits ahead of remote)
+          UNPUSHED_COMMITS=$(git log origin/${{ steps.config.outputs.branch }}..HEAD --oneline)
+
+          if [ -z "$UNCOMMITTED_CHANGES" ] && [ -z "$UNPUSHED_COMMITS" ]; then
+            echo "No changes detected - working directory clean and no unpushed commits"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "changes=true" >> $GITHUB_OUTPUT
+
             # Show what changed for debugging
-            echo "Git status:"
-            git status --porcelain
+            if [ -n "$UNCOMMITTED_CHANGES" ]; then
+              echo "Uncommitted changes:"
+              echo "$UNCOMMITTED_CHANGES"
+            fi
+
+            if [ -n "$UNPUSHED_COMMITS" ]; then
+              echo "Unpushed commits:"
+              echo "$UNPUSHED_COMMITS"
+            fi
           fi
 
       - name: Generate tag
