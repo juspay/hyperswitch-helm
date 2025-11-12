@@ -4,11 +4,6 @@ kind: VirtualService
 metadata:
   name: {{ .Release.Name }}-hyperswitch-vs
   namespace: {{ .Release.Namespace }}
-  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
-  annotations:
-    # Tell Argo CD to ignore specific fields managed by Argo Rollouts
-    argocd.argoproj.io/sync-options: RespectIgnoreDifferences=true
-  {{- end }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-virtual-service
