@@ -1325,7 +1325,7 @@ initDB:
 # @section -- Istio
 istio:
   # -- Enable Istio resources
-  enabled: false
+  enabled: true
 
   # -- VirtualService configuration
   virtualService:
@@ -1339,7 +1339,9 @@ istio:
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - match: []
+      - match:
+          - uri:
+              prefix: /
         weight: 100
         timeout: 50s
         retries: {}
