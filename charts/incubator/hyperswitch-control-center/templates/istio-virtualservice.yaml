@@ -41,7 +41,7 @@ spec:
     - destination:
         host: {{ include "hyperswitch-control-center.fullname" $ }}
         port:
-          number: {{ $.Values.service.port }}
+          number: 80
       {{- if .weight }}
       weight: {{ .weight }}
       {{- else }}
