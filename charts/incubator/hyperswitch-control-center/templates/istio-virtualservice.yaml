@@ -44,7 +44,7 @@ spec:
         subset: {{ include "version.suffix" $.Values.image.tag }}
         {{- end }}
         port:
-          number: {{ $.Values.service.port }}
+          number: 80
       {{- if .weight }}
       weight: {{ .weight }}
       {{- else }}
