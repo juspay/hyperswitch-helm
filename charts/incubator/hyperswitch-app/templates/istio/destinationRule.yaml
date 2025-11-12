@@ -23,12 +23,6 @@ spec:
       app: {{ include "hyperswitch-server.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
-  {{- else }}
-  # Standard version-based subset configuration
-  subsets:
-  - name: {{ include "version.suffix" .Values.services.router.version }}
-    labels:
-      version: {{ include "version.suffix" .Values.services.router.version }}
   {{- end }}
   {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:

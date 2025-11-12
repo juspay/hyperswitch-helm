@@ -54,7 +54,6 @@ Selector labels
 */}}
 {{- define "hyperswitch-control-center.selectorLabels" -}}
 app: {{ include "hyperswitch-control-center.name" . }}
-version: {{ include "version.suffix" .Values.image.tag }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
