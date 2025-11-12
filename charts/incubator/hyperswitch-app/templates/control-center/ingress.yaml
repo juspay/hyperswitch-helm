@@ -1,27 +1,29 @@
- {{- if .Values.services.controlCenter.enabled }}
+{{- if and .Values.services.controlCenter.enabled .Values.controlCenter.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hyperswitch-control-center-ingress
-  namespace:  {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-hyperswitch-control-center-ingress
+  namespace: {{ .Release.Namespace }}
   annotations:
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-    alb.ingress.kubernetes.io/group.name: hyperswitch-control-center-alb-ingress-group
-    alb.ingress.kubernetes.io/ip-address-type: ipv4
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-control-center
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
-    alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
-    alb.ingress.kubernetes.io/target-type: ip
+    {{- with .Values.controlCenter.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
-  ingressClassName: alb
+  {{- if .Values.controlCenter.ingress.className }}
+  ingressClassName: {{ .Values.controlCenter.ingress.className }}
+  {{- end }}
+  {{- if .Values.controlCenter.ingress.tls }}
+  tls:
+    {{- toYaml .Values.controlCenter.ingress.tls | nindent 4 }}
+  {{- end }}
   rules:
-    - http: 
+    - {{- if .Values.controlCenter.ingress.hostname }}
+      host: {{ .Values.controlCenter.ingress.hostname | quote }}
+      {{- end }}
+      http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: {{ .Values.controlCenter.ingress.path }}
+            pathType: {{ .Values.controlCenter.ingress.pathType }}
             backend:
               service:
                 name: hyperswitch-control-center
