@@ -31,6 +31,13 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
+*/}}
+{{- define "version.suffix" -}}
+{{- . | replace "." "o" -}}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "hyperswitch-control-center.labels" -}}
@@ -46,7 +53,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "hyperswitch-control-center.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "hyperswitch-control-center.name" . }}
+app: {{ include "hyperswitch-control-center.name" . }}
+version: {{ include "version.suffix" .Values.image.tag }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -100,6 +108,6 @@ Get the full image name
 {{- define "hyperswitch-control-center.image" -}}
 {{- $registry := .Values.global.imageRegistry | default .Values.image.registry }}
 {{- $repository := .Values.image.repository }}
-{{- $tag := .Values.image.tag | default .Chart.AppVersion }}
+{{- $tag := .Values.image.tag | default "latest" }}
 {{- printf "%s/%s:%s" $registry $repository $tag }}
 {{- end }}

@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/version: {{ .Values.services.producer.version }}
     app: {{ include "hyperswitch-producer.name" . }}
     version: {{ include "version.suffix" .Values.services.producer.version }}
-  name: {{ include "hyperswitch-producer.name" . }}-{{ include "version.suffix" .Values.services.producer.version }}
+  name: {{ include "hyperswitch-producer.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.producer.progressDeadlineSeconds }}
@@ -21,6 +21,7 @@ spec:
   selector:
     matchLabels:
       app: {{ include "hyperswitch-producer.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
       version: {{ include "version.suffix" .Values.services.producer.version }}
   strategy:
     {{- with (default .Values.global.strategy .Values.producer.strategy) }}

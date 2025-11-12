@@ -20,6 +20,10 @@ spec:
       targetPort: 8080
   selector:
     app: {{ include "hyperswitch-server.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{ if not .Values.argoRollouts.enabled }}
+    version: {{ include "version.suffix" .Values.services.router.version }}
+    {{- end }}
   sessionAffinity: None
   type: ClusterIP
 {{- end }}

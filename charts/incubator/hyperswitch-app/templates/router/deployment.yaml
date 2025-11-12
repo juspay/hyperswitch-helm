@@ -1,6 +1,11 @@
 {{- if .Values.services.router.enabled }}
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+{{- else }}
 apiVersion: apps/v1
 kind: Deployment
+{{- end }}
 metadata:
   annotations:
     {{- with (default .Values.global.annotations .Values.server.annotations) }}
@@ -12,22 +17,51 @@ metadata:
     app.kubernetes.io/version: {{ .Values.services.router.version }}
     app: {{ include "hyperswitch-server.name" . }}
     version: {{ include "version.suffix" .Values.services.router.version }}
-  name: {{ include "hyperswitch-server.name" . }}-{{ include "version.suffix" .Values.services.router.version }}
+  name: {{ include "hyperswitch-server.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   progressDeadlineSeconds: {{ default .Values.global.progressDeadlineSeconds .Values.server.progressDeadlineSeconds }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ default .Values.global.replicas .Values.server.replicas }}
   {{- end }}
+  {{- if .Values.argoRollouts.enabled }}
+  revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
+  {{- else }}
   revisionHistoryLimit: 10
+  {{- end }}
   selector:
     matchLabels:
       app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{ if not .Values.argoRollouts.enabled }}
       version: {{ include "version.suffix" .Values.services.router.version }}
+      {{- end }}
+  {{- if .Values.argoRollouts.enabled }}
+  # Argo Rollouts strategy configuration
+  strategy:
+    canary:
+      steps:
+      {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
+      {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ .Release.Name }}-hyperswitch-vs
+            # Weight-based routing: manage the primary route weights
+            routes:
+              - "primary"
+          destinationRule:
+            name: {{ include "hyperswitch-server.name" . }}-dr
+            canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+            stableSubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+      {{- end }}
+  {{- else }}
+  # Standard Deployment strategy
   strategy:
     {{- with (default .Values.global.strategy .Values.server.strategy) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  {{- end }}
   template:
     metadata:
       annotations:

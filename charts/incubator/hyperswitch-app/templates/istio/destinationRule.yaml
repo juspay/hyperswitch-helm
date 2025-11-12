@@ -10,10 +10,26 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-server.name" . }}
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+  # Argo Rollouts subset configuration for canary deployments
+  subsets:
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+    labels:
+      app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+    labels:
+      app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  {{- else }}
+  # Standard version-based subset configuration
   subsets:
   - name: {{ include "version.suffix" .Values.services.router.version }}
     labels:
       version: {{ include "version.suffix" .Values.services.router.version }}
+  {{- end }}
   {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
   {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}

@@ -46,6 +46,7 @@ services:
     # -- Drainer image
     # @section -- Services
     image: juspaydotin/hyperswitch-drainer
+
   sdk:
     # -- SDK host
     # @section -- Services
@@ -1159,7 +1160,6 @@ drainer:
       stream_read_count: 1
       use_legacy_version: false
 
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1387,6 +1387,54 @@ istio:
     #     consecutiveGatewayErrors: 5
     #     interval: 30s
 
+# Argo Rollouts Configuration (Phase 1)
+# @section -- Argo Rollouts
+argoRollouts:
+  # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
+  # When disabled, standard Kubernetes Deployment is used
+  enabled: false
+
+  # Basic canary deployment configuration
+  canary:
+    # -- Canary deployment steps with traffic percentage and pause duration
+    steps:
+      - setCanaryScale:
+          replicas: 2
+      - setWeight: 0
+      - pause: {}
+      - setWeight: 50
+      - pause:
+          duration: 1m
+      - setWeight: 75
+      - pause:
+          duration: 1m
+      - setWeight: 100
+
+    # Traffic routing via Istio (requires istio.enabled: true)
+    trafficRouting:
+      # -- Enable Istio traffic management for canary deployments
+      istio:
+        enabled: true
+        # -- DestinationRule subset names
+        destinationRule:
+          canarySubsetName: "canary"
+          stableSubsetName: "stable"
+
+      # Header-based routing for canary testing
+      # When enabled, requests with specific header route to canary, others to stable
+      headerRouting:
+        # -- Enable header-based canary routing
+        enabled: false
+        # -- Route name for managed header routing
+        routeName: "header-canary-route"
+        # -- Header matching rules
+        match:
+          - headerName: "X-Canary-Test"
+            headerValue:
+              exact: "true"
+        # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
+  # -- Revision history limit for rollouts
+  revisionHistoryLimit: 3
 
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
@@ -1556,7 +1604,7 @@ clickhouse:
     username: "default"
     # -- Clickhouse password
     # @section -- Dependencies configuration
-    password: ""
+    password: "jhdvfvsnbdj"
   image:
     repository: bitnamilegacy/clickhouse
     tag: 24.3
