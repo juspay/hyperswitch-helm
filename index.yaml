@@ -640,6 +640,34 @@ entries:
   hyperswitch-stack:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-11-13T05:50:52.029195624Z"
+    dependencies:
+    - name: hyperswitch-app
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.2.15
+    - condition: hyperswitch-web.enabled
+      name: hyperswitch-web
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.2.12
+    - condition: hyperswitch-monitoring.enabled
+      name: hyperswitch-monitoring
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.5
+    - condition: hyperswitch-ucs.enabled
+      name: hyperswitch-ucs
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.2
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: d1fce4887084e7df8f6d93ac80b24d19d43cd8e6ccc0998e9a580fe95ded288a
+    name: hyperswitch-stack
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-stack-0.2.19/hyperswitch-stack-0.2.19.tgz
+    version: 0.2.19
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-28T10:53:22.521483223Z"
     dependencies:
     - name: hyperswitch-app
@@ -1294,4 +1322,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2025-11-13T05:45:46.797598798Z"
+generated: "2025-11-13T05:50:52.029333994Z"
