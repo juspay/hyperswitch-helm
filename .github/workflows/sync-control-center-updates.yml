@@ -26,20 +26,28 @@ jobs:
           git config --local user.name "GitHub Action"
 
       - name: Merge latest changes from main
+        id: merge_step
         run: |
           git fetch origin main
           git merge origin/main -X theirs --no-edit
+          if [ -n "$(git log origin/control-center/daily-releases..HEAD --oneline)" ]; then
+            echo "has_merge_updates=true" >> $GITHUB_OUTPUT
+            echo "Merge brought updates from main"
+          else
+            echo "has_merge_updates=false" >> $GITHUB_OUTPUT
+            echo "No updates from merge"
+          fi
 
       - name: Determine control center tag
         id: determine_tag
         run: |
-          if [ -n "${{ github.event.client_payload.control_center_tag }}" ]; then
+          if [ -n "${{ github.event.client_payload.version_tag }}" ]; then
             # Use tag from repository_dispatch client_payload
-            TAG="${{ github.event.client_payload.control_center_tag }}"
-            echo "Using repository_dispatch control_center_tag: $TAG"
+            TAG="${{ github.event.client_payload.version_tag }}"
+            echo "Using repository_dispatch version_tag: $TAG"
           else
-            echo "❌ No control center tag provided in client_payload"
-            echo "Cannot proceed without a valid control center tag"
+            echo "❌ No version tag provided in client_payload"
+            echo "Cannot proceed without a valid version tag"
             exit 1
           fi
           echo "target_tag=$TAG" >> $GITHUB_OUTPUT
@@ -78,29 +86,16 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          # Check for uncommitted changes (staged, unstaged, untracked files)
-          UNCOMMITTED_CHANGES=$(git status --porcelain)
-
-          # Check for unpushed commits (local commits ahead of remote)
-          UNPUSHED_COMMITS=$(git log origin/control-center/daily-releases..HEAD --oneline)
-
-          if [ -z "$UNCOMMITTED_CHANGES" ] && [ -z "$UNPUSHED_COMMITS" ]; then
-            echo "No changes detected - working directory clean and no unpushed commits"
+          # Check for both tracked file changes and untracked files
+          if git diff --quiet && [ -z "$(git status --porcelain)" ] && [ "${{ steps.merge_step.outputs.has_merge_updates }}" != "true" ]; then
+            echo "No changes detected"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "changes=true" >> $GITHUB_OUTPUT
-
             # Show what changed for debugging
-            if [ -n "$UNCOMMITTED_CHANGES" ]; then
-              echo "Uncommitted changes:"
-              echo "$UNCOMMITTED_CHANGES"
-            fi
-
-            if [ -n "$UNPUSHED_COMMITS" ]; then
-              echo "Unpushed commits:"
-              echo "$UNPUSHED_COMMITS"
-            fi
+            echo "Git status:"
+            git status --porcelain
           fi
 
       - name: Generate tag
@@ -121,8 +116,12 @@ jobs:
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           GIT_TAG="${{ steps.generate_tag.outputs.tag }}"
 
-          # Build commit message
-          COMMIT_MSG="chore: sync control center updates to $TAG
+          # Check if there are uncommitted changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Committing file changes..."
+
+            # Build commit message
+            COMMIT_MSG="chore: sync control center updates to $TAG
 
           Control center version: $TAG
 
@@ -135,8 +134,11 @@ jobs:
           Source ref: $TAG
           Tag: $GIT_TAG"
 
-          git add charts/incubator/hyperswitch-control-center/values.yaml charts/incubator/hyperswitch-control-center/Chart.yaml
-          git commit -m "$COMMIT_MSG"
+            git add charts/incubator/hyperswitch-control-center/values.yaml charts/incubator/hyperswitch-control-center/Chart.yaml
+            git commit -m "$COMMIT_MSG"
+          else
+            echo "No file changes to commit (changes may have come from merge)"
+          fi
 
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
