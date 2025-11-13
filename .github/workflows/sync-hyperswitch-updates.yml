@@ -49,17 +49,25 @@ jobs:
           git config --local user.name "GitHub Action"
 
       - name: Merge latest changes from main
+        id: merge_step
         run: |
           git fetch origin main
           git merge origin/main -X theirs --no-edit
+          if [ -n "$(git log origin/${{ steps.config.outputs.branch }}..HEAD --oneline)" ]; then
+            echo "has_merge_updates=true" >> $GITHUB_OUTPUT
+            echo "Merge brought updates from main"
+          else
+            echo "has_merge_updates=false" >> $GITHUB_OUTPUT
+            echo "No updates from merge"
+          fi
 
       - name: Determine hyperswitch branch/tag
         id: determine_ref
         run: |
-          if [ -n "${{ github.event.client_payload.hyperswitch_tag }}" ]; then
+          if [ -n "${{ github.event.client_payload.version_tag }}" ]; then
             # Use tag from repository_dispatch client_payload
-            REF="${{ github.event.client_payload.hyperswitch_tag }}"
-            echo "Using repository_dispatch hyperswitch_tag: $REF"
+            REF="${{ github.event.client_payload.version_tag }}"
+            echo "Using repository_dispatch version_tag: $REF"
           else
             # Fetch latest tag from hyperswitch repository using GraphQL API
             echo "Fetching latest tag from hyperswitch repository using GraphQL API..."
@@ -109,20 +117,23 @@ jobs:
           # Create target directory
           mkdir -p charts/incubator/hyperswitch-app/configs
 
-          # Download specific configuration files directly
-          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          # Download specific configuration files with error handling
+          echo "Downloading integration_test.toml..."
+          curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
-               -L "${BASE_URL}/integration_test.toml" \
+               "${BASE_URL}/integration_test.toml" \
                -o charts/incubator/hyperswitch-app/configs/router-integ.toml
 
-          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          echo "Downloading sandbox.toml..."
+          curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
-               -L "${BASE_URL}/sandbox.toml" \
+               "${BASE_URL}/sandbox.toml" \
                -o charts/incubator/hyperswitch-app/configs/router-sandbox.toml
 
-          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          echo "Downloading production.toml..."
+          curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
-               -L "${BASE_URL}/production.toml" \
+               "${BASE_URL}/production.toml" \
                -o charts/incubator/hyperswitch-app/configs/router-production.toml
 
           echo "✅ Configuration files downloaded successfully"
@@ -189,29 +200,17 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          # Check for uncommitted changes (staged, unstaged, untracked files)
-          UNCOMMITTED_CHANGES=$(git status --porcelain)
-
-          # Check for unpushed commits (local commits ahead of remote)
-          UNPUSHED_COMMITS=$(git log origin/${{ steps.config.outputs.branch }}..HEAD --oneline)
-
-          if [ -z "$UNCOMMITTED_CHANGES" ] && [ -z "$UNPUSHED_COMMITS" ]; then
-            echo "No changes detected - working directory clean and no unpushed commits"
+          # Check for both file changes and merge updates
+          if git diff --quiet && [ -z "$(git status --porcelain)" ] && [ "${{ steps.merge_step.outputs.has_merge_updates }}" != "true" ]; then
+            echo "No changes detected"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "changes=true" >> $GITHUB_OUTPUT
-
             # Show what changed for debugging
-            if [ -n "$UNCOMMITTED_CHANGES" ]; then
-              echo "Uncommitted changes:"
-              echo "$UNCOMMITTED_CHANGES"
-            fi
-
-            if [ -n "$UNPUSHED_COMMITS" ]; then
-              echo "Unpushed commits:"
-              echo "$UNPUSHED_COMMITS"
-            fi
+            echo "Git status:"
+            git status --porcelain
+            echo "Merge updates: ${{ steps.merge_step.outputs.has_merge_updates }}"
           fi
 
       - name: Generate tag
@@ -263,9 +262,15 @@ jobs:
           Source ref: $SOURCE_REF
           Tag: $TAG"
 
-          git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
-          git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
-          git commit -m "$COMMIT_MSG"
+          # Check if there are uncommitted changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Committing file changes..."
+            git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
+            git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
+            git commit -m "$COMMIT_MSG"
+          else
+            echo "No file changes to commit (changes may have come from merge)"
+          fi
 
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
