@@ -4,7 +4,7 @@ on:
   repository_dispatch:
     types:
       - sync-hyperswitch-updates       # daily-releases
-      - sync-custom-router-version     # custom-deployments
+      - sync-custom-router-version     # custom-releases
 
 permissions:
   contents: write
@@ -14,23 +14,30 @@ jobs:
   sync-hyperswitch:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.HYPERSWITCH_BOT_APP_ID }}
+          private-key: ${{ secrets.HYPERSWITCH_BOT_APP_PRIVATE_KEY }}
+
       - name: Determine sync configuration
         id: config
         run: |
           EVENT_TYPE="${{ github.event.action }}"
 
           if [ "$EVENT_TYPE" = "sync-hyperswitch-updates" ]; then
-            echo "branch=daily-releases" >> $GITHUB_OUTPUT
+            echo "branch=app/daily-releases" >> $GITHUB_OUTPUT
             echo "update_all_services=true" >> $GITHUB_OUTPUT
             echo "tag_prefix=" >> $GITHUB_OUTPUT
             echo "sync_type=full" >> $GITHUB_OUTPUT
-            echo "Configured for full hyperswitch sync to daily-releases branch"
+            echo "Configured for full hyperswitch sync to app/daily-releases branch"
           elif [ "$EVENT_TYPE" = "sync-custom-router-version" ]; then
-            echo "branch=custom-deployments" >> $GITHUB_OUTPUT
+            echo "branch=app/custom-releases" >> $GITHUB_OUTPUT
             echo "update_all_services=false" >> $GITHUB_OUTPUT
             echo "tag_prefix=cus-" >> $GITHUB_OUTPUT
             echo "sync_type=router-only" >> $GITHUB_OUTPUT
-            echo "Configured for router-only sync to custom-deployments branch"
+            echo "Configured for router-only sync to app/custom-releases branch"
           else
             echo "❌ Unknown event type: $EVENT_TYPE"
             exit 1
@@ -40,7 +47,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.config.outputs.branch }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -90,7 +97,7 @@ jobs:
             }'
 
             # Execute GraphQL query
-            REF=$(curl -s -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+            REF=$(curl -s -H "Authorization: bearer ${{ steps.app-token.outputs.token }}" \
                       -H "Content-Type: application/json" \
                       -X POST \
                       -d "{\"query\":\"$(echo "$QUERY" | tr '\n' ' ' | sed 's/"/\\"/g')\"}" \

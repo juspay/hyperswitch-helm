@@ -1,0 +1,106 @@
+name: Update Release Branch
+
+on:
+  repository_dispatch:
+    types:
+      - update-release-branch
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate inputs
+        id: validate
+        run: |
+          VERSION_TAG="${{ github.event.client_payload.version_tag }}"
+          TARGET_BRANCH="${{ github.event.client_payload.target_branch }}"
+
+          if [ -z "$VERSION_TAG" ]; then
+            echo "❌ Error: version_tag is required in client_payload"
+            exit 1
+          fi
+
+          if [ -z "$TARGET_BRANCH" ]; then
+            echo "❌ Error: target_branch is required in client_payload"
+            exit 1
+          fi
+
+          echo "✅ Inputs validated successfully"
+          echo "version_tag=$VERSION_TAG" >> $GITHUB_OUTPUT
+          echo "target_branch=$TARGET_BRANCH" >> $GITHUB_OUTPUT
+          echo "Version tag: $VERSION_TAG"
+          echo "Target branch: $TARGET_BRANCH"
+
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.HYPERSWITCH_BOT_APP_ID }}
+          private-key: ${{ secrets.HYPERSWITCH_BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.validate.outputs.target_branch }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Validate tag exists
+        run: |
+          VERSION_TAG="${{ steps.validate.outputs.version_tag }}"
+
+          echo "Checking if tag '$VERSION_TAG' exists remotely..."
+          if ! git ls-remote --tags origin | grep -q "refs/tags/$VERSION_TAG$"; then
+            echo "❌ Error: Tag '$VERSION_TAG' does not exist in repository"
+            exit 1
+          fi
+
+          echo "✅ Tag '$VERSION_TAG' exists"
+
+      - name: Fetch and reset branch to tag
+        run: |
+          VERSION_TAG="${{ steps.validate.outputs.version_tag }}"
+          TARGET_BRANCH="${{ steps.validate.outputs.target_branch }}"
+
+          echo "Fetching tag '$VERSION_TAG'..."
+          git fetch origin tag "$VERSION_TAG"
+
+          echo "Resetting branch '$TARGET_BRANCH' to tag '$VERSION_TAG'"
+          git reset --hard "$VERSION_TAG"
+
+          echo "✅ Branch reset successfully"
+
+      - name: Push changes
+        run: |
+          TARGET_BRANCH="${{ steps.validate.outputs.target_branch }}"
+          VERSION_TAG="${{ steps.validate.outputs.version_tag }}"
+
+          echo "Pushing changes to branch '$TARGET_BRANCH'"
+          git push origin "$TARGET_BRANCH" --force-with-lease
+
+          echo "✅ Successfully updated branch '$TARGET_BRANCH' with tag '$VERSION_TAG'"
+
+      - name: Summary
+        run: |
+          VERSION_TAG="${{ steps.validate.outputs.version_tag }}"
+          TARGET_BRANCH="${{ steps.validate.outputs.target_branch }}"
+
+          echo "🎉 Branch update completed successfully!"
+          echo ""
+          echo "📋 Summary:"
+          echo "   Repository: ${{ github.repository }}"
+          echo "   Source tag: $VERSION_TAG"
+          echo "   Target branch: $TARGET_BRANCH"
+          echo "   Updated at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
+          echo "🔗 Branch URL: https://github.com/${{ github.repository }}/tree/$TARGET_BRANCH"
+          echo "🏷️  Tag URL: https://github.com/${{ github.repository }}/tree/$VERSION_TAG"
