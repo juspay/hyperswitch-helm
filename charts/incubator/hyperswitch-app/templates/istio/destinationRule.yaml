@@ -10,34 +10,23 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-server.name" . }}
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+  # Argo Rollouts subset configuration for canary deployments
   subsets:
-  - name: {{ include "version.suffix" .Values.services.router.version }}
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
     labels:
-      version: {{ include "version.suffix" .Values.services.router.version }}
-  {{- if .Values.istio.destinationRule.router.trafficPolicy }}
+      app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+    labels:
+      app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  {{- end }}
+  {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
-  {{- toYaml .Values.istio.destinationRule.router.trafficPolicy | nindent 4 }}
+  {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
   {{- end }}
 {{- end }}
 
-{{- if and .Values.istio.enabled .Values.services.controlCenter.enabled }}
----
-apiVersion: networking.istio.io/v1beta1
-kind: DestinationRule
-metadata:
-  name: {{ include "hyperswitch-control-center.name" . }}-dr
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "hyperswitch.labels" . | nindent 4 }}
-    app.kubernetes.io/component: istio-destination-rule
-spec:
-  host: {{ include "hyperswitch-control-center.name" . }}
-  subsets:
-  - name: {{ include "version.suffix" .Values.services.controlCenter.version }}
-    labels:
-      version: {{ include "version.suffix" .Values.services.controlCenter.version }}
-  {{- if .Values.istio.destinationRule.controlCenter.trafficPolicy }}
-  trafficPolicy:
-  {{- toYaml .Values.istio.destinationRule.controlCenter.trafficPolicy | nindent 4 }}
-  {{- end }}
-{{- end }}

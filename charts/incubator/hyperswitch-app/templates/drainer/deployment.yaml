@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hyperswitch-drainer.name" . }}-{{ .Values.services.drainer.version | replace "." "o" }}
+  name: {{ include "hyperswitch-drainer.name" . }}
   namespace: {{ include "drainer.namespace" . }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app: {{ include "hyperswitch-drainer.name" . }}
-      version: {{ include "version.suffix" .Values.services.drainer.version }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       annotations:

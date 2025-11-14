@@ -1,0 +1,169 @@
+name: Sync Control Center Updates
+
+on:
+  repository_dispatch:
+    types:
+      - sync-control-center-updates
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sync-control-center:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: control-center/daily-releases
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Merge latest changes from main
+        id: merge_step
+        run: |
+          git fetch origin main
+          git merge origin/main -X theirs --no-edit
+          if [ -n "$(git log origin/control-center/daily-releases..HEAD --oneline)" ]; then
+            echo "has_merge_updates=true" >> $GITHUB_OUTPUT
+            echo "Merge brought updates from main"
+          else
+            echo "has_merge_updates=false" >> $GITHUB_OUTPUT
+            echo "No updates from merge"
+          fi
+
+      - name: Determine control center tag
+        id: determine_tag
+        run: |
+          if [ -n "${{ github.event.client_payload.version_tag }}" ]; then
+            # Use tag from repository_dispatch client_payload
+            TAG="${{ github.event.client_payload.version_tag }}"
+            echo "Using repository_dispatch version_tag: $TAG"
+          else
+            echo "❌ No version tag provided in client_payload"
+            echo "Cannot proceed without a valid version tag"
+            exit 1
+          fi
+          echo "target_tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Update image tag and chart version
+        id: update_versions
+        run: |
+          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          VALUES_FILE="charts/incubator/hyperswitch-control-center/values.yaml"
+          CHART_FILE="charts/incubator/hyperswitch-control-center/Chart.yaml"
+
+          echo "Updating control center image tag and chart version with tag: $TAG"
+
+          # Install yq for reliable YAML processing
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+          # Update image tag in values.yaml
+          echo "Updating image tag to $TAG"
+          yq eval ".image.tag = \"$TAG\"" -i $VALUES_FILE
+
+          # Update chart version to valid SemVer format with control center version as prerelease
+          # Read chart version from main branch as prefix
+          MAIN_CHART_VERSION=$(git show origin/main:$CHART_FILE | yq eval ".version" -)
+          # Replace dots with hyphens in TAG to make it a single prerelease identifier
+          TAG_HYPHENATED=$(echo "$TAG" | tr '.' '-')
+          CHART_VERSION="$MAIN_CHART_VERSION-cc-$TAG_HYPHENATED"
+          echo "Converting control center version $TAG to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"
+          yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
+
+          echo "chart_version=$CHART_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Image tag and chart version updated successfully"
+
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Check for both tracked file changes and untracked files
+          if git diff --quiet && [ -z "$(git status --porcelain)" ] && [ "${{ steps.merge_step.outputs.has_merge_updates }}" != "true" ]; then
+            echo "No changes detected"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            # Show what changed for debugging
+            echo "Git status:"
+            git status --porcelain
+          fi
+
+      - name: Generate tag
+        id: generate_tag
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+
+          # Use cc- prefix with tag
+          NEW_TAG="cc-$TAG"
+          echo "Using tag: $NEW_TAG"
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          GIT_TAG="${{ steps.generate_tag.outputs.tag }}"
+
+          # Check if there are uncommitted changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Committing file changes..."
+
+            # Build commit message
+            COMMIT_MSG="chore: sync control center updates to $TAG
+
+          Control center version: $TAG
+
+          Image tag:
+          - Updated image.tag to $TAG
+
+          Chart version:
+          - Updated chart version to $CHART_VERSION
+
+          Source ref: $TAG
+          Tag: $GIT_TAG"
+
+            git add charts/incubator/hyperswitch-control-center/values.yaml charts/incubator/hyperswitch-control-center/Chart.yaml
+            git commit -m "$COMMIT_MSG"
+          else
+            echo "No file changes to commit (changes may have come from merge)"
+          fi
+
+      - name: Create and push tag
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git tag -f "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}" --force
+
+      - name: Summary
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          GIT_TAG="${{ steps.generate_tag.outputs.tag }}"
+
+          echo "Control center sync completed successfully!"
+          echo "Target branch: control-center/daily-releases"
+          echo "Source tag: $TAG"
+          echo "Chart version: $CHART_VERSION"
+          echo "Git tag: $GIT_TAG"
+          echo ""
+          echo "Files updated:"
+          echo "   - charts/incubator/hyperswitch-control-center/values.yaml → image.tag: $TAG"
+          echo "   - charts/incubator/hyperswitch-control-center/Chart.yaml → version: $CHART_VERSION"
+
+      - name: No changes summary
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "No changes detected - control center is already up to date with tag ${{ steps.determine_tag.outputs.target_tag }}"

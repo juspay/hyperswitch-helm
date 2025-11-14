@@ -46,19 +46,9 @@ Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 {{- printf "%s-hyperswitch-drainer" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-# Define `hyperswitch-control-center.name` template
-{{- define "hyperswitch-control-center.name" -}}
-{{- printf "%s-hyperswitch-control-center" .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 # Define `hyperswitch-router-sa.name` template
 {{- define "hyperswitch-router-sa.name" -}}
 {{- default (printf "%s-hyperswitch-router-role" .Release.Name) .Values.server.serviceAccount.name -}}
-{{- end -}}
-
-# Define `hyperswitch-control-center-sa.name` template
-{{- define "hyperswitch-control-center-sa.name" -}}
-{{- default (printf "%s-hyperswitch-control-center-sa" .Release.Name) .Values.controlCenter.serviceAccount.name -}}
 {{- end -}}
 
 {{/*
@@ -81,10 +71,6 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "drainer") }}
 {{- end }}
 
-{{/* Control Center namespace helper */}}
-{{- define "controlCenter.namespace" -}}
-{{- include "component.namespace" (dict "Values" .Values "Release" .Release "component" "controlCenter") }}
-{{- end }}
 
 {{/* Redis configuration validation template */}}
 {{- define "validate.redis.config" -}}
