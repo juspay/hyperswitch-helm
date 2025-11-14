@@ -25,19 +25,17 @@ jobs:
         id: config
         run: |
           EVENT_TYPE="${{ github.event.action }}"
-
+          echo "branch=deployments" >> $GITHUB_OUTPUT
           if [ "$EVENT_TYPE" = "sync-hyperswitch-updates" ]; then
-            echo "branch=app/daily-releases" >> $GITHUB_OUTPUT
             echo "update_all_services=true" >> $GITHUB_OUTPUT
-            echo "tag_prefix=" >> $GITHUB_OUTPUT
+            echo "tag_prefix=app-" >> $GITHUB_OUTPUT
             echo "sync_type=full" >> $GITHUB_OUTPUT
-            echo "Configured for full hyperswitch sync to app/daily-releases branch"
+            echo "Building charts for daily deployments"
           elif [ "$EVENT_TYPE" = "sync-custom-router-version" ]; then
-            echo "branch=app/custom-releases" >> $GITHUB_OUTPUT
             echo "update_all_services=false" >> $GITHUB_OUTPUT
             echo "tag_prefix=cus-" >> $GITHUB_OUTPUT
             echo "sync_type=router-only" >> $GITHUB_OUTPUT
-            echo "Configured for router-only sync to app/custom-releases branch"
+            echo "Builing charts for custom deployment"
           else
             echo "❌ Unknown event type: $EVENT_TYPE"
             exit 1
@@ -55,6 +53,36 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
+      - name: Generate and validate tag
+        id: generate_tag
+        run: |
+          # Check if version_tag is provided in client_payload
+          if [ -z "${{ github.event.client_payload.version_tag }}" ]; then
+            echo "❌ version_tag not provided in repository_dispatch client_payload"
+            exit 1
+          fi
+
+          SOURCE_REF="${{ github.event.client_payload.version_tag }}"
+          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
+
+          echo "Using version_tag from client_payload: $SOURCE_REF"
+          echo "Using tag prefix: $TAG_PREFIX"
+
+          # Generate the new tag
+          NEW_TAG="$TAG_PREFIX$SOURCE_REF"
+          echo "Generated tag: $NEW_TAG"
+
+          # Check if tag already exists on remote
+          echo "Checking if tag '$NEW_TAG' already exists..."
+          if git ls-remote --tags origin | grep -q "refs/tags/$NEW_TAG$"; then
+            echo "❌ Tag '$NEW_TAG' already exists on remote"
+            exit 1
+          fi
+
+          echo "✅ Tag '$NEW_TAG' does not exist, safe to proceed"
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "target_ref=$SOURCE_REF" >> $GITHUB_OUTPUT
+
       - name: Merge latest changes from main
         id: merge_step
         run: |
@@ -68,55 +96,9 @@ jobs:
             echo "No updates from merge"
           fi
 
-      - name: Determine hyperswitch branch/tag
-        id: determine_ref
-        run: |
-          if [ -n "${{ github.event.client_payload.version_tag }}" ]; then
-            # Use tag from repository_dispatch client_payload
-            REF="${{ github.event.client_payload.version_tag }}"
-            echo "Using repository_dispatch version_tag: $REF"
-          else
-            # Fetch latest tag from hyperswitch repository using GraphQL API
-            echo "Fetching latest tag from hyperswitch repository using GraphQL API..."
-
-            # GraphQL query to get the most recent tag by commit date
-            QUERY='query {
-              repository(owner: "juspay", name: "hyperswitch") {
-                refs(
-                  refPrefix: "refs/tags/"
-                  first: 1
-                  orderBy: {field: TAG_COMMIT_DATE, direction: DESC}
-                ) {
-                  edges {
-                    node {
-                      name
-                    }
-                  }
-                }
-              }
-            }'
-
-            # Execute GraphQL query
-            REF=$(curl -s -H "Authorization: bearer ${{ steps.app-token.outputs.token }}" \
-                      -H "Content-Type: application/json" \
-                      -X POST \
-                      -d "{\"query\":\"$(echo "$QUERY" | tr '\n' ' ' | sed 's/"/\\"/g')\"}" \
-                      https://api.github.com/graphql | \
-                  jq -r '.data.repository.refs.edges[0].node.name')
-
-            if [ -z "$REF" ] || [ "$REF" = "null" ]; then
-              echo "❌ Failed to fetch latest tag via GraphQL API"
-              echo "Cannot proceed without a valid hyperswitch tag"
-              exit 1
-            else
-              echo "Using latest tag from GraphQL: $REF"
-            fi
-          fi
-          echo "target_ref=$REF" >> $GITHUB_OUTPUT
-
       - name: Download configuration files
         run: |
-          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
           BASE_URL="https://raw.githubusercontent.com/juspay/hyperswitch/${SOURCE_REF}/config/deployments"
 
           echo "Downloading configuration files from hyperswitch ref: $SOURCE_REF"
@@ -148,7 +130,7 @@ jobs:
       - name: Update service versions and chart version
         id: update_versions
         run: |
-          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
           VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
           CHART_FILE="charts/incubator/hyperswitch-app/Chart.yaml"
           UPDATE_ALL="${{ steps.config.outputs.update_all_services }}"
@@ -220,23 +202,11 @@ jobs:
             echo "Merge updates: ${{ steps.merge_step.outputs.has_merge_updates }}"
           fi
 
-      - name: Generate tag
-        id: generate_tag
-        if: steps.check_changes.outputs.changes == 'true'
-        run: |
-          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
-          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
-
-          # Use appropriate prefix with hyperswitch tag
-          NEW_TAG="$TAG_PREFIX$SOURCE_REF"
-          echo "Using tag: $NEW_TAG"
-          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
-
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           SYNC_TYPE="${{ steps.config.outputs.sync_type }}"
-          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           TAG="${{ steps.generate_tag.outputs.tag }}"
 
@@ -282,14 +252,14 @@ jobs:
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git tag -f "${{ steps.generate_tag.outputs.tag }}"
-          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}" --force
+          git tag "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}"
 
       - name: Summary
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           SYNC_TYPE="${{ steps.config.outputs.sync_type }}"
-          SOURCE_REF="${{ steps.determine_ref.outputs.target_ref }}"
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           TAG="${{ steps.generate_tag.outputs.tag }}"
 

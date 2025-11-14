@@ -23,7 +23,7 @@ jobs:
       - name: Checkout target branch
         uses: actions/checkout@v4
         with:
-          ref: control-center/daily-releases
+          ref: deployments
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
@@ -31,6 +31,33 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+
+      - name: Generate and validate tag
+        id: generate_tag
+        run: |
+          # Check if version_tag is provided in client_payload
+          if [ -z "${{ github.event.client_payload.version_tag }}" ]; then
+            echo "❌ version_tag not provided in repository_dispatch client_payload"
+            exit 1
+          fi
+
+          SOURCE_TAG="${{ github.event.client_payload.version_tag }}"
+          echo "Using version_tag from client_payload: $SOURCE_TAG"
+
+          # Generate the new tag with cc- prefix
+          NEW_TAG="cc-$SOURCE_TAG"
+          echo "Generated tag: $NEW_TAG"
+
+          # Check if tag already exists on remote
+          echo "Checking if tag '$NEW_TAG' already exists..."
+          if git ls-remote --tags origin | grep -q "refs/tags/$NEW_TAG$"; then
+            echo "❌ Tag '$NEW_TAG' already exists on remote"
+            exit 1
+          fi
+
+          echo "✅ Tag '$NEW_TAG' does not exist, safe to proceed"
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "target_tag=$SOURCE_TAG" >> $GITHUB_OUTPUT
 
       - name: Merge latest changes from main
         id: merge_step
@@ -45,24 +72,10 @@ jobs:
             echo "No updates from merge"
           fi
 
-      - name: Determine control center tag
-        id: determine_tag
-        run: |
-          if [ -n "${{ github.event.client_payload.version_tag }}" ]; then
-            # Use tag from repository_dispatch client_payload
-            TAG="${{ github.event.client_payload.version_tag }}"
-            echo "Using repository_dispatch version_tag: $TAG"
-          else
-            echo "❌ No version tag provided in client_payload"
-            echo "Cannot proceed without a valid version tag"
-            exit 1
-          fi
-          echo "target_tag=$TAG" >> $GITHUB_OUTPUT
-
       - name: Update image tag and chart version
         id: update_versions
         run: |
-          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          TAG="${{ steps.generate_tag.outputs.target_tag }}"
           VALUES_FILE="charts/incubator/hyperswitch-control-center/values.yaml"
           CHART_FILE="charts/incubator/hyperswitch-control-center/Chart.yaml"
 
@@ -105,21 +118,10 @@ jobs:
             git status --porcelain
           fi
 
-      - name: Generate tag
-        id: generate_tag
-        if: steps.check_changes.outputs.changes == 'true'
-        run: |
-          TAG="${{ steps.determine_tag.outputs.target_tag }}"
-
-          # Use cc- prefix with tag
-          NEW_TAG="cc-$TAG"
-          echo "Using tag: $NEW_TAG"
-          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
-
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          TAG="${{ steps.generate_tag.outputs.target_tag }}"
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           GIT_TAG="${{ steps.generate_tag.outputs.tag }}"
 
@@ -150,13 +152,13 @@ jobs:
       - name: Create and push tag
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git tag -f "${{ steps.generate_tag.outputs.tag }}"
-          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}" --force
+          git tag "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}"
 
       - name: Summary
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          TAG="${{ steps.determine_tag.outputs.target_tag }}"
+          TAG="${{ steps.generate_tag.outputs.target_tag }}"
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           GIT_TAG="${{ steps.generate_tag.outputs.tag }}"
 
@@ -173,4 +175,4 @@ jobs:
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'
         run: |
-          echo "No changes detected - control center is already up to date with tag ${{ steps.determine_tag.outputs.target_tag }}"
+          echo "No changes detected - control center is already up to date with tag ${{ steps.generate_tag.outputs.target_tag }}"
