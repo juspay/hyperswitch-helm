@@ -6,7 +6,6 @@
 global:
   # Global image registry override (optional)
   imageRegistry: ""
-
 # Hyperswitch Dependent Services
 dependencies:
   # Hyperswitch Router configuration
@@ -22,21 +21,17 @@ dependencies:
   # For Audit Trail feature
   clickhouse:
     enabled: false
-
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
-
 # Deployment strategy
 strategy:
   type: RollingUpdate
   rollingUpdate:
     maxSurge: 1
     maxUnavailable: 0
-
 # Deployment configuration
 progressDeadlineSeconds: 600
 terminationGracePeriodSeconds: 30
-
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   registry: docker.juspay.io
@@ -44,14 +39,12 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.37.4
-
+  tag: 9f2e74a
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
-
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
@@ -60,20 +53,18 @@ serviceAccount:
   automount: true
   # Annotations to add to the service account
   annotations: {}
-    # eks.amazonaws.com/role-arn: my-role-arn
+  # eks.amazonaws.com/role-arn: my-role-arn
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
-
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext:
   privileged: false
@@ -83,21 +74,19 @@ securityContext:
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 9000
-
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
   className: ""
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
@@ -107,7 +96,6 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
 resources:
   # We recommend setting at least minimal resource requests for production workloads
   # For development environments, you may comment these out to reduce resource usage
@@ -118,7 +106,6 @@ resources:
   # limits:
   #   cpu: 500m
   #   memory: 512Mi
-
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
@@ -138,7 +125,6 @@ readinessProbe:
   timeoutSeconds: 3
   failureThreshold: 3
   successThreshold: 1
-
 # Additional volumes on the output Deployment definition.
 volumes: []
 # - name: foo
@@ -153,11 +139,8 @@ volumeMounts: []
 #   readOnly: true
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
 # Control Center specific configuration
 # These will be converted to environment variables with double underscores
 # e.g., config.default.features.email becomes default__features__email
@@ -223,7 +206,6 @@ config:
       live_users_counter: "false"
       maintainence_alert: ""
       recon_v2: false
-
     endpoints:
       dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
       favicon_url: ""
@@ -233,7 +215,6 @@ config:
       mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
       hypersense_url: ""
       recon_iframe_url: ""
-
     theme:
       primary_color: "#006DF9"
       primary_hover_color: "#005ED6"
@@ -243,16 +224,13 @@ config:
       sidebar_primary_text_color: "#1C6DEA"
       sidebar_secondary: "#FFFFFF"
       sidebar_secondary_text_color: "#525866"
-
     merchant_config:
       new_analytics:
         merchant_ids: []
         org_ids: []
         profile_ids: []
-
 # Additional environment variables (key-value pairs, no transformation)
 extraEnvVars: []
-
 # Istio configuration (optional)
 istio:
   enabled: false

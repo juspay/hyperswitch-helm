@@ -1,7 +1,6 @@
 apiVersion: v2
 name: hyperswitch-control-center
 description: A dashboard for Hyperswitch Service
-
 type: application
-version: 0.1.0
+version: 0.1.0-cc-9f2e74a
 appVersion: "v1.37.4"
