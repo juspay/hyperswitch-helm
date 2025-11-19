@@ -39,7 +39,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 9f2e74a
+  tag: 2025.11.19.0
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
@@ -102,10 +102,10 @@ resources:
   requests:
     cpu: 100m
     memory: 100Mi
-  # Uncomment and adjust limits as needed for your environment
-  # limits:
-  #   cpu: 500m
-  #   memory: 512Mi
+    # Uncomment and adjust limits as needed for your environment
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
