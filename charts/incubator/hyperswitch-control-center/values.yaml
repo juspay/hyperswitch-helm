@@ -162,93 +162,103 @@ affinity: {}
 # These will be converted to environment variables with double underscores
 # e.g., config.default.features.email becomes default__features__email
 config:
-  # Mixpanel tracking token
-  mixpanelToken: "dd4da7f62941557e716fbc0a19f9cc7e"
   default:
-    features:
-      # Core features
-      email: "true"
-      branding: "false"
-      surcharge: "true"
-      quick_start: "true"
-      recon: "true"
-      payout: "true"
-      frm: "true"
-      # Analytics features
-      mixpanel: "false"
-      sample_data: "true"
-      is_live_mode: "false"
-      feedback: "false"
-      generate_report: "true"
-      system_metrics: "false"
-      test_live_toggle: "false"
-      test_processors: "true"
-      user_journey_analytics: "false"
-      # Security features
-      totp: "false"
-      authentication_analytics: "false"
-      # Additional features
-      compliance_certificate: "true"
-      configure_pmts: "true"
-      custom_webhook_headers: "false"
-      global_search: "true"
-      new_analytics: "true"
-      new_analytics_filters: "true"
-      new_analytics_refunds: "true"
-      new_analytics_smart_retries: "true"
-      performance_monitor: "true"
-      tenant_user: "true"
-      transaction_view: true
-      pm_authentication_processor: "true"
-      tax_processors: "true"
-      threeds_authenticator: "true"
-      # Development features (typically disabled in production)
-      dev_alt_payment_methods: false
-      dev_click_to_pay: "true"
-      dev_debit_routing: false
-      dev_hypersense_v2_product: false
-      dev_intelligent_routing_v2: false
-      dev_modularity_v2: false
-      dev_recon_v2_product: false
-      dev_recovery_v2_product: false
-      dev_vault_v2_product: false
-      dev_webhooks: false
-      # Other features
-      dispute_analytics: "false"
-      dispute_evidence_upload: "false"
-      down_time: false
-      force_cookies: false
-      global_search_filters: false
-      granularity: false
-      live_users_counter: "false"
-      maintainence_alert: ""
-      recon_v2: false
-
     endpoints:
+      api_url: ""
+      sdk_url: ""
+      apple_pay_certificate_url: ""
       dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
-      favicon_url: ""
       logo_url: ""
+      favicon_url: ""
+      recon_iframe_url: ""
+      hypersense_url: "https://hyperswitch.io/cost-observability/app/demo"
+      mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
       agreement_url: "https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"
       agreement_version: "1.0.0"
-      mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
-      hypersense_url: ""
-      recon_iframe_url: ""
+      clarity_base_url: ""
+      dynamo_simulation_template_url: ""
 
-    theme:
-      primary_color: "#006DF9"
-      primary_hover_color: "#005ED6"
-      sidebar_color: "#242F48"
-      sidebar_border_color: "#ECEFF3"
-      sidebar_primary: "#FCFCFD"
-      sidebar_primary_text_color: "#1C6DEA"
-      sidebar_secondary: "#FFFFFF"
-      sidebar_secondary_text_color: "#525866"
+    features:
+      # Core features
+      branding: "false"
+      mixpanel: "false"
+      test_live_toggle: "false"
+      is_live_mode: "false"
+      feedback: "false"
+      x_feature_route: "false"
+      compliance_certificate: "true"
+      force_cookies: "false"
+      audit_trail: "true"
+      granularity: "true"
+      maintenance_alert: ""
+      down_time: "false"
+      email: "true"
+      totp: "true"
+      quick_start: "true"
+      global_search: "true"
+      global_search_filters: "true"
+      explore_recipes: "true"
+      sample_data: "true"
+      generate_report: "true"
+      transaction_view: "true"
+      configure_pmts: "true"
+      test_processors: "true"
+      paypal_automatic_flow: "false"
+      payout: "true"
+      threeds_authenticator: "true"
+      frm: "true"
+      pm_authentication_processor: "true"
+      tax_processor: "true"
+      billing_processor: "true"
+      dispute_analytics: "false"
+      authentication_analytics: "true"
+      performance_monitor: "true"
+      new_analytics: "true"
+      new_analytics_smart_retries: "true"
+      new_analytics_refunds: "true"
+      new_analytics_filters: "true"
+      routing_analytics: "true"
+      threeds_exemption: "true"
+      surcharge: "true"
+      dispute_evidence_upload: "true"
+      recon: "true"
+      recon_v2: "false"
+      payment_settings_v2: "false"
+      custom_webhook_headers: "true"
+      tenant_user: "true"
+      google_pay_direct_flow: "true"
+      sample_data_analytics: "true"
+      acquirer_config_settings: "true"
+      payment_link_theme_configurator: "false"
+      # Development features
+      dev_click_to_pay: "true"
+      dev_alt_payment_methods: "true"
+      dev_modularity_v2: "true"
+      dev_recon_v2_product: "true"
+      dev_recovery_v2_product: "true"
+      dev_vault_v2_product: "true"
+      dev_hypersense_v2_product: "true"
+      dev_intelligent_routing_v2: "true"
+      dev_orchestration_v2_product: "false"
+      dev_debit_routing: "true"
+      dev_webhooks: "true"
+      dev_recon_engine_v1: "false"
+      dev_ai_chat_bot: "true"
+      dev_roles_v2: "true"
+      dev_customer: "true"
+      dev_sidebar_v2: "false"
 
     merchant_config:
-      new_analytics:
-        merchant_ids: []
-        org_ids: []
-        profile_ids: []
+      blacklist:
+        new_analytics:
+          org_ids: []
+          merchant_ids: []
+          profile_ids: []
+      whitelist:
+        dev_recon_engine_v1:
+          org_ids: []
+          merchant_ids: []
+          profile_ids: []
 
 # Additional environment variables (key-value pairs, no transformation)
 extraEnvVars: []
