@@ -93,15 +93,20 @@ jobs:
           # Create target directory
           mkdir -p charts/incubator/hyperswitch-ucs/configs
 
-          echo "Downloading sandbox.toml"
-          curl -fsSL "${BASE_URL}/sandbox.toml" \
-             -o charts/incubator/hyperswitch-ucs/configs/router-sandbox.toml
+          # Download specific configuration files with error handling
+          echo "Downloading sandbox.toml..."
+          curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3.raw" \
+               "${BASE_URL}/sandbox.toml" \
+               -o charts/incubator/hyperswitch-ucs/configs/ucs-sandbox.toml
 
-          echo "Downloading production.toml"
-          curl -fsSL "${BASE_URL}/production.toml" \
-             -o charts/incubator/hyperswitch-ucs/configs/router-production.toml
+          echo "Downloading production.toml..."
+          curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3.raw" \
+               "${BASE_URL}/production.toml" \
+               -o charts/incubator/hyperswitch-ucs/configs/ucs-production.toml
 
-          echo "✔ UCS configuration files downloaded successfully"
+          echo "✅ Configuration files downloaded successfully"
 
       - name: Update UCS version & chart version
         id: update_versions
@@ -174,17 +179,17 @@ jobs:
           TAG="${{ steps.generate_tag.outputs.tag }}"
 
           COMMIT_TITLE="chore: sync UCS updates from $SOURCE_REF"
+          SERVICE_SECTION="Service versions: Updated UCS version to $SOURCE_REF"
 
           COMMIT_MSG="$COMMIT_TITLE
 
           UCS version: $SOURCE_REF
 
           Configuration files:
-          - Updated router-sandbox.toml
-          - Updated router-production.toml
+          - Updated ucs-sandbox.toml
+          - Updated ucs-production.toml
 
-          Service versions:
-          - UCS → $SOURCE_REF
+          $SERVICE_SECTION
 
           Chart version:
           - Updated chart version to $CHART_VERSION
