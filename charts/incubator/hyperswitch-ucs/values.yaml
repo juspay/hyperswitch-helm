@@ -273,8 +273,6 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
-  
-argoRollouts:
 
 # -- Argo Rollouts configuration
 argoRollouts:
