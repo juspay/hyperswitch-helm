@@ -1,0 +1,224 @@
+name: Sync UCS Updates
+
+on:
+  repository_dispatch:
+    types:
+      - sync-ucs-updates
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sync-ucs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.HYPERSWITCH_BOT_APP_ID }}
+          private-key: ${{ secrets.HYPERSWITCH_BOT_APP_PRIVATE_KEY }}
+
+      - name: Determine sync configuration
+        id: config
+        run: |
+          echo "branch=deployments" >> $GITHUB_OUTPUT
+          echo "tag_prefix=ucs-" >> $GITHUB_OUTPUT
+          echo "sync_type=full" >> $GITHUB_OUTPUT
+          echo "Building charts for daily deployments"
+
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.config.outputs.branch }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Generate and validate tag
+        id: generate_tag
+        run: |
+          # Check if version_tag is provided in client_payload
+          if [ -z "${{ github.event.client_payload.version_tag }}" ]; then
+            echo "❌ version_tag not provided in client_payload"
+            exit 1
+          fi
+
+          SOURCE_REF="${{ github.event.client_payload.version_tag }}"
+          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
+
+          echo "Using version_tag from client_payload: $SOURCE_REF"
+          echo "Using tag prefix: $TAG_PREFIX"
+
+          NEW_TAG="$TAG_PREFIX$SOURCE_REF"
+          echo "Generated tag: $NEW_TAG"
+
+          # Check if tag already exists on remote
+          echo "Checking if tag '$NEW_TAG' already exists..."
+          if git ls-remote --tags origin | grep -q "refs/tags/$NEW_TAG$"; then
+            echo "❌ Tag '$NEW_TAG' already exists"
+            exit 1
+          fi
+
+          echo "✅ Tag '$NEW_TAG' does not exist, safe to proceed"
+          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "target_ref=$SOURCE_REF" >> $GITHUB_OUTPUT
+
+      - name: Merge latest changes from main
+        id: merge_step
+        run: |
+          git fetch origin main
+          git merge origin/main -X theirs --no-edit
+          if [ -n "$(git log origin/${{ steps.config.outputs.branch }}..HEAD --oneline)" ]; then
+            echo "has_merge_updates=true" >> $GITHUB_OUTPUT
+            echo "Merge brought updates from main"
+          else
+            echo "has_merge_updates=false" >> $GITHUB_OUTPUT
+            echo "No updates from merge"
+          fi
+
+      - name: Download UCS configuration files
+        run: |
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
+          BASE_URL="https://raw.githubusercontent.com/juspay/connector-service/${SOURCE_REF}/config"
+
+          echo "Downloading UCS configs from connector-service ref: $SOURCE_REF"
+
+          # Create target directory
+          mkdir -p charts/incubator/hyperswitch-ucs/configs
+
+          echo "Downloading sandbox.toml"
+          curl -fsSL "${BASE_URL}/sandbox.toml" \
+             -o charts/incubator/hyperswitch-ucs/configs/router-sandbox.toml
+
+          echo "Downloading production.toml"
+          curl -fsSL "${BASE_URL}/production.toml" \
+             -o charts/incubator/hyperswitch-ucs/configs/router-production.toml
+
+          echo "✔ UCS configuration files downloaded successfully"
+
+      - name: Update UCS version & chart version
+        id: update_versions
+        run: |
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
+          VALUES_FILE="charts/incubator/hyperswitch-ucs/values.yaml"
+          CHART_FILE="charts/incubator/hyperswitch-ucs/Chart.yaml"
+          TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
+
+          echo "Updating service versions and chart version with hyperswitch reference: $SOURCE_REF"
+          echo "Update all services: $UPDATE_ALL"
+          echo "Tag prefix: $TAG_PREFIX"
+
+          # Install yq for reliable YAML processing
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+          echo "Updating UCS service version → $SOURCE_REF"
+          yq eval ".services.ucs.version = \"$SOURCE_REF\"" -i $VALUES_FILE
+
+          MAIN_CHART_VERSION=$(git show origin/main:$CHART_FILE | yq eval ".version" -)
+          SRC_HYPH=$(echo "$SOURCE_REF" | tr '.' '-')
+          CHART_VERSION="$MAIN_CHART_VERSION-$TAG_PREFIX$SRC_HYPH"
+          echo "Updating chart version → $CHART_VERSION"
+          echo "Converting hyperswitch version $SOURCE_REF to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"          
+          yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE          
+
+          echo "chart_version=$CHART_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Service versions and chart version updated successfully"
+
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Helm dependency update
+        run: |
+          CHART_DIR="charts/incubator/hyperswitch-ucs"
+          
+          echo "Updating chart dependencies..."
+          cd $CHART_DIR
+          helm dependency update
+          cd ../../..
+
+          echo "✅ Helm dependencies updated"
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Check for both file changes and merge updates
+          if git diff --quiet && [ -z "$(git status --porcelain)" ] && [ "${{ steps.merge_step.outputs.has_merge_updates }}" != "true" ]; then
+            echo "No changes detected"            
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            # Show what changed for debugging
+            echo "Git status:"
+            git status --porcelain
+            echo "Merge updates: ${{ steps.merge_step.outputs.has_merge_updates }}"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          TAG="${{ steps.generate_tag.outputs.tag }}"
+
+          COMMIT_TITLE="chore: sync UCS updates from $SOURCE_REF"
+
+          COMMIT_MSG="$COMMIT_TITLE
+
+          UCS version: $SOURCE_REF
+
+          Configuration files:
+          - Updated router-sandbox.toml
+          - Updated router-production.toml
+
+          Service versions:
+          - UCS → $SOURCE_REF
+
+          Chart version:
+          - Updated chart version to $CHART_VERSION
+
+          Source: https://github.com/juspay/connector-service/tree/$SOURCE_REF/config
+          Tag: $TAG
+          "
+
+          git add charts/incubator/hyperswitch-ucs/configs
+          git add charts/incubator/hyperswitch-ucs/values.yaml
+          git add charts/incubator/hyperswitch-ucs/Chart.yaml
+          git add -f charts/incubator/hyperswitch-ucs/charts/ charts/incubator/hyperswitch-ucs/Chart.lock
+
+          git commit -m "$COMMIT_MSG"
+
+      - name: Create and push tag
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git tag "${{ steps.generate_tag.outputs.tag }}"
+          git push origin HEAD "${{ steps.generate_tag.outputs.tag }}"
+
+      - name: Summary
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
+          CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
+          TAG="${{ steps.generate_tag.outputs.tag }}"
+
+          echo "UCS sync completed successfully!"
+          echo "Source ref: $SOURCE_REF"
+          echo "Chart version: $CHART_VERSION"
+          echo "Tag: $TAG"
+
+      - name: No changes summary
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "No changes detected — UCS updates already up to date."
