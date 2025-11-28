@@ -4,6 +4,7 @@ metadata:
   name: {{ include "hyperswitch-ucs.fullname" . }}
   labels:
     {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   type: {{ .Values.service.type }}
   ports:
