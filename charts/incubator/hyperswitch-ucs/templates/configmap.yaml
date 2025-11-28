@@ -4,7 +4,7 @@ metadata:
   name: ucs-config-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 data:
-  router.toml: |
+  ucs.toml: |
     {{- if eq .Values.server.run_env "production" }}
     {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
     {{- else }}

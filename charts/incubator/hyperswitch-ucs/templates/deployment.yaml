@@ -106,13 +106,13 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if eq .Values.server.run_env "production" }}
-            - mountPath: /local/config/production.toml
+            - mountPath: /app/config/production.toml
               name: ucs-config
-              subPath: router.toml
+              subPath: ucs.toml
             {{- else }}
-            - mountPath: /local/config/sandbox.toml
+            - mountPath: /app/config/production.toml
               name: ucs-config
-              subPath: router.toml
+              subPath: ucs.toml
             {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
