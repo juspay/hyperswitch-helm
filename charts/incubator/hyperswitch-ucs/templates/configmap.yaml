@@ -6,7 +6,7 @@ metadata:
 data:
   ucs.toml: |
     {{- if eq .Values.server.run_env "production" }}
-    {{ .Files.Get "configs/router-production.toml" | nindent 4 }}
+    {{ .Files.Get "configs/ucs-production.toml" | nindent 4 }}
     {{- else }}
-    {{ .Files.Get "configs/router-sandbox.toml" | nindent 4 }}
+    {{ .Files.Get "configs/ucs-sandbox.toml" | nindent 4 }}
     {{- end }}
