@@ -14,8 +14,8 @@ spec:
     kind: Deployment
     {{- end }}
     name: {{ include "hyperswitch-server.name" . }}
-  minReplicas: 3
-  maxReplicas: 5
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
     - type: Resource
       resource:
