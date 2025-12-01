@@ -265,51 +265,6 @@ config:
     # -- Metrics server port
     # @section -- Connector Service Configurations
     port: 8080
-  # Connector configurations
-  connectors:
-    # Adyen connector configuration
-    adyen:
-      # -- Adyen base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"
-      # -- Adyen dispute base URL
-      # @section -- Connector Service Configurations
-      dispute_base_url: "https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"
-    # Razorpay connector configuration
-    razorpay:
-      # -- Razorpay base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.razorpay.com/"
-    # Fiserv connector configuration
-    fiserv:
-      # -- Fiserv base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://cert.api.fiservapps.com/"
-    # Elavon connector configuration
-    elavon:
-      # -- Elavon base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.convergepay.com/VirtualMerchant/"
-    # Xendit connector configuration
-    xendit:
-      # -- Xendit base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.xendit.co/"
-    # Razorpay v2 connector configuration
-    razorpayv2:
-      # -- Razorpay v2 base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.razorpay.com/"
-    # Checkout connector configuration
-    checkout:
-      # -- Checkout base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.checkout.com/"
-    # Authorize.net connector configuration
-    authorizedotnet:
-      # -- Authorize.net base URL
-      # @section -- Connector Service Configurations
-      base_url: "https://api.authorize.net/xml/v1/request.api/"
   # Proxy configuration
   proxy:
     # -- HTTPS proxy URL
@@ -318,9 +273,30 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
-    # -- Idle pool connection timeout
-    # @section -- Connector Service Configurations
-    idle_pool_connection_timeout: 90
-    # -- URLs to bypass proxy
-    # @section -- Connector Service Configurations
-    bypass_proxy_urls: ["localhost", "local"]
+
+# -- Argo Rollouts configuration
+argoRollouts:
+  # -- Enable Argo Rollouts instead of standard Deployment
+  enabled: false
+  # -- Number of old ReplicaSets to retain for rollback
+  revisionHistoryLimit: 10
+  canary:
+    # -- Canary deployment steps (see Argo Rollouts docs)
+    steps: []
+    trafficRouting:
+      istio:
+        # -- Enable Istio traffic routing for canary
+        enabled: false
+        destinationRule:
+          # -- Name of the canary subset in Istio DestinationRule
+          canarySubsetName: "canary"
+          # -- Name of the stable subset in Istio DestinationRule
+          stableSubsetName: "stable"
+
+strategy: {}
+
+env: []
+
+# Server environment for config file selection
+server:
+  run_env: "sandbox"

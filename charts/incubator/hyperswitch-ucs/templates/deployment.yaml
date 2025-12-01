@@ -1,5 +1,10 @@
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+{{- else }}
 apiVersion: apps/v1
 kind: Deployment
+{{- end }}
 metadata:
   name: {{ include "hyperswitch-ucs.fullname" . }}
   labels:
@@ -8,15 +13,46 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  {{- if .Values.argoRollouts.enabled }}
+  revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
+  {{- else }}
+  revisionHistoryLimit: 10
+  {{- end }}
+  {{- if .Values.argoRollouts.enabled }}
+  # Argo Rollouts strategy configuration
+  strategy:
+    canary:
+      steps:
+      {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
+      {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ .Release.Name }}-ucs-vs
+            routes:
+              - "primary"
+          destinationRule:
+            name: {{ include "hyperswitch-ucs.fullname" . }}-dr
+            canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+            stableSubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+      {{- end }}
+  {{- else }}
+  # Standard Deployment strategy
+  strategy:
+    {{- with (default .Values.global.strategy .Values.strategy) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "hyperswitch-ucs.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        checksum/ucs-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "hyperswitch-ucs.selectorLabels" . | nindent 8 }}
     spec:
@@ -69,9 +105,15 @@ spec:
             {{- end }}
             {{- end }}
           volumeMounts:
-            - name: ucs-config
-              mountPath: /app/config/production.toml
-              subPath: production.toml
+            {{- if eq .Values.server.run_env "production" }}
+            - mountPath: /app/config/production.toml
+              name: ucs-config
+              subPath: ucs.toml
+            {{- else }}
+            - mountPath: /app/config/production.toml
+              name: ucs-config
+              subPath: ucs.toml
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
