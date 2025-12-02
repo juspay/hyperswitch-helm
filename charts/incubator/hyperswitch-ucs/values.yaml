@@ -257,6 +257,8 @@ config:
     # -- Server type
     # @section -- Connector Service Configurations
     type: "grpc"
+    # -- Runtime environment (production, sandbox)
+    run_env: "sandbox"
   # Metrics server configuration
   metrics:
     # -- Metrics server host address
@@ -296,7 +298,3 @@ argoRollouts:
 strategy: {}
 
 env: []
-
-# Server environment for config file selection
-server:
-  run_env: "sandbox"

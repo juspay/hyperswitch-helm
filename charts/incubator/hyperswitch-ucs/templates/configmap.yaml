@@ -5,8 +5,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   ucs.toml: |
-    {{- if eq .Values.server.run_env "production" }}
+    {{- if eq .Values.config.server.run_env "production" }}
     {{ .Files.Get "configs/ucs-production.toml" | nindent 4 }}
     {{- else }}
     {{ .Files.Get "configs/ucs-sandbox.toml" | nindent 4 }}
     {{- end }}
+
+    # Append custom configuration
+    {{- include "hyperswitch-ucs.configToml" (dict "config" .Values.config) | nindent 4 }}
