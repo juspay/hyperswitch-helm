@@ -60,3 +60,59 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate TOML tables from nested config values
+*/}}
+{{- define "hyperswitch-ucs.configToml" -}}
+  {{- $config := .config -}}
+  {{- $path := .path -}}
+
+  {{- /* Emit table header */ -}}
+  {{- if $path }}
+[{{ $path }}]
+  {{- end }}
+
+  {{- range $key, $value := $config }}
+
+    {{- if kindIs "map" $value }}
+      {{/* Nested table */}}
+      {{ include "hyperswitch-ucs.configToml" (dict
+          "config" $value
+          "path" (printf "%s%s" (ternary (printf "%s." $path) "" (ne $path "")) $key)
+      ) }}
+
+    {{- else if kindIs "slice" $value }}
+      {{/* Array with typed elements */}}
+      {{- printf "%s = [" $key }}
+
+      {{- range $i, $v := $value }}
+        {{- if $i }}, {{ end }}
+        {{- if kindIs "string" $v }}
+          "{{ $v }}"
+        {{- else }}
+          {{ $v }}
+        {{- end }}
+      {{- end }}
+
+      {{- printf "]\n" }}
+
+    {{- else if kindIs "string" $value }}
+      {{/* String → quoted */}}
+      {{- printf "%s = %q\n" $key $value }}
+
+    {{- else if or (kindIs "int" $value) (kindIs "float64" $value) }}
+      {{/* Numbers → unquoted */}}
+      {{- printf "%s = %v\n" $key $value }}
+
+    {{- else if kindIs "bool" $value }}
+      {{/* Booleans → unquoted */}}
+      {{- printf "%s = %v\n" $key $value }}
+
+    {{- else }}
+      {{/* Fallback → string */}}
+      {{- printf "%s = %q\n" $key ($value | toString) }}
+
+    {{- end }}
+  {{- end }}
+{{- end }}
