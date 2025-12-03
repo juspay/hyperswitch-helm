@@ -49,7 +49,9 @@ spec:
       {{- end }}
       terminationGracePeriodSeconds: {{ .Values.drainer.terminationGracePeriodSeconds | default .Values.global.terminationGracePeriodSeconds }}
       initContainers:
+        {{- if .Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
         {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
         {{- include "redis.initContainer.check.ready" . | nindent 8 }}
         {{- end }}

@@ -89,7 +89,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
+        {{- if .Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{- end }}
         {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
         {{- include "redis.initContainer.check.ready" . | nindent 8 }}
         {{- end }}
