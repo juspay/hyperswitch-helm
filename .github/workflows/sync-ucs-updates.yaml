@@ -198,10 +198,7 @@ jobs:
           Tag: $TAG
           "
 
-          git add charts/incubator/hyperswitch-ucs/configs
-          git add charts/incubator/hyperswitch-ucs/values.yaml
-          git add charts/incubator/hyperswitch-ucs/Chart.yaml
-          git add -f charts/incubator/hyperswitch-ucs/charts/ charts/incubator/hyperswitch-ucs/Chart.lock
+          git add charts/incubator/hyperswitch-ucs/
 
           git commit -m "$COMMIT_MSG"
 
