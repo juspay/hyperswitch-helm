@@ -91,6 +91,6 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: hyperswitch-control-center
+            name: hyperswitch-control-center-theme
           name: hyperswitch-control-center-theme
 {{- end }}
