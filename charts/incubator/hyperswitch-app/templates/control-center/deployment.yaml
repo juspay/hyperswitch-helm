@@ -81,7 +81,7 @@ spec:
           volumeMounts:
             - mountPath: /tmp/dashboard-theme-config.json
               name: hyperswitch-control-center-theme
-              subPath: dashboard-theme-config.json
+              subPath: payments-dashboard.json
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
