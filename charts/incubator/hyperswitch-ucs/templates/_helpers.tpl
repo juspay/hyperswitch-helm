@@ -60,3 +60,41 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- /* Generate TOML tables from nested config values */ -}}
+{{- define "hyperswitch-ucs.configToml" -}}
+  {{- $config := .config -}}
+  {{- $path := default "" .path -}}
+
+  {{- /* Emit table header when we have a non-empty path */ -}}
+  {{- if ne $path "" -}}
+[{{ $path }}]
+  {{- end }}
+
+  {{- range $key, $value := $config }}
+    {{- if kindIs "map" $value }}
+      {{- /* nested table: compute newPath = (if $path == "" then $key else "$path.$key") */ -}}
+      {{- $newPath := ternary (printf "%s.%s" $path $key) $key (ne $path "") -}}
+      {{ include "hyperswitch-ucs.configToml" (dict "config" $value "path" $newPath) }}
+    {{- else if kindIs "slice" $value }}
+{{ printf "%s = [" $key -}}
+      {{- range $i, $v := $value -}}
+        {{- if $i }}, {{ end -}}
+        {{- if kindIs "string" $v -}}
+"{{ $v }}"
+        {{- else -}}
+{{ $v }}
+        {{- end -}}
+      {{- end -}}
+{{ printf "]\n" }}
+    {{- else if kindIs "string" $value }}
+{{ printf "%s = %q\n" $key $value }}
+    {{- else if or (kindIs "int" $value) (kindIs "float64" $value) }}
+{{ printf "%s = %v\n" $key $value }}
+    {{- else if kindIs "bool" $value }}
+{{ printf "%s = %v\n" $key $value }}
+    {{- else }}
+{{ printf "%s = %q\n" $key ($value | toString) }}
+    {{- end }}
+  {{- end }}
+{{- end -}}
