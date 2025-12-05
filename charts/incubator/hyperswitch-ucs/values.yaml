@@ -279,4 +279,4 @@ strategy: {}
 env: []
 services:
   ucs:
-    version: 2025.12.03.1
+    version: 2025.12.05.0
