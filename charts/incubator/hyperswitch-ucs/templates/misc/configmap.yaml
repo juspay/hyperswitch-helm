@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-hyperswitch-ucs-configs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: config-map
+data:
+  # Configs from values.config will be generated as environment variables with prefix CS
+  {{- include "hyperswitch-ucs.configToEnvVars" (dict "config" .Values.config "prefix" "CS") | nindent 2 }}
