@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ucs-cm-{{ .Release.Name }}
+  name: ucs-config-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 data:
   ucs.toml: |
