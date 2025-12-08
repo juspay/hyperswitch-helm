@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.13](https://img.shields.io/badge/Version-0.2.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
+![Version: 0.2.14](https://img.shields.io/badge/Version-0.2.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -15,8 +15,6 @@ assets
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoBuild.buildImage | string | `"juspaydotin/hyperswitch-web"` | docker image to use for the build |
-| autoBuild.buildImageRegistry | string | `"docker.juspay.io"` | docker image registry for the build |
 | autoBuild.buildParam.disableCSP | string | `"false"` |  |
 | autoBuild.buildParam.envBackendUrl | string | `"https://hyperswitch"` | node build parameter, hyperswitch server host |
 | autoBuild.buildParam.envLogsUrl | string | `"https://hyperswitch-sdk-logs"` | node build parameter, hyperswitch SDK logs host |
@@ -25,11 +23,14 @@ assets
 | autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
 | autoBuild.gitCloneParam.gitVersion | string | `"0.126.0"` | hyperswitch-web repository tag |
-| autoBuild.nginxConfig.buildImageRegistry | string | `"docker.io"` | docker image registry for the build |
+| autoBuild.image | string | `"juspaydotin/hyperswitch-web"` | docker image to use for the build |
+| autoBuild.imageRegistry | string | `"docker.juspay.io"` | docker image registry for the build |
 | autoBuild.nginxConfig.extraPath | string | `"v1"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
 | autoBuild.nginxConfig.image | string | `"nginx"` | nginx static server image |
+| autoBuild.nginxConfig.imageRegistry | string | `"docker.io"` | docker image registry for the build |
 | autoBuild.nginxConfig.pullPolicy | string | `"IfNotPresent"` | nginx static server pull policy |
 | autoBuild.nginxConfig.tag | string | `"1.25.3"` | nginx static server tag |
+| autoBuild.pullPolicy | string | `"IfNotPresent"` | docker image pull policy |
 | env | object | `{"enableLogging":"false","sdkEnv":"sandbox","sdkTagVersion":"","sdkVersion":"v1","sentryDsn":"","visaApiCertificatePem":"","visaApiKeyId":""}` | Environment variables for hyperswitch-web application |
 | env.enableLogging | string | `"false"` | Enable/disable logging |
 | env.sdkEnv | string | `"sandbox"` | hyperswitch-web environment (sandbox/prod) |
