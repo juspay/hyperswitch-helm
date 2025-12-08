@@ -61,40 +61,27 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{- /* Generate TOML tables from nested config values */ -}}
-{{- define "hyperswitch-ucs.configToml" -}}
+{{/* Convert YAML config to flattened environment variables (maps & slices only) */}}
+{{- define "hyperswitch-ucs.configToEnvVars" -}}
   {{- $config := .config -}}
-  {{- $path := default "" .path -}}
+  {{- $prefix := .prefix -}}
+  {{- $currentPath := .currentPath | default "" -}}
 
-  {{- /* Emit table header when we have a non-empty path */ -}}
-  {{- if ne $path "" -}}
-[{{ $path }}]
-  {{- end }}
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
 
-  {{- range $key, $value := $config }}
-    {{- if kindIs "map" $value }}
-      {{- /* nested table: compute newPath = (if $path == "" then $key else "$path.$key") */ -}}
-      {{- $newPath := ternary (printf "%s.%s" $path $key) $key (ne $path "") -}}
-      {{ include "hyperswitch-ucs.configToml" (dict "config" $value "path" $newPath) }}
-    {{- else if kindIs "slice" $value }}
-{{ printf "%s = [" $key -}}
-      {{- range $i, $v := $value -}}
-        {{- if $i }}, {{ end -}}
-        {{- if kindIs "string" $v -}}
-"{{ $v }}"
-        {{- else -}}
-{{ $v }}
-        {{- end -}}
-      {{- end -}}
-{{ printf "]\n" }}
-    {{- else if kindIs "string" $value }}
-{{ printf "%s = %q\n" $key $value }}
-    {{- else if or (kindIs "int" $value) (kindIs "float64" $value) }}
-{{ printf "%s = %v\n" $key $value }}
-    {{- else if kindIs "bool" $value }}
-{{ printf "%s = %v\n" $key $value }}
-    {{- else }}
-{{ printf "%s = %q\n" $key ($value | toString) }}
-    {{- end }}
-  {{- end }}
+    {{- if kindIs "map" $value -}}
+      {{/* Recursively process nested maps */}}
+      {{- include "hyperswitch-ucs.configToEnvVars" (dict "config" $value "prefix" $envKey "currentPath" $configPath) -}}
+
+    {{- else if kindIs "slice" $value -}}
+      {{/* Convert array → comma-separated */}}
+      {{- printf "%s: %q\n" $envKey ($value | join ",") -}}
+
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

@@ -3,7 +3,7 @@ name: hyperswitch-ucs
 description: A Helm chart for Hyperswitch UCS Service
 type: application
 version: 0.1.3
-appVersion: "0.1.0"
+AppVersion: "0.1.0"
 keywords:
   - ucs
   - service
