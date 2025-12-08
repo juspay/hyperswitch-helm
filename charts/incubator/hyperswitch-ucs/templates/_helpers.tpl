@@ -64,7 +64,7 @@ Create the name of the service account to use
 {{/* Convert YAML config to flattened environment variables (maps & slices only) */}}
 {{- define "hyperswitch-ucs.configToEnvVars" -}}
   {{- $config := .config -}}
-  {{- $prefix := .prefix -}}
+  {{- $prefix := .prefix | default "" -}}
   {{- $currentPath := .currentPath | default "" -}}
 
   {{- range $key, $value := $config -}}
@@ -75,13 +75,18 @@ Create the name of the service account to use
     {{- end -}}
 
     {{- if kindIs "map" $value -}}
-      {{/* Recursively process nested maps */}}
-      {{- include "hyperswitch-ucs.configToEnvVars" (dict "config" $value "prefix" $envKey "currentPath" $configPath) -}}
+      {{- /* Recursively process nested maps */ -}}
+      {{- include "hyperswitch-ucs.configToEnvVars"
+          (dict "config" $value "prefix" $envKey "currentPath" $configPath)
+      -}}
 
     {{- else if kindIs "slice" $value -}}
-      {{/* Convert array → comma-separated */}}
+      {{- /* Convert arrays to comma-separated */ -}}
       {{- printf "%s: %q\n" $envKey ($value | join ",") -}}
 
+    {{- else -}}
+      {{- /* Handle primitive values */ -}}
+      {{- printf "%s: %q\n" $envKey ($value | toString) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
