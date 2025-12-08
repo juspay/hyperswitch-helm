@@ -50,6 +50,7 @@ spec:
     metadata:
       annotations:
         checksum/ucs-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/hyperswitch-ucs-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -104,6 +105,9 @@ spec:
               value: {{ .value | quote }}
             {{- end }}
             {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-hyperswitch-ucs-configs
           volumeMounts:
             {{- if eq .Values.config.server.run_env "production" }}
             - mountPath: /app/config/production.toml

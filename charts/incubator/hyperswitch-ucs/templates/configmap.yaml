@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ucs-config-{{ .Release.Name }}
+  name: ucs-cm-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 data:
   ucs.toml: |
@@ -10,6 +10,3 @@ data:
     {{- else }}
     {{ .Files.Get "configs/ucs-sandbox.toml" | nindent 4 }}
     {{- end }}
-
-    # Append custom configuration
-    {{- include "hyperswitch-ucs.configToml" (dict "config" .Values.config) | nindent 4 }}
