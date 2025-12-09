@@ -207,6 +207,13 @@ secrets:
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
 | initDB.migration.imageRegistry | string | `"docker.io"` |  |
+| istio.destinationRule.enabled | bool | `false` |  |
+| istio.destinationRule.trafficPolicy | object | `{}` |  |
+| istio.enabled | bool | `false` |  |
+| istio.virtualService.enabled | bool | `false` |  |
+| istio.virtualService.gateways | list | `[]` |  |
+| istio.virtualService.hosts | list | `[]` |  |
+| istio.virtualService.http | list | `[]` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
