@@ -3,6 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ include "hyperswitch-keymanager.fullname" . }}-migration
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
     app: keymanager-db-migration
