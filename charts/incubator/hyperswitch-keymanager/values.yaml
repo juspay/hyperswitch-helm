@@ -2,63 +2,98 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
+# Global configurations
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
   annotations: {}
   affinity: {}
 
-autoscaling:
-  enabled: false
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
 
-server:
-  imageRegistry: docker.juspay.io
-  image: juspaydotin/hyperswitch-encryption-service:v0.1.8
-  annotations: {}
-  # When deploying with AWS backend, you can override this:
-  # annotations:
-  #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
+# Deployment strategy
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
 
-# Backend selection: aws, vault, or local
-backend: local
+# Deployment configuration
+progressDeadlineSeconds: 600
+terminationGracePeriodSeconds: 30
 
-# Secrets configuration
-secrets:
-  # Core secrets
-  access_token: "secret123"
-  hash_context: "keymanager:hyperswitch"
+# Image settings for Hyperswitch Keymanager
+image:
+  registry: docker.juspay.io
+  repository: juspaydotin/hyperswitch-encryption-service
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: v0.1.8
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
 
-  # Database secrets
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+annotations: {}
+
+# Config Settings (for ConfigMap creation)
+# Everything under this section will be added to the configmap in ENV format
+# Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+# You can also use some special references to create them as envRefs or secrets:
+#   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+#   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+#       name: <name_of_configmap_or_secret>
+#       key: <key_in_configmap_or_secret>
+configs:
+  certs:
+    root_ca: sample_cert
+    tls_cert: sample_cert
+    tls_key: sample_cert
   database:
-    password: "db_pass"
-    root_ca: ""  # Optional: for PostgreSQL SSL connections
-
-  # Backend-specific secrets
-  # AWS KMS configuration (required when backend: aws)
-  aws:
-    key_id: "sample_key_id"
-    region: "us-east-1"
-
-  # Local encryption (required when backend: local)
-  master_key: "6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"
-
-  # HashiCorp Vault (required when backend: vault)
-  vault:
-    token: ""  # Vault authentication token
-
-  # TLS/mTLS certificates (optional, only when mTLS feature is enabled)
-  tls:
-    cert: "sample_cert"
-    key: "sample_cert"
-    ca: "sample_cert"
-
+    min_idle: 2
+    pool_size: 5
+    root_ca: ""
+  log:
+    log_format: json
+    log_level: debug
+  metrics_server:
+    port: 6128
+    host: 0.0.0.0
+  multitenancy:
+    tenants:
+      global:
+        cache_prefix: hyperswitch_keymanager_global
+        schema: ""
+      public:
+        cache_prefix: hyperswitch_keymanager_public
+        schema: public
+  pool_config:
+    pool: 2
+  secrets:
+    access_token:
+      _secret: secret123
+    hash_context:
+      _secret: keymanager:hyperswitch
+    master_key:
+      _secret: 6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e
+    # For AWS KMS integration
+    # kms_config:
+    #   key_id: sample_key_id
+    #   region: us-east-1
+    # For HashiCorp Vault integration
+    # vault_config:
+    #   vault_token: ""
+  server:
+    port: 5000
+    host: 0.0.0.0
 
 # Values for database (postgresql).
 postgresql:
   enabled: true
-  image: 
+  image:
     repository: bitnamilegacy/postgresql
   nameOverride: keymanager-db
   auth:
@@ -73,26 +108,16 @@ postgresql:
         cpu: 100m
 
 # External PostgreSQL configuration
-external:
-  postgresql:
-    enabled: false
-    config:
-      host: localhost
-      port: 5432
-      username: db_user
-      password: db_pass
-      plainpassword: db_pass
-      database: encryption_db
-    enable_ssl: false
-
-multitenancy:
-  tenants:
-    public:
-      cache_prefix: "public"
-      schema: "public"
-    global:
-      cache_prefix: "global"
-      schema: "global"
+externalPostgresql:
+  enabled: false
+  config:
+    host: localhost
+    port: 5432
+    username: db_user
+    password: db_pass
+    plainpassword: db_pass
+    database: encryption_db
+  enable_ssl: false
 
 # Values for the database migration job
 initDB:
@@ -104,3 +129,112 @@ initDB:
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: keymanager-role
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the port for the container
+  port: 5000
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: hyperswitch-keymanager.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 400m
+    memory: 400Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

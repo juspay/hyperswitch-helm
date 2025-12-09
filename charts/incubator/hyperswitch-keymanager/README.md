@@ -1,6 +1,6 @@
 # hyperswitch-keymanager
 
-![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
+![Version: 0.1.5-beta.1](https://img.shields.io/badge/Version-0.1.5--beta.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch Keymanager
@@ -151,29 +151,74 @@ secrets:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| annotations | object | `{}` |  |
 | autoscaling.enabled | bool | `false` |  |
-| backend | string | `"local"` |  |
-| external.postgresql.config.database | string | `"encryption_db"` |  |
-| external.postgresql.config.host | string | `"localhost"` |  |
-| external.postgresql.config.password | string | `"db_pass"` |  |
-| external.postgresql.config.plainpassword | string | `"db_pass"` |  |
-| external.postgresql.config.port | int | `5432` |  |
-| external.postgresql.config.username | string | `"db_user"` |  |
-| external.postgresql.enable_ssl | bool | `false` |  |
-| external.postgresql.enabled | bool | `false` |  |
+| autoscaling.maxReplicas | int | `3` |  |
+| autoscaling.minReplicas | int | `1` |  |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| configs.certs.root_ca | string | `"sample_cert"` |  |
+| configs.certs.tls_cert | string | `"sample_cert"` |  |
+| configs.certs.tls_key | string | `"sample_cert"` |  |
+| configs.database.min_idle | int | `2` |  |
+| configs.database.pool_size | int | `5` |  |
+| configs.database.root_ca | string | `""` |  |
+| configs.log.log_format | string | `"json"` |  |
+| configs.log.log_level | string | `"debug"` |  |
+| configs.metrics_server.host | string | `"0.0.0.0"` |  |
+| configs.metrics_server.port | int | `6128` |  |
+| configs.multitenancy.tenants.global.cache_prefix | string | `"hyperswitch_keymanager_global"` |  |
+| configs.multitenancy.tenants.global.schema | string | `""` |  |
+| configs.multitenancy.tenants.public.cache_prefix | string | `"hyperswitch_keymanager_public"` |  |
+| configs.multitenancy.tenants.public.schema | string | `"public"` |  |
+| configs.pool_config.pool | int | `2` |  |
+| configs.secrets.access_token._secret | string | `"secret123"` |  |
+| configs.secrets.hash_context._secret | string | `"keymanager:hyperswitch"` |  |
+| configs.secrets.master_key._secret | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
+| configs.server.host | string | `"0.0.0.0"` |  |
+| configs.server.port | int | `5000` |  |
+| externalPostgresql.config.database | string | `"encryption_db"` |  |
+| externalPostgresql.config.host | string | `"localhost"` |  |
+| externalPostgresql.config.password | string | `"db_pass"` |  |
+| externalPostgresql.config.plainpassword | string | `"db_pass"` |  |
+| externalPostgresql.config.port | int | `5432` |  |
+| externalPostgresql.config.username | string | `"db_user"` |  |
+| externalPostgresql.enable_ssl | bool | `false` |  |
+| externalPostgresql.enabled | bool | `false` |  |
+| fullnameOverride | string | `""` |  |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
 | global.imageRegistry | string | `nil` |  |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.registry | string | `"docker.juspay.io"` |  |
+| image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
+| image.tag | string | `"v0.1.8"` |  |
+| imagePullSecrets | list | `[]` |  |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.hosts[0].host | string | `"hyperswitch-keymanager.local"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
+| ingress.tls | list | `[]` |  |
 | initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
 | initDB.checkPGisUp.imageRegistry | string | `"docker.io"` |  |
 | initDB.checkPGisUp.maxAttempt | int | `30` |  |
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
 | initDB.migration.imageRegistry | string | `"docker.io"` |  |
-| multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
-| multitenancy.tenants.global.schema | string | `"global"` |  |
-| multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
-| multitenancy.tenants.public.schema | string | `"public"` |  |
+| livenessProbe.failureThreshold | int | `3` |  |
+| livenessProbe.httpGet.path | string | `"/"` |  |
+| livenessProbe.httpGet.port | string | `"http"` |  |
+| livenessProbe.initialDelaySeconds | int | `30` |  |
+| livenessProbe.periodSeconds | int | `10` |  |
+| livenessProbe.successThreshold | int | `1` |  |
+| livenessProbe.timeoutSeconds | int | `5` |  |
+| nameOverride | string | `""` |  |
+| nodeSelector | object | `{}` |  |
+| podAnnotations | object | `{}` |  |
+| podLabels | object | `{}` |  |
+| podSecurityContext | object | `{}` |  |
 | postgresql.architecture | string | `"standalone"` |  |
 | postgresql.auth.database | string | `"encryption_db"` |  |
 | postgresql.auth.password | string | `"db_pass"` |  |
@@ -183,21 +228,33 @@ secrets:
 | postgresql.nameOverride | string | `"keymanager-db"` |  |
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
+| progressDeadlineSeconds | int | `600` |  |
+| readinessProbe.failureThreshold | int | `3` |  |
+| readinessProbe.httpGet.path | string | `"/"` |  |
+| readinessProbe.httpGet.port | string | `"http"` |  |
+| readinessProbe.initialDelaySeconds | int | `10` |  |
+| readinessProbe.periodSeconds | int | `5` |  |
+| readinessProbe.successThreshold | int | `1` |  |
+| readinessProbe.timeoutSeconds | int | `3` |  |
 | replicaCount | int | `1` |  |
-| secrets.access_token | string | `"secret123"` |  |
-| secrets.aws.key_id | string | `"sample_key_id"` |  |
-| secrets.aws.region | string | `"us-east-1"` |  |
-| secrets.database.password | string | `"db_pass"` |  |
-| secrets.database.root_ca | string | `""` |  |
-| secrets.hash_context | string | `"keymanager:hyperswitch"` |  |
-| secrets.master_key | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
-| secrets.tls.ca | string | `"sample_cert"` |  |
-| secrets.tls.cert | string | `"sample_cert"` |  |
-| secrets.tls.key | string | `"sample_cert"` |  |
-| secrets.vault.token | string | `""` |  |
-| server.annotations | object | `{}` |  |
-| server.image | string | `"juspaydotin/hyperswitch-encryption-service:v0.1.8"` |  |
-| server.imageRegistry | string | `"docker.juspay.io"` |  |
+| resources.limits.cpu | string | `"1000m"` |  |
+| resources.limits.memory | string | `"1Gi"` |  |
+| resources.requests.cpu | string | `"400m"` |  |
+| resources.requests.memory | string | `"400Mi"` |  |
+| securityContext | object | `{}` |  |
+| service.port | int | `5000` |  |
+| service.type | string | `"ClusterIP"` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.automount | bool | `true` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `"keymanager-role"` |  |
+| strategy.rollingUpdate.maxSurge | int | `1` |  |
+| strategy.rollingUpdate.maxUnavailable | int | `0` |  |
+| strategy.type | string | `"RollingUpdate"` |  |
+| terminationGracePeriodSeconds | int | `30` |  |
+| tolerations | list | `[]` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
 
 ## Examples
 

@@ -1,40 +1,17 @@
 apiVersion: v1
-data:
-  production.toml: |
-    [server]
-    port = 5000
-    host = "0.0.0.0"
-
-    [metrics_server]
-    host = "0.0.0.0"
-    port = 6128
-
-    [pool_config]
-    pool = 2
-
-    [log]
-    log_format = "json"
-    log_level = "debug"
-
-    [database]
-    user = {{ include "keymanager-psql.username" . }}
-    host = {{ include "keymanager-psql.host" . }}
-    port = {{ include "keymanager-psql.port" . }}
-    dbname = {{ include "keymanager-psql.database" . }}
-    pool_size = 5
-    min_idle = 2
-    enable_ssl = {{ include "keymanager-psql.enable_ssl" . }}
-
-    [multitenancy.tenants.public]
-    cache_prefix = "{{ .Values.multitenancy.tenants.public.cache_prefix}}"
-    schema = "{{ .Values.multitenancy.tenants.public.schema }}"
-    
-    [multitenancy.tenants.global]
-    cache_prefix = "{{ .Values.multitenancy.tenants.global.cache_prefix}}"
-    schema = "{{ .Values.multitenancy.tenants.global.schema }}"
-
-
 kind: ConfigMap
 metadata:
-  name: keymanager-config-{{ .Release.Name }}
+  name: {{ include "hyperswitch-keymanager.fullname" . }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+data:
+  # Database Configs
+  CRIPTA__DATABASE__USER: {{ include "keymanager-psql.username" . }}
+  CRIPTA__DATABASE__HOST: {{ include "keymanager-psql.host" . }}
+  CRIPTA__DATABASE__PORT: {{ include "keymanager-psql.port" . }}
+  CRIPTA__DATABASE__DBNAME: {{ include "keymanager-psql.database" . }}
+  CRIPTA__DATABASE__ENABLE_SSL: {{ include "keymanager-psql.enable_ssl" . }}
+
+  # Generated config from values.configs
+  {{- include "hyperswitch-keymanager.configToEnvVars" (dict "config" .Values.configs "prefix" "CRIPTA" "context" .) | nindent 2 }}

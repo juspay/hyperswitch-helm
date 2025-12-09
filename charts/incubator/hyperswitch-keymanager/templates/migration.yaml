@@ -2,9 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-keymanager-db
+  name: {{ include "hyperswitch-keymanager.fullname" . }}-migration
   labels:
-    app: create-keymanager-db
+    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    app: keymanager-db-migration
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -17,15 +18,15 @@ spec:
       restartPolicy: OnFailure
       initContainers:
         {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
-      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
+      {{- with (default .Values.global.tolerations .Values.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.global.affinity .Values.server.affinity) }}
+      {{- with (default .Values.global.affinity .Valuesaffinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
+      {{- with (default .Values.global.nodeSelector .Values.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -53,10 +54,6 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "keymanager-psql.secret" . }}
-                  {{- if .Values.postgresql.enabled }}
-                  key: password
-                  {{- else if .Values.external.postgresql.enabled }}
-                  key: primaryPlainPassword
-                  {{- end }}
+                  name: {{ include "keymanager-psql.secret.name" . }}
+                  key: {{ include "keymanager-psql.secret.key" . }}
 {{- end }}

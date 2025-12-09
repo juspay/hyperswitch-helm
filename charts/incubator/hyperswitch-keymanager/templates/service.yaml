@@ -1,21 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: keymanager
-  name: keymanager
+  name: {{ include "hyperswitch-keymanager.fullname" . }}
   namespace: {{ .Release.Namespace }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
 spec:
+  type: {{ .Values.service.type }}
+  {{- if eq .Values.service.type "ClusterIP" }}
   internalTrafficPolicy: Cluster
+  {{- end }}
   ipFamilies:
-  - IPv4
+    - IPv4
   ipFamilyPolicy: SingleStack
   ports:
-  - name: https
-    port: 443
-    protocol: TCP
-    targetPort: http
+    - name: http
+      port: 80
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
   selector:
-    app: keymanager
+    {{- include "hyperswitch-keymanager.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
-  type: ClusterIP

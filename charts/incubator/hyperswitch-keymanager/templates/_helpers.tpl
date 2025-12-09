@@ -51,7 +51,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Service account name
+Create the name of the service account to use
 */}}
 {{- define "hyperswitch-keymanager.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
@@ -62,108 +62,153 @@ Service account name
 {{- end }}
 
 {{/*
-PostgreSQL configuration validation
+Get the full image name
 */}}
-{{- define "validate.keymanager-psql.config" -}}
-{{- if not (or .Values.postgresql.enabled .Values.external.postgresql.enabled) }}
-{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'false'" }}
-{{- else if and .Values.postgresql.enabled .Values.external.postgresql.enabled }}
-{{- fail "Both postgresql.enabled and external.postgresql.enabled cannot be 'true'" }}
-{{- end }}
+{{- define "hyperswitch-keymanager.image" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.image.registry }}
+{{- $repository := .Values.image.repository }}
+{{- $tag := .Values.image.tag | default "latest" }}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
 {{- end }}
 
-{{/*
-PostgreSQL host
-*/}}
-{{- define "keymanager-psql.host" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- printf "%s-keymanager-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" | quote }}
-{{- else }}
-{{- .Values.external.postgresql.config.host | trim | quote }}
-{{- end }}
-{{- end }}
+{{/* Define mapping of config keys to helper functions */}}
+{{- define "hyperswitch-keymanager.configKeyToHelperMapping" -}}
+{{/* Add any config key mappings here if needed in the future */}}
+{{- end -}}
 
-{{/*
-PostgreSQL port
-*/}}
-{{- define "keymanager-psql.port" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- printf "5432" }}
-{{- else }}
-{{- .Values.external.postgresql.config.port | default 5432 }}
-{{- end }}
-{{- end }}
+{{/* Helper: Check if a config value is a secret field (_secret) */}}
+{{- define "hyperswitch-keymanager.isSecretField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if hasKey $value "_secret" -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
 
-{{/*
-PostgreSQL username
-*/}}
-{{- define "keymanager-psql.username" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- .Values.postgresql.auth.username | quote }}
-{{- else }}
-{{- .Values.external.postgresql.config.username | trim | quote }}
-{{- end }}
-{{- end }}
+{{/* Helper: Check if a config value is a reference field (_secretRef or _configRef) */}}
+{{- define "hyperswitch-keymanager.isReferenceField" -}}
+  {{- $value := . -}}
+  {{- if kindIs "map" $value -}}
+    {{- if or (hasKey $value "_secretRef") (hasKey $value "_configRef") -}}
+      {{- print "true" -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
 
-{{/*
-PostgreSQL database name
-*/}}
-{{- define "keymanager-psql.database" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- .Values.postgresql.auth.database | quote }}
-{{- else }}
-{{- .Values.external.postgresql.config.database | trim | quote }}
-{{- end }}
-{{- end }}
+{{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
+{{- define "hyperswitch-keymanager.configToEnvVars" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+  {{- $keyMapping := include "hyperswitch-keymanager.configKeyToHelperMapping" . | fromYaml -}}
 
-{{/*
-PostgreSQL password
-*/}}
-{{- define "keymanager-psql.password" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
-{{- else }}
-{{- .Values.external.postgresql.config.password | trim }}
-{{- end }}
-{{- end }}
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
 
-{{/*
-PostgreSQL plain password for external PostgreSQL
-*/}}
-{{- define "keymanager-psql.plainpassword" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
-{{- else }}
-{{- default .Values.external.postgresql.config.password .Values.external.postgresql.config.plainpassword | trim }}
-{{- end }}
-{{- end }}
+    {{- if kindIs "map" $value -}}
+      {{- $isSecret := include "hyperswitch-keymanager.isSecretField" $value -}}
+      {{- $isReference := include "hyperswitch-keymanager.isReferenceField" $value -}}
+      {{- if and (eq $isSecret "false") (eq $isReference "false") -}}
+        {{/* Recursively process normal nested objects */}}
+        {{- include "hyperswitch-keymanager.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
+    {{- else if kindIs "slice" $value -}}
+      {{/* Handle arrays by joining with commas */}}
+      {{- $arrayValue := $value | join "," -}}
+      {{- printf "%s: %q\n" $envKey $arrayValue -}}
+    {{- else -}}
+      {{/* Check if this path has a helper function mapping and value is empty */}}
+      {{- if and (hasKey $keyMapping $configPath) (or (eq $value "") (eq $value nil)) -}}
+        {{- $helperFunc := get $keyMapping $configPath -}}
+        {{- $helperValue := include $helperFunc $context -}}
+        {{- printf "%s: %q\n" $envKey ($helperValue | toString) -}}
+      {{- else -}}
+        {{/* Handle primitive values with proper YAML quoting */}}
+        {{- printf "%s: %q\n" $envKey ($value | toString) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
-{{/*
-PostgreSQL secret name
-*/}}
-{{- define "keymanager-psql.secret" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- printf "%s-keymanager-db" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "keymanager-secrets-%s" .Release.Name }}
-{{- end }}
-{{- end }}
+{{/* Convert YAML config to secret data (base64 encoded) for _secret fields */}}
+{{- define "hyperswitch-keymanager.configToSecrets" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
 
-{{/*
-PostgreSQL enable SSL
-*/}}
-{{- define "keymanager-psql.enable_ssl" -}}
-{{- include "validate.keymanager-psql.config" . }}
-{{- if .Values.postgresql.enabled }}
-{{- printf "false" }}
-{{- else }}
-{{- .Values.external.postgresql.enable_ssl | default false }}
-{{- end }}
-{{- end }}
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isSecret := include "hyperswitch-keymanager.isSecretField" $value -}}
+      {{- if eq $isSecret "true" -}}
+        {{/* Handle _secret field */}}
+        {{- $secretValue := get $value "_secret" -}}
+        {{- printf "%s: %s\n" $envKey ($secretValue | b64enc) -}}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch-keymanager.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Convert YAML config to environment variables with valueFrom for _secretRef/_configRef fields */}}
+{{- define "hyperswitch-keymanager.configToEnvRefs" -}}
+  {{- $config := .config -}}
+  {{- $prefix := .prefix -}}
+  {{- $context := .context | default . -}}
+  {{- $currentPath := .currentPath | default "" -}}
+
+  {{- range $key, $value := $config -}}
+    {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
+    {{- $configPath := $key -}}
+    {{- if $currentPath -}}
+      {{- $configPath = printf "%s.%s" $currentPath $key -}}
+    {{- end -}}
+
+    {{- if kindIs "map" $value -}}
+      {{- $isReference := include "hyperswitch-keymanager.isReferenceField" $value -}}
+      {{- if eq $isReference "true" -}}
+        {{/* Handle _secretRef or _configRef field */}}
+        {{- if hasKey $value "_secretRef" -}}
+          {{- $ref := get $value "_secretRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ tpl $ref.name $context }}
+      key: {{ tpl $ref.key $context }}
+        {{- else if hasKey $value "_configRef" -}}
+          {{- $ref := get $value "_configRef" }}
+- name: {{ $envKey }}
+  valueFrom:
+    configMapKeyRef:
+      name: {{ tpl $ref.name $context }}
+      key: {{ tpl $ref.key $context }}
+        {{- end }}
+      {{- else -}}
+        {{/* Recursively process nested objects */}}
+        {{- include "hyperswitch-keymanager.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
