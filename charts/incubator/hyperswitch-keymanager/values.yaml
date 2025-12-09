@@ -238,3 +238,36 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Istio configuration
+istio:
+  enabled: false
+  virtualService:
+    enabled: false
+    hosts: []
+    gateways: []
+    # HTTP routing rules - route destination will be automatically set to keymanager service
+    http: []
+    # Example configuration:
+    # http:
+    #   - name: "keymanager-routes"
+    #     match:
+    #       - uri:
+    #           prefix: /
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+  destinationRule:
+    enabled: false
+    trafficPolicy: {}
+    # Example traffic policy:
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: ROUND_ROBIN
+    #   connectionPool:
+    #     tcp:
+    #       maxConnections: 100
+    #     http:
+    #       http1MaxPendingRequests: 50
+    #       http2MaxRequests: 100
