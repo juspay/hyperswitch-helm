@@ -32,8 +32,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: build-and-copy
-          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.buildImageRegistry }}
-          image: "{{ $registry }}/{{ .Values.autoBuild.buildImage }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}"
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.autoBuild.image }}:v{{ .Values.autoBuild.gitCloneParam.gitVersion | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.autoBuild.pullPolicy }}
           command: ["/bin/sh", "-c"]
           args:
@@ -43,7 +43,7 @@ spec:
               npm run build:{{ .Values.env.sdkEnv }}
               echo "Copying built files to nginx path..."
               mkdir -p /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
-              cp -r /usr/src/app/dist/{{ .Values.env.sdkEnv }}/v1/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
+              cp -r /usr/src/app/dist/{{ .Values.env.sdkEnv }}/{{ include "hyperswitch-sdk.subversion" . }}/* /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
               echo "Build and copy completed successfully"
               ls -la /usr/share/nginx/html{{ include "nginx.sdk.path" . }}
           env:
@@ -78,7 +78,7 @@ spec:
         - name: {{ .Chart.Name }}-nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.nginxConfig.buildImageRegistry }}
+          {{- $registry := .Values.global.imageRegistry | default .Values.autoBuild.nginxConfig.imageRegistry }}
           image: "{{ $registry }}/{{ .Values.autoBuild.nginxConfig.image }}:{{ .Values.autoBuild.nginxConfig.tag }}"
           imagePullPolicy: {{ .Values.autoBuild.nginxConfig.pullPolicy }}
           ports:

@@ -49,9 +49,11 @@ autoBuild:
   # -- force rebuild assets even these files exist
   forceBuild: false
   # -- docker image registry for the build
-  buildImageRegistry: docker.juspay.io
+  imageRegistry: docker.juspay.io
   # -- docker image to use for the build
-  buildImage: juspaydotin/hyperswitch-web
+  image: juspaydotin/hyperswitch-web
+  # -- docker image pull policy
+  pullPolicy: IfNotPresent
   gitCloneParam:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
@@ -68,7 +70,7 @@ autoBuild:
     disableCSP: "false"
   nginxConfig:
     # -- docker image registry for the build
-    buildImageRegistry: docker.io
+    imageRegistry: docker.io
     # -- nginx static server extra path ( like https://<host>/0.15.8/v0 )
     extraPath: v1
     # -- nginx static server image
