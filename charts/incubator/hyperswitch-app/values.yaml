@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: 2025.12.03.0-hotfix2
+    version: 2025.11.26.0-hotfix7
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: 2025.12.03.0-hotfix2
+    version: 2025.11.26.0-hotfix7
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: 2025.12.03.0-hotfix2
+    version: 2025.11.26.0-hotfix7
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: 2025.12.03.0-hotfix2
+    version: 2025.11.26.0-hotfix7
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
