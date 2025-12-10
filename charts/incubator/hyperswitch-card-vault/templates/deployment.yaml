@@ -156,6 +156,34 @@ spec:
           image: "{{ $registry }}/{{ .Values.server.image }}"
           imagePullPolicy: IfNotPresent
           lifecycle:
+            {{- include "validate.vaultKeys.config" . }}
+            {{- if .Values.vaultKeysPostStartHook.enabled }}
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |-
+                    set -e
+                    until curl -f -s http://localhost:{{ .Values.server.port }}/health > /dev/null 2>&1; do
+                      echo "Waiting for vault service..."
+                      sleep 2
+                    done
+                    echo "Posting key1..."
+                    curl -X POST http://localhost:{{ .Values.server.port }}/custodian/key1 \
+                      -H "Content-Type: application/json" \
+                      -H "x-tenant-id: public" \
+                      -d '{"key": "{{ .Values.vaultKeys.key1 }}"}'
+                    echo "Posting key2..."
+                    curl -X POST http://localhost:{{ .Values.server.port }}/custodian/key2 \
+                      -H "Content-Type: application/json" \
+                      -H "x-tenant-id: public" \
+                      -d '{"key": "{{ .Values.vaultKeys.key2 }}"}'
+                    echo "Calling decrypt endpoint..."
+                    curl -X POST http://localhost:{{ .Values.server.port }}/custodian/decrypt \
+                      -H "Content-Type: application/json" \
+                      -H "x-tenant-id: public"
+            {{- end }}
             preStop:
               exec:
                 command:

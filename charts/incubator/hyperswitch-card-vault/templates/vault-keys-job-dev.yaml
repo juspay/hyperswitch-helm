@@ -1,4 +1,5 @@
-{{- if .Values.vaultKeysJob.enabled }}
+{{- include "validate.vaultKeys.config" . }}
+{{- if and .Values.vaultKeysJob.enabled (not .Values.vaultKeysPostStartHook.enabled) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -30,13 +31,13 @@ spec:
               curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key1 \
                 -H "Content-Type: application/json" \
                 -H "x-tenant-id: public" \
-                -d '{"key": "{{ .Values.vaultKeysJob.keys.key1 }}"}'
+                -d '{"key": "{{ .Values.vaultKeys.key1 }}"}'
               
               echo "Posting key2..."
               curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/key2 \
                 -H "Content-Type: application/json" \
                 -H "x-tenant-id: public" \
-                -d '{"key": "{{ .Values.vaultKeysJob.keys.key2 }}"}'
+                -d '{"key": "{{ .Values.vaultKeys.key2 }}"}'
               
               echo "Calling decrypt endpoint..."
               curl -X POST http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/custodian/decrypt \

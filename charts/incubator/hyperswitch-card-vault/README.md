@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -182,14 +182,15 @@ external:
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
 | tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
 | tenant_secrets.public.schema | string | `"public"` |  |
+| vaultKeys.key1 | string | `"3c82773a6621feee3d5e0ce96654bf1f"` |  |
+| vaultKeys.key2 | string | `"7de95dbbd5d020e6b2a44847b8942bf5"` |  |
 | vaultKeysJob.checkVaultService.host | string | `""` |  |
 | vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
 | vaultKeysJob.checkVaultService.imageRegistry | string | `"docker.io"` |  |
 | vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |
 | vaultKeysJob.checkVaultService.port | int | `80` |  |
 | vaultKeysJob.enabled | bool | `true` |  |
-| vaultKeysJob.keys.key1 | string | `"3c82773a6621feee3d5e0ce96654bf1f"` |  |
-| vaultKeysJob.keys.key2 | string | `"7de95dbbd5d020e6b2a44847b8942bf5"` |  |
+| vaultKeysPostStartHook.enabled | bool | `false` |  |
 
 ## Examples
 
