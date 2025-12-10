@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "hyperswitch-keymanager.name" -}}
+{{- define "hyperswitch-encryption-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "hyperswitch-keymanager.fullname" -}}
+{{- define "hyperswitch-encryption-service.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "hyperswitch-keymanager.chart" -}}
+{{- define "hyperswitch-encryption-service.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "hyperswitch-keymanager.labels" -}}
-helm.sh/chart: {{ include "hyperswitch-keymanager.chart" . }}
-{{ include "hyperswitch-keymanager.selectorLabels" . }}
+{{- define "hyperswitch-encryption-service.labels" -}}
+helm.sh/chart: {{ include "hyperswitch-encryption-service.chart" . }}
+{{ include "hyperswitch-encryption-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "hyperswitch-keymanager.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "hyperswitch-keymanager.name" . }}
+{{- define "hyperswitch-encryption-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "hyperswitch-encryption-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "hyperswitch-keymanager.serviceAccountName" -}}
+{{- define "hyperswitch-encryption-service.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "hyperswitch-keymanager.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "hyperswitch-encryption-service.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -64,7 +64,7 @@ Create the name of the service account to use
 {{/*
 Get the full image name
 */}}
-{{- define "hyperswitch-keymanager.image" -}}
+{{- define "hyperswitch-encryption-service.image" -}}
 {{- $registry := .Values.global.imageRegistry | default .Values.image.registry }}
 {{- $repository := .Values.image.repository }}
 {{- $tag := .Values.image.tag | default "latest" }}
@@ -72,12 +72,12 @@ Get the full image name
 {{- end }}
 
 {{/* Define mapping of config keys to helper functions */}}
-{{- define "hyperswitch-keymanager.configKeyToHelperMapping" -}}
+{{- define "hyperswitch-encryption-service.configKeyToHelperMapping" -}}
 {{/* Add any config key mappings here if needed in the future */}}
 {{- end -}}
 
 {{/* Helper: Check if a config value is a secret field (_secret) */}}
-{{- define "hyperswitch-keymanager.isSecretField" -}}
+{{- define "hyperswitch-encryption-service.isSecretField" -}}
   {{- $value := . -}}
   {{- if kindIs "map" $value -}}
     {{- if hasKey $value "_secret" -}}
@@ -91,7 +91,7 @@ Get the full image name
 {{- end -}}
 
 {{/* Helper: Check if a config value is a reference field (_secretRef or _configRef) */}}
-{{- define "hyperswitch-keymanager.isReferenceField" -}}
+{{- define "hyperswitch-encryption-service.isReferenceField" -}}
   {{- $value := . -}}
   {{- if kindIs "map" $value -}}
     {{- if or (hasKey $value "_secretRef") (hasKey $value "_configRef") -}}
@@ -105,12 +105,12 @@ Get the full image name
 {{- end -}}
 
 {{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
-{{- define "hyperswitch-keymanager.configToEnvVars" -}}
+{{- define "hyperswitch-encryption-service.configToEnvVars" -}}
   {{- $config := .config -}}
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
   {{- $currentPath := .currentPath | default "" -}}
-  {{- $keyMapping := include "hyperswitch-keymanager.configKeyToHelperMapping" . | fromYaml -}}
+  {{- $keyMapping := include "hyperswitch-encryption-service.configKeyToHelperMapping" . | fromYaml -}}
 
   {{- range $key, $value := $config -}}
     {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
@@ -120,11 +120,11 @@ Get the full image name
     {{- end -}}
 
     {{- if kindIs "map" $value -}}
-      {{- $isSecret := include "hyperswitch-keymanager.isSecretField" $value -}}
-      {{- $isReference := include "hyperswitch-keymanager.isReferenceField" $value -}}
+      {{- $isSecret := include "hyperswitch-encryption-service.isSecretField" $value -}}
+      {{- $isReference := include "hyperswitch-encryption-service.isReferenceField" $value -}}
       {{- if and (eq $isSecret "false") (eq $isReference "false") -}}
         {{/* Recursively process normal nested objects */}}
-        {{- include "hyperswitch-keymanager.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+        {{- include "hyperswitch-encryption-service.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
       {{- end -}}
     {{- else if kindIs "slice" $value -}}
       {{/* Handle arrays by joining with commas */}}
@@ -145,7 +145,7 @@ Get the full image name
 {{- end -}}
 
 {{/* Convert YAML config to secret data (base64 encoded) for _secret fields */}}
-{{- define "hyperswitch-keymanager.configToSecrets" -}}
+{{- define "hyperswitch-encryption-service.configToSecrets" -}}
   {{- $config := .config -}}
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
@@ -159,21 +159,21 @@ Get the full image name
     {{- end -}}
 
     {{- if kindIs "map" $value -}}
-      {{- $isSecret := include "hyperswitch-keymanager.isSecretField" $value -}}
+      {{- $isSecret := include "hyperswitch-encryption-service.isSecretField" $value -}}
       {{- if eq $isSecret "true" -}}
         {{/* Handle _secret field */}}
         {{- $secretValue := get $value "_secret" -}}
         {{- printf "%s: %s\n" $envKey ($secretValue | b64enc) -}}
       {{- else -}}
         {{/* Recursively process nested objects */}}
-        {{- include "hyperswitch-keymanager.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+        {{- include "hyperswitch-encryption-service.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
 {{/* Convert YAML config to environment variables with valueFrom for _secretRef/_configRef fields */}}
-{{- define "hyperswitch-keymanager.configToEnvRefs" -}}
+{{- define "hyperswitch-encryption-service.configToEnvRefs" -}}
   {{- $config := .config -}}
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
@@ -187,7 +187,7 @@ Get the full image name
     {{- end -}}
 
     {{- if kindIs "map" $value -}}
-      {{- $isReference := include "hyperswitch-keymanager.isReferenceField" $value -}}
+      {{- $isReference := include "hyperswitch-encryption-service.isReferenceField" $value -}}
       {{- if eq $isReference "true" -}}
         {{/* Handle _secretRef or _configRef field */}}
         {{- if hasKey $value "_secretRef" -}}
@@ -207,7 +207,7 @@ Get the full image name
         {{- end }}
       {{- else -}}
         {{/* Recursively process nested objects */}}
-        {{- include "hyperswitch-keymanager.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
+        {{- include "hyperswitch-encryption-service.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
       {{- end -}}
     {{- end -}}
   {{- end -}}

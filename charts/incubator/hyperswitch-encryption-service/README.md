@@ -1,9 +1,9 @@
-# hyperswitch-keymanager
+# hyperswitch-encryption-service
 
 ![Version: 0.1.5-beta.1](https://img.shields.io/badge/Version-0.1.5--beta.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
 
 "application"
-A Helm chart for deploying Hyperswitch Keymanager
+A Helm chart for deploying Hyperswitch encryption-service
 
 ## Requirements
 
@@ -63,7 +63,7 @@ secrets:
 
 ### Multi-tenancy Configuration
 
-The keymanager supports multi-tenant deployments:
+The encryption service supports multi-tenant deployments:
 ```yaml
 multitenancy:
   tenants:
@@ -77,7 +77,7 @@ multitenancy:
 
 ### TLS/mTLS Configuration
 
-To enable TLS/mTLS for the keymanager service:
+To enable TLS/mTLS for the encryption service:
 ```yaml
 secrets:
   tls:
@@ -167,13 +167,13 @@ secrets:
 | configs.log.log_level | string | `"debug"` |  |
 | configs.metrics_server.host | string | `"0.0.0.0"` |  |
 | configs.metrics_server.port | int | `6128` |  |
-| configs.multitenancy.tenants.global.cache_prefix | string | `"hyperswitch_keymanager_global"` |  |
-| configs.multitenancy.tenants.global.schema | string | `""` |  |
-| configs.multitenancy.tenants.public.cache_prefix | string | `"hyperswitch_keymanager_public"` |  |
+| configs.multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
+| configs.multitenancy.tenants.global.schema | string | `"global"` |  |
+| configs.multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
 | configs.multitenancy.tenants.public.schema | string | `"public"` |  |
 | configs.pool_config.pool | int | `2` |  |
 | configs.secrets.access_token._secret | string | `"secret123"` |  |
-| configs.secrets.hash_context._secret | string | `"keymanager:hyperswitch"` |  |
+| configs.secrets.hash_context._secret | string | `"encryption-service:hyperswitch"` |  |
 | configs.secrets.master_key._secret | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
 | configs.server.host | string | `"0.0.0.0"` |  |
 | configs.server.port | int | `5000` |  |
@@ -190,13 +190,13 @@ secrets:
 | externalSecretsOperator.externalSecrets.secrets[0].creationPolicy | string | `"Owner"` |  |
 | externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.conversionStrategy | string | `"Default"` |  |
 | externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.decodingStrategy | string | `"None"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.key | string | `"hyperswitch/keymanager/secrets"` |  |
+| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.key | string | `"hyperswitch/encryption-service/secrets"` |  |
 | externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.metadataPolicy | string | `"None"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].name | string | `"keymanager-secrets"` |  |
+| externalSecretsOperator.externalSecrets.secrets[0].name | string | `"encryption-service-secrets"` |  |
 | externalSecretsOperator.externalSecrets.secrets[0].refreshInterval | string | `"1h"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].targetName | string | `"keymanager-secrets"` |  |
-| externalSecretsOperator.secretStore.name | string | `"keymanager-secret-store"` |  |
-| externalSecretsOperator.secretStore.provider.aws.auth.jwt.serviceAccountRef.name | string | `"keymanager-eso-sa"` |  |
+| externalSecretsOperator.externalSecrets.secrets[0].targetName | string | `"encryption-service-secrets"` |  |
+| externalSecretsOperator.secretStore.name | string | `"encryption-service-secret-store"` |  |
+| externalSecretsOperator.secretStore.provider.aws.auth.jwt.serviceAccountRef.name | string | `"encryption-service-eso-sa"` |  |
 | externalSecretsOperator.secretStore.provider.aws.region | string | `"us-west-2"` |  |
 | externalSecretsOperator.secretStore.provider.aws.service | string | `"SecretsManager"` |  |
 | externalSecretsOperator.serviceAccount.annotations | object | `{}` |  |
@@ -215,7 +215,7 @@ secrets:
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"hyperswitch-keymanager.local"` |  |
+| ingress.hosts[0].host | string | `"hyperswitch-encryption-service.local"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
@@ -250,7 +250,7 @@ secrets:
 | postgresql.auth.username | string | `"db_user"` |  |
 | postgresql.enabled | bool | `true` |  |
 | postgresql.image.repository | string | `"bitnamilegacy/postgresql"` |  |
-| postgresql.nameOverride | string | `"keymanager-db"` |  |
+| postgresql.nameOverride | string | `"encryption-service-db"` |  |
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
 | progressDeadlineSeconds | int | `600` |  |
@@ -267,13 +267,24 @@ secrets:
 | resources.requests.cpu | string | `"400m"` |  |
 | resources.requests.memory | string | `"400Mi"` |  |
 | securityContext | object | `{}` |  |
-| service.metricsPort | int | `6128` |  |
-| service.port | int | `5000` |  |
+| service.annotations | object | `{}` |  |
+| service.externalTrafficPolicy | string | `""` |  |
+| service.internalTrafficPolicy | string | `"Cluster"` |  |
+| service.loadBalancerClass | string | `""` |  |
+| service.ports[0].name | string | `"https"` |  |
+| service.ports[0].port | int | `443` |  |
+| service.ports[0].protocol | string | `"TCP"` |  |
+| service.ports[0].targetPort | int | `5000` |  |
+| service.ports[1].name | string | `"metrics"` |  |
+| service.ports[1].port | int | `6128` |  |
+| service.ports[1].protocol | string | `"TCP"` |  |
+| service.ports[1].targetPort | int | `6128` |  |
+| service.sessionAffinity | string | `"None"` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automount | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `"keymanager-role"` |  |
+| serviceAccount.name | string | `"encryption-service-role"` |  |
 | strategy.rollingUpdate.maxSurge | int | `1` |  |
 | strategy.rollingUpdate.maxUnavailable | int | `0` |  |
 | strategy.type | string | `"RollingUpdate"` |  |
@@ -315,7 +326,7 @@ secrets:
 
 server:
   annotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/hyperswitch-keymanager"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/hyperswitch-encryption-service"
 
 external:
   postgresql:
@@ -323,9 +334,9 @@ external:
     config:
       host: "prod-postgres.example.com"
       port: 5432
-      username: "keymanager_user"
+      username: "encryption_service_user"
       password: "encrypted-password"
-      database: "keymanager_db"
+      database: "encryption_db"
 
 autoscaling:
   enabled: true
@@ -437,13 +448,13 @@ secrets:
 
 ## Integration with Card Vault
 
-The Hyperswitch Key Manager can be used as an external key management service for the Card Vault:
+The Hyperswitch Encryption Service can be used as an external key management service for the Card Vault:
 
 ```yaml
 # In card-vault values.yaml
 server:
   externalKeyManager:
-    url: "https://keymanager-service:5000"
+    url: "https://encryption-service:5000"
 
 secrets:
   external_key_manager:

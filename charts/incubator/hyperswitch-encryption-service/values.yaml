@@ -1,4 +1,4 @@
-# Default values for hyperswitch-keymanager.
+# Default values for hyperswitch-encryption-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -23,7 +23,7 @@ strategy:
 progressDeadlineSeconds: 600
 terminationGracePeriodSeconds: 30
 
-# Image settings for Hyperswitch Keymanager
+# Image settings for Hyperswitch Encryption Service
 image:
   registry: docker.juspay.io
   repository: juspaydotin/hyperswitch-encryption-service
@@ -65,10 +65,10 @@ configs:
   multitenancy:
     tenants:
       global:
-        cache_prefix: hyperswitch_keymanager_global
-        schema: ""
+        cache_prefix: global
+        schema: global
       public:
-        cache_prefix: hyperswitch_keymanager_public
+        cache_prefix: public
         schema: public
   pool_config:
     pool: 2
@@ -76,7 +76,7 @@ configs:
     access_token:
       _secret: secret123
     hash_context:
-      _secret: keymanager:hyperswitch
+      _secret: encryption-service:hyperswitch
     master_key:
       _secret: 6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e
     # For AWS KMS integration
@@ -95,7 +95,7 @@ postgresql:
   enabled: true
   image:
     repository: bitnamilegacy/postgresql
-  nameOverride: keymanager-db
+  nameOverride: encryption-service-db
   auth:
     username: db_user
     password: db_pass
@@ -140,7 +140,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: keymanager-role
+  name: encryption-service-role
 
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
@@ -196,7 +196,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: hyperswitch-keymanager.local
+    - host: hyperswitch-encryption-service.local
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -267,11 +267,11 @@ istio:
     enabled: false
     hosts: []
     gateways: []
-    # HTTP routing rules - route destination will be automatically set to keymanager service
+    # HTTP routing rules - route destination will be automatically set to encryption-service service
     http: []
     # Example configuration:
     # http:
-    #   - name: "keymanager-routes"
+    #   - name: "encryption-service-routes"
     #     match:
     #       - uri:
     #           prefix: /
@@ -309,7 +309,7 @@ externalSecretsOperator:
 
   # SecretStore configuration
   secretStore:
-    name: "keymanager-secret-store"
+    name: "encryption-service-secret-store"
     provider:
       aws:
         service: SecretsManager
@@ -317,18 +317,18 @@ externalSecretsOperator:
         auth:
           jwt:
             serviceAccountRef:
-              name: keymanager-eso-sa
+              name: encryption-service-eso-sa
 
   # ExternalSecret configuration
   externalSecrets:
     secrets:
-      - name: "keymanager-secrets"
-        targetName: "keymanager-secrets"
+      - name: "encryption-service-secrets"
+        targetName: "encryption-service-secrets"
         refreshInterval: "1h"
         creationPolicy: "Owner"
         dataFrom:
           - extract:
-              key: "hyperswitch/keymanager/secrets"
+              key: "hyperswitch/encryption-service/secrets"
               conversionStrategy: "Default"
               decodingStrategy: "None"
               metadataPolicy: "None"

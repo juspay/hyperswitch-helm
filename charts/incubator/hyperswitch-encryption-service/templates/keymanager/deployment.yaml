@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hyperswitch-keymanager.fullname" . }}
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}
   namespace: {{ .Release.Namespace }}
   {{- with (default .Values.global.annotations .Values.annotations) }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -21,7 +21,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "hyperswitch-keymanager.selectorLabels" . | nindent 6 }}
+      {{- include "hyperswitch-encryption-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -29,7 +29,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "hyperswitch-keymanager.labels" . | nindent 8 }}
+        {{- include "hyperswitch-encryption-service.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -38,7 +38,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "hyperswitch-keymanager.serviceAccountName" . }}
+      serviceAccountName: {{ include "hyperswitch-encryption-service.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -66,7 +66,7 @@ spec:
       {{- end }}
       {{- if .Values.initDB.enable }}
       initContainers:
-        {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
+        {{- include "encryption-service-psql.initContainer.check.ready" . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -74,7 +74,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: {{ include "hyperswitch-keymanager.image" . }}
+          image: {{ include "hyperswitch-encryption-service.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           lifecycle:
             preStop:
@@ -107,15 +107,15 @@ spec:
             - name: CRIPTA__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "keymanager-psql.secret.name" . }}
-                  key: {{ include "keymanager-psql.secret.key" . }}
-            {{- include "hyperswitch-keymanager.configToEnvRefs" (dict "config" .Values.configs "prefix" "CRIPTA" "context" .) | nindent 12 }}
+                  name: {{ include "encryption-service-psql.secret.name" . }}
+                  key: {{ include "encryption-service-psql.secret.key" . }}
+            {{- include "hyperswitch-encryption-service.configToEnvRefs" (dict "config" .Values.configs "prefix" "CRIPTA" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:
-                name: {{ include "hyperswitch-keymanager.fullname" . }}
+                name: {{ include "hyperswitch-encryption-service.fullname" . }}
             {{- if not .Values.disableInternalSecrets }}
             - secretRef:
-                name: {{ include "hyperswitch-keymanager.fullname" . }}-secrets
+                name: {{ include "hyperswitch-encryption-service.fullname" . }}-secrets
             {{- end }}
             {{- if .Values.externalSecretsOperator.enabled }}
             {{- range .Values.externalSecretsOperator.externalSecrets.secrets }}

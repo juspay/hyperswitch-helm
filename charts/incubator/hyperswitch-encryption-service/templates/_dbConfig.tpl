@@ -1,7 +1,7 @@
 {{/*
 PostgreSQL configuration validation
 */}}
-{{- define "validate.keymanager-psql.config" -}}
+{{- define "validate.encryption-service-psql.config" -}}
 {{- if not (or .Values.postgresql.enabled .Values.externalPostgresql.enabled) }}
 {{- fail "Both postgresql.enabled and externalPostgresql.enabled cannot be 'false'" }}
 {{- else if and .Values.postgresql.enabled .Values.externalPostgresql.enabled }}
@@ -12,10 +12,10 @@ PostgreSQL configuration validation
 {{/*
 PostgreSQL host
 */}}
-{{- define "keymanager-psql.host" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.host" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
-{{- $nameOverride := .Values.postgresql.nameOverride | default "keymanager-db" }}
+{{- $nameOverride := .Values.postgresql.nameOverride | default "encryption-service-db" }}
 {{- printf "%s-%s" .Release.Name $nameOverride | replace "+" "_" | trunc 63 | trimSuffix "-" | quote }}
 {{- else }}
 {{- .Values.externalPostgresql.config.host | trim | quote }}
@@ -25,8 +25,8 @@ PostgreSQL host
 {{/*
 PostgreSQL port
 */}}
-{{- define "keymanager-psql.port" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.port" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- printf "5432" | quote }}
 {{- else }}
@@ -37,8 +37,8 @@ PostgreSQL port
 {{/*
 PostgreSQL username
 */}}
-{{- define "keymanager-psql.username" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.username" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- .Values.postgresql.auth.username | quote }}
 {{- else }}
@@ -49,8 +49,8 @@ PostgreSQL username
 {{/*
 PostgreSQL database name
 */}}
-{{- define "keymanager-psql.database" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.database" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- .Values.postgresql.auth.database | quote }}
 {{- else }}
@@ -61,8 +61,8 @@ PostgreSQL database name
 {{/*
 PostgreSQL password
 */}}
-{{- define "keymanager-psql.password" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.password" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
 {{- else }}
@@ -73,8 +73,8 @@ PostgreSQL password
 {{/*
 PostgreSQL plain password for external PostgreSQL
 */}}
-{{- define "keymanager-psql.plainpassword" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.plainpassword" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
 {{- else }}
@@ -85,8 +85,8 @@ PostgreSQL plain password for external PostgreSQL
 {{/*
 PostgreSQL enable SSL
 */}}
-{{- define "keymanager-psql.enable_ssl" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.enable_ssl" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
 {{- printf "false" | quote }}
 {{- else }}
@@ -95,7 +95,7 @@ PostgreSQL enable SSL
 {{- end }}
 
 {{/* Common helper: Check if a password config uses _secretRef */}}
-{{- define "keymanager-psql.password.uses.secretRef" -}}
+{{- define "encryption-service-psql.password.uses.secretRef" -}}
   {{- $passwordConfig := . -}}
   {{- if and (kindIs "map" $passwordConfig) (hasKey $passwordConfig "_secretRef") -}}
     {{- printf "true" -}}
@@ -107,22 +107,22 @@ PostgreSQL enable SSL
 {{/*
 PostgreSQL secret name for password (supports _secretRef)
 */}}
-{{- define "keymanager-psql.secret.name" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.secret.name" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
   {{- $passwordConfig := .Values.postgresql.auth.password -}}
-  {{- if eq (include "keymanager-psql.password.uses.secretRef" $passwordConfig) "true" -}}
+  {{- if eq (include "encryption-service-psql.password.uses.secretRef" $passwordConfig) "true" -}}
     {{- printf "%s" $passwordConfig._secretRef.name -}}
   {{- else -}}
-    {{- $nameOverride := .Values.postgresql.nameOverride | default "keymanager-db" }}
+    {{- $nameOverride := .Values.postgresql.nameOverride | default "encryption-service-db" }}
     {{- printf "%s-%s" .Release.Name $nameOverride | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
   {{- end -}}
 {{- else if .Values.externalPostgresql.enabled }}
   {{- $passwordConfig := .Values.externalPostgresql.config.password -}}
-  {{- if eq (include "keymanager-psql.password.uses.secretRef" $passwordConfig) "true" -}}
+  {{- if eq (include "encryption-service-psql.password.uses.secretRef" $passwordConfig) "true" -}}
     {{- printf "%s" $passwordConfig._secretRef.name -}}
   {{- else -}}
-    {{- printf "%s-secrets" (include "hyperswitch-keymanager.fullname" .) -}}
+    {{- printf "%s-secrets" (include "hyperswitch-encryption-service.fullname" .) -}}
   {{- end -}}
 {{- end }}
 {{- end }}
@@ -130,18 +130,18 @@ PostgreSQL secret name for password (supports _secretRef)
 {{/*
 PostgreSQL secret key for password (supports _secretRef)
 */}}
-{{- define "keymanager-psql.secret.key" -}}
-{{- include "validate.keymanager-psql.config" . }}
+{{- define "encryption-service-psql.secret.key" -}}
+{{- include "validate.encryption-service-psql.config" . }}
 {{- if .Values.postgresql.enabled }}
   {{- $passwordConfig := .Values.postgresql.auth.password -}}
-  {{- if eq (include "keymanager-psql.password.uses.secretRef" $passwordConfig) "true" -}}
+  {{- if eq (include "encryption-service-psql.password.uses.secretRef" $passwordConfig) "true" -}}
     {{- printf "%s" $passwordConfig._secretRef.key -}}
   {{- else -}}
     {{- printf "password" -}}
   {{- end -}}
 {{- else if .Values.externalPostgresql.enabled }}
   {{- $passwordConfig := .Values.externalPostgresql.config.password -}}
-  {{- if eq (include "keymanager-psql.password.uses.secretRef" $passwordConfig) "true" -}}
+  {{- if eq (include "encryption-service-psql.password.uses.secretRef" $passwordConfig) "true" -}}
     {{- printf "%s" $passwordConfig._secretRef.key -}}
   {{- else -}}
     {{- printf "CRIPTA__DATABASE__PASSWORD" -}}

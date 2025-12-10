@@ -2,10 +2,10 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ include "hyperswitch-keymanager.fullname" . }}-vs
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}-vs
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-virtual-service
 spec:
   {{- with .Values.istio.virtualService.hosts }}
@@ -39,7 +39,7 @@ spec:
     {{- end }}
     route:
     - destination:
-        host: {{ include "hyperswitch-keymanager.fullname" $ }}
+        host: {{ include "hyperswitch-encryption-service.fullname" $ }}
         port:
           number: {{ $.Values.service.port }}
       {{- if .weight }}

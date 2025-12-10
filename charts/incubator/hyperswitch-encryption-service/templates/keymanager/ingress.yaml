@@ -2,10 +2,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "hyperswitch-keymanager.fullname" . }}
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -36,7 +36,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "hyperswitch-keymanager.fullname" $ }}
+                name: {{ include "hyperswitch-encryption-service.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

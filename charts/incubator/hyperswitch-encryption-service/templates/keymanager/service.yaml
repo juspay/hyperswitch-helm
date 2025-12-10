@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "hyperswitch-keymanager.fullname" . }}
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}
   namespace: {{ .Release.Namespace }}
   {{- with .Values.service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   {{- if .Values.service.loadBalancerClass }}
@@ -29,5 +29,5 @@ spec:
       protocol: {{ .protocol | default "TCP" }}
     {{- end }}
   selector:
-    {{- include "hyperswitch-keymanager.selectorLabels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.selectorLabels" . | nindent 4 }}
   sessionAffinity: {{ .Values.service.sessionAffinity | default "None" }}

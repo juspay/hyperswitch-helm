@@ -1,6 +1,6 @@
 apiVersion: v2
-name: hyperswitch-keymanager
-description: A Helm chart for deploying Hyperswitch Keymanager
+name: hyperswitch-encryption-service
+description: A Helm chart for deploying Hyperswitch encryption-service
 
 # A chart can be either an 'application' or a 'library' chart.
 #

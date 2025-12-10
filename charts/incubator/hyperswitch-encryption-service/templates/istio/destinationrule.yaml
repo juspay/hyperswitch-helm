@@ -2,13 +2,13 @@
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: {{ include "hyperswitch-keymanager.fullname" . }}-dr
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}-dr
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-destination-rule
 spec:
-  host: {{ include "hyperswitch-keymanager.fullname" . }}
+  host: {{ include "hyperswitch-encryption-service.fullname" . }}
   {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
     {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
