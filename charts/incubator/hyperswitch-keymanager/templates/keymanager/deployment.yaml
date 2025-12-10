@@ -64,8 +64,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.initDB.enable }}
       initContainers:
         {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
