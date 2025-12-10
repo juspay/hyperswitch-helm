@@ -162,35 +162,23 @@ spec:
                   - /bin/bash
                   - -c
                   - pkill -15 node
+          {{- with .Values.server.livenessProbe }}
           livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 1
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           name: tartarus
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
+          {{- with .Values.server.readinessProbe }}
           readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 50
-            successThreshold: 1
-            timeoutSeconds: 1
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.server.resources }}
           resources:
-            requests:
-              cpu: 100m
-              memory: 200Mi
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 
           securityContext:
             privileged: false
