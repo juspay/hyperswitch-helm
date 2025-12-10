@@ -271,3 +271,43 @@ istio:
     #     http:
     #       http1MaxPendingRequests: 50
     #       http2MaxRequests: 100
+
+# Disable internal secret creation (use when managing secrets externally)
+disableInternalSecrets: false
+
+# External Secrets Operator configuration
+externalSecretsOperator:
+  enabled: false
+
+  # ServiceAccount configuration for IRSA
+  serviceAccount:
+    create: true
+    annotations: {}
+    extraLabels: {}
+    name: ""
+
+  # SecretStore configuration
+  secretStore:
+    name: "keymanager-secret-store"
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: keymanager-eso-sa
+
+  # ExternalSecret configuration
+  externalSecrets:
+    secrets:
+      - name: "keymanager-secrets"
+        targetName: "keymanager-secrets"
+        refreshInterval: "1h"
+        creationPolicy: "Owner"
+        dataFrom:
+          - extract:
+              key: "hyperswitch/keymanager/secrets"
+              conversionStrategy: "Default"
+              decodingStrategy: "None"
+              metadataPolicy: "None"

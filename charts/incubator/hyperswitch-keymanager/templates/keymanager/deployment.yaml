@@ -109,8 +109,16 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "hyperswitch-keymanager.fullname" . }}
+            {{- if not .Values.disableInternalSecrets }}
             - secretRef:
                 name: {{ include "hyperswitch-keymanager.fullname" . }}-secrets
+            {{- end }}
+            {{- if .Values.externalSecretsOperator.enabled }}
+            {{- range .Values.externalSecretsOperator.externalSecrets.secrets }}
+            - secretRef:
+                name: {{ .targetName }}
+            {{- end }}
+            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
