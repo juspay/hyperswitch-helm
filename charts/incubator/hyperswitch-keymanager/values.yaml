@@ -164,8 +164,29 @@ securityContext: {}
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
-  # This sets the port for the container
-  port: 5000
+  # Service annotations (useful for AWS Load Balancer Controller)
+  annotations: {}
+    # For AWS NLB:
+    # service.beta.kubernetes.io/aws-load-balancer-type: external
+    # service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  # Load balancer class (e.g., service.k8s.aws/nlb for AWS)
+  loadBalancerClass: ""
+  # External traffic policy for LoadBalancer/NodePort services
+  externalTrafficPolicy: ""
+  # Internal traffic policy
+  internalTrafficPolicy: Cluster
+  # Session affinity
+  sessionAffinity: None
+  # Service ports configuration
+  ports:
+    - name: https
+      port: 443
+      targetPort: 5000
+      protocol: TCP
+    - name: metrics
+      port: 6128
+      targetPort: 6128
+      protocol: TCP
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

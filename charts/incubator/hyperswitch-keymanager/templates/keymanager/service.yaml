@@ -11,21 +11,23 @@ metadata:
     {{- include "hyperswitch-keymanager.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
-  {{- if eq .Values.service.type "ClusterIP" }}
-  internalTrafficPolicy: Cluster
+  {{- if .Values.service.loadBalancerClass }}
+  loadBalancerClass: {{ .Values.service.loadBalancerClass }}
   {{- end }}
+  {{- if .Values.service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  internalTrafficPolicy: {{ .Values.service.internalTrafficPolicy | default "Cluster" }}
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
   ports:
-    - name: http
-      port: 80
-      targetPort: {{ .Values.service.port }}
-      protocol: TCP
-    - name: https
-      port: 443
-      targetPort: {{ .Values.service.port }}
-      protocol: TCP
+    {{- range .Values.service.ports }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
   selector:
     {{- include "hyperswitch-keymanager.selectorLabels" . | nindent 4 }}
-  sessionAffinity: None
+  sessionAffinity: {{ .Values.service.sessionAffinity | default "None" }}

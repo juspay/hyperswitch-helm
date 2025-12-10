@@ -267,6 +267,7 @@ secrets:
 | resources.requests.cpu | string | `"400m"` |  |
 | resources.requests.memory | string | `"400Mi"` |  |
 | securityContext | object | `{}` |  |
+| service.metricsPort | int | `6128` |  |
 | service.port | int | `5000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
