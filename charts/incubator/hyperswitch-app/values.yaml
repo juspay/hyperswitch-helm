@@ -129,9 +129,45 @@ _references:
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
-  # Ingress Configurations for hyperswitch router
+  # -- Ingress configuration
+  # @section -- hyperswitch router
   ingress:
+    # -- Enable ingress controller resource
+    # @section -- hyperswitch router
     enabled: false
+    # -- IngressClass that will be used to implement the Ingress
+    # @section -- hyperswitch router
+    className: ""
+    # -- Additional annotations for the Ingress resource
+    # @section -- hyperswitch router
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    # -- An array with hostname(s) to be covered with the ingress record
+    # @section -- hyperswitch router
+    hosts:
+      - host: hyperswitch-server.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    # -- TLS configuration for hostname(s) to be covered with this ingress record
+    # @section -- hyperswitch router
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  # -- Service configuration
+  # @section -- hyperswitch router
+  service:
+    # -- service type
+    type: ClusterIP
+    # -- service ports
+    ports:
+      http: 80
+      https: 443
+
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
