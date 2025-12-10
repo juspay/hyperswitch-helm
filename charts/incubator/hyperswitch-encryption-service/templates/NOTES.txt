@@ -1,0 +1,31 @@
+Hyperswitch Key Manager deployed successfully!
+
+{{- if .Values.initDB.enable }}
+
+Database migration status:
+  kubectl logs job/{{ include "hyperswitch-encryption-service.fullname" . }}-migration -n {{ .Release.Namespace }}
+{{- end }}
+
+View deployment:
+  kubectl get pods -l app.kubernetes.io/name={{ include "hyperswitch-encryption-service.name" . }} -n {{ .Release.Namespace }}
+
+View logs:
+  kubectl logs -l app.kubernetes.io/name={{ include "hyperswitch-encryption-service.name" . }} -n {{ .Release.Namespace }} -f
+
+Access the service:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl port-forward svc/{{ include "hyperswitch-encryption-service.fullname" . }} 5000:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+  Then visit: http://127.0.0.1:5000
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  kubectl get svc {{ include "hyperswitch-encryption-service.fullname" . }} -n {{ .Release.Namespace }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get svc {{ include "hyperswitch-encryption-service.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}")
+  export NODE_IP=$(kubectl get nodes -n {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- end }}

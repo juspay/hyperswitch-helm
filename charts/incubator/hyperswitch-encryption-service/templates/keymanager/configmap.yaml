@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
+data:
+  # Database Configs
+  CRIPTA__DATABASE__USER: {{ include "encryption-service-psql.username" . }}
+  CRIPTA__DATABASE__HOST: {{ include "encryption-service-psql.host" . }}
+  CRIPTA__DATABASE__PORT: {{ include "encryption-service-psql.port" . }}
+  CRIPTA__DATABASE__DBNAME: {{ include "encryption-service-psql.database" . }}
+  CRIPTA__DATABASE__ENABLE_SSL: {{ include "encryption-service-psql.enable_ssl" . }}
+
+  # Generated config from values.configs
+  {{- include "hyperswitch-encryption-service.configToEnvVars" (dict "config" .Values.configs "prefix" "CRIPTA" "context" .) | nindent 2 }}

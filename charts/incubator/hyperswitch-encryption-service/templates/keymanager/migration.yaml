@@ -2,9 +2,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-keymanager-db
+  name: {{ include "hyperswitch-encryption-service.fullname" . }}-migration
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: create-keymanager-db
+    {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
+    app: encryption-service-db-migration
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -16,21 +18,21 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-        {{- include "keymanager-psql.initContainer.check.ready" . | nindent 8 }}
-      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
+        {{- include "encryption-service-psql.initContainer.check.ready" . | nindent 8 }}
+      {{- with (default .Values.global.tolerations .Values.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.global.affinity .Values.server.affinity) }}
+      {{- with (default .Values.global.affinity .Valuesaffinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
+      {{- with (default .Values.global.nodeSelector .Values.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: run-keymanager-db-migration
+        - name: run-encryption-service-db-migration
           {{- $registry := .Values.global.imageRegistry | default .Values.initDB.migration.imageRegistry }}
           image: "{{ $registry }}/{{ .Values.initDB.migration.image }}"
           command: [ '/bin/sh', '-c' ]
@@ -45,18 +47,14 @@ spec:
               echo "Completed hyperswitch database migration"
           env:
             - name: POSTGRES_HOST
-              value: {{ include "keymanager-psql.host" . }}
+              value: {{ include "encryption-service-psql.host" . }}
             - name: DBNAME
-              value: {{ include "keymanager-psql.database" . }}
+              value: {{ include "encryption-service-psql.database" . }}
             - name: POSTGRES_USER
-              value: {{ include "keymanager-psql.username" . }}
+              value: {{ include "encryption-service-psql.username" . }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "keymanager-psql.secret" . }}
-                  {{- if .Values.postgresql.enabled }}
-                  key: password
-                  {{- else if .Values.external.postgresql.enabled }}
-                  key: primaryPlainPassword
-                  {{- end }}
+                  name: {{ include "encryption-service-psql.secret.name" . }}
+                  key: {{ include "encryption-service-psql.secret.key" . }}
 {{- end }}
