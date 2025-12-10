@@ -1160,29 +1160,20 @@ drainer:
       stream_read_count: 1
       use_legacy_version: false
 
-# https://artifacthub.io/packages/helm/bitnami/redis
-redis:
-  # -- - enable Bitnami redis sub-chart helm installation
+# https://valkey.io/valkey-helm/
+valkey:
+  # -- - enable Valkey (a Redis alternative) sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
   image:
-    repository: bitnamilegacy/redis
-    tag: 7.2.3-debian-11-r2
-  master:
-    # -- Number of replicas to be used for master
-    # @section -- Dependencies configuration
-    count: 1
-  replica:
-    # -- Number of replicas to be used for replica
-    # @section -- Dependencies configuration
-    replicaCount: 0
+    repository: valkey/valkey
+    tag: ""
+  # Number of Valkey pods to run
+  replicaCount: 2
   auth:
-    # -- enable or disable redis auth
+    # -- enable or disable Valkey auth
     # @section -- Dependencies configuration
     enabled: false
-    # -- enable or disable sentinel
-    # @section -- Dependencies configuration
-    sentinel: false
 
 externalRedis:
   # -- Link this service to an external Redis server
@@ -1202,12 +1193,12 @@ externalRedis:
     # @section -- Dependencies configuration
     password: ""
 
-redisMiscConfig:
-  checkRedisIsUp:
+valkeyMiscConfig:
+  checkValkeyIsUp:
     initContainer:
       enable: true
       imageRegistry: docker.io
-      image: bitnamilegacy/redis:7.2.3-debian-11-r2
+      image: valkey/valkey:8.1.4
       maxAttempt: 60
 
 # https://artifacthub.io/packages/helm/bitnami/postgresql

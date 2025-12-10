@@ -18,8 +18,8 @@ data:
   ROUTER__REPLICA_DATABASE__PORT: {{ include "postgresql.port" . | quote }}
   ROUTER__REPLICA_DATABASE__USERNAME: {{ include "postgresqlreplica.username" . }}
   # Redis configs
-  ROUTER__REDIS__HOST: {{ include "redis.host" . }}
-  ROUTER__REDIS__PORT: {{ include "redis.port" . | quote }}
+  ROUTER__REDIS__HOST: {{ include "valkey.host" . }}
+  ROUTER__REDIS__PORT: {{ include "valkey.port" . | quote }}
   # Configs from values.server.configs will be generated as environment variables with prefix ROUTER_
   {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 2 }}
 {{- end }}

@@ -27,17 +27,17 @@
 {{/*Ensure Redis is up and running */}}
 {{- define "redis.initContainer.check.ready" -}}
 - name: check-redis
-  {{- $registry := .Values.global.imageRegistry | default .Values.redisMiscConfig.checkRedisIsUp.initContainer.imageRegistry }}
-  image: "{{ $registry }}/{{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.image }}"
+  {{- $registry := .Values.global.imageRegistry | default .Values.valkeyMiscConfig.checkValkeyIsUp.initContainer.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.valkeyMiscConfig.checkValkeyIsUp.initContainer.image }}"
   imagePullPolicy: IfNotPresent
   command: [ "/bin/sh", "-c" ]
   #language=sh
   args:
   - >
-    MAX_ATTEMPTS={{ .Values.redisMiscConfig.checkRedisIsUp.initContainer.maxAttempt }};
+    MAX_ATTEMPTS={{ .Values.valkeyMiscConfig.checkValkeyIsUp.initContainer.maxAttempt }};
     SLEEP_SECONDS=5;
     attempt=0;
-    while ! redis-cli -h {{ include "redis.host" . }} -p 6379 ping; do
+    while ! redis-cli -h {{ include "valkey.host" . }} -p 6379 ping; do
       if [ $attempt -ge $MAX_ATTEMPTS ]; then
         echo "Redis did not become ready in time";
         exit 1;

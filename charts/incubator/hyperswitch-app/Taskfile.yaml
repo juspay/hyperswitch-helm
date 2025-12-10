@@ -63,21 +63,29 @@ tasks:
     aliases:
       - har
 
-  helm-redis-install:
-    desc: deploy standalone bitnami redis based on helm chart
+  helm-add-valkey-repo:
+    desc: helm add repo and upgrade
     cmds:
-      - task: helm-add-repo
+      - helm repo add valkey https://valkey.io/valkey-helm/
+      - helm repo update
+    aliases:
+      - har
+
+  helm-valkey-install:
+    desc: deploy standalone valkey based on helm chart
+    cmds:
+      - task: helm-add-valkey-repo
       - >-
         helm upgrade 
         --install 
         {{ .RELEASE_NAME }} 
-        bitnami/redis 
-        --version 18.6.1 
+        valkey/valkey
+        --version 0.8.1
         -n {{ .NAMESPACE }} 
         --debug  
-        -f dev/bitnami-redis-values.yaml
+        -f dev/bitnami-valkey-values.yaml
     vars:
-      RELEASE_NAME: redis-ext
+      RELEASE_NAME: valkey-ext
       NAMESPACE: hyperswitch
     aliases:
       - hri
