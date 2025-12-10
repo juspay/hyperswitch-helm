@@ -131,7 +131,7 @@ PostgreSQL password
 {{- if .Values.postgresql.enabled }}
 {{- required "Missing postgresql.auth.password!" .Values.postgresql.auth.password }}
 {{- else }}
-{{- .Values.external.postgresql.config.password | quote }}
+{{- .Values.external.postgresql.config.password }}
 {{- end }}
 {{- end }}
 
