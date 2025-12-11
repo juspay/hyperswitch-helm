@@ -74,30 +74,30 @@ Allow the release namespace to be overridden for multi-namespace deployments
 
 {{/* Redis configuration validation template */}}
 {{- define "validate.redis.config" -}}
-    {{- if not (or  .Values.redis.enabled .Values.externalRedis.enabled) }}
+    {{- if not (or  .Values.valkey.enabled .Values.externalRedis.enabled) }}
         {{-  fail
-        "Both redis.enabled and externalRedis.enabled cannot be 'false' at the same time. Please, onfigure at least one Redis."
+        "Both redis.enabled and externalRedis.enabled cannot be 'false' at the same time. Please, configure at least one Redis."
          }}
-    {{- else if and  .Values.redis.enabled .Values.externalRedis.enabled }}
+    {{- else if and  .Values.valkey.enabled .Values.externalRedis.enabled }}
         {{-  fail
         "Both redis.enabled and externalRedis.enabled cannot be 'true' at the same time. Select only once please"
          }}
     {{- end }}
 {{- end }}
 
-{{/* Valide Redis configuration and */}}
-{{/* select Redis host Internal or External depends on configuration */}}
-{{- define "redis.host" -}}
+{{/* Valide Valkey configuration and */}}
+{{/* select Valkey host Internal or External depends on configuration */}}
+{{- define "valkey.host" -}}
 {{- $test_redis := include "validate.redis.config" . }}
-    {{- if .Values.redis.enabled }}
-        {{- printf "%s-redis-master"  .Release.Name | trunc 63 | trimSuffix "-" -}}
+    {{- if .Values.valkey.enabled }}
+        {{- printf "%s-valkey"  .Release.Name | trunc 63 | trimSuffix "-" -}}
     {{- else if .Values.externalRedis.enabled }}
         {{- printf "%s" .Values.externalRedis.host -}}
     {{- end -}}
 {{- end -}}
 
 {{/* Select Redis port Internal or External depends on configuration */}}
-{{- define "redis.port" -}}
+{{- define "valkey.port" -}}
     {{- printf "6379" -}}
 {{- end -}}
 
@@ -105,7 +105,7 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- define "validate.postgresql.config" -}}
     {{- if not (or  .Values.postgresql.enabled .Values.externalPostgresql.enabled) }}
         {{-  fail
-        "Both postgresql.enabled and externalPostgresql.enabled cannot be 'false' at the same time. Please, onfigure at least one Postgresql."
+        "Both postgresql.enabled and externalPostgresql.enabled cannot be 'false' at the same time. Please, configure at least one Postgresql."
          }}
     {{- else if and  .Values.postgresql.enabled .Values.externalPostgresql.enabled }}
         {{-  fail

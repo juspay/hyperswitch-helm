@@ -48,12 +48,12 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       terminationGracePeriodSeconds: {{ .Values.drainer.terminationGracePeriodSeconds | default .Values.global.terminationGracePeriodSeconds }}
-      {{- if or .Values.initDB.enable .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+      {{- if or .Values.initDB.enable .Values.valkeyMiscConfig.checkValkeyIsUp.initContainer.enable }}
       initContainers:
         {{- if .Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
         {{- end }}
-        {{- if .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+        {{- if .Values.valkeyMiscConfig.checkValkeyIsUp.initContainer.enable }}
         {{- include "redis.initContainer.check.ready" . | nindent 8 }}
         {{- end }}
       {{- end }}
