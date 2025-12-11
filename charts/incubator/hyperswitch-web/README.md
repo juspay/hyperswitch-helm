@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.14](https://img.shields.io/badge/Version-0.2.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
+![Version: 0.2.15](https://img.shields.io/badge/Version-0.2.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.126.0](https://img.shields.io/badge/AppVersion-0.126.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -12,6 +12,20 @@ Autobuild is suitable to quick start, assets are built in initContainer and save
 assets
 
 ## Values
+
+### hyperswitch sdkDemo
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| sdkDemo.ingress | object | `{"annotations":{},"className":"","enabled":true,"hosts":[{"host":"hyperswitch-sdk-demo.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | Ingress configuration |
+| sdkDemo.ingress.annotations | object | `{}` | Additional annotations for the Ingress resource |
+| sdkDemo.ingress.className | string | `""` | IngressClass that will be used to implement the Ingress |
+| sdkDemo.ingress.enabled | bool | `true` | Enable ingress controller resource |
+| sdkDemo.ingress.hosts | list | `[{"host":"hyperswitch-sdk-demo.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` | An array with hostname(s) to be covered with the ingress record |
+| sdkDemo.ingress.tls | list | `[]` | TLS configuration for hostname(s) to be covered with this ingress record |
+| sdkDemo.service | object | `{"ports":{"http":80,"https":443},"type":"ClusterIP"}` | Service configuration |
+
+### Other Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -59,6 +73,8 @@ assets
 | sdkDemo.podAnnotations.traffic_sidecar_istio_io_excludeOutboundIPRanges | string | `"10.23.6.12/32"` |  |
 | sdkDemo.progressDeadlineSeconds | int | `600` |  |
 | sdkDemo.replicas | int | `1` |  |
+| sdkDemo.service.ports | object | `{"http":80,"https":443}` | service ports |
+| sdkDemo.service.type | string | `"ClusterIP"` | service type |
 | sdkDemo.serviceAccountAnnotations."eks.amazonaws.com/role-arn" | string | `nil` |  |
 | sdkDemo.strategy.rollingUpdate.maxSurge | int | `1` |  |
 | sdkDemo.strategy.rollingUpdate.maxUnavailable | int | `0` |  |

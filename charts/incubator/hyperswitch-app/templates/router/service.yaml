@@ -11,16 +11,16 @@ spec:
   ipFamilyPolicy: SingleStack
   ports:
     - name: http
-      port: 80
+      port: {{ .Values.server.service.ports.http }}
       protocol: TCP
       targetPort: 8080
     - name: https
-      port: 443
+      port: {{ .Values.server.service.ports.https }}
       protocol: TCP
       targetPort: 8080
   selector:
     app: {{ include "hyperswitch-server.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   sessionAffinity: None
-  type: ClusterIP
+  type: {{ .Values.server.service.type }}
 {{- end }}
