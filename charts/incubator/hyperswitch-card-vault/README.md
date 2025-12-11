@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -175,8 +175,28 @@ external:
 | server.host | string | `"0.0.0.0"` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
 | server.imageRegistry | string | `"docker.juspay.io"` |  |
+| server.livenessProbe.failureThreshold | int | `3` |  |
+| server.livenessProbe.httpGet.path | string | `"/health"` |  |
+| server.livenessProbe.httpGet.port | int | `8080` |  |
+| server.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
+| server.livenessProbe.initialDelaySeconds | int | `5` |  |
+| server.livenessProbe.periodSeconds | int | `30` |  |
+| server.livenessProbe.successThreshold | int | `1` |  |
+| server.livenessProbe.timeoutSeconds | int | `1` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.port | string | `"8080"` |  |
+| server.readinessProbe.failureThreshold | int | `3` |  |
+| server.readinessProbe.httpGet.path | string | `"/health"` |  |
+| server.readinessProbe.httpGet.port | int | `8080` |  |
+| server.readinessProbe.httpGet.scheme | string | `"HTTP"` |  |
+| server.readinessProbe.initialDelaySeconds | int | `5` |  |
+| server.readinessProbe.periodSeconds | int | `50` |  |
+| server.readinessProbe.successThreshold | int | `1` |  |
+| server.readinessProbe.timeoutSeconds | int | `1` |  |
+| server.resources.limits.cpu | string | `"500m"` |  |
+| server.resources.limits.memory | string | `"700Mi"` |  |
+| server.resources.requests.cpu | string | `"100m"` |  |
+| server.resources.requests.memory | string | `"200Mi"` |  |
 | server.vault.url | string | `"http://127.0.0.1:8200"` |  |
 | server.version | string | `"v0.6.5"` |  |
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
