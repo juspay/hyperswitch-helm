@@ -64,6 +64,15 @@ server:
   vault:
     url: "http://127.0.0.1:8200"
 
+  log:
+    console:
+      # -- Enable console logging
+      enabled: true
+      # -- Log level for console logs (ERROR, WARN, INFO, DEBUG)
+      level: DEBUG
+      # -- Log format for console logs (default or json)
+      log_format: default
+
 # Secrets configuration
 secrets:
   # Core secrets
