@@ -66,7 +66,7 @@ secrets:
 
 ### Multi-tenancy Configuration
 
-The keymanager supports multi-tenant deployments:
+The encryption service supports multi-tenant deployments:
 ```yaml
 multitenancy:
   tenants:
@@ -80,7 +80,7 @@ multitenancy:
 
 ### TLS/mTLS Configuration
 
-To enable TLS/mTLS for the keymanager service:
+To enable TLS/mTLS for the encryption service:
 ```yaml
 secrets:
   tls:
@@ -185,7 +185,7 @@ secrets:
 
 server:
   annotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/hyperswitch-keymanager"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/hyperswitch-encryption-service"
 
 external:
   postgresql:
@@ -193,9 +193,9 @@ external:
     config:
       host: "prod-postgres.example.com"
       port: 5432
-      username: "keymanager_user"
+      username: "encryption_service_user"
       password: "encrypted-password"
-      database: "keymanager_db"
+      database: "encryption_db"
 
 autoscaling:
   enabled: true
@@ -308,13 +308,13 @@ secrets:
 
 ## Integration with Card Vault
 
-The Hyperswitch Key Manager can be used as an external key management service for the Card Vault:
+The Hyperswitch Encryption Service can be used as an external key management service for the Card Vault:
 
 ```yaml
 # In card-vault values.yaml
 server:
   externalKeyManager:
-    url: "https://keymanager-service:5000"
+    url: "https://encryption-service:5000"
 
 secrets:
   external_key_manager:
