@@ -63,18 +63,3 @@
 {{- end }}
 {{- end }}
 {{- end -}}
-
-{{/* Generate environment variables from external secrets configuration */}}
-{{- define "external.secrets.envs" -}}
-{{- if .Values.global.useExternalSecrets.enabled }}
-{{- range $secretName, $mappings := .Values.global.useExternalSecrets.secrets }}
-{{- range $mapping := $mappings }}
-- name: {{ $mapping.envName }}
-  valueFrom:
-    secretKeyRef:
-      name: {{ $secretName }}
-      key: {{ $mapping.secretKey }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end -}}
