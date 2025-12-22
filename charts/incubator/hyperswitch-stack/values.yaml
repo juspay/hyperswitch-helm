@@ -1,42 +1,106 @@
-# loadbalancer security group
 # @ignored
-loadBalancer:
-  targetSecurityGroup: &lb_security_group lg-security-group
-
-# @ignored
-service:
-  type: ClusterIP
-  port: 80
-
-# @ignored
-services:
+_references:
   router:
     host: &router_host http://localhost:8080
+    version: &router_version v1.117.0
   sdk:
     host: &web_sdk_host http://localhost:9050
+    version: &web_sdk_version 0.126.0
+    subversion: &web_sdk_subversion v1
 
+# Global configurations
 global:
-  # Global image registry to override all container image registries
-  # If set, all container images will be pulled from this registry
-  # If not set, each service will use its default registry
-  # Example: "my-registry.com" or "localhost:5000"
+  # Global image registry that can override all imageRegistry fields
   imageRegistry: &image_registry null
   image:
     registry: *image_registry
-
   tolerations: []
-  # @ignored
-  # Eg.
-  # affinity:
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #       nodeSelectorTerms:
-  #         - matchExpressions:
-  #             - key: node-type
-  #               operator: In
-  #               values:
-  #                 - generic-compute
   affinity: {}
+
+# @ignored
+hyperswitch-app:
+  services:
+    router:
+      enabled: true
+      version: *router_version
+      host: *router_host
+    consumer:
+      enabled: true
+      version: *router_version
+    producer:
+      enabled: true
+      version: *router_version
+    drainer:
+      enabled: true
+      version: *router_version
+    sdk:
+      host: *web_sdk_host
+      version: *web_sdk_version
+      subversion: *web_sdk_subversion
+  server:
+    ingress:
+      enabled: false
+    run_env: sandbox
+    keymanager:
+      enabled: false
+      url: ""
+
+  drainer:
+    replicas: 0
+
+  redis:
+    enabled: true
+
+  externalRedis:
+    enabled: false
+
+  postgresql:
+    enabled: true
+
+  externalPostgresql:
+    enabled: false
+
+  initDB:
+    enable: true
+
+  istio:
+    enabled: false
+
+  argoRollouts:
+    enabled: false
+
+  autoscaling:
+    enabled: true
+
+  hyperswitch-card-vault:
+    enabled: true
+
+  externalSecretsOperator:
+    enabled: false
+
+# @ignored
+hyperswitch-control-center:
+  dependencies:
+    router:
+      host: *router_host
+    sdk:
+      host: *web_sdk_host
+      version: *web_sdk_version
+      subversion: *web_sdk_subversion
+      fullUrlOverride: ""
+    clickhouse:
+      enabled: false
+
+  image:
+    registry: docker.juspay.io
+    repository: juspaydotin/hyperswitch-control-center
+    tag: v1.37.4
+
+  ingress:
+    enabled: false
+
+  istio:
+    enabled: false
 
 # @ignored
 hyperswitch-web:
@@ -63,128 +127,8 @@ hyperswitch-web:
       envLogsUrl: http://localhost:3103
   service:
     port: 9050
-  loadBalancer:
-    targetSecurityGroup: "loadbalancer-sg"
-  tolerations: []
   ingress:
-    enabled: true
-    className: "alb"
-    apiVersion: networking.k8s.io/v1
-    annotations:
-      alb.ingress.kubernetes.io/backend-protocol: HTTP
-      alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-      alb.ingress.kubernetes.io/group.name: hyperswitch-web-alb-ingress-group
-      alb.ingress.kubernetes.io/ip-address-type: ipv4
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-      alb.ingress.kubernetes.io/load-balancer-name: hyperswitch-web
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/security-groups: *lb_security_group
-      alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
-      alb.ingress.kubernetes.io/target-type: ip
-    hosts:
-      - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: hyperswitch-web
-                port:
-                  number: 80
-# @ignored
-hyperswitch-app:
-  initDB:
-    enable: true
-  loadBalancer:
-    targetSecurityGroup: *lb_security_group
-  services:
-    router:
-      version: v1.117.0
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-router:v1.117.0
-      host: *router_host
-    consumer:
-      version: v1.117.0
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-consumer:v1.117.0
-    producer:
-      version: v1.117.0
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-producer:v1.117.0
-    drainer:
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-drainer:v1.117.0
-      version: v1.117.0
-    controlCenter:
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-control-center:v1.37.4
-    sdk:
-      host: *web_sdk_host
-      version: 0.126.0
-      subversion: v1
-  server:
-    replicas: 1
-    secrets:
-      # Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
-      forex_api_key: forex_api_key
-      forex_fallback_api_key: forex_fallback_api_key
-    locker:
-      locker_enabled: true
-    run_env: sandbox
-    email:
-      active_email_client: SMTP
-  controlCenter:
-    env:
-      default__features__email: "true"
-      default__features__totp: "true"
-      default__features__test_processors: "true"
-  autoscaling:
     enabled: false
-    minReplicas: 1
-    maxReplicas: 4
-    targetCPUUtilizationPercentage: 80
-
-  hyperswitch-card-vault:
-    enabled: true
-    server:
-      imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
-      tenant_secrets:
-        hyperswitch:
-          master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
-          public_key: ""
-          schema: "public"
-
-    initDB:
-      enable: true
-    postgresql:
-      primary:
-        tolerations: []
-  redis:
-    master:
-      tolerations: []
-  postgresql:
-    primary:
-      tolerations: []
-    readReplicas:
-      tolerations: []
-  kafka:
-    controller:
-      tolerations: []
-    broker:
-      tolerations: []
-    zookeeper:
-      tolerations: []
-    provisioning:
-      tolerations: []
-  clickhouse:
-    tolerations: []
-    zookeeper:
-      tolerations: []
-  mailhog:
-    tolerations: []
-  vector:
-    tolerations: []
 
 hyperswitch-monitoring:
   enabled: true
