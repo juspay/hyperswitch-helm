@@ -102,6 +102,18 @@ server:
   # Ingress Configurations for hyperswitch router
   ingress:
     enabled: false
+    # -- Ingress class name
+    className: ""
+    # -- Custom annotations for the ingress
+    annotations: {}
+    # -- Hostname for the ingress
+    hostname: ""
+    # -- Path for the ingress
+    path: /
+    # -- Path type for the ingress
+    pathType: Prefix
+    # -- TLS configuration for the ingress
+    tls: []
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
