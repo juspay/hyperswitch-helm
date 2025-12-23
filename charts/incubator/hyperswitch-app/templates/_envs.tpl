@@ -1,5 +1,6 @@
 {{/* Define environment variables for PostgreSQL secrets */}}
 {{- define "postgresql.secrets.envs" -}}
+{{- if not .Values.global.useExternalSecrets.enabled }}
 {{- if not .Values.server.configs.analytics.sqlx.password }}
 - name: ROUTER__ANALYTICS__SQLX__PASSWORD
   valueFrom:
@@ -18,6 +19,7 @@
       name: {{ include "postgresql.replica.password.secret" . }}
       key: {{ include "postgresql.replica.password.key" . }}
 {{- end -}}
+{{- end }}
 
 {{/* Define environment variables for PostgreSQL secrets */}}
 {{- define "drainer.secrets.envs" -}}
