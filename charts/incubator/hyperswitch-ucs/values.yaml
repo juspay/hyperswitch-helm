@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "2025.12.23.0"
+  tag: "2025.12.08.0"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
