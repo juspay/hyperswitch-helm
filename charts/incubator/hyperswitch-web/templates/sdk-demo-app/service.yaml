@@ -11,11 +11,11 @@ spec:
   ipFamilyPolicy: SingleStack
   ports:
     - name: http
-      port: 80
+      port: {{ .Values.sdkDemo.service.ports.http }}
       protocol: TCP
       targetPort: 5252
     - name: https
-      port: 443
+      port: {{ .Values.sdkDemo.service.ports.https }}
       protocol: TCP
       targetPort: 5252
   selector:
