@@ -78,14 +78,17 @@ spec:
                   - pkill -15 node
           env:
             - name: BINARY
-              value: {{ .Values.consumer.env.binary }}
+              value: {{ .Values.consumer.binary }}
             - name: SCHEDULER_FLOW
               value: consumer
+          {{- with .Values.global.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.consumer.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
-          {{- if .Values.global.useExternalSecrets.enabled }}
-          {{- include "external.secrets.envs" . | nindent 12 }}
-          {{- end }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
           {{- include "keymanager.envs" . | nindent 12 }}
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
@@ -95,7 +98,7 @@ spec:
                 name: {{ .Release.Name }}-hyperswitch-configs
             - configMapRef:
                 name: consumer-cm-{{ .Release.Name }}
-          {{- if not .Values.global.useExternalSecrets.enabled }}
+          {{- if not .Values.disableInternalSecrets }}
             - secretRef:
                 name: {{ .Release.Name }}-hyperswitch-secrets
           {{- end }}

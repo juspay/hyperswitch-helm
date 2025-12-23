@@ -2,32 +2,28 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hyperswitch-alb-ingress
-  namespace:  {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-hyperswitch-server-ingress
+  namespace: {{ .Release.Namespace }}
   annotations:
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/backend-protocol-version: HTTP1
-    alb.ingress.kubernetes.io/group.name: hyperswitch-alb-ingress-group
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
-    alb.ingress.kubernetes.io/healthcheck-path: /health
-    alb.ingress.kubernetes.io/healthcheck-port: "8080"
-    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "2"
-    alb.ingress.kubernetes.io/healthy-threshold-count: "5"
-    alb.ingress.kubernetes.io/ip-address-type: ipv4
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: hyperswitch
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/security-groups: {{ .Values.loadBalancer.targetSecurityGroup }}
-    alb.ingress.kubernetes.io/tags: stack=hyperswitch-lb
-    alb.ingress.kubernetes.io/target-type: ip
+    {{- with .Values.server.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
-  ingressClassName: alb
+  {{- if .Values.server.ingress.className }}
+  ingressClassName: {{ .Values.server.ingress.className }}
+  {{- end }}
+  {{- with .Values.server.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   rules:
-    - http:
+    - {{- if .Values.server.ingress.hostname }}
+      host: {{ .Values.server.ingress.hostname | quote }}
+      {{- end }}
+      http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: {{ .Values.server.ingress.path | default "/" }}
+            pathType: {{ .Values.server.ingress.pathType | default "Prefix" }}
             backend:
               service:
                 name: {{ include "hyperswitch-server.name" . }}
