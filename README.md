@@ -9,12 +9,12 @@
 The single API to access payment ecosystems across 130+ countries</div>
 
 <p align="center">
-  <a href="./charts/incubator/hyperswitch-stack/README.md#try-a-payment">Try a Payment</a> •
-  <a href="./charts/incubator/hyperswitch-stack/README.md">Setup in k8s</a> •
-  <a href="https://api-reference.hyperswitch.io/introduction"> API Docs </a> 
+  <a href="./charts/hyperswitch-stack/README.md#try-a-payment">Try a Payment</a> •
+  <a href="./charts/hyperswitch-stack/README.md">Setup in k8s</a> •
+  <a href="https://api-reference.hyperswitch.io/introduction"> API Docs </a>
    <br>
-  <a href="./charts/incubator/hyperswitch-stack/README.md#community-contributions">Community and Contributions</a> •
-  <a href="./charts/incubator/hyperswitch-stack/README.md#copyright-and-license">Copyright and License</a>
+  <a href="./charts/hyperswitch-stack/README.md#community-contributions">Community and Contributions</a> •
+  <a href="./charts/hyperswitch-stack/README.md#copyright-and-license">Copyright and License</a>
 </p>
 
 <p align="center">
@@ -55,4 +55,4 @@ helm repo add hyperswitch https://juspay.github.io/hyperswitch-helm
 
 You can then run `helm search repo hyperswitch-stack` to see the charts.
 
-<b> Chart documentation is available in [Hyperswitch Stack directory](https://github.com/juspay/hyperswitch-helm/blob/main/charts/incubator/hyperswitch-stack/README.md). </b>
+<b> Chart documentation is available in [Hyperswitch Stack directory](https://github.com/juspay/hyperswitch-helm/blob/main/charts/hyperswitch-stack/README.md). </b>

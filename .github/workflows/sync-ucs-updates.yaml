@@ -100,20 +100,20 @@ jobs:
           echo "Downloading UCS configs from connector-service ref: $SOURCE_REF"
 
           # Create target directory
-          mkdir -p charts/incubator/hyperswitch-ucs/configs
+          mkdir -p charts/hyperswitch-ucs/configs
 
           # Download specific configuration files with error handling
           echo "Downloading sandbox.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/sandbox.toml" \
-               -o charts/incubator/hyperswitch-ucs/configs/ucs-sandbox.toml
+               -o charts/hyperswitch-ucs/configs/ucs-sandbox.toml
 
           echo "Downloading production.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/production.toml" \
-               -o charts/incubator/hyperswitch-ucs/configs/ucs-production.toml
+               -o charts/hyperswitch-ucs/configs/ucs-production.toml
 
           echo "✅ Configuration files downloaded successfully"
 
@@ -121,8 +121,8 @@ jobs:
         id: update_versions
         run: |
           SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
-          VALUES_FILE="charts/incubator/hyperswitch-ucs/values.yaml"
-          CHART_FILE="charts/incubator/hyperswitch-ucs/Chart.yaml"
+          VALUES_FILE="charts/hyperswitch-ucs/values.yaml"
+          CHART_FILE="charts/hyperswitch-ucs/Chart.yaml"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
           echo "Updating tag version and chart version with hyperswitch-ucs reference: $SOURCE_REF"
@@ -153,7 +153,7 @@ jobs:
 
       - name: Helm dependency update
         run: |
-          CHART_DIR="charts/incubator/hyperswitch-ucs"
+          CHART_DIR="charts/hyperswitch-ucs"
 
           echo "Updating chart dependencies..."
           cd $CHART_DIR
@@ -205,7 +205,7 @@ jobs:
           Tag: $TAG
           "
 
-          git add charts/incubator/hyperswitch-ucs/
+          git add charts/hyperswitch-ucs/
 
           git commit -m "$COMMIT_MSG"
 

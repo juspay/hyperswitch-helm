@@ -76,8 +76,8 @@ jobs:
         id: update_versions
         run: |
           TAG="${{ steps.generate_tag.outputs.target_tag }}"
-          VALUES_FILE="charts/incubator/hyperswitch-control-center/values.yaml"
-          CHART_FILE="charts/incubator/hyperswitch-control-center/Chart.yaml"
+          VALUES_FILE="charts/hyperswitch-control-center/values.yaml"
+          CHART_FILE="charts/hyperswitch-control-center/Chart.yaml"
 
           echo "Updating control center image tag and chart version with tag: $TAG"
 
@@ -143,7 +143,7 @@ jobs:
           Source ref: $TAG
           Tag: $GIT_TAG"
 
-            git add charts/incubator/hyperswitch-control-center/values.yaml charts/incubator/hyperswitch-control-center/Chart.yaml
+            git add charts/hyperswitch-control-center/values.yaml charts/hyperswitch-control-center/Chart.yaml
             git commit -m "$COMMIT_MSG"
           else
             echo "No file changes to commit (changes may have come from merge)"
@@ -169,8 +169,8 @@ jobs:
           echo "Git tag: $GIT_TAG"
           echo ""
           echo "Files updated:"
-          echo "   - charts/incubator/hyperswitch-control-center/values.yaml → image.tag: $TAG"
-          echo "   - charts/incubator/hyperswitch-control-center/Chart.yaml → version: $CHART_VERSION"
+          echo "   - charts/hyperswitch-control-center/values.yaml → image.tag: $TAG"
+          echo "   - charts/hyperswitch-control-center/Chart.yaml → version: $CHART_VERSION"
 
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'

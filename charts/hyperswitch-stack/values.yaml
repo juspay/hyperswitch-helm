@@ -1,0 +1,144 @@
+# @ignored
+_references:
+  router:
+    host: &router_host http://localhost:8080
+    version: &router_version v1.117.0
+  sdk:
+    host: &web_sdk_host http://localhost:9050
+    version: &web_sdk_version 0.126.0
+    subversion: &web_sdk_subversion v1
+
+# Global configurations
+global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: &image_registry null
+  image:
+    registry: *image_registry
+  tolerations: []
+  affinity: {}
+
+# hyperswitch-app subchart configuration
+# For detailed configuration options, see: charts/hyperswitch-app/values.yaml
+hyperswitch-app:
+  services:
+    router:
+      enabled: true
+      version: *router_version
+      host: *router_host
+    consumer:
+      enabled: true
+      version: *router_version
+    producer:
+      enabled: true
+      version: *router_version
+    drainer:
+      enabled: true
+      version: *router_version
+    sdk:
+      host: *web_sdk_host
+      version: *web_sdk_version
+      subversion: *web_sdk_subversion
+  server:
+    ingress:
+      enabled: false
+    run_env: sandbox
+    keymanager:
+      enabled: false
+      url: ""
+
+  drainer:
+    replicas: 0
+
+  redis:
+    enabled: true
+
+  externalRedis:
+    enabled: false
+
+  postgresql:
+    enabled: true
+
+  externalPostgresql:
+    enabled: false
+
+  initDB:
+    enable: true
+
+  istio:
+    enabled: false
+
+  argoRollouts:
+    enabled: false
+
+  autoscaling:
+    enabled: true
+
+  hyperswitch-card-vault:
+    enabled: true
+
+  externalSecretsOperator:
+    enabled: false
+
+# hyperswitch-control-center subchart configuration
+# For detailed configuration options, see: charts/hyperswitch-control-center/values.yaml
+hyperswitch-control-center:
+  dependencies:
+    router:
+      host: *router_host
+    sdk:
+      host: *web_sdk_host
+      version: *web_sdk_version
+      subversion: *web_sdk_subversion
+      fullUrlOverride: ""
+    clickhouse:
+      enabled: false
+
+  image:
+    registry: docker.juspay.io
+    repository: juspaydotin/hyperswitch-control-center
+    tag: v1.37.4
+
+  ingress:
+    enabled: false
+
+  istio:
+    enabled: false
+
+# hyperswitch-web subchart configuration
+# For detailed configuration options, see: charts/hyperswitch-web/values.yaml
+hyperswitch-web:
+  fullnameOverride: "hyperswitch-web"
+  enabled: true
+  sdkDemo:
+    enabled: false
+  image:
+    pullPolicy: IfNotPresent
+  podAnnotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+  autoBuild:
+    enable: true
+    forceBuild: true
+    gitCloneParam:
+      gitVersion: *web_sdk_version
+    nginxConfig:
+      extraPath: *web_sdk_subversion
+    buildParam:
+      envSdkUrl: *web_sdk_host
+      envBackendUrl: *router_host
+      envLogsUrl: http://localhost:3103
+  service:
+    port: 9050
+  ingress:
+    enabled: false
+
+# hyperswitch-monitoring subchart configuration
+# For detailed configuration options, see: charts/hyperswitch-monitoring/values.yaml
+hyperswitch-monitoring:
+  enabled: true
+
+# hyperswitch-ucs subchart configuration
+# For detailed configuration options, see: charts/hyperswitch-ucs/values.yaml
+hyperswitch-ucs:
+  enabled: false

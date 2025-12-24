@@ -9,19 +9,19 @@ tasks:
       - task --list-all
     silent: true
 
-  package-incubator-hyperswitch-helm:
+  package-hyperswitch-helm:
     #language=sh
     cmds:
       - >
-        STACK=charts/incubator/hyperswitch-stack &&
+        STACK=charts/hyperswitch-stack &&
         version=$(grep '^version:' $STACK/Chart.yaml | awk '{print $2}') &&
         helm package $STACK --dependency-update &&
         helm repo index $STACK --url https://juspay.github.io/hyperswitch-helm/v$version &&
         mkdir -p v$version && mv hyperswitch-stack-$version.tgz $STACK/index.yaml v$version &&
         helm repo index . --url https://juspay.github.io/hyperswitch-helm
     aliases:
-      - pihh
-  
+      - phh
+
   update-readme:
     #language=sh
     cmds:
@@ -31,7 +31,7 @@ tasks:
         -w /helm-docs
         jnorwood/helm-docs:latest
         --document-dependency-values=true
-        --chart-search-root=charts/incubator
+        --chart-search-root=charts
     aliases:
       - ur
 
@@ -39,4 +39,4 @@ tasks:
     #language=sh
     cmds:
       - >
-        helm repo index repo 
+        helm repo index repo

@@ -2,7 +2,7 @@
 remote: origin
 target-branch: main
 chart-dirs:
-  - charts/incubator
+  - charts
 chart-repos:
   - hyperswitch=https://juspay.github.io/hyperswitch-helm
   - bitnami=https://charts.bitnami.com/bitnami

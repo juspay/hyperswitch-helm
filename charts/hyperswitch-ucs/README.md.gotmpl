@@ -28,7 +28,7 @@ This chart deploys the Hyperswitch UCS (Unified Connector Service) on a Kubernet
 To install the chart with the release name `hyperswitch-ucs`:
 
 ```bash
-helm install hyperswitch-ucs ./charts/incubator/hyperswitch-ucs -n hyperswitch --create-namespace
+helm install hyperswitch-ucs ./charts/hyperswitch-ucs -n hyperswitch --create-namespace
 ```
 
 ## Uninstalling the Chart
@@ -61,7 +61,7 @@ env:
 ```
 
 ```bash
-helm install hyperswitch-ucs ./charts/incubator/hyperswitch-ucs -f values-local.yaml -n hyperswitch
+helm install hyperswitch-ucs ./charts/hyperswitch-ucs -f values-local.yaml -n hyperswitch
 ```
 
 #### Running with custom resource limits
