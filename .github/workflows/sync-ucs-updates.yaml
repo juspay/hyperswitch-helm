@@ -91,20 +91,20 @@ jobs:
           echo "Downloading UCS configs from connector-service ref: $SOURCE_REF"
 
           # Create target directory
-          mkdir -p charts/incubator/hyperswitch-ucs/configs
+          mkdir -p charts/hyperswitch-ucs/configs
 
           # Download specific configuration files with error handling
           echo "Downloading sandbox.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/sandbox.toml" \
-               -o charts/incubator/hyperswitch-ucs/configs/ucs-sandbox.toml
+               -o charts/hyperswitch-ucs/configs/ucs-sandbox.toml
 
           echo "Downloading production.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/production.toml" \
-               -o charts/incubator/hyperswitch-ucs/configs/ucs-production.toml
+               -o charts/hyperswitch-ucs/configs/ucs-production.toml
 
           echo "✅ Configuration files downloaded successfully"
 
@@ -112,8 +112,8 @@ jobs:
         id: update_versions
         run: |
           SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
-          VALUES_FILE="charts/incubator/hyperswitch-ucs/values.yaml"
-          CHART_FILE="charts/incubator/hyperswitch-ucs/Chart.yaml"
+          VALUES_FILE="charts/hyperswitch-ucs/values.yaml"
+          CHART_FILE="charts/hyperswitch-ucs/Chart.yaml"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
           echo "Updating tag version and chart version with hyperswitch-ucs reference: $SOURCE_REF"
@@ -130,8 +130,8 @@ jobs:
           SRC_HYPH=$(echo "$SOURCE_REF" | tr '.' '-')
           CHART_VERSION="$MAIN_CHART_VERSION-$TAG_PREFIX$SRC_HYPH"
           echo "Updating chart version → $CHART_VERSION"
-          echo "Converting hyperswitch-ucs version $SOURCE_REF to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"          
-          yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE          
+          echo "Converting hyperswitch-ucs version $SOURCE_REF to chart version $CHART_VERSION (using main branch version $MAIN_CHART_VERSION as prefix)"
+          yq eval ".version = \"$CHART_VERSION\"" -i $CHART_FILE
 
           echo "chart_version=$CHART_VERSION" >> $GITHUB_OUTPUT
 
@@ -144,8 +144,8 @@ jobs:
 
       - name: Helm dependency update
         run: |
-          CHART_DIR="charts/incubator/hyperswitch-ucs"
-          
+          CHART_DIR="charts/hyperswitch-ucs"
+
           echo "Updating chart dependencies..."
           cd $CHART_DIR
           helm dependency update
@@ -158,7 +158,7 @@ jobs:
         run: |
           # Check for both file changes and merge updates
           if git diff --quiet && [ -z "$(git status --porcelain)" ] && [ "${{ steps.merge_step.outputs.has_merge_updates }}" != "true" ]; then
-            echo "No changes detected"            
+            echo "No changes detected"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
@@ -196,7 +196,7 @@ jobs:
           Tag: $TAG
           "
 
-          git add charts/incubator/hyperswitch-ucs/
+          git add charts/hyperswitch-ucs/
 
           git commit -m "$COMMIT_MSG"
 
