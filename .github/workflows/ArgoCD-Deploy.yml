@@ -1,0 +1,31 @@
+# This is a basic workflow to help deploy an application to ArgoCD
+name: ArgoCD-Deploy
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Application Name'     
+        required: true
+        default: 'Please select application name'
+
+jobs:
+  infra-deploy:
+    # The type of runner that the job will run on
+    runs-on: runner
+    env: 
+      GITHUB_USERNAME: '${{secrets.GITHUB_ID}}'
+      GITHUB_PASSWORD: '${{secrets.GITHUB_SECRET}}'
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with: 
+            path: hyperswitch-helm
+          
+      # Runs a kubectl apply command to deploy the application to ArgoCD
+      - name: ${{ github.event.inputs.logLevel }}
+        run: |
+          kubectl apply -f hyperswitch-helm/charts/incubator/hyperswitch-cd/${{github.event.inputs.logLevel}}-argo-application.yml
