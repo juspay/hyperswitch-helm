@@ -4,6 +4,7 @@ on:
   repository_dispatch:
     types:
       - sync-ucs-updates
+      - sync-custom-ucs-version     # custom-releases
 
 permissions:
   contents: write
@@ -24,10 +25,18 @@ jobs:
       - name: Determine sync configuration
         id: config
         run: |
+          EVENT_TYPE="${{ github.event.action }}"
           echo "branch=deployments" >> $GITHUB_OUTPUT
-          echo "tag_prefix=ucs-" >> $GITHUB_OUTPUT
-          echo "sync_type=full" >> $GITHUB_OUTPUT
-          echo "Building charts for daily deployments"
+          if [ "$EVENT_TYPE" = "sync-ucs-updates" ]; then
+            echo "tag_prefix=ucs-" >> $GITHUB_OUTPUT
+            echo "Building charts for daily deployments"
+          elif [ "$EVENT_TYPE" = "sync-custom-ucs-version" ]; then
+            echo "tag_prefix=cus-ucs-" >> $GITHUB_OUTPUT
+            echo "Builing charts for custom deployment"
+          else
+            echo "❌ Unknown event type: $EVENT_TYPE"
+            exit 1
+          fi
 
       - name: Checkout target branch
         uses: actions/checkout@v4
