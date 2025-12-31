@@ -420,13 +420,21 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
       {{- $arrayValue := $value | join "," -}}
       {{- printf "%s: %q\n" $envKey $arrayValue -}}
     {{- else -}}
+      {{/* Check if value is nil or empty */}}
+      {{- $isNilOrEmpty := false -}}
+      {{- if eq $value nil -}}
+        {{- $isNilOrEmpty = true -}}
+      {{- else if and (kindIs "string" $value) (eq $value "") -}}
+        {{- $isNilOrEmpty = true -}}
+      {{- end -}}
+
       {{/* Check if this path has a helper function mapping and value is empty */}}
-      {{- if and (hasKey $keyMapping $configPath) (or (eq $value "") (eq $value nil)) -}}
+      {{- if and (hasKey $keyMapping $configPath) $isNilOrEmpty -}}
         {{- $helperFunc := get $keyMapping $configPath -}}
         {{- $helperValue := include $helperFunc $context -}}
         {{- printf "%s: %q\n" $envKey ($helperValue | toString) -}}
-      {{- else -}}
-        {{/* Handle primitive values with proper YAML quoting */}}
+      {{- else if not $isNilOrEmpty -}}
+        {{/* Handle primitive values with proper YAML quoting, skip nil/empty values */}}
         {{- printf "%s: %q\n" $envKey ($value | toString) -}}
       {{- end -}}
     {{- end -}}
