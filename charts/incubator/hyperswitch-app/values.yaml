@@ -46,7 +46,6 @@ services:
     # -- Drainer image
     # @section -- Services
     image: juspaydotin/hyperswitch-drainer
-
   sdk:
     # -- SDK host
     # @section -- Services
@@ -88,36 +87,7 @@ global:
   labels:
     managedBy: hyperswitch
   # -- Environmant variables that are to be used by the hyperswitch application services
-  env:
-    pod_name:
-      name: POD_NAME
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.name
-
-  configMap: |
-    [server]
-    host = 0.0.0.0
-
-  # External Secrets Configuration
-  # When enabled, all local secret creation is disabled and external secrets are used instead
-  # Use this to define mapping of secrets created by external secret operators
-  # Additionally you can enable external secret operator deployment using externalSecretsOperator.enabled
-  useExternalSecrets:
-    # -- Enable external secrets integration
-    enabled: false
-    # -- Configuration for external secrets mapping (Optional)
-    # Each secret name maps to a list of environment variables
-    secrets:
-      # Example: hyperswitch-secrets contains application secrets
-      # # -- Name of the external secret
-      # hyperswitch-secrets:
-      #   # -- List of environment variables to map from the external secret
-      #   - envName: ROUTER__SECRETS__ADMIN_API_KEY
-      #     secretKey: admin_api_key
-      #   - envName: ROUTER__SECRETS__JWT_SECRET
-      #     secretKey: jwt_secret
+  env: []
 
 # -- Common references for templated resource names
 _references:
@@ -132,6 +102,18 @@ server:
   # Ingress Configurations for hyperswitch router
   ingress:
     enabled: false
+    # -- Ingress class name
+    className: ""
+    # -- Custom annotations for the ingress
+    annotations: {}
+    # -- Hostname for the ingress
+    hostname: ""
+    # -- Path for the ingress
+    path: /
+    # -- Path type for the ingress
+    pathType: Prefix
+    # -- TLS configuration for the ingress
+    tls: []
   # Wait time allowed for the deployment before the deployment is marked as failed
   progressDeadlineSeconds: 600
   # The strategy that can be used to replace the old pods by new ones
@@ -196,10 +178,9 @@ server:
     # -- Labels to be added to the service account
     labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
-  # @ignored
-  env:
-    binary: router
-    host: hyperswitch
+  env: []
+  # -- Binary to be used for the hyperswitch Router
+  binary: router
   # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
 
@@ -921,8 +902,9 @@ consumer:
   # @ignored
   labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
-  env:
-    binary: scheduler
+  env: []
+  # -- Binary to be used by the consumer
+  binary: scheduler
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
@@ -984,8 +966,9 @@ producer:
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels: {}
   # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
-  env:
-    binary: scheduler
+  env: []
+  # -- Binary to be used by the producer
+  binary: scheduler
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
@@ -1056,8 +1039,9 @@ drainer:
   # -- Namespace override for the drainer
   namespaceOverride: ""
   # -- Environment variables that are to be used by the hyperswitch drainer service
-  env:
-    binary: drainer
+  env: []
+  # -- Binary to be used by the drainer
+  binary: drainer
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.drainer.loop_interval -> CONFIGS_DRAINER_LOOP_INTERVAL
@@ -1452,8 +1436,10 @@ hyperswitch-card-vault:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
 
-# External Secrets Operator Configuration
-# This section configures the External Secrets Operator resources (ServiceAccount, SecretStore, ExternalSecret)
+# Disable internal secret creation (use when managing secrets externally)
+disableInternalSecrets: false
+
+# External Secrets Operator Configuration (recommend setting disableInternalSecrets to true)
 # NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
 externalSecretsOperator:
   # -- Enable External Secrets Operator resources
@@ -1672,7 +1658,6 @@ vector:
     #     schema:
     #       publishable_key: string
     #       merchant_id: string
-
 
     api:
       enabled: true
