@@ -114,14 +114,12 @@ spec:
             {{- if eq .Values.server.run_env "production" }}
             - mountPath: /local/config/production.toml
               name: hyperswitch-config
-              subPath: consumer.toml
+              subPath: router.toml
             {{- else }}
             - mountPath: /local/config/sandbox.toml
               name: hyperswitch-config
-              subPath: consumer.toml
+              subPath: router.toml
             {{- end }}
-
-
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
