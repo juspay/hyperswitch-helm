@@ -173,6 +173,15 @@ Allow the release namespace to be overridden for multi-namespace deployments
     {{- end -}}
 {{- end -}}
 
+{{/* Select Postgres replica database Internal or External */}}
+{{- define "postgresqlreplica.database" -}}
+    {{- if .Values.postgresql.enabled }}
+        {{- printf "%s" .Values.postgresql.global.postgresql.auth.database  -}}
+    {{- else if .Values.externalPostgresql.enabled }}
+        {{- printf "%s" .Values.externalPostgresql.readOnly.auth.database -}}
+    {{- end -}}
+{{- end -}}
+
 
 {{/* Define the name for external PostgreSQL secret */}}
 {{- define "externalPostgresql.secret.name" -}}
