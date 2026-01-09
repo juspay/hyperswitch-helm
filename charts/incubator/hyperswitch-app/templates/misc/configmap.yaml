@@ -13,9 +13,9 @@ data:
   ROUTER__MASTER_DATABASE__HOST: {{ include "postgresql.host" . }}
   ROUTER__MASTER_DATABASE__PORT: {{ include "postgresql.port" . | quote }}
   ROUTER__MASTER_DATABASE__USERNAME: {{ include "postgresql.username" . }}
-  ROUTER__REPLICA_DATABASE__DBNAME: {{ include "postgresql.database" . }}
-  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresql.host" . }}
-  ROUTER__REPLICA_DATABASE__PORT: {{ include "postgresql.port" . | quote }}
+  ROUTER__REPLICA_DATABASE__DBNAME: {{ include "postgresqlreplica.database" . }}
+  ROUTER__REPLICA_DATABASE__HOST: {{ include "postgresqlreplica.host" . }}
+  ROUTER__REPLICA_DATABASE__PORT: {{ include "postgresqlreplica.port" . | quote }}
   ROUTER__REPLICA_DATABASE__USERNAME: {{ include "postgresqlreplica.username" . }}
   # Redis configs
   ROUTER__REDIS__HOST: {{ include "redis.host" . }}
