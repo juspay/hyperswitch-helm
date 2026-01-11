@@ -40,3 +40,37 @@ tasks:
     cmds:
       - >
         helm repo index repo 
+
+  update-dependencies:
+    desc: "Build all Helm chart dependencies in correct order (leaf → intermediate → umbrella)"
+    cmds: 
+      - | 
+        set -e
+        echo "Building Helm chart dependencies..."
+        echo "Step 1/3 - Building leaf charts (no local dependencies)..."
+        echo "  -> hyperswitch-web (no dependencies)"
+        helm dependency update charts/incubator/hyperswitch-web
+        echo "  -> hyperswitch-ucs (no dependencies)"
+        helm dependency update charts/incubator/hyperswitch-ucs
+        echo "  -> hyperswitch-control-center (no dependencies)"
+        helm dependency update charts/incubator/hyperswitch-control-center
+        echo "  -> hyperswitch-card-vault (dependencies: postgresql)"
+        helm dependency update charts/incubator/hyperswitch-card-vault
+        echo "  -> hyperswitch-encryption-service (dependencies: postgresql)"
+        helm dependency update charts/incubator/hyperswitch-encryption-service
+        echo "  -> hyperswitch-monitoring (dependencies: kube-prometheus-stack, loki, promtail, opentelemetry-collector)"
+        helm dependency update charts/incubator/hyperswitch-monitoring
+
+        echo ""
+        echo "Step 2/3 - Building intermediate chart (depends on card-vault)..."
+        echo "  -> hyperswitch-app (dependencies: redis, postgresql, hyperswitch-card-vault, kafka, clickhouse, mailhog, vector)"
+        helm dependency update charts/incubator/hyperswitch-app
+
+        echo ""
+        echo "Step 3/3 - Building umbrella chart (depends on app, web, monitoring, ucs)..."
+        echo "  -> hyperswitch-stack (dependencies: hyperswitch-app, hyperswitch-web, hyperswitch-monitoring, hyperswitch-ucs)"
+        helm dependency update charts/incubator/hyperswitch-stack
+        echo ""
+        echo "All dependencies built successfully!"
+    aliases:
+      - ud
