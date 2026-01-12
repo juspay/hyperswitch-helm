@@ -185,7 +185,7 @@ netcetera.base_url = "https://{{merchant_endpoint_prefix}}.3ds-server.prod.netce
 connectors_with_delayed_session_response = "trustpay,payme"       # List of connectors which have delayed session response
 
 [save_payment_method_on_session.unsupported_payment_methods]
-pay_later = ["klarna", "affirm"]
+pay_later = "klarna,affirm"
 
 [dummy_connector]
 enabled = false                                                         # Whether dummy connector is enabled or not
@@ -924,6 +924,7 @@ billwerk = {long_lived_token = false, payment_method = "card"}
 globalpay = { long_lived_token = false, payment_method = "card", flow = "mandates" }
 dwolla = { long_lived_token = true, payment_method = "bank_debit" }
 finix= { long_lived_token = false, payment_method = "card,wallet" }
+paysafe= { long_lived_token = false, payment_method = "card,wallet" ,payment_method_type = { type = "enable_only", list = "apple_pay,credit,debit"},allowed_card_authentication_type= "no_three_ds"}
 
 [webhooks]
 outgoing_enabled = true
