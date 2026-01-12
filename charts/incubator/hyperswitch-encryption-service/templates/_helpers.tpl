@@ -46,7 +46,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "hyperswitch-encryption-service.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "hyperswitch-encryption-service.name" . }}
+app.kubernetes.io/name: {{ printf "%s-%s" .Release.Name "encryption-service" | quote }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
