@@ -196,6 +196,13 @@ initDB:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
 
+vaultKeys:
+  key1: "3c82773a6621feee3d5e0ce96654bf1f"
+  key2: "7de95dbbd5d020e6b2a44847b8942bf5"
+
+vaultKeysPostStartHook:
+  enabled: false
+
 vaultKeysJob:
   enabled: true
   checkVaultService:
@@ -204,6 +211,3 @@ vaultKeysJob:
     maxAttempt: 30
     host: ""
     port: 80
-  keys:
-    key1: "3c82773a6621feee3d5e0ce96654bf1f"
-    key2: "7de95dbbd5d020e6b2a44847b8942bf5"
