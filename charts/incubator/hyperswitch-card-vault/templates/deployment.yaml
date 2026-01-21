@@ -43,11 +43,11 @@ spec:
       containers:
         - env:
             - name: LOCKER__LOG__CONSOLE__ENABLED
-              value: "true"
+              value: {{ include "locker.log.console.enabled" . }}
             - name: LOCKER__LOG__CONSOLE__LEVEL
-              value: DEBUG
+              value: {{ include "locker.log.console.level" . }}
             - name: LOCKER__LOG__CONSOLE__LOG_FORMAT
-              value: default
+              value: {{ include "locker.log.console.log_format" . }}
             - name: LOCKER__SERVER__HOST
               value: {{ include "locker.server.host" . }}
             - name: LOCKER__SERVER__PORT
