@@ -3,5 +3,5 @@ name: hyperswitch-control-center
 description: A dashboard for Hyperswitch Service
 
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: "v1.37.4"

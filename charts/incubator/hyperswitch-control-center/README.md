@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.37.4](https://img.shields.io/badge/AppVersion-v1.37.4-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.37.4](https://img.shields.io/badge/AppVersion-v1.37.4-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -133,7 +133,6 @@ After deployment, verify the Control Center is working:
 | config.default.endpoints.logo_url | string | `""` |  |
 | config.default.endpoints.mixpanel_token | string | `"dd4da7f62941557e716fbc0a19f9cc7e"` |  |
 | config.default.endpoints.recon_iframe_url | string | `""` |  |
-| config.default.features.audit_trail | string | `"false"` |  |
 | config.default.features.authentication_analytics | string | `"false"` |  |
 | config.default.features.branding | string | `"false"` |  |
 | config.default.features.compliance_certificate | string | `"true"` |  |
@@ -197,8 +196,9 @@ After deployment, verify the Control Center is working:
 | config.default.theme.sidebar_secondary | string | `"#FFFFFF"` |  |
 | config.default.theme.sidebar_secondary_text_color | string | `"#525866"` |  |
 | config.mixpanelToken | string | `"dd4da7f62941557e716fbc0a19f9cc7e"` |  |
-| dependencies.clickhouse.enabled | string | `"false"` |  |
+| dependencies.clickhouse.enabled | bool | `false` |  |
 | dependencies.router.host | string | `"http://localhost:8080"` |  |
+| dependencies.sdk.fullUrlOverride | string | `""` |  |
 | dependencies.sdk.host | string | `"http://localhost:9050"` |  |
 | dependencies.sdk.subversion | string | `"v1"` |  |
 | dependencies.sdk.version | string | `"0.126.0"` |  |
@@ -208,7 +208,7 @@ After deployment, verify the Control Center is working:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `""` |  |
+| image.tag | string | `"v1.37.4"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
