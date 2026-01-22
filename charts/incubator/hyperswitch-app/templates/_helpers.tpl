@@ -52,6 +52,46 @@ Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 {{- end -}}
 
 {{/*
+Get the full image name
+*/}}
+{{- define "hyperswitch-router.image" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.services.router.imageRegistry }}
+{{- $repository := .Values.services.router.image }}
+{{- $tag := .Values.services.router.version | default .Chart.AppVersion }}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
+{{- end }}
+
+{{/*
+Get the full image name
+*/}}
+{{- define "hyperswitch-consumer.image" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.services.consumer.imageRegistry }}
+{{- $repository := .Values.services.consumer.image }}
+{{- $tag := .Values.services.consumer.version | default .Chart.AppVersion }}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
+{{- end }}
+
+{{/*
+Get the full image name
+*/}}
+{{- define "hyperswitch-producer.image" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.services.producer.imageRegistry }}
+{{- $repository := .Values.services.producer.image }}
+{{- $tag := .Values.services.producer.version | default .Chart.AppVersion }}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
+{{- end }}
+
+{{/*
+Get the full image name
+*/}}
+{{- define "hyperswitch-drainer.image" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.services.drainer.imageRegistry }}
+{{- $repository := .Values.services.drainer.image }}
+{{- $tag := .Values.services.drainer.version | default .Chart.AppVersion }}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
+{{- end }}
+
+{{/*
 Allow the release namespace to be overridden for multi-namespace deployments
 */}}
 
