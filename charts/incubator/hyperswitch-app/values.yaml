@@ -821,10 +821,17 @@ server:
       hash_key:
         _secret: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
     # -- Encryption key used for encrypting data in user_authentication_methods table
-    # @section -- App Server Secrets
     key_manager:
+      # -- Enable or disable keymanager
+      enabled: false
+      # -- KeyManager service URL
+      url: ""
+      # -- CA certificate for the keymanager service
+      # @section -- App Server Secrets
       ca:
         _secret: "sample_ca"
+      # -- Client certificate for the keymanager service
+      # @section -- App Server Secrets
       cert:
         _secret: "sample_cert"
     # -- Encryption key used for user_auth_methods table
@@ -852,12 +859,7 @@ server:
         _secret: test_admin
       migration_encryption_timestamp:
         _secret: "1685510751"
-  # KeyManager configuration
-  keymanager:
-    # -- Enable or disable keymanager
-    enabled: false
-    # -- KeyManager service URL
-    url: ""
+
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application

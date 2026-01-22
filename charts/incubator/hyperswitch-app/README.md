@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.117.0](https://img.shields.io/badge/AppVersion-v1.117.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -539,16 +539,17 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"</code></div></td>
     <td>The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L829">server.configs.key_manager</a></div></td>
+    <td><div><a href="./values.yaml#L835">server.configs.key_manager.ca</a></div></td>
     <td><div><code>{
-  "ca": {
-    "_secret": "sample_ca"
-  },
-  "cert": {
-    "_secret": "sample_cert"
-  }
+  "_secret": "sample_ca"
 }</code></div></td>
-    <td>Encryption key used for encrypting data in user_authentication_methods table</td>
+    <td>CA certificate for the keymanager service</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L839">server.configs.key_manager.cert</a></div></td>
+    <td><div><code>{
+  "_secret": "sample_cert"
+}</code></div></td>
+    <td>Client certificate for the keymanager service</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L756">server.configs.kms.key_id</a></div></td>
     <td><div><code>{
@@ -576,31 +577,31 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"PAZE_PRIVATE_KEY_PASSPHRASE"</code></div></td>
     <td>PEM Passphrase used for generating Private Key File cakey.pem</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L843">server.configs.secrets.admin_api_key</a></div></td>
+    <td><div><a href="./values.yaml#L850">server.configs.secrets.admin_api_key</a></div></td>
     <td><div><code>{
   "_secret": "test_admin"
 }</code></div></td>
     <td>admin API key for admin authentication.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L847">server.configs.secrets.jwt_secret</a></div></td>
+    <td><div><a href="./values.yaml#L854">server.configs.secrets.jwt_secret</a></div></td>
     <td><div><code>{
   "_secret": "test_admin"
 }</code></div></td>
     <td>JWT secret used for user authentication.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L851">server.configs.secrets.master_enc_key</a></div></td>
+    <td><div><a href="./values.yaml#L858">server.configs.secrets.master_enc_key</a></div></td>
     <td><div><code>{
   "_secret": "471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c"
 }</code></div></td>
     <td>Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L855">server.configs.secrets.recon_admin_api_key</a></div></td>
+    <td><div><a href="./values.yaml#L862">server.configs.secrets.recon_admin_api_key</a></div></td>
     <td><div><code>{
   "_secret": "test_admin"
 }</code></div></td>
     <td>Recon Admin API key for recon admin authentication.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L836">server.configs.user_auth_methods</a></div></td>
+    <td><div><a href="./values.yaml#L843">server.configs.user_auth_methods</a></div></td>
     <td><div><code>{
   "encryption_key": {
     "_secret": "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
@@ -1425,6 +1426,27 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"dummy_val"</code></div></td>
     <td></td>
   </tr><tr>
+    <td><div><a href="./values.yaml#L828">server.configs.key_manager</a></div></td>
+    <td><div><code>{
+  "ca": {
+    "_secret": "sample_ca"
+  },
+  "cert": {
+    "_secret": "sample_cert"
+  },
+  "enabled": false,
+  "url": ""
+}</code></div></td>
+    <td>Encryption key used for encrypting data in user_authentication_methods table</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L830">server.configs.key_manager.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable or disable keymanager</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L832">server.configs.key_manager.url</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>KeyManager service URL</td>
+  </tr><tr>
     <td><div><a href="./values.yaml#L753">server.configs.kms.key_region</a></div></td>
     <td><div><code>"us-east-1"</code></div></td>
     <td>AWS KMS region</td>
@@ -1852,7 +1874,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"cascading"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L858">server.configs.secrets.migration_encryption_timestamp._secret</a></div></td>
+    <td><div><a href="./values.yaml#L865">server.configs.secrets.migration_encryption_timestamp._secret</a></div></td>
     <td><div><code>"1685510751"</code></div></td>
     <td></td>
   </tr><tr>
@@ -1967,14 +1989,6 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><a href="./values.yaml#L116">server.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td>TLS configuration for the ingress</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L863">server.keymanager.enabled</a></div></td>
-    <td><div><code>false</code></div></td>
-    <td>Enable or disable keymanager</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L865">server.keymanager.url</a></div></td>
-    <td><div><code>""</code></div></td>
-    <td>KeyManager service URL</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L168">server.labels</a></div></td>
     <td><div><code>{}</code></div></td>
