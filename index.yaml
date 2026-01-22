@@ -446,6 +446,17 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-card-vault-0.1.1/hyperswitch-card-vault-0.1.1.tgz
     version: 0.1.1
+  hyperswitch-control-center:
+  - apiVersion: v2
+    appVersion: v1.37.4
+    created: "2026-01-22T12:49:08.618731762Z"
+    description: A dashboard for Hyperswitch Service
+    digest: 6095ac69d4666c4b786a791148ec845352851ad43e42050e7b592766501b4c0c
+    name: hyperswitch-control-center
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-control-center-1.0.0/hyperswitch-control-center-1.0.0.tgz
+    version: 1.0.0
   hyperswitch-encryption-service:
   - apiVersion: v2
     appVersion: 0.1.8
@@ -1465,4 +1476,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-01-22T12:34:02.502980763Z"
+generated: "2026-01-22T12:49:08.618861475Z"
