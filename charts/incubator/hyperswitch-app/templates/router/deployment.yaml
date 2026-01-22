@@ -99,8 +99,7 @@ spec:
       {{- end }}
       containers:
         - name: hyperswitch-router
-          {{- $registry := .Values.global.imageRegistry | default .Values.services.router.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.router.image }}:{{ .Values.services.router.version }}"
+          image: {{ include "hyperswitch-router.image" . }}
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -110,7 +109,6 @@ spec:
                   - -c
                   - pkill -15 node
           env:
-            {{/* TODO this env can be static ? */}}
             - name: BINARY
               value: {{ .Values.server.binary }}
           {{- with .Values.global.env }}
@@ -122,7 +120,6 @@ spec:
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
-          {{- include "keymanager.envs" . | nindent 12 }}
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
             - configMapRef:

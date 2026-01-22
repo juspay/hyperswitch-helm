@@ -66,8 +66,7 @@ spec:
       {{- end }}
       containers:
         - name: hyperswitch-consumer
-          {{- $registry := .Values.global.imageRegistry | default .Values.services.consumer.imageRegistry }}
-          image: "{{ $registry }}/{{ .Values.services.consumer.image }}:{{ .Values.services.consumer.version }}"
+          image: {{ include "hyperswitch-consumer.image" . }}
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -90,7 +89,6 @@ spec:
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
-          {{- include "keymanager.envs" . | nindent 12 }}
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           {{- include "hyperswitch.configToEnvRefs" (dict "config" .Values.consumer.configs "prefix" "ROUTER" "context" .) | nindent 12 }}
           envFrom:
