@@ -205,6 +205,38 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+serviceMonitor:
+  ## If true, a ServiceMonitor CR is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  enabled: false
+  # Name of the service port to scrape metrics from
+  # Defaults to "metrics" which matches the service.ports[].name for metrics
+  portName: "metrics"
+  # Namespace where the ServiceMonitor should be created
+  # If empty, defaults to the release namespace
+  namespace: ""
+  # Additional labels to add to the ServiceMonitor
+  # Useful for Prometheus discovery via label selectors
+  labels: {}
+  # Interval at which metrics should be scraped
+  interval: 15s
+  # Timeout after which the scrape is ended
+  scrapeTimeout: 30s
+  # HTTP path to scrape metrics from
+  path: /metrics
+  # Scheme to use for scraping (http or https)
+  scheme: http
+  # TLS configuration for secure endpoints
+  tlsConfig: {}
+  # Relabel configs to apply to samples before ingestion
+  relabelings: []
+  # MetricRelabelConfigs to apply to samples before ingestion
+  metricRelabelings: []
+  # BasicAuth configuration for authenticated endpoints
+  basicAuth: {}
+  # TargetLabels transfers labels from the ServiceMonitor to the target
+  targetLabels: []
+
 resources:
   limits:
     cpu: 1000m
