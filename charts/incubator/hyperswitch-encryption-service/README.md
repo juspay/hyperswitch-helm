@@ -1,6 +1,6 @@
 # hyperswitch-encryption-service
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.8](https://img.shields.io/badge/AppVersion-0.1.8-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.11](https://img.shields.io/badge/AppVersion-0.1.11-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch encryption-service
@@ -210,7 +210,7 @@ secrets:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
-| image.tag | string | `"v0.1.8"` |  |
+| image.tag | string | `"v0.1.11"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
@@ -285,6 +285,19 @@ secrets:
 | serviceAccount.automount | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `"encryption-service-role"` |  |
+| serviceMonitor.basicAuth | object | `{}` |  |
+| serviceMonitor.enabled | bool | `false` |  |
+| serviceMonitor.interval | string | `"15s"` |  |
+| serviceMonitor.labels | object | `{}` |  |
+| serviceMonitor.metricRelabelings | list | `[]` |  |
+| serviceMonitor.namespace | string | `""` |  |
+| serviceMonitor.path | string | `"/metrics"` |  |
+| serviceMonitor.portName | string | `"metrics"` |  |
+| serviceMonitor.relabelings | list | `[]` |  |
+| serviceMonitor.scheme | string | `"http"` |  |
+| serviceMonitor.scrapeTimeout | string | `"30s"` |  |
+| serviceMonitor.targetLabels | list | `[]` |  |
+| serviceMonitor.tlsConfig | object | `{}` |  |
 | strategy.rollingUpdate.maxSurge | int | `1` |  |
 | strategy.rollingUpdate.maxUnavailable | int | `0` |  |
 | strategy.type | string | `"RollingUpdate"` |  |
