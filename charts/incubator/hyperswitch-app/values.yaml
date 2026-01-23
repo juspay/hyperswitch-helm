@@ -1323,7 +1323,8 @@ istio:
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - match: []
+      - name: &istio_route "primary"
+        match: []
         weight: 100
         timeout: 50s
         retries: {}
@@ -1394,11 +1395,24 @@ argoRollouts:
           duration: 1m
       - setWeight: 100
 
+    # -- Optional Canary Configuration Settings
+    # analysis: object
+    # antiAffinity: object
+    # canaryService: string
+    # stableService: string
+    # maxSurge: stringOrInt
+    # maxUnavailable: stringOrInt
+    # trafficRouting: object
+
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
       istio:
         enabled: true
+        # -- VirtualService route name to manage canary routing
+        virtualService:
+          routeNames:
+            - *istio_route
         # -- DestinationRule subset names
         destinationRule:
           canarySubsetName: "canary"
@@ -1410,6 +1424,7 @@ argoRollouts:
         # -- Enable header-based canary routing
         enabled: false
         # -- Route name for managed header routing
+        # This route will be auto added to the VirtualService when headerRouting is enabled
         routeName: "header-canary-route"
         # -- Header matching rules
         match:

@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -114,24 +114,13 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| config.connectors.adyen.base_url | string | `"https://{{merchant_endpoint_prefix}}-checkout-live.adyenpayments.com/checkout/"` | Adyen base URL |
-| config.connectors.adyen.dispute_base_url | string | `"https://{{merchant_endpoint_prefix}}-ca-live.adyen.com/"` | Adyen dispute base URL |
-| config.connectors.authorizedotnet.base_url | string | `"https://api.authorize.net/xml/v1/request.api/"` | Authorize.net base URL |
-| config.connectors.checkout.base_url | string | `"https://api.checkout.com/"` | Checkout base URL |
-| config.connectors.elavon.base_url | string | `"https://api.convergepay.com/VirtualMerchant/"` | Elavon base URL |
-| config.connectors.fiserv.base_url | string | `"https://cert.api.fiservapps.com/"` | Fiserv base URL |
-| config.connectors.razorpay.base_url | string | `"https://api.razorpay.com/"` | Razorpay base URL |
-| config.connectors.razorpayv2.base_url | string | `"https://api.razorpay.com/"` | Razorpay v2 base URL |
-| config.connectors.xendit.base_url | string | `"https://api.xendit.co/"` | Xendit base URL |
 | config.log.console.enabled | bool | `true` | Enable console logging |
 | config.log.console.level | string | `"DEBUG"` | Log level (DEBUG, INFO, WARN, ERROR) |
 | config.log.console.log_format | string | `"json"` | Log format (json, text) |
 | config.metrics.host | string | `"0.0.0.0"` | Metrics server host address |
 | config.metrics.port | int | `8080` | Metrics server port |
-| config.proxy.bypass_proxy_urls | list | `["localhost","local"]` | URLs to bypass proxy |
 | config.proxy.http_url | string | `"http_proxy"` | HTTP proxy URL |
 | config.proxy.https_url | string | `"https_proxy"` | HTTPS proxy URL |
-| config.proxy.idle_pool_connection_timeout | int | `90` | Idle pool connection timeout |
 | config.server.host | string | `"0.0.0.0"` | Server host address |
 | config.server.port | int | `8000` | Server port |
 | config.server.type | string | `"grpc"` | Server type |
@@ -140,7 +129,17 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| argoRollouts | object | `{"canary":{"steps":[],"trafficRouting":{"istio":{"destinationRule":{"canarySubsetName":"canary","stableSubsetName":"stable"},"enabled":false}}},"enabled":false,"revisionHistoryLimit":10}` | Argo Rollouts configuration |
+| argoRollouts.canary.steps | list | `[]` | Canary deployment steps (see Argo Rollouts docs) |
+| argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName | string | `"canary"` | Name of the canary subset in Istio DestinationRule |
+| argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName | string | `"stable"` | Name of the stable subset in Istio DestinationRule |
+| argoRollouts.canary.trafficRouting.istio.enabled | bool | `false` | Enable Istio traffic routing for canary |
+| argoRollouts.enabled | bool | `false` | Enable Argo Rollouts instead of standard Deployment |
+| argoRollouts.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback |
+| config.server.run_env | string | `"sandbox"` | Runtime environment (production, sandbox) |
+| env | list | `[]` |  |
 | global.imageRegistry | string | `nil` |  |
+| strategy | object | `{}` |  |
 
 ### Example Configuration
 
