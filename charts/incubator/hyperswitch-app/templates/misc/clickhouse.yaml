@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: clickhouse-script
-  namespace: hyperswitch
+  namespace: {{ .Release.Namespace }}
   labels:
     app: clickhouse
 data:
@@ -1697,7 +1697,7 @@ data:
       refund_queue
     WHERE
       length(_error) = 0;
-    CREATE TABLE IF NOT EXISTS sdk_events_queue ( 
+    CREATE TABLE IF NOT EXISTS sdk_events_queue (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `remote_ip` Nullable(String),
@@ -1717,13 +1717,13 @@ data:
       `payment_method` LowCardinality(Nullable(String)),
       `payment_experience` LowCardinality(Nullable(String))
     ) ENGINE = Kafka SETTINGS
-      kafka_broker_list = 'kafka0:29092', 
-      kafka_topic_list = 'hyper-sdk-logs', 
-      kafka_group_name = 'hyper-ckh', 
-      kafka_format = 'JSONEachRow', 
+      kafka_broker_list = 'kafka0:29092',
+      kafka_topic_list = 'hyper-sdk-logs',
+      kafka_group_name = 'hyper-ckh',
+      kafka_format = 'JSONEachRow',
       kafka_handle_error_mode = 'stream';
 
-    CREATE TABLE IF NOT EXISTS sdk_events ( 
+    CREATE TABLE IF NOT EXISTS sdk_events (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `remote_ip` Nullable(String),
@@ -1753,17 +1753,17 @@ data:
       INDEX componentIndex component TYPE bloom_filter GRANULARITY 1,
       INDEX firstEventIndex first_event TYPE bloom_filter GRANULARITY 1
     ) ENGINE = MergeTree
-    PARTITION BY 
-      toStartOfDay(created_at) 
-    ORDER BY 
-      (created_at, merchant_id) 
-    TTL 
-      toDateTime(created_at) + toIntervalMonth(6) 
-    SETTINGS 
+    PARTITION BY
+      toStartOfDay(created_at)
+    ORDER BY
+      (created_at, merchant_id)
+    TTL
+      toDateTime(created_at) + toIntervalMonth(6)
+    SETTINGS
       index_granularity = 8192
     ;
 
-    CREATE MATERIALIZED VIEW IF NOT EXISTS sdk_events_mv TO sdk_events ( 
+    CREATE MATERIALIZED VIEW IF NOT EXISTS sdk_events_mv TO sdk_events (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `remote_ip` Nullable(String),
@@ -1783,7 +1783,7 @@ data:
       `payment_experience` LowCardinality(Nullable(String)),
       `created_at` DateTime64(3),
       `created_at_precise` DateTime64(3)
-    ) AS 
+    ) AS
     SELECT
       payment_id,
       merchant_id,
@@ -1803,8 +1803,8 @@ data:
       payment_method,
       payment_experience,
       toDateTime64(timestamp, 3) AS created_at,
-      toDateTime64(timestamp, 3) AS created_at_precise 
-    FROM 
+      toDateTime64(timestamp, 3) AS created_at_precise
+    FROM
       sdk_events_queue
     WHERE length(_error) = 0;
 
@@ -1904,7 +1904,7 @@ data:
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
 
-    CREATE TABLE IF NOT EXISTS active_payments ( 
+    CREATE TABLE IF NOT EXISTS active_payments (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `created_at` DateTime64,
@@ -1913,40 +1913,40 @@ data:
       INDEX flowTypeIndex flow_type TYPE bloom_filter GRANULARITY 1
     ) ENGINE = MergeTree
     PARTITION BY toStartOfSecond(created_at)
-    ORDER BY 
+    ORDER BY
       merchant_id
-    TTL 
+    TTL
       toDateTime(created_at) + INTERVAL 60 SECOND
-    SETTINGS 
+    SETTINGS
       index_granularity = 8192;
 
-    CREATE MATERIALIZED VIEW IF NOT EXISTS sdk_active_payments_mv TO active_payments ( 
+    CREATE MATERIALIZED VIEW IF NOT EXISTS sdk_active_payments_mv TO active_payments (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `created_at` DateTime64,
       `flow_type` LowCardinality(Nullable(String))
-    ) AS 
+    ) AS
     SELECT
       payment_id,
       merchant_id,
       toDateTime64(timestamp, 3) AS created_at,
       'sdk' AS flow_type
-    FROM 
+    FROM
       sdk_events_queue
     WHERE length(_error) = 0;
 
-    CREATE MATERIALIZED VIEW IF NOT EXISTS api_active_payments_mv TO active_payments ( 
+    CREATE MATERIALIZED VIEW IF NOT EXISTS api_active_payments_mv TO active_payments (
       `payment_id` Nullable(String),
       `merchant_id` String,
       `created_at` DateTime64,
       `flow_type` LowCardinality(Nullable(String))
-    ) AS 
+    ) AS
     SELECT
       payment_id,
       merchant_id,
       created_at_timestamp AS created_at,
       flow_type
-    FROM 
+    FROM
       api_events_queue
     WHERE length(_error) = 0;
 
@@ -1989,10 +1989,10 @@ spec:
                 echo "No SQL scripts found. Exiting..."
                 exit 1
               fi
-              
+
               echo "Executing ClickHouse init scripts..."
               cat /docker-entrypoint-initdb.d/*.sql | clickhouse-client --host=clickhouse --user default --password "$CLICKHOUSE_ADMIN_PASSWORD" --multiquery
-              
+
               echo "ClickHouse initialization completed."
           env:
             - name: CLICKHOUSE_ADMIN_PASSWORD

@@ -2,7 +2,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ .Release.Name }}-hyperswitch-vs
+  name: {{ include "hyperswitch-server.name" . }}-vs
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
@@ -48,7 +48,7 @@ spec:
       {{- toYaml .rewrite | nindent 6 }}
     {{- end }}
     route:
-    {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+    {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled (mustHas .name $.Values.argoRollouts.canary.trafficRouting.istio.virtualService.routeNames) }}
     # Argo Rollouts will manage these weights dynamically during canary deployment
     - destination:
         host: {{ include "hyperswitch-server.name" $ }}
