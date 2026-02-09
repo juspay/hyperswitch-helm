@@ -1396,13 +1396,30 @@ argoRollouts:
       - setWeight: 100
 
     # -- Optional Canary Configuration Settings
-    # analysis: object
     # antiAffinity: object
     # canaryService: string
     # stableService: string
     # maxSurge: stringOrInt
     # maxUnavailable: stringOrInt
     # trafficRouting: object
+
+    # AB Testing Analysis Configuration
+    # Performs automated analysis of canary deployments using VictoriaMetrics
+    # Checks for 5xx errors and fails the deployment after 3 occurrences
+    analysis:
+      # -- Enable AB testing analysis
+      enabled: false
+      # -- VictoriaMetrics configuration
+      victoriaMetrics:
+        # -- VictoriaMetrics Prometheus-compatible API address
+        # Example: http://victoria-metrics.monitoring:8428
+        address: ""
+      # -- Interval between metric queries
+      interval: "30s"
+      # -- Starting step for analysis (0-indexed)
+      startingStep: 2
+      # -- Additional arguments to pass to the analysis template
+      args: []
 
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:

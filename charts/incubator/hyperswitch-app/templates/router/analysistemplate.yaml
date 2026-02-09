@@ -1,0 +1,27 @@
+{{- if and .Values.services.router.enabled .Values.argoRollouts.enabled .Values.argoRollouts.canary.analysis.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ include "hyperswitch-server.name" . }}-ab-testing
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+spec:
+  metrics:
+  # Check for 5xx errors - fails after 3 occurrences
+  - name: error-5xx-check
+    interval: {{ .Values.argoRollouts.canary.analysis.interval | default "30s" }}
+    successCondition: result == 0
+    failureLimit: 3
+    provider:
+      prometheus:
+        address: {{ .Values.argoRollouts.canary.analysis.victoriaMetrics.address | required ".Values.argoRollouts.canary.analysis.victoriaMetrics.address is required when analysis is enabled" }}
+        query: |
+          sum(increase(
+            http_requests_total{
+              app="{{ include "hyperswitch-server.name" . }}",
+              version="{{ include "version.suffix" .Values.services.router.version }}",
+              status=~"5.."
+            }[1m]
+          ))
+{{- end }}

@@ -48,9 +48,16 @@ spec:
       {{- with .Values.argoRollouts.canary.abortScaleDownDelaySeconds}}
       abortScaleDownDelaySeconds: {{ . }}
       {{- end }}
-      {{- with .Values.argoRollouts.canary.analysis}}
+      # AB Testing Analysis Configuration using VictoriaMetrics
+      {{- if .Values.argoRollouts.canary.analysis.enabled }}
       analysis:
-        {{- toYaml . | nindent 8 }}
+        templates:
+        - templateName: {{ include "hyperswitch-server.name" . }}-ab-testing
+        startingStep: {{ .Values.argoRollouts.canary.analysis.startingStep | default 2 }}
+        {{- with .Values.argoRollouts.canary.analysis.args }}
+        args:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end }}
       {{- with .Values.argoRollouts.canary.antiAffinity}}
       antiAffinity:
