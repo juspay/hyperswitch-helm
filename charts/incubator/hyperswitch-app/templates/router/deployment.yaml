@@ -35,18 +35,54 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   {{- if .Values.argoRollouts.enabled }}
   # Argo Rollouts strategy configuration
+  # TODO: Add support for other deployment strategies (Blue-Green)
   strategy:
     canary:
+      # Canary deployment steps with traffic percentage and pause duration
       steps:
       {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
+      # Optional canary configuration settings
+      {{- with .Values.argoRollouts.canary.dynamicStableScale}}
+      dynamicStableScale: {{ . }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.abortScaleDownDelaySeconds}}
+      abortScaleDownDelaySeconds: {{ . }}
+      {{- end }}
+      # AB Testing Analysis Configuration using VictoriaMetrics
+      {{- if .Values.argoRollouts.canary.analysis.enabled }}
+      analysis:
+        templates:
+        - templateName: {{ include "hyperswitch-server.name" . }}-ab-testing
+        startingStep: {{ .Values.argoRollouts.canary.analysis.startingStep | default 2 }}
+        {{- with .Values.argoRollouts.canary.analysis.args }}
+        args:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.antiAffinity}}
+      antiAffinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxSurge}}
+      maxSurge: {{ . }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxUnavailable}}
+      maxUnavailable: {{ . }}
+      {{- end }}
+      # Istio traffic routing configuration
+      # TODO: Add support for other traffic routers (e.g., Nginx, SMI)
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      {{- if not .Values.istio.enabled }}
+      {{- fail "Istio must be enabled (.Values.istio.enabled: true) when using Argo Rollouts - Istio traffic routing" }}
+      {{- end }}
       trafficRouting:
         istio:
           virtualService:
-            name: {{ .Release.Name }}-hyperswitch-vs
-            # Weight-based routing: manage the primary route weights
+            name: {{ include "hyperswitch-server.name" . }}-vs
+            {{- with .Values.argoRollouts.canary.trafficRouting.istio.virtualService.routeNames }}
             routes:
-              - "primary"
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
           destinationRule:
             name: {{ include "hyperswitch-server.name" . }}-dr
             canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}

@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.117.0](https://img.shields.io/badge/AppVersion-v1.117.0-informational?style=flat-square)
+![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.117.0](https://img.shields.io/badge/AppVersion-v1.117.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -155,39 +155,39 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1593">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1625">clickhouse.auth.password</a></div></td>
     <td><div><code>"jhdvfvsnbdj"</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1590">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1622">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1600">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1632">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1582">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1614">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1586">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1618">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1615">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L1647">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1606">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1638">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1603">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1635">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1612">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1644">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
@@ -255,55 +255,55 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1529">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1561">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1524">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1556">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1516">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1548">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1519">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1551">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1548">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1580">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1560">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1592">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1556">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1588">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1552">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1584">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1564">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1596">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1543">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1575">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1538">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1570">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1631">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1663">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1634">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1666">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
@@ -371,11 +371,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1640">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1672">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1644">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1676">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -404,6 +404,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     "http": [
       {
         "match": [],
+        "name": "primary",
         "retries": {},
         "timeout": "50s",
         "weight": 100
@@ -708,7 +709,45 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"{{ .Release.Name }}-hyperswitch-secrets"</code></div></td>
     <td>Hyperswitch secrets reference with release name prefix</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1384">argoRollouts.canary.steps</a></div></td>
+    <td><div><a href="./values.yaml#L1409">argoRollouts.canary.analysis</a></div></td>
+    <td><div><code>{
+  "args": [],
+  "enabled": false,
+  "interval": "30s",
+  "startingStep": 2,
+  "victoriaMetrics": {
+    "address": ""
+  }
+}</code></div></td>
+    <td>Optional Canary Configuration Settings antiAffinity: object canaryService: string stableService: string maxSurge: stringOrInt maxUnavailable: stringOrInt trafficRouting: object AB Testing Analysis Configuration Performs automated analysis of canary deployments using VictoriaMetrics Checks for 5xx errors and fails the deployment after 3 occurrences</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1422">argoRollouts.canary.analysis.args</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td>Additional arguments to pass to the analysis template</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1411">argoRollouts.canary.analysis.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable AB testing analysis</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1418">argoRollouts.canary.analysis.interval</a></div></td>
+    <td><div><code>"30s"</code></div></td>
+    <td>Interval between metric queries</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1420">argoRollouts.canary.analysis.startingStep</a></div></td>
+    <td><div><code>2</code></div></td>
+    <td>Starting step for analysis (0-indexed)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1413">argoRollouts.canary.analysis.victoriaMetrics</a></div></td>
+    <td><div><code>{
+  "address": ""
+}</code></div></td>
+    <td>VictoriaMetrics configuration</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1416">argoRollouts.canary.analysis.victoriaMetrics.address</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>VictoriaMetrics Prometheus-compatible API address Example: http://victoria-metrics.monitoring:8428</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1385">argoRollouts.canary.steps</a></div></td>
     <td><div><code>[
   {
     "setCanaryScale": {
@@ -743,11 +782,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Canary deployment steps with traffic percentage and pause duration</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1411">argoRollouts.canary.trafficRouting.headerRouting.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1442">argoRollouts.canary.trafficRouting.headerRouting.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable header-based canary routing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1415">argoRollouts.canary.trafficRouting.headerRouting.match</a></div></td>
+    <td><div><a href="./values.yaml#L1447">argoRollouts.canary.trafficRouting.headerRouting.match</a></div></td>
     <td><div><code>[
   {
     "headerName": "X-Canary-Test",
@@ -758,80 +797,93 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Header matching rules</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1413">argoRollouts.canary.trafficRouting.headerRouting.routeName</a></div></td>
+    <td><div><a href="./values.yaml#L1445">argoRollouts.canary.trafficRouting.headerRouting.routeName</a></div></td>
     <td><div><code>"header-canary-route"</code></div></td>
-    <td>Route name for managed header routing</td>
+    <td>Route name for managed header routing This route will be auto added to the VirtualService when headerRouting is enabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1400">argoRollouts.canary.trafficRouting.istio</a></div></td>
+    <td><div><a href="./values.yaml#L1427">argoRollouts.canary.trafficRouting.istio</a></div></td>
     <td><div><code>{
   "destinationRule": {
     "canarySubsetName": "canary",
     "stableSubsetName": "stable"
   },
-  "enabled": true
+  "enabled": true,
+  "virtualService": {
+    "routeNames": [
+      "primary"
+    ]
+  }
 }</code></div></td>
     <td>Enable Istio traffic management for canary deployments</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1403">argoRollouts.canary.trafficRouting.istio.destinationRule</a></div></td>
+    <td><div><a href="./values.yaml#L1434">argoRollouts.canary.trafficRouting.istio.destinationRule</a></div></td>
     <td><div><code>{
   "canarySubsetName": "canary",
   "stableSubsetName": "stable"
 }</code></div></td>
     <td>DestinationRule subset names</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1379">argoRollouts.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1430">argoRollouts.canary.trafficRouting.istio.virtualService</a></div></td>
+    <td><div><code>{
+  "routeNames": [
+    "primary"
+  ]
+}</code></div></td>
+    <td>VirtualService route name to manage canary routing</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1380">argoRollouts.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment) When disabled, standard Kubernetes Deployment is used</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1421">argoRollouts.revisionHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L1453">argoRollouts.revisionHistoryLimit</a></div></td>
     <td><div><code>3</code></div></td>
     <td>Revision history limit for rollouts</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1427">autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1459">autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1429">autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1461">autoscaling.maxReplicas</a></div></td>
     <td><div><code>5</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1428">autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1460">autoscaling.minReplicas</a></div></td>
     <td><div><code>3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1430">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L1462">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1579">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1611">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1595">clickhouse.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1627">clickhouse.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1596">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1628">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1583">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1615">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1609">clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1641">clickhouse.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1440">disableInternalSecrets</a></div></td>
+    <td><div><a href="./values.yaml#L1472">disableInternalSecrets</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1446">externalSecretsOperator.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1478">externalSecretsOperator.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable External Secrets Operator resources</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1485">externalSecretsOperator.externalSecrets.secrets</a></div></td>
+    <td><div><a href="./values.yaml#L1517">externalSecretsOperator.externalSecrets.secrets</a></div></td>
     <td><div><code>[
   {
     "creationPolicy": "Owner",
@@ -849,11 +901,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>List of external secrets to create You can define multiple secrets here</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1492">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1524">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
     <td><div><code>"Owner"</code></div></td>
     <td>Creation policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1494">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
+    <td><div><a href="./values.yaml#L1526">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
     <td><div><code>[
   {
     "extract": {
@@ -863,19 +915,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Extract configuration (use dataFrom.extract for full secret)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1490">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
+    <td><div><a href="./values.yaml#L1522">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
     <td><div><code>"1h"</code></div></td>
     <td>Refresh interval</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1488">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
+    <td><div><a href="./values.yaml#L1520">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Target secret name in Kubernetes</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1462">externalSecretsOperator.secretStore.name</a></div></td>
+    <td><div><a href="./values.yaml#L1494">externalSecretsOperator.secretStore.name</a></div></td>
     <td><div><code>"hyperswitch-secret-store"</code></div></td>
     <td>Name of the SecretStore</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1465">externalSecretsOperator.secretStore.provider</a></div></td>
+    <td><div><a href="./values.yaml#L1497">externalSecretsOperator.secretStore.provider</a></div></td>
     <td><div><code>{
   "aws": {
     "auth": {
@@ -891,43 +943,43 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1453">externalSecretsOperator.serviceAccount.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L1485">externalSecretsOperator.serviceAccount.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Annotations for the service account (e.g., IRSA role)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1451">externalSecretsOperator.serviceAccount.create</a></div></td>
+    <td><div><a href="./values.yaml#L1483">externalSecretsOperator.serviceAccount.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Create service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1455">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1487">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Extra labels for the service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1457">externalSecretsOperator.serviceAccount.name</a></div></td>
+    <td><div><a href="./values.yaml#L1489">externalSecretsOperator.serviceAccount.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the service account (default: hyperswitch-eso-sa)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1433">hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1465">hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1437">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1469">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1436">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1468">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1575">initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1607">initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1574">initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1606">initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1576">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1608">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
@@ -959,13 +1011,13 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"tags"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1356">istio.destinationRule</a></div></td>
+    <td><div><a href="./values.yaml#L1357">istio.destinationRule</a></div></td>
     <td><div><code>{
   "trafficPolicy": {}
 }</code></div></td>
     <td>DestinationRule configuration</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1358">istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1359">istio.destinationRule.trafficPolicy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Traffic policy configuration for router - rendered directly as YAML</td>
   </tr><tr>
@@ -981,6 +1033,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
   "http": [
     {
       "match": [],
+      "name": "primary",
       "retries": {},
       "timeout": "50s",
       "weight": 100
@@ -1005,6 +1058,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>[
   {
     "match": [],
+    "name": "primary",
     "retries": {},
     "timeout": "50s",
     "weight": 100
@@ -1012,27 +1066,27 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>HTTP routing rules (ordered list) Note: Rules are processed in the order they appear in this list. Ensure specific routes (like /api/) come before catch-all routes (like /).</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1530">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1562">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1525">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1557">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1568">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1600">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1513">kafka.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1545">kafka.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/kafka"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1535">kafka.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1567">kafka.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1424">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L1456">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
