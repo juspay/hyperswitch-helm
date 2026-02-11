@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -175,6 +175,9 @@ external:
 | server.host | string | `"0.0.0.0"` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
 | server.imageRegistry | string | `"docker.juspay.io"` |  |
+| server.log.console.enabled | bool | `true` | Enable console logging |
+| server.log.console.level | string | `"DEBUG"` | Log level for console logs (ERROR, WARN, INFO, DEBUG) |
+| server.log.console.log_format | string | `"default"` | Log format for console logs (default or json) |
 | server.pod.annotations | object | `{}` |  |
 | server.port | string | `"8080"` |  |
 | server.vault.url | string | `"http://127.0.0.1:8200"` |  |

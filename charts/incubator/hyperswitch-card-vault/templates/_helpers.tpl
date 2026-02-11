@@ -149,6 +149,31 @@ LOCKER server port
 {{- default "8080" .Values.server.port | quote }}
 {{- end }}
 
+{{/*
+LOCKER log console enabled
+*/}}
+{{- define "locker.log.console.enabled" -}}
+{{- if hasKey .Values.server.log.console "enabled" -}}
+{{- .Values.server.log.console.enabled | toString | lower | quote }}
+{{- else -}}
+{{- "true" | quote }}
+{{- end -}}
+{{- end }}
+
+{{/*
+LOCKER log console level
+*/}}
+{{- define "locker.log.console.level" -}}
+{{- default "DEBUG" .Values.server.log.console.level | quote }}
+{{- end }}
+
+{{/*
+LOCKER log console format
+*/}}
+{{- define "locker.log.console.log_format" -}}
+{{- default "default" .Values.server.log.console.log_format | quote }}
+{{- end }}
+
 {{- define "locker.externalKeyManager.url" -}}
 {{- default "http://localhost:5000" .Values.server.externalKeyManager.url -}}
 {{- end -}}
