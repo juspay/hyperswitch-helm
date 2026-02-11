@@ -1,0 +1,94 @@
+# Lightweight Hyperswitch-app instance connected to YugabyteDB
+# For 16GB systems - 500MB memory per database
+# This instance sends metrics to OTEL port 14318
+
+# Disable embedded PostgreSQL - using YugabyteDB instead
+postgresql:
+  enabled: false
+
+# Configure YugabyteDB as external database
+externalPostgresql:
+  enabled: true
+  host: yugabyte-ysql.hyperswitch-yb.svc.cluster.local
+  port: 5433
+  username: yugabyte
+  password: ""
+  database: hyperswitch
+  sslmode: disable
+  maxConnections: 10
+  minConnections: 5
+
+# Disable other embedded services
+redis:
+  enabled: false
+
+externalRedis:
+  enabled: true
+  host: hyperswitch-shared-redis-master.hyperswitch-shared.svc.cluster.local
+  port: 6379
+  auth:
+    enabled: false
+
+kafka:
+  enabled: false
+
+clickhouse:
+  enabled: false
+
+mailhog:
+  enabled: false
+
+vector:
+  enabled: false
+
+# Enable only router service with reduced resources
+services:
+  router:
+    enabled: true
+    version: v1.117.0
+    imageRegistry: docker.juspay.io
+    image: juspaydotin/hyperswitch-router
+  consumer:
+    enabled: false
+  producer:
+    enabled: false
+  drainer:
+    enabled: false
+
+# Server configuration with reduced resources
+server:
+  replicas: 1
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "200m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Configure OTEL to send to YB receiver port
+server:
+  configs:
+    log:
+      telemetry:
+        metrics_enabled: true
+        otel_exporter_otlp_endpoint: 'otel-collector.hyperswitch-monitoring.svc.cluster.local:14318'
+        traces_enabled: true
+
+# Add labels for identification
+global:
+  labels:
+    db_backend: yugabyte
+    instance: yb
+
+# Disable card vault
+hyperswitch-card-vault:
+  enabled: false
+
+# Disable autoscaling for consistent testing
+autoscaling:
+  enabled: false
+
+# Disable initDB as database will be initialized separately
+initDB:
+  enable: false

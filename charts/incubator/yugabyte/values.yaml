@@ -1,0 +1,104 @@
+# YugabyteDB Values for Performance Comparison
+# Resources: CPU=1 core, Memory=2GB, Replication Factor=3
+
+image:
+  repository: yugabytedb/yugabyte
+  tag: 2.18.0.0-b7
+  pullPolicy: IfNotPresent
+
+# Resource limits equal to PostgreSQL for fair comparison
+resources:
+  requests:
+    cpu: "1"
+    memory: "2Gi"
+  limits:
+    cpu: "1"
+    memory: "2Gi"
+
+# Storage configuration
+storage:
+  master:
+    storageClass: "standard"
+    size: 10Gi
+  tserver:
+    storageClass: "standard"
+    size: 10Gi
+
+# Replication factor for YugabyteDB
+replicationFactor: 3
+
+# Number of masters (for RF=3, we need at least 3 masters)
+replicas:
+  master: 3
+  tserver: 3
+
+# Service configuration
+service:
+  type: ClusterIP
+
+# Admin UI
+ui:
+  enabled: false
+
+# YSQL (PostgreSQL-compatible API) configuration
+ysql:
+  enable: true
+  port: 5433
+
+# YEDIS (Redis-compatible API) configuration
+yedis:
+  enable: false
+
+# YCQL (Cassandra-compatible API) configuration
+ycql:
+  enable: false
+
+# Database credentials
+auth:
+  enabled: false
+
+# Network policies
+networkPolicy:
+  enabled: false
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels:
+  db_backend: "yugabyte"
+
+# Node selector for dedicated nodes (optional)
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity for spreading replicas
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - yb-master
+              - key: component
+                operator: In
+                values:
+                  - master
+          topologyKey: kubernetes.io/hostname
+
+# YugabyteDB configuration
+config:
+  master:
+    placement_cloud: "default"
+    placement_region: "default"
+    placement_zone: "default"
+  tserver:
+    placement_cloud: "default"
+    placement_region: "default"
+    placement_zone: "default"

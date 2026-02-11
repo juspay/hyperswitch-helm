@@ -1,0 +1,15 @@
+apiVersion: v2
+name: yugabyte
+description: YugabyteDB distributed SQL database - PostgreSQL compatible
+type: application
+version: 0.1.0
+appVersion: "2.18.0.0"
+home: https://www.yugabytedb.com/
+icon: https://raw.githubusercontent.com/YugaByte/yugabyte-db/master/architecture/yb-logo-icon.svg
+keywords:
+  - yugabytedb
+  - database
+  - sql
+  - distributed
+maintainers:
+  - name: Hyperswitch Community

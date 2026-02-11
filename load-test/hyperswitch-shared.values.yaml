@@ -1,0 +1,52 @@
+# Shared infrastructure - Redis only
+# This is shared between both PostgreSQL and YugabyteDB instances
+
+# Enable only Redis
+redis:
+  enabled: true
+  image:
+    repository: bitnami/redis
+    tag: 7.2.3-debian-11-r0
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
+  resources:
+    requests:
+      memory: "250Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Disable everything else
+postgresql:
+  enabled: false
+externalPostgresql:
+  enabled: false
+kafka:
+  enabled: false
+clickhouse:
+  enabled: false
+mailhog:
+  enabled: false
+vector:
+  enabled: false
+cardVault:
+  enabled: false
+hyperswitch-card-vault:
+  enabled: false
+
+# Disable all services
+services:
+  router:
+    enabled: false
+  consumer:
+    enabled: false
+  producer:
+    enabled: false
+  drainer:
+    enabled: false

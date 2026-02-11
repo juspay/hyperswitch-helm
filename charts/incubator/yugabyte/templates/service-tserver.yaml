@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "yugabyte.fullname" . }}-tserver
+  labels:
+    {{- include "yugabyte.labels" . | nindent 4 }}
+    component: tserver
+spec:
+  type: {{ .Values.service.type }}
+  clusterIP: None
+  ports:
+  - port: {{ .Values.ysql.port }}
+    name: ysql
+    targetPort: ysql
+  {{- if .Values.ycql.enable }}
+  - port: 9042
+    name: ycql
+    targetPort: ycql
+  {{- end }}
+  {{- if .Values.yedis.enable }}
+  - port: 6379
+    name: yedis
+    targetPort: yedis
+  {{- end }}
+  - port: 11000
+    name: tserver-rpc
+    targetPort: tserver-rpc
+  - port: 12000
+    name: tserver-ui
+    targetPort: tserver-ui
+  selector:
+    {{- include "yugabyte.selectorLabels" . | nindent 4 }}
+    component: tserver
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "yugabyte.fullname" . }}-ysql
+  labels:
+    {{- include "yugabyte.labels" . | nindent 4 }}
+    component: tserver
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.ysql.port }}
+    name: ysql
+    targetPort: ysql
+  selector:
+    {{- include "yugabyte.selectorLabels" . | nindent 4 }}
+    component: tserver

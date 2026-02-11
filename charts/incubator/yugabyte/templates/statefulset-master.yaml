@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "yugabyte.fullname" . }}-master
+  labels:
+    {{- include "yugabyte.labels" . | nindent 4 }}
+    component: master
+spec:
+  serviceName: {{ include "yugabyte.fullname" . }}-master
+  replicas: {{ .Values.replicas.master }}
+  selector:
+    matchLabels:
+      {{- include "yugabyte.selectorLabels" . | nindent 6 }}
+      component: master
+  template:
+    metadata:
+      labels:
+        {{- include "yugabyte.labels" . | nindent 8 }}
+        component: master
+    spec:
+      containers:
+      - name: master
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 7000
+          name: master-ui
+        - containerPort: 7100
+          name: master-rpc
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: REPLICA_COUNT
+          value: "{{ .Values.replicas.master }}"
+        command:
+        - "/home/yugabyte/bin/yb-master"
+        - "--fs_data_dirs=/mnt/data"
+        - "--rpc_bind_addresses=$(POD_IP)"
+        - "--server_broadcast_addresses=$(POD_NAME).{{ include "yugabyte.fullname" . }}-master.{{ .Release.Namespace }}.svc.cluster.local"
+        - "--master_addresses={{ .Values.replicas.master | list | startswith "yb-master-0" | join ",master-addresses=" }}"
+        - "--use_private_ip=never"
+        - "--placement_cloud={{ .Values.config.master.placement_cloud }}"
+        - "--placement_region={{ .Values.config.master.placement_region }}"
+        - "--placement_zone={{ .Values.config.master.placement_zone }}"
+        - "--replication_factor={{ .Values.replicationFactor }}"
+        - "--enable_ysql=true"
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        - name: data
+          mountPath: /mnt/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ include "yugabyte.fullname" . }}-master
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "yugabyte.fullname" . }}-master
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.storage.master.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.storage.master.size }}
+{{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}

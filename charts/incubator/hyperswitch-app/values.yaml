@@ -14,7 +14,7 @@ services:
     # @section -- Services
     host: &router_host http://localhost:8080
   consumer:
-    enabled: true
+    enabled: false
     # -- Consumer version
     # @section -- Services
     version: v1.117.0
@@ -25,7 +25,7 @@ services:
     # @section -- Services
     image: juspaydotin/hyperswitch-consumer
   producer:
-    enabled: true
+    enabled: false
     # -- Producer version
     # @section -- Services
     version: v1.117.0
@@ -36,7 +36,7 @@ services:
     # @section -- Services
     image: juspaydotin/hyperswitch-producer
   drainer:
-    enabled: true
+    enabled: false
     # -- Drainer version
     # @section -- Services
     version: v1.117.0
@@ -47,6 +47,7 @@ services:
     # @section -- Services
     image: juspaydotin/hyperswitch-drainer
   sdk:
+    enabled: false
     # -- SDK host
     # @section -- Services
     host: http://localhost:9050

@@ -1,0 +1,290 @@
+# Hyperswitch Monitoring Stack for Performance Comparison
+# Configured with dual OTEL receivers to differentiate PG and YB instances
+
+# Global configuration
+global:
+  imageRegistry: null
+  labels:
+    stack: "hyperswitch-monitoring"
+
+# kube-prometheus-stack configuration
+kube-prometheus-stack:
+  enabled: true
+
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: false
+
+  alertmanager:
+    enabled: true
+    alertmanagerSpec:
+      tolerations: []
+
+  prometheus:
+    enabled: true
+    prometheusSpec:
+      tolerations: []
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 100m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+      retention: 15d
+      serviceMonitorSelector: {}
+      serviceMonitorNamespaceSelector: {}
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 30Gi
+
+  grafana:
+    enabled: true
+    adminPassword: "admin"
+    tolerations: []
+    image:
+      tag: 10.0.1
+    plugins:
+      - volkovlabs-variable-panel
+    defaultDatasourceEnabled: false
+    additionalDataSources: []
+    prometheus:
+      datasource:
+        enabled: false
+    sidecar:
+      datasources:
+        enabled: true
+        label: grafana_datasource
+        labelValue: "1"
+        searchNamespace: "{{ .Release.Namespace }}"
+        skipTlsVerify: true
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+        searchNamespace: ALL
+        provider:
+          allowUiUpdates: false
+
+# Disable Loki to reduce resources
+loki:
+  enabled: false
+
+# Disable Promtail
+promtail:
+  enabled: false
+
+# OpenTelemetry Collector with dual receivers
+opentelemetry-collector:
+  enabled: true
+  mode: "deployment"
+  namespaceOverride: ""
+  
+  presets:
+    kubernetesAttributes:
+      enabled: true
+      extractAllPodLabels: true
+      extractAllPodAnnotations: false
+
+  # Custom config with dual receivers
+  alternateConfig:
+    # Two receivers on different ports
+    receivers:
+      # Receiver for PostgreSQL instance metrics
+      otlp/pg:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14317
+      
+      # Receiver for YugabyteDB instance metrics
+      otlp/yb:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14318
+
+    processors:
+      # Processor for PG pipeline - adds source_app label
+      batch/pg:
+        timeout: 5s
+        send_batch_size: 1024
+        send_batch_max_size: 2048
+      
+      attributes/pg:
+        actions:
+          - key: source_app
+            value: router_pg
+            action: insert
+      
+      # Processor for YB pipeline - adds source_app label
+      batch/yb:
+        timeout: 5s
+        send_batch_size: 1024
+        send_batch_max_size: 2048
+      
+      attributes/yb:
+        actions:
+          - key: source_app
+            value: router_yb
+            action: insert
+      
+      # Common memory limiter
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+
+    exporters:
+      debug:
+        verbosity: normal
+      prometheus:
+        endpoint: ${env:MY_POD_IP}:9898
+        resource_to_telemetry_conversion:
+          enabled: true
+
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+
+    service:
+      telemetry:
+        logs:
+          level: INFO
+          encoding: json
+        metrics:
+          level: basic
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+        - health_check
+      
+      pipelines:
+        # Pipeline for PG metrics
+        metrics/pg:
+          receivers:
+            - otlp/pg
+          processors:
+            - memory_limiter
+            - attributes/pg
+            - batch/pg
+          exporters:
+            - prometheus
+        
+        # Pipeline for YB metrics
+        metrics/yb:
+          receivers:
+            - otlp/yb
+          processors:
+            - memory_limiter
+            - attributes/yb
+            - batch/yb
+          exporters:
+            - prometheus
+        
+        # Pipeline for PG traces
+        traces/pg:
+          receivers:
+            - otlp/pg
+          processors:
+            - attributes/pg
+            - batch/pg
+          exporters:
+            - debug
+        
+        # Pipeline for YB traces
+        traces/yb:
+          receivers:
+            - otlp/yb
+          processors:
+            - attributes/yb
+            - batch/yb
+          exporters:
+            - debug
+
+  image:
+    repository: otel/opentelemetry-collector-contrib
+    tag: 0.122.1
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Custom ports for dual receivers
+  ports:
+    otlp-grpc-pg:
+      enabled: true
+      containerPort: 14317
+      servicePort: 14317
+      protocol: TCP
+      appProtocol: grpc
+    otlp-grpc-yb:
+      enabled: true
+      containerPort: 14318
+      servicePort: 14318
+      protocol: TCP
+      appProtocol: grpc
+    otel-metrics:
+      enabled: true
+      containerPort: 8888
+      servicePort: 8888
+      protocol: TCP
+    hs-metrics:
+      enabled: true
+      containerPort: 9898
+      servicePort: 9898
+      protocol: TCP
+    otlp:
+      enabled: false
+    otlp-http:
+      enabled: false
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+
+  resources:
+    limits:
+      cpu: 1500m
+      memory: 4Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+  replicaCount: 1
+
+  serviceMonitor:
+    enabled: true
+    metricsEndpoints:
+      - port: otel-metrics
+        honorLabels: true
+        interval: 30s
+        path: /metrics
+      - port: hs-metrics
+        honorLabels: true
+        interval: 15s
+        path: /metrics
+
+# PostgreSQL configuration for Grafana datasource
+postgresql:
+  external: false
+  primary:
+    host: "postgresql"
+    port: 5432
+    username: "hyperswitch"
+    password: "ZGJwYXNzd29yZDEx"
+    database: "hyperswitch"
+
+# Grafana ingress disabled for testing
+grafana:
+  ingress:
+    enabled: false
+
+# Load balancer disabled for testing
+loadBalancer:
+  targetSecurityGroup: ""

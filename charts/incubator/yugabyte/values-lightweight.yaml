@@ -1,0 +1,105 @@
+# YugabyteDB Lightweight Values for 16GB Systems
+# Resources: CPU=500m, Memory=512Mi per pod
+# Reduced storage for development/testing
+
+image:
+  repository: yugabytedb/yugabyte
+  tag: 2.18.0.0-b7
+  pullPolicy: IfNotPresent
+
+# Reduced resource limits for lightweight testing
+resources:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+# Smaller storage for lightweight testing
+storage:
+  master:
+    storageClass: "standard"
+    size: 5Gi
+  tserver:
+    storageClass: "standard"
+    size: 5Gi
+
+# Replication factor for YugabyteDB - keeping RF=3 for fairness
+replicationFactor: 3
+
+# Number of masters (for RF=3, we need at least 3 masters)
+replicas:
+  master: 3
+  tserver: 3
+
+# Service configuration
+service:
+  type: ClusterIP
+
+# Admin UI
+ui:
+  enabled: false
+
+# YSQL (PostgreSQL-compatible API) configuration
+ysql:
+  enable: true
+  port: 5433
+
+# YEDIS (Redis-compatible API) configuration
+yedis:
+  enable: false
+
+# YCQL (Cassandra-compatible API) configuration
+ycql:
+  enable: false
+
+# Database credentials
+auth:
+  enabled: false
+
+# Network policies
+networkPolicy:
+  enabled: false
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels:
+  db_backend: "yugabyte"
+
+# Node selector for dedicated nodes (optional)
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity for spreading replicas
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - yb-master
+              - key: component
+                operator: In
+                values:
+                  - master
+          topologyKey: kubernetes.io/hostname
+
+# YugabyteDB configuration
+config:
+  master:
+    placement_cloud: "default"
+    placement_region: "default"
+    placement_zone: "default"
+  tserver:
+    placement_cloud: "default"
+    placement_region: "default"
+    placement_zone: "default"

@@ -41,7 +41,7 @@ global:
 # @ignored
 hyperswitch-web:
   fullnameOverride: "hyperswitch-web"
-  enabled: true
+  enabled: false
   sdkDemo:
     enabled: false
   image:
@@ -94,7 +94,7 @@ hyperswitch-web:
 # @ignored
 hyperswitch-app:
   initDB:
-    enable: true
+    enable: false
   loadBalancer:
     targetSecurityGroup: *lb_security_group
   services:

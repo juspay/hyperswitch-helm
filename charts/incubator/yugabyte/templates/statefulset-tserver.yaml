@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "yugabyte.fullname" . }}-tserver
+  labels:
+    {{- include "yugabyte.labels" . | nindent 4 }}
+    component: tserver
+spec:
+  serviceName: {{ include "yugabyte.fullname" . }}-tserver
+  replicas: {{ .Values.replicas.tserver }}
+  selector:
+    matchLabels:
+      {{- include "yugabyte.selectorLabels" . | nindent 6 }}
+      component: tserver
+  template:
+    metadata:
+      labels:
+        {{- include "yugabyte.labels" . | nindent 8 }}
+        component: tserver
+    spec:
+      containers:
+      - name: tserver
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 9042
+          name: ycql
+        - containerPort: 6379
+          name: yedis
+        - containerPort: {{ .Values.ysql.port }}
+          name: ysql
+        - containerPort: 11000
+          name: tserver-rpc
+        - containerPort: 12000
+          name: tserver-ui
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        command:
+        - "/home/yugabyte/bin/yb-tserver"
+        - "--fs_data_dirs=/mnt/data"
+        - "--rpc_bind_addresses=$(POD_IP)"
+        - "--server_broadcast_addresses=$(POD_NAME).{{ include "yugabyte.fullname" . }}-tserver.{{ .Release.Namespace }}.svc.cluster.local"
+        - "--pgsql_proxy_bind_address=0.0.0.0:{{ .Values.ysql.port }}"
+        - "--cql_proxy_bind_address=0.0.0.0:9042"
+        - "--redis_proxy_bind_address=0.0.0.0:6379"
+        - "--enable_ysql={{ .Values.ysql.enable }}"
+        - "--enable_yedis={{ .Values.yedis.enable }}"
+        - "--enable_ycql={{ .Values.ycql.enable }}"
+        - "--use_private_ip=never"
+        - "--placement_cloud={{ .Values.config.tserver.placement_cloud }}"
+        - "--placement_region={{ .Values.config.tserver.placement_region }}"
+        - "--placement_zone={{ .Values.config.tserver.placement_zone }}"
+        - "--start_yb-controller_in_tserver=true"
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        - name: data
+          mountPath: /mnt/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ include "yugabyte.fullname" . }}-tserver
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "yugabyte.fullname" . }}-tserver
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.storage.tserver.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.storage.tserver.size }}
+{{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}

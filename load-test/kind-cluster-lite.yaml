@@ -1,0 +1,41 @@
+# Kind cluster configuration for PostgreSQL vs YugabyteDB Performance Comparison
+# Optimized for 16GB RAM systems
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: hyperswitch-comparison
+nodes:
+- role: control-plane
+  image: kindest/node:v1.29.2
+  # Port mappings for accessing services
+  extraPortMappings:
+  - containerPort: 3000
+    hostPort: 3000
+    protocol: TCP
+    listenAddress: "127.0.0.1"
+  - containerPort: 9090
+    hostPort: 9090
+    protocol: TCP
+    listenAddress: "127.0.0.1"
+  # Extra mounts for Docker-in-Docker if needed
+  extraMounts:
+  - containerPath: /var/run/docker.sock
+    hostPath: /var/run/docker.sock
+    readOnly: true
+  # Resource constraints (optional - depends on host system)
+  # Uncomment and adjust if needed:
+  # kubeadmConfigPatches:
+  # - |
+  #   kind: InitConfiguration
+  #   nodeRegistration:
+  #     kubeletExtraArgs:
+  #       max-pods: "200"
+
+# Note: Kind nodes run as Docker containers. The cluster will use
+# your Docker daemon's resources. For 16GB systems, ensure:
+# - Docker has access to at least 12GB RAM
+# - Leave ~4GB for host OS and Docker overhead
+#
+# To create cluster: kind create cluster --config=load-test/kind-cluster-lite.yaml
+# To delete cluster: kind delete cluster --name hyperswitch-comparison
+# To check cluster: kubectl cluster-info --context kind-hyperswitch-comparison
