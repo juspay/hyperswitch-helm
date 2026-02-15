@@ -235,3 +235,14 @@ true
 false
 {{- end -}}
 {{- end -}}
+
+{{/*
+Validate vault keys configuration - postStart and job cannot be enabled simultaneously
+*/}}
+{{- define "validate.vaultKeys.config" -}}
+{{- $postStartEnabled := and (hasKey .Values "vaultKeysPostStartHook") (hasKey .Values.vaultKeysPostStartHook "enabled") .Values.vaultKeysPostStartHook.enabled -}}
+{{- $jobEnabled := and (hasKey .Values "vaultKeysJob") (hasKey .Values.vaultKeysJob "enabled") .Values.vaultKeysJob.enabled -}}
+{{- if and $jobEnabled $postStartEnabled -}}
+  {{- fail "Both vaultKeysJob.enabled and vaultKeysPostStartHook.enabled cannot be enabled simultaneously. Please enable only one method." -}}
+{{- end -}}
+{{- end -}}
