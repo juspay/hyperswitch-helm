@@ -1308,7 +1308,8 @@ istio:
     # Note: Rules are processed in the order they appear in this list.
     # Ensure specific routes (like /api/) come before catch-all routes (like /).
     http:
-      - match: []
+      - name: &istio_route "primary"
+        match: []
         weight: 100
         timeout: 50s
         retries: {}
@@ -1375,11 +1376,42 @@ argoRollouts:
       - pause:
           duration: 1m
       - setWeight: 100
+
+    # -- Optional Canary Configuration Settings
+    # antiAffinity: object
+    # canaryService: string
+    # stableService: string
+    # maxSurge: stringOrInt
+    # maxUnavailable: stringOrInt
+    # trafficRouting: object
+
+    # AB Testing Analysis Configuration
+    # Performs automated analysis of canary deployments using VictoriaMetrics
+    # Checks for 5xx errors and fails the deployment after 3 occurrences
+    analysis:
+      # -- Enable AB testing analysis
+      enabled: false
+      # -- VictoriaMetrics configuration
+      victoriaMetrics:
+        # -- VictoriaMetrics Prometheus-compatible API address
+        # Example: http://victoria-metrics.monitoring:8428
+        address: ""
+      # -- Interval between metric queries
+      interval: "30s"
+      # -- Starting step for analysis (0-indexed)
+      startingStep: 2
+      # -- Additional arguments to pass to the analysis template
+      args: []
+
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
       istio:
         enabled: true
+        # -- VirtualService route name to manage canary routing
+        virtualService:
+          routeNames:
+            - *istio_route
         # -- DestinationRule subset names
         destinationRule:
           canarySubsetName: "canary"
@@ -1390,6 +1422,7 @@ argoRollouts:
         # -- Enable header-based canary routing
         enabled: false
         # -- Route name for managed header routing
+        # This route will be auto added to the VirtualService when headerRouting is enabled
         routeName: "header-canary-route"
         # -- Header matching rules
         match:
