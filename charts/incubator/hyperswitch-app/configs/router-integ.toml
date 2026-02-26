@@ -136,8 +136,8 @@ rapyd.base_url = "https://sandboxapi.rapyd.net"
 razorpay.base_url = "https://api.razorpay.com/"
 recurly.base_url = "https://v3.recurly.com"
 redsys.base_url = "https://sis-t.redsys.es:25443"
-santander.base_url = "https://trust-pix-h.santander.com.br/"
-santander.secondary_base_url = "https://trust-open-h.api.santander.com.br/"
+santander.base_url = "https://pix.santander.com.br/api/v1/sandbox/"
+santander.secondary_base_url = "https://trust-sandbox.api.santander.com.br/collection_bill_management/"
 shift4.base_url = "https://api.shift4.com/"
 sift.base_url = "https://api.sift.com/v205"
 silverflow.base_url = "https://api-sbx.silverflow.co/v1"
@@ -220,7 +220,7 @@ payout_connector_list = "nomupay,stripe,wise"
 connectors_with_delayed_session_response = "trustpay,payme"     # List of connectors which have delayed session response
 
 [save_payment_method_on_session.unsupported_payment_methods]
-pay_later = "klarna,affirm,afterpay_clearpay"
+pay_later = "klarna,affirm"
 
 [zero_mandates.supported_payment_methods]
 bank_debit.ach = { connector_list = "gocardless,adyen,payload" }
@@ -230,9 +230,9 @@ bank_debit.sepa = { connector_list = "gocardless,adyen" }
 card.credit.connector_list = "checkout,stripe,adyen,authorizedotnet,cybersource,datatrans,worldpay,nmi,bankofamerica,wellsfargo,bamboraapac,nexixpay,novalnet,paypal,archipel,tesouro,mollie"
 card.debit.connector_list = "checkout,stripe,adyen,authorizedotnet,cybersource,datatrans,worldpay,nmi,bankofamerica,wellsfargo,bamboraapac,nexixpay,novalnet,paypal,archipel,tesouro,mollie"
 pay_later.klarna.connector_list = "adyen"
-wallet.apple_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,novalnet,nuvei,authorizedotnet,nmi,tesouro,worldpayxml"
+wallet.apple_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,novalnet,nuvei,authorizedotnet,nmi,tesouro"
 wallet.samsung_pay.connector_list = "cybersource"
-wallet.google_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,novalnet,nuvei,authorizedotnet,nmi,tesouro,worldpayxml"
+wallet.google_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,novalnet,nuvei,authorizedotnet,tesouro"
 wallet.paypal.connector_list = "adyen,novalnet"
 wallet.momo.connector_list = "adyen"
 wallet.kakao_pay.connector_list = "adyen"
@@ -254,9 +254,9 @@ bank_debit.sepa = { connector_list = "gocardless,adyen,stripe,deutschebank" }
 card.credit.connector_list = "aci,checkout,stripe,adyen,zift,authorizedotnet,cybersource,datatrans,globalpay,worldpay,multisafepay,nmi,nexinets,noon,bankofamerica,braintree,nuvei,payme,wellsfargo,bamboraapac,elavon,fiuu,nexixpay,novalnet,paybox,paypal,xendit,moneris,archipel,worldpayvantiv,payload,paysafe,finix,tesouro,mollie,airwallex"
 card.debit.connector_list = "aci,checkout,stripe,adyen,zift,authorizedotnet,cybersource,datatrans,globalpay,worldpay,multisafepay,nmi,nexinets,noon,bankofamerica,braintree,nuvei,payme,wellsfargo,bamboraapac,elavon,fiuu,nexixpay,novalnet,paybox,paypal,xendit,moneris,archipel,worldpayvantiv,payload,paysafe,finix,tesouro,mollie,airwallex"
 pay_later.klarna.connector_list = "adyen,aci"
-wallet.apple_pay.connector_list = "checkout,stripe,adyen,braintree,cybersource,noon,bankofamerica,nexinets,novalnet,nuvei,authorizedotnet,wellsfargo,finix,nmi,tesouro,worldpaymodular,worldpayxml"
+wallet.apple_pay.connector_list = "checkout,stripe,adyen,braintree,cybersource,noon,bankofamerica,nexinets,novalnet,nuvei,authorizedotnet,wellsfargo,finix,nmi,tesouro,worldpaymodular"
 wallet.samsung_pay.connector_list = "cybersource"
-wallet.google_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,noon,globalpay,multisafepay,novalnet,nuvei,authorizedotnet,wellsfargo,finix,nmi,tesouro,worldpaymodular,worldpayxml"
+wallet.google_pay.connector_list = "checkout,stripe,adyen,cybersource,bankofamerica,noon,globalpay,multisafepay,novalnet,nuvei,authorizedotnet,wellsfargo,finix,tesouro,worldpaymodular"
 wallet.paypal.connector_list = "adyen,globalpay,nexinets,novalnet,paypal,authorizedotnet"
 wallet.momo.connector_list = "adyen"
 wallet.kakao_pay.connector_list = "adyen"
@@ -554,8 +554,8 @@ we_chat_pay = { country = "CN", currency = "CNY,AUD,CAD,EUR,GBP,HKD,JPY,SGD,USD,
 ali_pay = {country = "CN", currency = "AUD,CAD,CNY,EUR,GBP,HKD,JPY,MYR,NZD,SGD,USD"}
 
 [pm_filters.cybersource]
-credit = { currency = "USD,GBP,EUR,PLN,SEK,XOF,CAD,KWD,QAR" }
-debit = { currency = "USD,GBP,EUR,PLN,SEK,XOF,CAD,KWD,QAR" }
+credit = { currency = "USD,GBP,EUR,PLN,SEK,XOF,CAD,KWD" }
+debit = { currency = "USD,GBP,EUR,PLN,SEK,XOF,CAD,KWD" }
 apple_pay = { currency = "ARS, CAD, CLP, COP, CNY, EUR, HKD, KWD, MYR, MXN, NZD, PEN, QAR, SAR, SGD, ZAR, UAH, GBP, AED, USD, PLN, SEK" }
 google_pay = { currency = "ARS, AUD, CAD, CLP, COP, EUR, HKD, INR, KWD, MYR, MXN, NZD, PEN, QAR, SAR, SGD, ZAR, UAH, AED, GBP, USD, PLN, SEK" }
 samsung_pay = { currency = "USD,GBP,EUR,SEK" }
@@ -813,9 +813,6 @@ interac = { currency = "CAD"}
 [pm_filters.loonio]
 interac = { currency = "CAD"}
 
-[pm_filters.dlocal]
-oxxo = { currency = "MXN" }
-
 [payout_method_filters.adyenplatform]
 sepa = { country = "AT,BE,CH,CZ,DE,EE,ES,FI,FR,GB,HU,IE,IT,LT,LV,NL,NO,PL,PT,SE,SK", currency = "EUR,CZK,DKK,HUF,NOK,PLN,SEK,GBP,CHF,CAD,JPY" }
 credit = { country = "AT,BE,BG,CY,CZ,DE,DK,EE,ES,FI,FR,GB,GR,HR,HU,IE,IS,IT,LI,LT,LU,LV,MT,NL,NO,PL,PT,RO,SE,SI,SK,US", currency = "EUR,USD,GBP,CAD,JPY" }
@@ -939,7 +936,7 @@ paysafe= { long_lived_token = false, payment_method = "card,wallet" ,payment_met
 outgoing_enabled = true
 redis_lock_expiry_seconds = 180
 
-[l2_l3_data_config]
+[l2_l3_data_config]  
 enabled = "true"
 
 [webhook_source_verification_call]
@@ -980,7 +977,7 @@ connector_list = "juspaythreedsserver, ctp_mastercard, ctp_visa"
 connector_list = "worldpayvantiv"
 
 [grpc_client.unified_connector_service]
-ucs_only_connectors = "paytm, phonepe, hyperpg"    # Comma-separated list of connectors that use UCS only
+ucs_only_connectors = "paytm, phonepe"    # Comma-separated list of connectors that use UCS only
 ucs_psync_disabled_connectors = "cashtocode"    # Comma-separated list of connectors to disable UCS PSync call
 
 # Merchant Advice Code Configuration
