@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.117.0
+    version: v1.121.0
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.117.0
+    version: v1.121.0
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.117.0
+    version: v1.121.0
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.117.0
+    version: v1.121.0
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -56,7 +56,6 @@ services:
     # -- SDK subversion
     # @section -- Services
     subversion: v1
-
 # @ignored
 global:
   # Global image registry that can override all imageRegistry fields
@@ -80,7 +79,7 @@ global:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments
   annotations: {}
   # -- Labels to be added to the all the deployments and their pods
@@ -88,14 +87,12 @@ global:
     managedBy: hyperswitch
   # -- Environmant variables that are to be used by the hyperswitch application services
   env: []
-
 # -- Common references for templated resource names
 _references:
   # -- Hyperswitch secrets reference with release name prefix
   secrets: &hyperswitch_secrets "{{ .Release.Name }}-hyperswitch-secrets"
   # -- Hyperswitch configs reference with release name prefix
   configs: &hyperswitch_configs "{{ .Release.Name }}-hyperswitch-configs"
-
 server:
   # -- Number of replicas to be used for the application
   replicas: 1
@@ -161,7 +158,7 @@ server:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -183,7 +180,6 @@ server:
   binary: router
   # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
-
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
@@ -329,6 +325,8 @@ server:
       delete_token_url: "https://example.com/delete"
       # base url to check token status from token service
       check_token_status_url: "https://example.com/status"
+      # base url to check network tokenization eligibility
+      check_tokenize_eligibility_url: "https://example.com/cardbins"
       # webhook source verification key to verify the webhook payload from token service
       webhook_source_verification_key: "placeholder_webhook_key"
     cors:
@@ -614,6 +612,7 @@ server:
         sessionizer_payment_attempts: sessionizer-payment-attempt-events
         sessionizer_payment_intents: sessionizer-payment-intent-events
         sessionizer_refunds: sessionizer-refund-events
+        payouts: hyperswitch-payout-events
     payment_method_auth:
       # -- # Payment method auth key used for authorization
       # @section -- App Server Secrets
@@ -688,6 +687,8 @@ server:
       payment_function: report_download_config_payment_function
       # -- Config to download refund report
       refund_function: report_download_config_refund_function
+      # -- Config to download payout report
+      payout_function: report_download_config_payout_function
       # -- Region of the bucket
       region: report_download_config_region
       # -- Config to authentication function
@@ -863,7 +864,6 @@ server:
         _secret: test_admin
       migration_encryption_timestamp:
         _secret: "1685510751"
-
 # @ignored
 consumer:
   # -- Number of replicas to be used for the application
@@ -894,7 +894,7 @@ consumer:
   # -- Annotations that are to be added to the pods (extends global configuration)
   # @ignored
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   # @ignored
   annotations: {}
@@ -932,7 +932,6 @@ consumer:
         host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
-
 # @ignored
 producer:
   # -- Number of replicas to be used for the application
@@ -960,7 +959,7 @@ producer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -1003,7 +1002,6 @@ producer:
         host: "0.0.0.0"
         # Number of actix workers to handle incoming requests concurrently
         workers: 1
-
 # @ignored
 drainer:
   # -- Number of replicas to be used for the drainer
@@ -1031,7 +1029,7 @@ drainer:
   terminationGracePeriodSeconds: 30
   # -- Annotations that are to be added to the pods (extends global configuration)
   podAnnotations: {}
-    # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
   # -- Annotations that are to be added the the deployments (extends global configuration)
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
@@ -1143,7 +1141,6 @@ drainer:
       reconnect_max_attempts: 5
       stream_read_count: 1
       use_legacy_version: false
-
 # https://artifacthub.io/packages/helm/bitnami/redis
 redis:
   # -- - enable Bitnami redis sub-chart helm installation
@@ -1167,7 +1164,6 @@ redis:
     # -- enable or disable sentinel
     # @section -- Dependencies configuration
     sentinel: false
-
 externalRedis:
   # -- Link this service to an external Redis server
   # @section -- Dependencies configuration
@@ -1185,7 +1181,6 @@ externalRedis:
     # -- redis password
     # @section -- Dependencies configuration
     password: ""
-
 redisMiscConfig:
   checkRedisIsUp:
     initContainer:
@@ -1193,7 +1188,6 @@ redisMiscConfig:
       imageRegistry: docker.io
       image: bitnamilegacy/redis:7.2.3-debian-11-r2
       maxAttempt: 60
-
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
@@ -1242,7 +1236,6 @@ postgresql:
         # -- CPU resource requests
         # @section -- Dependencies configuration
         cpu: 100m
-
 externalPostgresql:
   # -- Link this service to an external Postgres server
   # @section -- Dependencies configuration
@@ -1293,24 +1286,21 @@ externalPostgresql:
       # -- replica DB name
       # @section -- Dependencies configuration
       database: "hyperswitch"
-
 initDB:
   enable: true
   checkPGisUp:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags  # tags or heads
+  refs: tags # tags or heads
   migration:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
-
 # -- Istio configuration
 # @section -- Istio
 istio:
   # -- Enable Istio resources
   enabled: false
-
   # -- VirtualService configuration
   virtualService:
     # -- Create VirtualService
@@ -1352,7 +1342,6 @@ istio:
     #     weight: 100
     #     timeout: 10s
     #     retries: {}
-
   # -- DestinationRule configuration
   destinationRule:
     # -- Traffic policy configuration for router - rendered directly as YAML
@@ -1371,14 +1360,12 @@ istio:
     #   outlierDetection:
     #     consecutiveGatewayErrors: 5
     #     interval: 30s
-
 # Argo Rollouts Configuration (Phase 1)
 # @section -- Argo Rollouts
 argoRollouts:
   # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
   # When disabled, standard Kubernetes Deployment is used
   enabled: false
-
   # Basic canary deployment configuration
   canary:
     # -- Canary deployment steps with traffic percentage and pause duration
@@ -1434,7 +1421,6 @@ argoRollouts:
         destinationRule:
           canarySubsetName: "canary"
           stableSubsetName: "stable"
-
       # Header-based routing for canary testing
       # When enabled, requests with specific header route to canary, others to stable
       headerRouting:
@@ -1448,35 +1434,29 @@ argoRollouts:
           - headerName: "X-Canary-Test"
             headerValue:
               exact: "true"
-        # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
+              # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
   # -- Revision history limit for rollouts
   revisionHistoryLimit: 3
-
 loadBalancer:
   targetSecurityGroup: "loadBalancer-sg"
-
 autoscaling:
   enabled: true
   minReplicas: 3
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
-
 hyperswitch-card-vault:
   enabled: true
   initDB:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
-
 # Disable internal secret creation (use when managing secrets externally)
 disableInternalSecrets: false
-
 # External Secrets Operator Configuration (recommend setting disableInternalSecrets to true)
 # NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
 externalSecretsOperator:
   # -- Enable External Secrets Operator resources
   enabled: false
-
   # ServiceAccount configuration for IRSA
   serviceAccount:
     # -- Create service account
@@ -1487,7 +1467,6 @@ externalSecretsOperator:
     extraLabels: {}
     # -- Name of the service account (default: hyperswitch-eso-sa)
     name: ""
-
   # SecretStore configuration
   secretStore:
     # -- Name of the SecretStore
@@ -1532,13 +1511,11 @@ externalSecretsOperator:
         #     remoteRef:
         #       key: "hyperswitch/admin"
         #       property: "api_key"
-
-      # - name: "database-secrets"
-      #   targetName: "database-secrets"
-      #   dataFrom:
-      #     - extract:
-      #         key: "HyperswitchDatabaseSecret"
-
+    # - name: "database-secrets"
+    #   targetName: "database-secrets"
+    #   dataFrom:
+    #     - extract:
+    #         key: "HyperswitchDatabaseSecret"
 # https://artifacthub.io/packages/helm/bitnami/kafka
 kafka:
   image:
@@ -1549,7 +1526,6 @@ kafka:
   # -- Name of the Kafka sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "kafka0"
-
   controller:
     # -- Number of replicas to be used for controller
     # @section -- Dependencies configuration
@@ -1600,7 +1576,6 @@ kafka:
   extraConfig: |
     offsets.topic.replication.factor=1
     transaction.state.log.replication.factor=1
-
 initCH:
   checkCHisUp:
     imageRegistry: docker.io
@@ -1655,7 +1630,6 @@ clickhouse:
   extraVolumes:
     - name: initdb-scripts
       emptyDir: {}
-
 # https://artifacthub.io/packages/helm/codecentric/mailhog
 mailhog:
   # -- Enable Bitnami Mailhog sub-chart helm installation for email testing
@@ -1664,7 +1638,6 @@ mailhog:
   # -- Name of the Mailhog sub-chart
   # @section -- Dependencies configuration
   fullnameOverride: "mailhog"
-
 # https://artifacthub.io/packages/helm/vector/vector
 vector:
   # -- Enable Bitnami Vector sub-chart helm installation
@@ -1677,7 +1650,6 @@ vector:
       value: "kafka0:29092"
   # @ignored
   customConfig:
-
     acknowledgements:
       enabled: true
     # enrichment_tables:
@@ -1694,7 +1666,6 @@ vector:
     api:
       enabled: true
       address: 0.0.0.0:8686
-
     sources:
       kafka_tx_events:
         type: kafka
@@ -1707,7 +1678,6 @@ vector:
           - hyperswitch-dispute-events
         decoding:
           codec: json
-
       sessionized_kafka_tx_events:
         type: kafka
         bootstrap_servers: kafka0:29092
@@ -1716,60 +1686,50 @@ vector:
           - ^sessionizer
         decoding:
           codec: json
-
       app_logs:
         type: docker_logs
         include_labels:
           - "logs=promtail"
-
       vector_metrics:
         type: internal_metrics
-
       node_metrics:
         type: host_metrics
-
       sdk_source:
         type: http_server
         address: 0.0.0.0:3103
         encoding: json
-
     transforms:
       events_create_ts:
         inputs:
-        - kafka_tx_events
+          - kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
         type: remap
-
       plus_1_events:
         type: filter
         inputs:
           - events_create_ts
           - sessionized_events_create_ts
         condition: ".sign_flag == 1"
-
       hs_server_logs:
         type: filter
         inputs:
           - app_logs
         condition: '.labels."com.docker.compose.service" == "hyperswitch-server"'
-
       parsed_hs_server_logs:
         type: remap
         inputs:
           - app_logs
         source: |-
           .message = parse_json!(.message)
-
       sessionized_events_create_ts:
         type: remap
         inputs:
-        - sessionized_kafka_tx_events
+          - sessionized_kafka_tx_events
         source: |-
           .timestamp = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
           ."@timestamp" = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
-
       sdk_transformed:
         type: throttle
         inputs:
@@ -1777,7 +1737,6 @@ vector:
         key_field: "{{ .payment_id }}{{ .merchant_id }}"
         threshold: 1000
         window_secs: 60
-
       amend_sdk_logs:
         type: remap
         inputs:
@@ -1790,7 +1749,6 @@ vector:
           # .merchant_id = row.merchant_id
 
           .after_transform = now()
-
     sinks:
       opensearch_events_1:
         type: elasticsearch
@@ -1818,7 +1776,6 @@ vector:
             - sign_flag
         bulk:
           index: "vector-{{ .topic }}"
-
       opensearch_events_2:
         type: elasticsearch
         inputs:
@@ -1846,7 +1803,6 @@ vector:
         bulk:
           # Add a date suffixed index for better grouping
           index: "vector-{{ .topic }}-%Y-%m-%d"
-
       opensearch_events_3:
         type: elasticsearch
         inputs:
@@ -1873,7 +1829,6 @@ vector:
             - sign_flag
         bulk:
           index: "{{ .topic }}"
-
       opensearch_logs:
         type: elasticsearch
         inputs:
@@ -1892,7 +1847,6 @@ vector:
           # Add a date suffixed index for better grouping
           # index: "vector-{{ .topic }}-%Y-%m-%d"
           index: "logs-{{ .container_name }}-%Y-%m-%d"
-
       log_events:
         type: loki
         inputs:
@@ -1905,7 +1859,6 @@ vector:
           job: kafka
         encoding:
           codec: json
-
       log_app_loki:
         type: loki
         inputs:
@@ -1918,13 +1871,11 @@ vector:
           stream: "{{ .stream }}"
         encoding:
           codec: json
-
       metrics:
         type: prometheus_exporter
         inputs:
           - vector_metrics
           - node_metrics
-
       sdk_sink:
         type: kafka
         encoding:
