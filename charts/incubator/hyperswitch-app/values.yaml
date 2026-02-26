@@ -1313,30 +1313,30 @@ istio:
         weight: 100
         timeout: 50s
         retries: {}
-        # Example:
-        # hosts:
-        #   - hyperswitch.example.com
-        # gateways:
-        #   - istio-system/gateway
-        # http:
-        #   - name: "api-routes"
-        #     match:
-        #       - uri:
-        #           prefix: /api/
-        #     rewrite:
-        #       uri: /
-        #     weight: 100
-        #     timeout: 30s
-        #     retries:
-        #       attempts: 3
-        #       perTryTimeout: 10s
-        #   - name: "health-routes"
-        #     match:
-        #       - uri:
-        #           exact: /health
-        #     weight: 100
-        #     timeout: 10s
-        #     retries: {}
+    # Example:
+    # hosts:
+    #   - hyperswitch.example.com
+    # gateways:
+    #   - istio-system/gateway
+    # http:
+    #   - name: "api-routes"
+    #     match:
+    #       - uri:
+    #           prefix: /api/
+    #     rewrite:
+    #       uri: /
+    #     weight: 100
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+    #   - name: "health-routes"
+    #     match:
+    #       - uri:
+    #           exact: /health
+    #     weight: 100
+    #     timeout: 10s
+    #     retries: {}
   # -- DestinationRule configuration
   destinationRule:
     # -- Traffic policy configuration for router - rendered directly as YAML
@@ -1476,13 +1476,14 @@ externalSecretsOperator:
           jwt:
             serviceAccountRef:
               name: hyperswitch-eso-sa
-              # gcpsm:
-              #   auth:
-              #     secretRef:
-              #       secretAccessKeySecretRef:
-              #         name: gcpsm-secret
-              #         key: secret-access-credentials
-              #   projectID: myproject
+      # gcpsm:
+      #   auth:
+      #     secretRef:
+      #       secretAccessKeySecretRef:
+      #         name: gcpsm-secret
+      #         key: secret-access-credentials
+      #   projectID: myproject
+
   # ExternalSecret configuration
   externalSecrets:
     # -- List of external secrets to create
@@ -1499,12 +1500,12 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-              # -- Individual data mappings (use data for specific keys)
-              # data:
-              #   - secretKey: "admin_api_key"
-              #     remoteRef:
-              #       key: "hyperswitch/admin"
-              #       property: "api_key"
+        # -- Individual data mappings (use data for specific keys)
+        # data:
+        #   - secretKey: "admin_api_key"
+        #     remoteRef:
+        #       key: "hyperswitch/admin"
+        #       property: "api_key"
     # - name: "database-secrets"
     #   targetName: "database-secrets"
     #   dataFrom:
