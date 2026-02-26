@@ -2,6 +2,47 @@ apiVersion: v1
 entries:
   hyperswitch-app:
   - apiVersion: v2
+    appVersion: v1.121.0
+    created: "2026-02-26T11:20:21.863535561Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.6.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.5.38
+    - condition: hyperswitch-card-vault.enabled
+      name: hyperswitch-card-vault
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.4
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 31.0.0
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.3
+    - condition: mailhog.enabled
+      name: mailhog
+      repository: https://codecentric.github.io/helm-charts
+      version: 4.0.0
+    - condition: vector.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.37.0
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: 8370718e61cedb759d6d8dd10bf3051abc5c1e8cfa599e8dafdccc597e7703d2
+    name: hyperswitch-app
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-app-1.1.0/hyperswitch-app-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: v1.117.0
     created: "2026-01-22T12:34:02.502850731Z"
     dependencies:
@@ -447,6 +488,16 @@ entries:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-card-vault-0.1.1/hyperswitch-card-vault-0.1.1.tgz
     version: 0.1.1
   hyperswitch-control-center:
+  - apiVersion: v2
+    appVersion: v1.38.2
+    created: "2026-02-26T11:20:22.073328616Z"
+    description: A dashboard for Hyperswitch Service
+    digest: 3abe8d1b4fc6fe3c8e08a52e5bbfc121ca6b42432b1877130686b50e7094aed5
+    name: hyperswitch-control-center
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-control-center-1.1.0/hyperswitch-control-center-1.1.0.tgz
+    version: 1.1.0
   - apiVersion: v2
     appVersion: v1.37.4
     created: "2026-01-22T12:49:08.618731762Z"
@@ -1491,4 +1542,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-01-23T08:39:58.769904275Z"
+generated: "2026-02-26T11:20:22.473123235Z"
