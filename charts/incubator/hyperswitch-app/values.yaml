@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.121.0
+    version: 619d7b0226
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.121.0
+    version: 619d7b0226
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.121.0
+    version: 619d7b0226
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.121.0
+    version: 619d7b0226
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1318,30 +1318,30 @@ istio:
         weight: 100
         timeout: 50s
         retries: {}
-    # Example:
-    # hosts:
-    #   - hyperswitch.example.com
-    # gateways:
-    #   - istio-system/gateway
-    # http:
-    #   - name: "api-routes"
-    #     match:
-    #       - uri:
-    #           prefix: /api/
-    #     rewrite:
-    #       uri: /
-    #     weight: 100
-    #     timeout: 30s
-    #     retries:
-    #       attempts: 3
-    #       perTryTimeout: 10s
-    #   - name: "health-routes"
-    #     match:
-    #       - uri:
-    #           exact: /health
-    #     weight: 100
-    #     timeout: 10s
-    #     retries: {}
+        # Example:
+        # hosts:
+        #   - hyperswitch.example.com
+        # gateways:
+        #   - istio-system/gateway
+        # http:
+        #   - name: "api-routes"
+        #     match:
+        #       - uri:
+        #           prefix: /api/
+        #     rewrite:
+        #       uri: /
+        #     weight: 100
+        #     timeout: 30s
+        #     retries:
+        #       attempts: 3
+        #       perTryTimeout: 10s
+        #   - name: "health-routes"
+        #     match:
+        #       - uri:
+        #           exact: /health
+        #     weight: 100
+        #     timeout: 10s
+        #     retries: {}
   # -- DestinationRule configuration
   destinationRule:
     # -- Traffic policy configuration for router - rendered directly as YAML
@@ -1502,12 +1502,12 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-        # -- Individual data mappings (use data for specific keys)
-        # data:
-        #   - secretKey: "admin_api_key"
-        #     remoteRef:
-        #       key: "hyperswitch/admin"
-        #       property: "api_key"
+              # -- Individual data mappings (use data for specific keys)
+              # data:
+              #   - secretKey: "admin_api_key"
+              #     remoteRef:
+              #       key: "hyperswitch/admin"
+              #       property: "api_key"
     # - name: "database-secrets"
     #   targetName: "database-secrets"
     #   dataFrom:
