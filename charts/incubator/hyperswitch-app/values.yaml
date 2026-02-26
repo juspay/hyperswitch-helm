@@ -325,6 +325,8 @@ server:
       delete_token_url: "https://example.com/delete"
       # base url to check token status from token service
       check_token_status_url: "https://example.com/status"
+      # base url to check network tokenization eligibility
+      check_tokenize_eligibility_url: "https://example.com/cardbins"
       # webhook source verification key to verify the webhook payload from token service
       webhook_source_verification_key: "placeholder_webhook_key"
     cors:
@@ -610,6 +612,7 @@ server:
         sessionizer_payment_attempts: sessionizer-payment-attempt-events
         sessionizer_payment_intents: sessionizer-payment-intent-events
         sessionizer_refunds: sessionizer-refund-events
+        payouts: hyperswitch-payout-events
     payment_method_auth:
       # -- # Payment method auth key used for authorization
       # @section -- App Server Secrets
@@ -684,6 +687,8 @@ server:
       payment_function: report_download_config_payment_function
       # -- Config to download refund report
       refund_function: report_download_config_refund_function
+      # -- Config to download payout report
+      payout_function: report_download_config_payout_function
       # -- Region of the bucket
       region: report_download_config_region
       # -- Config to authentication function
