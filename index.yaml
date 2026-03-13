@@ -704,6 +704,34 @@ entries:
   hyperswitch-monitoring:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-13T07:16:27.692421688Z"
+    dependencies:
+    - condition: kube-prometheus-stack.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 65.1.1
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/helm-charts
+      version: 6.16.0
+    - condition: promtail.enabled
+      name: promtail
+      repository: https://grafana.github.io/helm-charts
+      version: 6.16.0
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.120.0
+    description: Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail,
+      and Grafana
+    digest: a957d80d70a123356f269f0ffa6ae0cd205d1571d1d478955df52c98b7acd631
+    name: hyperswitch-monitoring
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-monitoring-0.1.6/hyperswitch-monitoring-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-10-28T10:38:25.928770787Z"
     dependencies:
     - condition: kube-prometheus-stack.enabled
@@ -1589,4 +1617,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-02-26T14:23:59.259473053Z"
+generated: "2026-03-13T07:16:27.69256176Z"
