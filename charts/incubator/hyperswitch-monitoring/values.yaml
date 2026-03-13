@@ -49,6 +49,9 @@ kube-prometheus-stack:
       # Retention period
       retention: 30d
 
+      # Disable the default behavior of auto-adding release label selector
+      # This allows Prometheus to discover all ServiceMonitors without label matching
+      serviceMonitorSelectorNilUsesHelmValues: false
       # Empty selector - discovers all ServiceMonitors in allowed namespaces
       serviceMonitorSelector: {}
 
@@ -229,7 +232,7 @@ promtail:
       # Extra relabel configs to filter hyperswitch pods
       extraRelabelConfigs:
         - action: "keep"
-          regex: "hyperswitch-.*"
+          regex: "(hyperswitch-.*|.*-hyperswitch-.*)"
           source_labels: ["__meta_kubernetes_pod_label_app"]
 
 # OpenTelemetry Collector configuration
