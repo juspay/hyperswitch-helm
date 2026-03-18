@@ -1,0 +1,31 @@
+{{- if .Values.istio.enabled }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ include "hyperswitch-ucs.fullname" . }}-dr
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-destination-rule
+spec:
+  host: {{ include "hyperswitch-ucs.fullname" . }}
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+  # Argo Rollouts subset configuration for canary deployments
+  subsets:
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+    labels:
+      app.kubernetes.io/name: {{ include "hyperswitch-ucs.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+    labels:
+      app.kubernetes.io/name: {{ include "hyperswitch-ucs.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      # Argo Rollouts will automatically inject rollouts-pod-template-hash label here
+  {{- end }}
+  {{- if .Values.istio.destinationRule.trafficPolicy }}
+  trafficPolicy:
+  {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
+  {{- end }}
+{{- end }}
