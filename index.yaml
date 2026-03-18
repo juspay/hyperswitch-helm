@@ -1480,6 +1480,20 @@ entries:
   hyperswitch-ucs:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2026-03-18T09:30:24.161245254Z"
+    description: A Helm chart for Hyperswitch UCS Service
+    digest: 00e817c7fbe2889bff0c0fd3e6e4fbc35c35fd2aee16c4864a58a05ae2c7449e
+    keywords:
+    - ucs
+    - service
+    - grpc
+    name: hyperswitch-ucs
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-ucs-0.1.4/hyperswitch-ucs-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2025-12-11T10:13:51.479081953Z"
     description: A Helm chart for Hyperswitch UCS Service
     digest: 21477f609f9300ce6fde603b49cf6c833fc282bd0941e9308296ca7c0436280e
@@ -1617,4 +1631,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-03-13T07:16:27.69256176Z"
+generated: "2026-03-18T09:30:24.161373894Z"
