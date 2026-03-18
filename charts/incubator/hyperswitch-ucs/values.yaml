@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "2026.03.18.0"
+  tag: "2026.03.04.0-hotfix1"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
@@ -257,7 +257,6 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
-
 # -- Istio configuration
 # @section -- Istio
 istio:
@@ -307,7 +306,6 @@ istio:
     #   connectionPool:
     #     tcp:
     #       maxConnections: 100
-
 # -- Argo Rollouts configuration
 argoRollouts:
   # -- Enable Argo Rollouts instead of standard Deployment
@@ -344,7 +342,6 @@ argoRollouts:
         #   - headerName: "x-canary"
         #     headerValue:
         #       exact: "true"
-
 strategy: {}
 env: []
 services:
