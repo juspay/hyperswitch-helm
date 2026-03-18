@@ -257,6 +257,57 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
+
+# -- Istio configuration
+# @section -- Istio
+istio:
+  # -- Enable Istio resources
+  enabled: false
+  # -- VirtualService configuration
+  virtualService:
+    # -- Create VirtualService
+    create: true
+    # -- Hosts for the VirtualService
+    hosts: []
+    # -- Gateways for the VirtualService
+    gateways: []
+    # -- HTTP routing rules (ordered list)
+    # Note: Rules are processed in the order they appear in this list.
+    http:
+      - name: "primary"
+        match: []
+        weight: 100
+        timeout: 50s
+        retries: {}
+    # -- TCP routing rules for gRPC
+    tcp: []
+    # Example:
+    # hosts:
+    #   - ucs.example.com
+    # gateways:
+    #   - istio-system/gateway
+    # http:
+    #   - name: "grpc-routes"
+    #     match:
+    #       - port: 8000
+    #     weight: 100
+    #     timeout: 30s
+    # tcp:
+    #   - match:
+    #       - port: 8000
+    #     weight: 100
+  # -- DestinationRule configuration
+  destinationRule:
+    # -- Traffic policy configuration - rendered directly as YAML
+    trafficPolicy: {}
+    # Example:
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: LEAST_CONN
+    #   connectionPool:
+    #     tcp:
+    #       maxConnections: 100
+
 # -- Argo Rollouts configuration
 argoRollouts:
   # -- Enable Argo Rollouts instead of standard Deployment
@@ -270,11 +321,30 @@ argoRollouts:
       istio:
         # -- Enable Istio traffic routing for canary
         enabled: false
+        # -- VirtualService configuration for Argo Rollouts
+        virtualService:
+          # -- Route names to be managed by Argo Rollouts
+          routeNames:
+            - "primary"
         destinationRule:
           # -- Name of the canary subset in Istio DestinationRule
           canarySubsetName: "canary"
           # -- Name of the stable subset in Istio DestinationRule
           stableSubsetName: "stable"
+      # -- Header-based routing configuration
+      headerRouting:
+        # -- Enable header-based canary routing
+        enabled: false
+        # -- Route name for header-based routing
+        routeName: "header-canary"
+        # -- Header match conditions
+        match: []
+        # Example:
+        # match:
+        #   - headerName: "x-canary"
+        #     headerValue:
+        #       exact: "true"
+
 strategy: {}
 env: []
 services:

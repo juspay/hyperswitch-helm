@@ -28,7 +28,7 @@ image:
   registry: docker.juspay.io
   repository: juspaydotin/hyperswitch-encryption-service
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v0.1.11
+  tag: v0.1.12
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
 

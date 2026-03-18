@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.37.4](https://img.shields.io/badge/AppVersion-v1.37.4-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.2](https://img.shields.io/badge/AppVersion-v1.38.2-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -208,7 +208,7 @@ After deployment, verify the Control Center is working:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `"v1.37.4"` |  |
+| image.tag | string | `"v1.38.2"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
