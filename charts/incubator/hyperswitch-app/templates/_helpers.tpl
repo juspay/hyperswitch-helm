@@ -442,12 +442,38 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
   {{- end -}}
 {{- end -}}
 
+{{/* Helper: Check if a config field should be skipped based on conditional logic */}}
+{{/* Returns "true" if the field should be skipped, "false" otherwise */}}
+{{- define "hyperswitch.shouldSkipConfigField" -}}
+  {{- $configPath := .configPath -}}
+  {{- $config := .config -}}
+  {{- $context := .context -}}
+
+  {{/* Skip proxy.http_url and proxy.https_url when proxy.enabled is false */}}
+  {{- if or (eq $configPath "proxy.http_url") (eq $configPath "proxy.https_url") -}}
+    {{- $proxyConfig := get $config "proxy" -}}
+    {{- if $proxyConfig -}}
+      {{- $enabled := get $proxyConfig "enabled" -}}
+      {{- if eq $enabled false -}}
+        {{- print "true" -}}
+      {{- else -}}
+        {{- print "false" -}}
+      {{- end -}}
+    {{- else -}}
+      {{- print "false" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- print "false" -}}
+  {{- end -}}
+{{- end -}}
+
 {{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
 {{- define "hyperswitch.configToEnvVars" -}}
   {{- $config := .config -}}
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
   {{- $currentPath := .currentPath | default "" -}}
+  {{- $rootConfig := .rootConfig | default $config -}}
   {{- $keyMapping := include "hyperswitch.configKeyToHelperMapping" . | fromYaml -}}
 
   {{- range $key, $value := $config -}}
@@ -457,12 +483,16 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
       {{- $configPath = printf "%s.%s" $currentPath $key -}}
     {{- end -}}
 
-    {{- if kindIs "map" $value -}}
+    {{/* Check if this field should be skipped based on conditional logic */}}
+    {{- $shouldSkip := include "hyperswitch.shouldSkipConfigField" (dict "configPath" $configPath "config" $rootConfig "context" $context) -}}
+    {{- if eq $shouldSkip "true" -}}
+      {{/* Skip this field */}}
+    {{- else if kindIs "map" $value -}}
       {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
       {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
       {{- if and (eq $isSecret "false") (eq $isReference "false") -}}
         {{/* Recursively process normal nested objects */}}
-        {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+        {{- include "hyperswitch.configToEnvVars" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath "rootConfig" $rootConfig) -}}
       {{- end -}}
     {{- else if kindIs "slice" $value -}}
       {{/* Handle arrays by joining with commas */}}
@@ -488,6 +518,7 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
   {{- $currentPath := .currentPath | default "" -}}
+  {{- $rootConfig := .rootConfig | default $config -}}
 
   {{- range $key, $value := $config -}}
     {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
@@ -496,7 +527,11 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
       {{- $configPath = printf "%s.%s" $currentPath $key -}}
     {{- end -}}
 
-    {{- if kindIs "map" $value -}}
+    {{/* Check if this field should be skipped based on conditional logic */}}
+    {{- $shouldSkip := include "hyperswitch.shouldSkipConfigField" (dict "configPath" $configPath "config" $rootConfig "context" $context) -}}
+    {{- if eq $shouldSkip "true" -}}
+      {{/* Skip this field */}}
+    {{- else if kindIs "map" $value -}}
       {{- $isSecret := include "hyperswitch.isSecretField" $value -}}
       {{- if eq $isSecret "true" -}}
         {{/* Handle _secret field */}}
@@ -504,7 +539,7 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
         {{- printf "%s: %s\n" $envKey ($secretValue | b64enc) -}}
       {{- else -}}
         {{/* Recursively process nested objects */}}
-        {{- include "hyperswitch.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) -}}
+        {{- include "hyperswitch.configToSecrets" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath "rootConfig" $rootConfig) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -516,6 +551,7 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
   {{- $prefix := .prefix -}}
   {{- $context := .context | default . -}}
   {{- $currentPath := .currentPath | default "" -}}
+  {{- $rootConfig := .rootConfig | default $config -}}
 
   {{- range $key, $value := $config -}}
     {{- $envKey := printf "%s__%s" $prefix ($key | upper | replace "." "__") -}}
@@ -524,7 +560,11 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
       {{- $configPath = printf "%s.%s" $currentPath $key -}}
     {{- end -}}
 
-    {{- if kindIs "map" $value -}}
+    {{/* Check if this field should be skipped based on conditional logic */}}
+    {{- $shouldSkip := include "hyperswitch.shouldSkipConfigField" (dict "configPath" $configPath "config" $rootConfig "context" $context) -}}
+    {{- if eq $shouldSkip "true" -}}
+      {{/* Skip this field */}}
+    {{- else if kindIs "map" $value -}}
       {{- $isReference := include "hyperswitch.isReferenceField" $value -}}
       {{- if eq $isReference "true" -}}
         {{/* Handle _secretRef or _configRef field */}}
@@ -545,7 +585,7 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
         {{- end }}
       {{- else -}}
         {{/* Recursively process nested objects */}}
-        {{- include "hyperswitch.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath) }}
+        {{- include "hyperswitch.configToEnvRefs" (dict "config" $value "prefix" $envKey "context" $context "currentPath" $configPath "rootConfig" $rootConfig) }}
       {{- end -}}
     {{- end -}}
   {{- end -}}
