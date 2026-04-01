@@ -632,7 +632,7 @@ server:
     proxy:
       # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
       bypass_proxy_hosts: "localhost, cluster.local"
-      enabled: false
+      enabled: true
       # -- Outgoing proxy http URL to proxy the HTTP traffic
       http_url: http://proxy_http_url
       # -- Outgoing proxy https URL to proxy the HTTPS traffic
