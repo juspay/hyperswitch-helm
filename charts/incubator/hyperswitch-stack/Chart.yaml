@@ -24,8 +24,8 @@ version: 0.2.21
 appVersion: "1.16.0"
 dependencies:
   - name: hyperswitch-app
-    version: 1.1.2
-    repository: "file://../hyperswitch-app"
+    version: 1.1.1
+    repository: "https://juspay.github.io/hyperswitch-helm"
   - name: hyperswitch-web
     version: 0.2.12
     repository: "https://juspay.github.io/hyperswitch-helm"
