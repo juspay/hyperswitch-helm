@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -159,26 +159,25 @@ external:
 | secrets.aws.key_id | string | `""` |  |
 | secrets.aws.region | string | `"us-east-1"` |  |
 | secrets.database.password | string | `"dummyPassword"` |  |
-| secrets.external_key_manager.cert | string | `""` |  |
+| secrets.external_key_manager.caCert | string | `""` |  |
 | secrets.locker_private_key | string | "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----" | To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem |
 | secrets.tls.certificate | string | `""` |  |
 | secrets.tls.private_key | string | `""` |  |
 | secrets.vault.token | string | `""` |  |
 | server.affinity | object | `{}` |  |
 | server.annotations | object | `{}` |  |
-| server.apiClient.identity | string | `""` |  |
 | server.awsKms.keyId | string | `""` |  |
 | server.awsKms.region | string | `""` |  |
-| server.externalKeyManager.cert | string | `""` |  |
-| server.externalKeyManager.url | string | `"http://localhost:5000"` |  |
+| server.external_key_manager.mode | string | `"disabled"` |  |
+| server.external_key_manager.url | string | `"http://localhost:5000"` |  |
 | server.extra.env | object | `{}` |  |
 | server.host | string | `"0.0.0.0"` |  |
-| server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.6.5-dev"` |  |
+| server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.7.0"` |  |
 | server.imageRegistry | string | `"docker.juspay.io"` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.port | string | `"8080"` |  |
 | server.vault.url | string | `"http://127.0.0.1:8200"` |  |
-| server.version | string | `"v0.6.5"` |  |
+| server.version | string | `"v0.7.0"` |  |
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
 | tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
 | tenant_secrets.public.schema | string | `"public"` |  |
