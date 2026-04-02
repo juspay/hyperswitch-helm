@@ -454,6 +454,21 @@ entries:
     version: 0.2.9
   hyperswitch-card-vault:
   - apiVersion: v2
+    appVersion: 0.7.0
+    created: "2026-04-02T06:42:32.324859489Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.5.38
+    description: A Helm chart for creating Hyperswitch Card Vault
+    digest: 956d1d87ec326dfccc49a87128df5da6c3ed10dc181f7705fddd64c51390431c
+    name: hyperswitch-card-vault
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-card-vault-0.1.6/hyperswitch-card-vault-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-12-11T10:13:51.127552821Z"
     dependencies:
@@ -912,6 +927,38 @@ entries:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-monitoring-0.1.1/hyperswitch-monitoring-0.1.1.tgz
     version: 0.1.1
   hyperswitch-stack:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-04-02T06:42:32.665191638Z"
+    dependencies:
+    - name: hyperswitch-app
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 1.1.1
+    - condition: hyperswitch-web.enabled
+      name: hyperswitch-web
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.2.12
+    - condition: hyperswitch-monitoring.enabled
+      name: hyperswitch-monitoring
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.6
+    - condition: hyperswitch-ucs.enabled
+      name: hyperswitch-ucs
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.2
+    - condition: hyperswitch-control-center.enabled
+      name: hyperswitch-control-center
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 1.1.0
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: f6ee86d38de617930f2306974325c1985df802b4b01bae5826d2c91b138841ef
+    name: hyperswitch-stack
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-stack-0.2.21/hyperswitch-stack-0.2.21.tgz
+    version: 0.2.21
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-26T14:19:56.59780089Z"
@@ -1672,4 +1719,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-04-01T12:54:01.533489747Z"
+generated: "2026-04-02T06:42:32.665426929Z"
