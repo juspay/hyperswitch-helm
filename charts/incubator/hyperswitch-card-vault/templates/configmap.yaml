@@ -21,20 +21,20 @@ data:
     private_key = "{{ .Values.server.tls.privateKey }}"
     {{- end }}
     
-    {{- if eq .Values.server.externalKeyManager.mode "enabled_with_mtls" }}
+    {{- if eq .Values.server.external_key_manager.mode "enabled_with_mtls" }}
     
     [external_key_manager]
     mode = "enabled_with_mtls"
-    url = "{{ .Values.server.externalKeyManager.url }}"
+    url = "{{ .Values.server.external_key_manager.url }}"
     
     [api_client]
     client_idle_timeout = 90
     pool_max_idle_per_host = 10
-    {{- else if eq .Values.server.externalKeyManager.mode "enabled" }}
+    {{- else if eq .Values.server.external_key_manager.mode "enabled" }}
     
     [external_key_manager]
     mode = "enabled"
-    url = "{{ .Values.server.externalKeyManager.url }}"
+    url = "{{ .Values.server.external_key_manager.url }}"
     
     [api_client]
     client_idle_timeout = 90

@@ -50,7 +50,7 @@ server:
     # extra env variables to be added to hyperswitch-card-vault.
     env: {}
 
-  externalKeyManager:
+  external_key_manager:
     # Mode options: "disabled", "enabled", "enabled_with_mtls"
     # - disabled: External key manager is not used
     # - enabled: External key manager is used without mTLS

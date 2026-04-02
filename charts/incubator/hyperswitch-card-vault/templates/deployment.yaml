@@ -116,14 +116,16 @@ spec:
               value: "5000"
             - name: LOCKER__CACHE__TTI
               value: "7200"
+            - name: LOCKER__EXTERNAL_KEY_MANAGER__MODE
+              value: {{ .Values.server.external_key_manager.mode | quote }}
             - name: LOCKER__EXTERNAL_KEY_MANAGER__URL
-              value: {{ .Values.server.externalKeyManager.url | quote }}
-            {{- if .Values.secrets.external_key_manager.cert }}
-            - name: LOCKER__EXTERNAL_KEY_MANAGER__CERT
+              value: {{ .Values.server.external_key_manager.url | quote }}
+            {{- if .Values.secrets.external_key_manager.caCert }}
+            - name: LOCKER__EXTERNAL_KEY_MANAGER__CA_CERT
               valueFrom:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
-                  key: LOCKER__EXTERNAL_KEY_MANAGER__CERT
+                  key: LOCKER__EXTERNAL_KEY_MANAGER__CA_CERT
             {{- end }}
             {{- if .Values.secrets.api_client.identity }}
             - name: LOCKER__API_CLIENT__IDENTITY

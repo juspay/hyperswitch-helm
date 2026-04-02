@@ -149,11 +149,11 @@ LOCKER server port
 {{- default "8080" .Values.server.port | quote }}
 {{- end }}
 
-{{- define "locker.externalKeyManager.url" -}}
-{{- default "http://localhost:5000" .Values.server.externalKeyManager.url -}}
+{{- define "locker.external_key_manager.url" -}}
+{{- default "http://localhost:5000" .Values.server.external_key_manager.url -}}
 {{- end -}}
 
-{{- define "locker.externalKeyManager.caCert" -}}
+{{- define "locker.external_key_manager.caCert" -}}
 {{- default "" .Values.secrets.external_key_manager.caCert -}}
 {{- end -}}
 
@@ -229,7 +229,7 @@ false
 Check if external key manager mTLS is enabled
 */}}
 {{- define "locker.externalKeyManagerMtlsEnabled" -}}
-{{- if eq .Values.server.externalKeyManager.mode "enabled_with_mtls" -}}
+{{- if eq .Values.server.external_key_manager.mode "enabled_with_mtls" -}}
 true
 {{- else -}}
 false
