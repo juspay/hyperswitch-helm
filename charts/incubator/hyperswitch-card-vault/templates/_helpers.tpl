@@ -153,12 +153,12 @@ LOCKER server port
 {{- default "http://localhost:5000" .Values.server.externalKeyManager.url -}}
 {{- end -}}
 
-{{- define "locker.externalKeyManager.cert" -}}
-{{- default "dummyCert" .Values.server.externalKeyManager.cert -}}
+{{- define "locker.externalKeyManager.caCert" -}}
+{{- default "" .Values.secrets.external_key_manager.caCert -}}
 {{- end -}}
 
 {{- define "locker.apiClient.identity" -}}
-{{- default "dummyCert" .Values.server.apiClient.identity -}}
+{{- default "" .Values.secrets.api_client.identity -}}
 {{- end -}}
 
 {{- define "locker.awsKms.keyId" -}}
@@ -229,7 +229,7 @@ false
 Check if external key manager mTLS is enabled
 */}}
 {{- define "locker.externalKeyManagerMtlsEnabled" -}}
-{{- if .Values.secrets.external_key_manager.cert -}}
+{{- if eq .Values.server.externalKeyManager.mode "enabled_with_mtls" -}}
 true
 {{- else -}}
 false
