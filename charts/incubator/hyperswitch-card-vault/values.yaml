@@ -23,10 +23,10 @@ server:
   #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
   host: "0.0.0.0"
   port: "8080"
-  version: v0.6.5
+  version: v0.7.0
   # Image registry and name for hyperswitch-card-vault.
   imageRegistry: docker.juspay.io
-  image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
+  image: juspaydotin/hyperswitch-card-vault:v0.7.0
 
   # values to be used in pod template.
   pod:
@@ -50,12 +50,13 @@ server:
     # extra env variables to be added to hyperswitch-card-vault.
     env: {}
 
-  externalKeyManager:
+  external_key_manager:
+    # Mode options: "disabled", "enabled", "enabled_with_mtls"
+    # - disabled: External key manager is not used
+    # - enabled: External key manager is used without mTLS
+    # - enabled_with_mtls: External key manager is used with mTLS (requires secrets.external_key_manager.caCert and secrets.api_client.identity)
+    mode: "disabled"
     url: "http://localhost:5000"
-    cert: ""
-
-  apiClient:
-    identity: ""
 
   awsKms:
     keyId: ""
@@ -129,13 +130,13 @@ secrets:
     certificate: ""  # TLS certificate content
     private_key: ""  # TLS private key content
 
-  # External key manager mTLS certificates (optional)
+  # External key manager mTLS certificates (required when server.externalKeyManager.mode is "enabled_with_mtls")
   external_key_manager:
-    cert: ""  # Certificate for external key manager mTLS
+    caCert: ""
 
-  # API client mTLS identity (optional)
+  # API client mTLS identity (required when server.externalKeyManager.mode is "enabled_with_mtls")
   api_client:
-    identity: ""  # Client identity for mTLS authentication
+    identity: ""
 
 # Tenant configuration
 tenant_secrets:

@@ -130,6 +130,9 @@ hyperswitch-app:
     run_env: sandbox
     email:
       active_email_client: SMTP
+    configs:
+      proxy:
+        enabled: false
   controlCenter:
     env:
       default__features__email: "true"
