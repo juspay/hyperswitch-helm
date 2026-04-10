@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: {{ include "hyperswitch-producer.name" . }}
     app.kubernetes.io/version: {{ .Values.services.producer.version | toString | quote }}
     app: {{ include "hyperswitch-producer.name" . }}
-    version: {{ include "version.suffix" (.Values.services.producer.version | toString) }}
+    version: {{ include "version.suffix" (.Values.services.producer.version | toString) | quote }}
   name: {{ include "hyperswitch-producer.name" . }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -30,7 +30,7 @@ spec:
     metadata:
       labels:
         app: {{ include "hyperswitch-producer.name" . }}
-        version: {{ include "version.suffix" (.Values.services.producer.version | toString) }}
+        version: {{ include "version.suffix" (.Values.services.producer.version | toString) | quote }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.producer.labels | default .Values.global.labels) }}
         {{- toYaml . | nindent 8 }}
