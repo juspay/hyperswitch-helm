@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
+![Version: 1.1.2](https://img.shields.io/badge/Version-1.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -1778,7 +1778,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L635">server.configs.proxy.enabled</a></div></td>
-    <td><div><code>false</code></div></td>
+    <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L637">server.configs.proxy.http_url</a></div></td>
