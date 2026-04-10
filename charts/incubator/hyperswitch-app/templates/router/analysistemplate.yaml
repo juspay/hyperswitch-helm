@@ -20,7 +20,7 @@ spec:
           sum(increase(
             http_requests_total{
               app="{{ include "hyperswitch-server.name" . }}",
-              version="{{ include "version.suffix" .Values.services.router.version }}",
+              version="{{ include "version.suffix" (.Values.services.router.version | toString) }}",
               status=~"5.."
             }[1m]
           ))
