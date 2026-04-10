@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-hyperswitch-create-db-{{ regexReplaceAll "\\." .Values.services.router.version "-" }}
+  name: {{ .Release.Name }}-hyperswitch-create-db-{{ regexReplaceAll "\\." (.Values.services.router.version | toString) "-" }}
   labels:
-    app: {{ .Release.Name }}-hyperswitch-create-db-{{ regexReplaceAll "\\." .Values.services.router.version "-" }}
+    app: {{ .Release.Name }}-hyperswitch-create-db-{{ regexReplaceAll "\\." (.Values.services.router.version | toString) "-" }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -47,7 +47,7 @@ spec:
             - name: REFERENCE
               value: {{ .Values.initDB.refs }}
             - name: ROUTER_VERSION
-              value: {{ .Values.services.router.version }}
+              value: {{ .Values.services.router.version | toString | quote}}
             - name: POSTGRES_HOST
               value: {{ include "postgresql.host" . }}
             - name: DBNAME
