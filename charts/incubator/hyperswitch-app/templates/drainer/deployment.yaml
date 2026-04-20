@@ -97,5 +97,17 @@ spec:
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
+          {{- if .Values.superposition_fallback_efs.enabled }}
+          volumeMounts:
+            - mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
+              name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+              readOnly: true
+          {{- end }}
+      volumes:
+        {{- if .Values.superposition_fallback_efs.enabled }}
+        - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.superposition_fallback_efs.pvcName }}
+        {{- end }}
       serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
 {{- end }}

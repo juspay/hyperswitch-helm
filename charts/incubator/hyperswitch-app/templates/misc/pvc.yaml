@@ -1,0 +1,16 @@
+{{- if .Values.superposition_fallback_efs.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.superposition_fallback_efs.pvcName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.superposition_fallback_efs.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.superposition_fallback_efs.storage }}
+{{- end }}
