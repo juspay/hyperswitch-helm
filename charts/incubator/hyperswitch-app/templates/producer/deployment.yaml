@@ -118,9 +118,9 @@ spec:
               name: hyperswitch-config
               subPath: router.toml
             {{- end }}
-            {{- if .Values.efs.enabled }}
-            - mountPath: {{ .Values.efs.mountPath | default "/mnt/data" }}
-              name: superposition-config-backup
+            {{- if .Values.superposition_fallback_efs.enabled }}
+            - mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
+              name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
               readOnly: true
             {{- end }}
       dnsPolicy: ClusterFirst
@@ -134,9 +134,9 @@ spec:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
           name: hyperswitch-config
-        {{- if .Values.efs.enabled }}
-        - name: superposition-config-backup
+        {{- if .Values.superposition_fallback_efs.enabled }}
+        - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
           persistentVolumeClaim:
-            claimName: {{ .Values.efs.pvcName }}
+            claimName: {{ .Values.superposition_fallback_efs.pvcName }}
         {{- end }}
 {{- end }}
