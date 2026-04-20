@@ -118,6 +118,11 @@ spec:
               name: hyperswitch-config
               subPath: router.toml
             {{- end }}
+            {{- if .Values.efs.enabled }}
+            - mountPath: {{ .Values.efs.mountPath | default "/mnt/data" }}
+              name: superposition-config-backup
+              readOnly: true
+            {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -129,4 +134,9 @@ spec:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
           name: hyperswitch-config
+        {{- if .Values.efs.enabled }}
+        - name: superposition-config-backup
+          persistentVolumeClaim:
+            claimName: {{ .Values.efs.pvcName }}
+        {{- end }}
 {{- end }}

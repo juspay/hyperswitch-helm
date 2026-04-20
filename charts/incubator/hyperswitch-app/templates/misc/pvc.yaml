@@ -1,0 +1,16 @@
+{{- if .Values.efs.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.efs.pvcName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.efs.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.efs.storage }}
+{{- end }}
