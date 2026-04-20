@@ -190,6 +190,11 @@ spec:
               name: router-config
               subPath: router.toml
             {{- end }}
+            {{- if .Values.superposition_fallback_efs.enabled }}
+            - mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
+              name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+              readOnly: true
+            {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -201,4 +206,9 @@ spec:
             defaultMode: 420
             name: router-cm-{{.Release.Name }}
           name: router-config
+        {{- if .Values.superposition_fallback_efs.enabled }}
+        - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.superposition_fallback_efs.pvcName }}
+        {{- end }}
 {{- end }}
