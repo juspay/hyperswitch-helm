@@ -1888,3 +1888,8 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
+
+# EFS PersistentVolumeClaim configuration for superposition fallback
+superposition_fallback_efs:
+  # -- Enable creation of an EFS-backed PVC for superposition config backup
+  enabled: false
