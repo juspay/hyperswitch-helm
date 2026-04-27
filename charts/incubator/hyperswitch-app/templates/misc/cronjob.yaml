@@ -1,0 +1,66 @@
+{{- if .Values.superposition_fallback_efs.enabled }}
+---
+# Kubernetes CronJob for Superposition Config Backup
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.superposition_fallback_efs.cronjob.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app: {{ .Values.superposition_fallback_efs.cronjob.name }}
+spec:
+  schedule: {{ .Values.superposition_fallback_efs.cronjob.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: {{ .Values.superposition_fallback_efs.cronjob.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.superposition_fallback_efs.cronjob.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: {{ .Values.superposition_fallback_efs.cronjob.activeDeadlineSeconds }}
+      backoffLimit: {{ .Values.superposition_fallback_efs.cronjob.backoffLimit }}
+      template:
+        metadata:
+          labels:
+            app: {{ .Values.superposition_fallback_efs.cronjob.name }}
+            {{- include "hyperswitch.labels" . | nindent 12 }}
+        spec:
+          hostNetwork: {{ .Values.superposition_fallback_efs.cronjob.hostNetwork }}
+          restartPolicy: {{ .Values.superposition_fallback_efs.cronjob.restartPolicy }}
+          securityContext:
+            runAsNonRoot: {{ .Values.superposition_fallback_efs.cronjob.securityContext.runAsNonRoot }}
+            runAsUser: {{ .Values.superposition_fallback_efs.cronjob.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.superposition_fallback_efs.cronjob.securityContext.runAsGroup }}
+            fsGroup: {{ .Values.superposition_fallback_efs.cronjob.securityContext.fsGroup }}
+          containers:
+            - name: superposition-config-backup
+              image: {{ .Values.superposition_fallback_efs.cronjob.image }}
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: SUPERPOSITION_ENDPOINT
+                  value: {{ .Values.superposition_fallback_efs.cronjob.superpositon.endpoint | quote }}
+                - name: SUPERPOSITION_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.superposition_fallback_efs.cronjob.superpositon.tokenSecretName }}
+                      key: {{ .Values.superposition_fallback_efs.cronjob.superpositon.tokenSecretKey }}
+                - name: SUPERPOSITION_ORG_ID
+                  value: {{ .Values.superposition_fallback_efs.cronjob.superpositon.orgId | quote }}
+                - name: SUPERPOSITION_WORKSPACE_ID
+                  value: {{ .Values.superposition_fallback_efs.cronjob.superpositon.workspaceId | quote }}
+                - name: EFS_MOUNT_PATH
+                  value: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" | quote }}
+                - name: RETENTION_COUNT
+                  value: {{ .Values.superposition_fallback_efs.cronjob.retentionCount | quote }}
+                - name: RUN_ONCE
+                  value: {{ .Values.superposition_fallback_efs.cronjob.runOnce | quote }}
+              volumeMounts:
+                - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+                  mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
+                  readOnly: false
+              resources:
+                {{- toYaml .Values.superposition_fallback_efs.cronjob.resources | nindent 16 }}
+          volumes:
+            - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
+              persistentVolumeClaim:
+                claimName: {{ .Values.superposition_fallback_efs.pvcName }}
+{{- end }}
