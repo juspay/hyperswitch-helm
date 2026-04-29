@@ -1927,7 +1927,7 @@ superposition_fallback_cronjob:
   # -- Number of backup files to retain in EFS
   retentionCount: "10"
   # -- Superposition service connection details
-  superpositon:
+  superposition:
     # -- Superposition API endpoint URL
     endpoint: "http://localhost:8081"
     # -- Name of the Kubernetes Secret containing the Superposition API token.

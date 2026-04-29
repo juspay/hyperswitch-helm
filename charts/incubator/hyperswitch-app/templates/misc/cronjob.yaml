@@ -36,16 +36,16 @@ spec:
               imagePullPolicy: {{ .Values.superposition_fallback_cronjob.imagePullPolicy | default "IfNotPresent" }}
               env:
                 - name: SUPERPOSITION_ENDPOINT
-                  value: {{ .Values.superposition_fallback_cronjob.superpositon.endpoint | default "http://localhost:8081" | quote }}
+                  value: {{ .Values.superposition_fallback_cronjob.superposition.endpoint | default "http://localhost:8081" | quote }}
                 - name: SUPERPOSITION_TOKEN
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretName | default "hyperswitch-secrets" }}
-                      key: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretKey | default "ROUTER__SUPERPOSITION__TOKEN" }}
+                      name: {{ .Values.superposition_fallback_cronjob.superposition.tokenSecretName | default "hyperswitch-secrets" }}
+                      key: {{ .Values.superposition_fallback_cronjob.superposition.tokenSecretKey | default "ROUTER__SUPERPOSITION__TOKEN" }}
                 - name: SUPERPOSITION_ORG_ID
-                  value: {{ .Values.superposition_fallback_cronjob.superpositon.orgId | default "" | quote }}
+                  value: {{ .Values.superposition_fallback_cronjob.superposition.orgId | default "" | quote }}
                 - name: SUPERPOSITION_WORKSPACE_ID
-                  value: {{ .Values.superposition_fallback_cronjob.superpositon.workspaceId | default "" | quote }}
+                  value: {{ .Values.superposition_fallback_cronjob.superposition.workspaceId | default "" | quote }}
                 - name: EFS_MOUNT_PATH
                   value: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" | quote }}
                 - name: RETENTION_COUNT
