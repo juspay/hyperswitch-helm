@@ -16,8 +16,6 @@ spec:
   failedJobsHistoryLimit: {{ .Values.superposition_fallback_cronjob.failedJobsHistoryLimit | default 1 }}
   jobTemplate:
     spec:
-      activeDeadlineSeconds: {{ .Values.superposition_fallback_cronjob.activeDeadlineSeconds | default 300 }}
-      backoffLimit: {{ .Values.superposition_fallback_cronjob.backoffLimit | default 3 }}
       template:
         metadata:
           labels:
