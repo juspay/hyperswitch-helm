@@ -32,7 +32,7 @@ spec:
             fsGroup: 1000
           containers:
             - name: superposition-config-backup-cronjob
-              image: {{ .Values.superposition_fallback_cronjob.image | default "ghcr.io/srujanchikke/superposition-config-backup:latest" }}
+              image: {{ .Values.superposition_fallback_cronjob.image | default "" }}
               imagePullPolicy: {{ .Values.superposition_fallback_cronjob.imagePullPolicy | default "IfNotPresent" }}
               env:
                 - name: SUPERPOSITION_ENDPOINT

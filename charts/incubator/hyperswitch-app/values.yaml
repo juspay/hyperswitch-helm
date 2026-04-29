@@ -1911,7 +1911,7 @@ superposition_fallback_cronjob:
   # -- Cron schedule (minimum Kubernetes CronJob interval is 1 minute)
   schedule: "* * * * *"
   # -- Container image for the backup job
-  image: "ghcr.io/srujanchikke/superposition-config-backup:latest"
+  image: ""
   # -- Image pull policy
   imagePullPolicy: IfNotPresent
   # -- Timeout for the job in seconds
