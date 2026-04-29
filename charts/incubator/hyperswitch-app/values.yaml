@@ -1893,3 +1893,9 @@ vector:
 superposition_fallback_efs:
   # -- Enable creation of an EFS-backed PVC for superposition config backup
   enabled: false
+
+# CronJob configuration to sync superposition config into the EFS volume
+superposition_fallback_cronjob:
+  # -- Enable the CronJob that syncs superposition config to EFS
+  enabled: false
+
