@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "8eecd0d2e6"
+    version: "20edb3d403"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1897,7 +1897,6 @@ superposition_fallback_efs:
   storage: "1Gi"
   # -- Mount path inside the containers for the EFS volume
   mountPath: "/mnt/data"
-
 # CronJob configuration to sync superposition config into the EFS volume
 superposition_fallback_cronjob:
   # -- Enable the CronJob that syncs superposition config to EFS
