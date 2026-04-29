@@ -1891,11 +1891,60 @@ vector:
 
 # EFS PersistentVolumeClaim configuration for superposition fallback
 superposition_fallback_efs:
-  # -- Enable creation of an EFS-backed PVC for superposition config backup
+  # -- Enable creation of an EFS-backed PVC and volumeMounts in all pods
   enabled: false
+  # -- Name of the PersistentVolumeClaim to create and reference
+  pvcName: "superposition-config-backup"
+  # -- StorageClass to use for the PVC (must have an EFS CSI provisioner)
+  storageClassName: "efs-sc"
+  # -- Storage size for the PVC
+  storage: "1Gi"
+  # -- Mount path inside the containers for the EFS volume
+  mountPath: "/mnt/data"
 
 # CronJob configuration to sync superposition config into the EFS volume
 superposition_fallback_cronjob:
   # -- Enable the CronJob that syncs superposition config to EFS
   enabled: false
-
+  # -- Name of the CronJob resource
+  name: "superposition-config-backup-cronjob"
+  # -- Cron schedule (minimum Kubernetes CronJob interval is 1 minute)
+  schedule: "* * * * *"
+  # -- Container image for the backup job
+  image: "ghcr.io/srujanchikke/superposition-config-backup:latest"
+  # -- Image pull policy
+  imagePullPolicy: IfNotPresent
+  # -- Timeout for the job in seconds
+  activeDeadlineSeconds: 300
+  # -- Number of retries on pod failure
+  backoffLimit: 3
+  # -- Restart policy for the job pod
+  restartPolicy: OnFailure
+  # -- Number of successful job runs to retain in history
+  successfulJobsHistoryLimit: 3
+  # -- Number of failed job runs to retain in history
+  failedJobsHistoryLimit: 1
+  # -- Number of backup files to retain in EFS
+  retentionCount: "10"
+  # -- Superposition service connection details
+  superpositon:
+    # -- Superposition API endpoint URL
+    endpoint: "http://localhost:8081"
+    # -- Name of the Kubernetes Secret containing the Superposition API token.
+    #   tokenSecretName: "hyperswitch-secrets"
+    #   tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"
+    tokenSecretName: "hyperswitch-secrets"
+    # -- Key within the secret that holds the token value
+    tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"
+    # -- Superposition organisation ID (must match superposition.org_id)
+    orgId: ""
+    # -- Superposition workspace ID (must match superposition.workspace_id)
+    workspaceId: ""
+  # -- Resource requests and limits for the cronjob container
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "25m"
+    limits:
+      memory: "64Mi"
+      cpu: "100m"

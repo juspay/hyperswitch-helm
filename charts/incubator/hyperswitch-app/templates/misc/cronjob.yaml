@@ -4,11 +4,11 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup" }}
+  name: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup-cronjob" }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "hyperswitch.labels" . | nindent 4 }}
-    app: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup" }}
+    app: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup-cronjob" }}
 spec:
   schedule: {{ .Values.superposition_fallback_cronjob.schedule | default "* * * * *" | quote }}
   concurrencyPolicy: Forbid
@@ -21,7 +21,7 @@ spec:
       template:
         metadata:
           labels:
-            app: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup" }}
+            app: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup-cronjob" }}
             {{- include "hyperswitch.labels" . | nindent 12 }}
         spec:
           restartPolicy: {{ .Values.superposition_fallback_cronjob.restartPolicy | default "OnFailure" }}
@@ -31,17 +31,17 @@ spec:
             runAsGroup: 1000
             fsGroup: 1000
           containers:
-            - name: superposition-config-backup
+            - name: superposition-config-backup-cronjob
               image: {{ .Values.superposition_fallback_cronjob.image | default "ghcr.io/srujanchikke/superposition-config-backup:latest" }}
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: {{ .Values.superposition_fallback_cronjob.imagePullPolicy | default "IfNotPresent" }}
               env:
                 - name: SUPERPOSITION_ENDPOINT
-                  value: {{ .Values.superposition_fallback_cronjob.superpositon.endpoint | default "http://localhost:8080" | quote }}
+                  value: {{ .Values.superposition_fallback_cronjob.superpositon.endpoint | default "http://localhost:8081" | quote }}
                 - name: SUPERPOSITION_TOKEN
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretName | default "superposition-config-backup-secret" }}
-                      key: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretKey | default "token" }}
+                      name: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretName | default "hyperswitch-secrets" }}
+                      key: {{ .Values.superposition_fallback_cronjob.superpositon.tokenSecretKey | default "ROUTER__SUPERPOSITION__TOKEN" }}
                 - name: SUPERPOSITION_ORG_ID
                   value: {{ .Values.superposition_fallback_cronjob.superpositon.orgId | default "" | quote }}
                 - name: SUPERPOSITION_WORKSPACE_ID
