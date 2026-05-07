@@ -177,7 +177,7 @@ config:
       global_search: "true"
       new_analytics: "true"
       new_analytics_filters: "true"
-      new_analytics_refunds: "true"
+      new_analytics_refunds: "change after pr"
       new_analytics_smart_retries: "true"
       performance_monitor: "true"
       tenant_user: "true"
