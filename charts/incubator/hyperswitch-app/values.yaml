@@ -212,7 +212,7 @@ server:
             name: clickhouse
             key: admin-password
       # -- The Analytics source/strategy to be used
-      source: clickhouse
+      source: sqlx
       sqlx:
         # -- Database name
         dbname:
