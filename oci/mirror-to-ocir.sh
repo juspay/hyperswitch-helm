@@ -54,7 +54,7 @@ DOCKERHUB_TOKEN="${DOCKERHUB_TOKEN:-}"
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
-RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
 info()    { echo -e "${GREEN}✓${NC} $*"; }
 warn()    { echo -e "${YELLOW}⚠${NC}  $*"; }
 section() { echo ""; echo "── $* ──────────────────────────────────"; }
@@ -105,7 +105,7 @@ ALL_IMAGES=$(printf '%s\n%s\n' "$M1" "$M2" \
 
 echo ""
 echo "Images to mirror (all sources):"
-echo "$ALL_IMAGES" | sed 's/^/  /'
+echo "$ALL_IMAGES" | while IFS= read -r img; do echo "  $img"; done
 echo ""
 echo "Total: $(echo "$ALL_IMAGES" | wc -l | tr -d ' ') images  |  parallelism: ${MAX_PARALLEL}"
 

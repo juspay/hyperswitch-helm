@@ -210,7 +210,7 @@ secrets:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
-| image.tag | string | `"v0.1.11"` |  |
+| image.tag | string | `"v0.1.12"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
