@@ -1,0 +1,136 @@
+# ocir-node-auth.yaml
+#
+# DaemonSet that configures OCIR credentials at the OKE node level via cri-o's
+# global_auth_file. Once deployed, every pod on every node can pull from OCIR
+# without any imagePullSecrets — including Helm hooks and sidecar injectors.
+#
+# Why node-level auth instead of imagePullSecrets?
+#   Helm hook Jobs, admission webhook Jobs, and operator-injected sidecar
+#   containers do not inherit chart-level imagePullSecrets. Writing credentials
+#   directly to the node's cri-o auth file covers all pods unconditionally.
+#
+# Why nsenter?
+#   Oracle Linux 8 enforces SELinux. Files written from a container process get
+#   the container's SELinux label, which cri-o cannot read. nsenter -t 1 -m
+#   runs in PID 1's mount namespace, so files get the correct host label.
+#
+# Prerequisites:
+#   1. Mirror images to OCIR:
+#        export OCIR_REGION=<region>        # e.g. ap-hyderabad-1
+#        export OCIR_NAMESPACE=<namespace>  # from: oci os ns get
+#        ./oci/mirror-to-ocir.sh
+#
+#   2. Create the pull secret in kube-system:
+#        kubectl create secret docker-registry ocir-secret \
+#          --namespace kube-system \
+#          --docker-server=<region>.ocir.io \
+#          --docker-username='<tenancy-namespace>/<oci-username>' \
+#          --docker-password='<oci-auth-token>' \
+#          --dry-run=client -o yaml | kubectl apply -f -
+#
+#   3. Replace the image below with your mirrored busybox:
+#        sed 's|OCIR_REGISTRY|<region>.ocir.io/<namespace>|g' \
+#          oci/ocir-node-auth.yaml | kubectl apply -f -
+#
+#      Or use envsubst:
+#        export OCIR_REGISTRY=<region>.ocir.io/<namespace>
+#        envsubst < oci/ocir-node-auth.yaml | kubectl apply -f -
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ocir-node-auth
+  namespace: kube-system
+  labels:
+    app: ocir-node-auth
+spec:
+  selector:
+    matchLabels:
+      app: ocir-node-auth
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ocir-node-auth
+    spec:
+      hostPID: true          # required for nsenter -t 1 to reach host namespaces
+      imagePullSecrets:
+        - name: ocir-secret  # only this DaemonSet needs a pull secret;
+                             # all other pods benefit from node-level auth
+      tolerations:
+        - operator: Exists   # schedule on all nodes including tainted ones
+      initContainers:
+        - name: write-auth
+          # Replace OCIR_REGISTRY with your registry, e.g.:
+          #   <region>.ocir.io/<tenancy-namespace>
+          # After running mirror-to-ocir.sh, busybox is available at:
+          #   ${OCIR_REGISTRY}/busybox
+          image: ${OCIR_REGISTRY}/busybox
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: ocir-creds
+              mountPath: /secret
+          command:
+            - sh
+            - -c
+            - |
+              echo "=== SELinux status ==="
+              nsenter -t 1 -m -- getenforce 2>/dev/null || echo "n/a"
+
+              echo "=== Writing OCIR credentials via nsenter (host SELinux context) ==="
+
+              # nsenter -t 1 -m runs in PID 1's mount namespace so files get
+              # the correct host SELinux label (cri-o can read them).
+              nsenter -t 1 -m -- sh -c '
+                set -e
+                CREDS=$(cat /proc/'"$$"'/fd/0)
+
+                # 1. /run/containers/auth.json — containers/image default for root
+                mkdir -p /run/containers
+                printf "%s" "$CREDS" > /run/containers/auth.json.tmp
+                mv /run/containers/auth.json.tmp /run/containers/auth.json
+                chmod 600 /run/containers/auth.json
+                restorecon /run/containers/auth.json 2>/dev/null || true
+
+                # 2. /root/.docker/config.json — docker config fallback
+                mkdir -p /root/.docker
+                printf "%s" "$CREDS" > /root/.docker/config.json
+                chmod 600 /root/.docker/config.json
+
+                # 3. /etc/crio/auth.json + drop-in to set global_auth_file
+                printf "%s" "$CREDS" > /etc/crio/auth.json
+                chmod 600 /etc/crio/auth.json
+                mkdir -p /etc/crio/crio.conf.d
+                printf "[crio.image]\nglobal_auth_file = \"/etc/crio/auth.json\"\n" \
+                  > /etc/crio/crio.conf.d/50-ocir-auth.conf
+
+                echo "Files written"
+              ' < /secret/.dockerconfigjson
+
+              echo "=== Restarting cri-o to load global_auth_file drop-in ==="
+              nsenter -t 1 -m -- systemctl restart crio \
+                && echo "cri-o restarted OK" \
+                || echo "WARNING: cri-o restart failed"
+
+              echo "=== Done ==="
+      containers:
+        # pause image is pre-pulled on every Kubernetes node — no OCIR pull needed.
+        # The pod must stay Running so it restarts on node reboot and re-writes auth.
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+            limits:
+              cpu: 5m
+              memory: 16Mi
+      volumes:
+        - name: ocir-creds
+          secret:
+            secretName: ocir-secret
+            items:
+              - key: .dockerconfigjson
+                path: .dockerconfigjson

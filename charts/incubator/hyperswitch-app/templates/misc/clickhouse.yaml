@@ -14,6 +14,7 @@ data:
       `merchant_id` String,
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `payment_method_id` Nullable(String),
       `payment_method` Nullable(String),
       `payment_method_type` Nullable(String),
@@ -47,6 +48,7 @@ data:
       `merchant_id` LowCardinality(String),
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `payment_method_id` Nullable(String),
       `payment_method` Nullable(String),
       `payment_method_type` Nullable(String),
@@ -118,6 +120,37 @@ data:
     ORDER BY
       (merchant_id, payment_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
 
+    CREATE TABLE IF NOT EXISTS api_events_payout_audit (
+      `merchant_id` LowCardinality(String),
+      `payout_id` String,
+      `payment_method_id` Nullable(String),
+      `payment_method` Nullable(String),
+      `payment_method_type` Nullable(String),
+      `customer_id` Nullable(String),
+      `user_id` Nullable(String),
+      `connector` Nullable(String),
+      `request_id` String,
+      `flow_type` LowCardinality(String),
+      `api_flow` LowCardinality(String),
+      `api_auth_type` LowCardinality(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `authentication_data` Nullable(String),
+      `status_code` UInt32,
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `latency` UInt128,
+      `user_agent` String,
+      `ip_addr` String,
+      `hs_latency` Nullable(UInt128),
+      `http_method` LowCardinality(Nullable(String)),
+      `url_path` Nullable(String),
+      `masked_response` Nullable(String)
+    ) ENGINE = MergeTree PARTITION BY merchant_id
+    ORDER BY
+      (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
+    
     CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_parse_errors (
       `topic` String,
       `partition` Int64,
@@ -202,11 +235,73 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
-
+    
+    CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_payout_audit_mv TO api_events_payout_audit (
+      `merchant_id` String,
+      `payout_id` String,
+      `payment_method_id` Nullable(String),
+      `payment_method` Nullable(String),
+      `payment_method_type` Nullable(String),
+      `customer_id` Nullable(String),
+      `user_id` Nullable(String),
+      `connector` Nullable(String),
+      `request_id` String,
+      `flow_type` LowCardinality(String),
+      `api_flow` LowCardinality(String),
+      `api_auth_type` LowCardinality(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `authentication_data` Nullable(String),
+      `status_code` UInt32,
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `latency` UInt128,
+      `user_agent` String,
+      `ip_addr` String,
+      `hs_latency` Nullable(UInt128),
+      `http_method` LowCardinality(Nullable(String)),
+      `url_path` Nullable(String),
+      `masked_response` Nullable(String)
+    ) AS
+    SELECT
+      merchant_id,
+      payout_id,
+      payment_method_id,
+      payment_method,
+      payment_method_type,
+      customer_id,
+      user_id,
+      connector,
+      request_id,
+      flow_type,
+      api_flow,
+      api_auth_type,
+      request,
+      response,
+      error,
+      authentication_data,
+      status_code,
+      created_at_timestamp AS created_at,
+      now() AS inserted_at,
+      latency,
+      user_agent,
+      ip_addr,
+      hs_latency,
+      http_method,
+      url_path,
+      response AS masked_response
+    FROM
+      api_events_queue
+    WHERE
+      (length(_error) = 0)
+      AND (payout_id IS NOT NULL);
+    
     CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_mv TO api_events (
       `merchant_id` String,
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `payment_method_id` Nullable(String),
       `payment_method` Nullable(String),
       `payment_method_type` Nullable(String),
@@ -237,6 +332,7 @@ data:
       merchant_id,
       payment_id,
       refund_id,
+      payout_id,
       payment_method_id,
       payment_method,
       payment_method_type,
@@ -303,7 +399,32 @@ data:
       `ds_trans_id` Nullable(String),
       `directory_server_id` Nullable(String),
       `acquirer_country_code` Nullable(String),
-      `sign_flag` Int8
+      `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
+      `sign_flag` Int8,
+      `mcc` Nullable(String),
+      `amount` Nullable(UInt32),
+      `currency` LowCardinality(Nullable(String)),
+      `merchant_country` LowCardinality(Nullable(String)),
+      `billing_country` LowCardinality(Nullable(String)),
+      `shipping_country` LowCardinality(Nullable(String)),
+      `issuer_country` LowCardinality(Nullable(String)),
+      `earliest_supported_version` LowCardinality(Nullable(String)),
+      `latest_supported_version` LowCardinality(Nullable(String)),
+      `whitelist_decision` Nullable(Bool),
+      `device_manufacturer` Nullable(String),
+      `platform` LowCardinality(Nullable(String)),
+      `device_type` LowCardinality(Nullable(String)),
+      `device_brand` Nullable(String),
+      `device_os` Nullable(String),
+      `device_display` Nullable(String),
+      `browser_name` Nullable(String),
+      `browser_version` Nullable(String),
+      `issuer_id` Nullable(String),
+      `scheme_name` Nullable(String),
+      `exemption_requested` Nullable(Bool),
+      `exemption_accepted` Nullable(Bool)
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-authentication-events',
     kafka_group_name = 'hyper',
@@ -348,7 +469,32 @@ data:
       `ds_trans_id` Nullable(String),
       `directory_server_id` Nullable(String),
       `acquirer_country_code` Nullable(String),
+      `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
+      `mcc` Nullable(String),
+      `amount` Nullable(UInt32),
+      `currency` LowCardinality(Nullable(String)),
+      `merchant_country` LowCardinality(Nullable(String)),
+      `billing_country` LowCardinality(Nullable(String)),
+      `shipping_country` LowCardinality(Nullable(String)),
+      `issuer_country` LowCardinality(Nullable(String)),
+      `earliest_supported_version` LowCardinality(Nullable(String)),
+      `latest_supported_version` LowCardinality(Nullable(String)),
+      `whitelist_decision` Nullable(Bool),
+      `device_manufacturer` Nullable(String),
+      `platform` LowCardinality(Nullable(String)),
+      `device_type` LowCardinality(Nullable(String)),
+      `device_brand` Nullable(String),
+      `device_os` Nullable(String),
+      `device_display` Nullable(String),
+      `browser_name` Nullable(String),
+      `browser_version` Nullable(String),
+      `issuer_id` Nullable(String),
+      `scheme_name` Nullable(String),
+      `exemption_requested` Nullable(Bool),
+      `exemption_accepted` Nullable(Bool),
       INDEX authenticationConnectorIndex authentication_connector TYPE bloom_filter GRANULARITY 1,
       INDEX transStatusIndex trans_status TYPE bloom_filter GRANULARITY 1,
       INDEX authenticationTypeIndex authentication_type TYPE bloom_filter GRANULARITY 1,
@@ -395,7 +541,32 @@ data:
       `ds_trans_id` Nullable(String),
       `directory_server_id` Nullable(String),
       `acquirer_country_code` Nullable(String),
-      `sign_flag` Int8
+      `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
+      `sign_flag` Int8,
+      `mcc` Nullable(String),
+      `amount` Nullable(UInt32),
+      `currency` LowCardinality(Nullable(String)),
+      `merchant_country` LowCardinality(Nullable(String)),
+      `billing_country` LowCardinality(Nullable(String)),
+      `shipping_country` LowCardinality(Nullable(String)),
+      `issuer_country` LowCardinality(Nullable(String)),
+      `earliest_supported_version` LowCardinality(Nullable(String)),
+      `latest_supported_version` LowCardinality(Nullable(String)),
+      `whitelist_decision` Nullable(Bool),
+      `device_manufacturer` Nullable(String),
+      `platform` LowCardinality(Nullable(String)),
+      `device_type` LowCardinality(Nullable(String)),
+      `device_brand` Nullable(String),
+      `device_os` Nullable(String),
+      `device_display` Nullable(String),
+      `browser_name` Nullable(String),
+      `browser_version` Nullable(String),
+      `issuer_id` Nullable(String),
+      `scheme_name` Nullable(String),
+      `exemption_requested` Nullable(Bool),
+      `exemption_accepted` Nullable(Bool)
     ) AS
     SELECT
       authentication_id,
@@ -435,7 +606,32 @@ data:
       ds_trans_id,
       directory_server_id,
       acquirer_country_code,
-      sign_flag
+      organization_id,
+      processor_merchant_id,
+      created_by,
+      sign_flag,
+      mcc,
+      amount,
+      currency,
+      merchant_country,
+      billing_country,
+      shipping_country,
+      issuer_country,
+      earliest_supported_version,
+      latest_supported_version,
+      whitelist_decision,
+      device_manufacturer,
+      platform,
+      device_type,
+      device_brand,
+      device_os,
+      device_display,
+      browser_name,
+      browser_version,
+      issuer_id,
+      scheme_name,
+      exemption_requested,
+      exemption_accepted
     FROM
       authentication_queue
     WHERE
@@ -474,7 +670,8 @@ data:
       `latency` UInt128,
       `method` LowCardinality(String),
       `dispute_id` Nullable(String),
-      `refund_id` Nullable(String)
+      `refund_id` Nullable(String),
+      `payout_id` Nullable(String)
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-outgoing-connector-events',
     kafka_group_name = 'hyper',
@@ -518,6 +715,7 @@ data:
       `method` LowCardinality(String),
       `dispute_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
       INDEX connectorIndex connector_name TYPE bloom_filter GRANULARITY 1,
       INDEX statusIndex status_code TYPE bloom_filter GRANULARITY 1
@@ -555,6 +753,28 @@ data:
     ORDER BY
       (merchant_id, payment_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
 
+    CREATE TABLE IF NOT EXISTS connector_events_payout_audit (
+      `merchant_id` LowCardinality(String),
+      `payout_id` String,
+      `connector_name` LowCardinality(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `request` String,
+      `response` Nullable(String),
+      `masked_response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` UInt32,
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `latency` UInt128,
+      `method` LowCardinality(String),
+      INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
+      INDEX connectorIndex connector_name TYPE bloom_filter GRANULARITY 1,
+      INDEX statusIndex status_code TYPE bloom_filter GRANULARITY 1
+    ) ENGINE = MergeTree PARTITION BY merchant_id
+    ORDER BY
+      (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
+    
     CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_audit_mv TO connector_events_audit (
       `merchant_id` String,
       `payment_id` Nullable(String),
@@ -595,6 +815,43 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
+    
+    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_payout_audit_mv TO connector_events_payout_audit (
+      `merchant_id` String,
+      `payout_id` Nullable(String),
+      `connector_name` LowCardinality(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `request` String,
+      `response` Nullable(String),
+      `masked_response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` UInt32,
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `latency` UInt128,
+      `method` LowCardinality(String)
+    ) AS
+    SELECT
+      merchant_id,
+      payout_id,
+      connector_name,
+      request_id,
+      flow,
+      request,
+      masked_response AS response,
+      masked_response,
+      error,
+      status_code,
+      created_at,
+      now64() AS inserted_at,
+      latency,
+      method
+    FROM
+      connector_events_queue
+    WHERE
+      (length(_error) = 0)
+      AND (payout_id IS NOT NULL);
 
     CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_mv TO connector_events (
       `merchant_id` String,
@@ -612,7 +869,8 @@ data:
       `latency` UInt128,
       `method` LowCardinality(String),
       `refund_id` Nullable(String),
-      `dispute_id` Nullable(String)
+      `dispute_id` Nullable(String),
+      `payout_id` Nullable(String)
     ) AS
     SELECT
       merchant_id,
@@ -630,7 +888,8 @@ data:
       latency,
       method,
       refund_id,
-      dispute_id
+      dispute_id,
+      payout_id
     FROM
       connector_events_queue
     WHERE
@@ -658,6 +917,8 @@ data:
       `profile_id` Nullable(String),
       `merchant_connector_id` Nullable(String),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-dispute-events',
@@ -689,6 +950,8 @@ data:
       `merchant_connector_id` Nullable(String),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
       INDEX connectorIndex connector TYPE bloom_filter GRANULARITY 1,
       INDEX disputeStatusIndex dispute_status TYPE bloom_filter GRANULARITY 1,
@@ -720,6 +983,8 @@ data:
       `profile_id` Nullable(String),
       `merchant_connector_id` Nullable(String),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `inserted_at` DateTime64(3),
       `sign_flag` Int8
     ) AS
@@ -746,6 +1011,8 @@ data:
       profile_id,
       merchant_connector_id,
       organization_id,
+      processor_merchant_id,
+      created_by,
       now() AS inserted_at,
       sign_flag
     FROM
@@ -794,6 +1061,8 @@ data:
       `modified_at` DateTime CODEC(T64, LZ4),
       `last_step` LowCardinality(String),
       `payment_capture_method` LowCardinality(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-fraud-check-events',
@@ -823,6 +1092,8 @@ data:
       `modified_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `last_step` LowCardinality(String),
       `payment_capture_method` LowCardinality(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
       INDEX frmNameIndex frm_name TYPE bloom_filter GRANULARITY 1,
       INDEX frmStatusIndex frm_status TYPE bloom_filter GRANULARITY 1,
@@ -855,6 +1126,8 @@ data:
       `modified_at` DateTime64(3),
       `last_step` LowCardinality(String),
       `payment_capture_method` LowCardinality(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) AS
     SELECT
@@ -879,6 +1152,8 @@ data:
       modified_at,
       last_step,
       payment_capture_method,
+      processor_merchant_id,
+      created_by,
       sign_flag
     FROM
       fraud_check_queue
@@ -911,6 +1186,7 @@ data:
       `outgoing_webhook_event_type` LowCardinality(String),
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `attempt_id` Nullable(String),
       `dispute_id` Nullable(String),
       `payment_method_id` Nullable(String),
@@ -921,7 +1197,9 @@ data:
       `initial_attempt_id` Nullable(String),
       `status_code` Nullable(UInt16),
       `delivery_attempt` LowCardinality(String),
-      `created_at_timestamp` DateTime64(3)
+      `created_at_timestamp` DateTime64(3),
+      `processor_merchant_id` Nullable(String),
+      `initiator_merchant_id` Nullable(String)
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-outgoing-webhook-events',
     kafka_group_name = 'hyper',
@@ -935,6 +1213,7 @@ data:
       `outgoing_webhook_event_type` LowCardinality(String),
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `attempt_id` Nullable(String),
       `dispute_id` Nullable(String),
       `payment_method_id` Nullable(String),
@@ -947,6 +1226,8 @@ data:
       `delivery_attempt` LowCardinality(String),
       `created_at` DateTime64(3),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `processor_merchant_id` Nullable(String),
+      `initiator_merchant_id` Nullable(String),
       INDEX eventIndex event_type TYPE bloom_filter GRANULARITY 1,
       INDEX webhookeventIndex outgoing_webhook_event_type TYPE bloom_filter GRANULARITY 1
     ) ENGINE = MergeTree PARTITION BY toStartOfDay(created_at)
@@ -977,11 +1258,34 @@ data:
       `status_code` Nullable(UInt16),
       `delivery_attempt` LowCardinality(String),
       `created_at` DateTime64(3),
-      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4)
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `processor_merchant_id` Nullable(String),
+      `initiator_merchant_id` Nullable(String)
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payment_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
 
+    CREATE TABLE IF NOT EXISTS outgoing_webhook_events_payout_audit (
+      `merchant_id` LowCardinality(String),
+      `event_id` String,
+      `event_type` LowCardinality(String),
+      `outgoing_webhook_event_type` LowCardinality(String),
+      `payout_id` String,
+      `attempt_id` Nullable(String),
+      `payment_method_id` Nullable(String),
+      `mandate_id` Nullable(String),
+      `content` Nullable(String),
+      `is_error` Bool,
+      `error` Nullable(String),
+      `initial_attempt_id` Nullable(String),
+      `status_code` Nullable(UInt16),
+      `delivery_attempt` LowCardinality(String),
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4)
+    ) ENGINE = MergeTree PARTITION BY merchant_id
+    ORDER BY
+      (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
+    
     CREATE MATERIALIZED VIEW IF NOT EXISTS outgoing_webhook_events_mv TO outgoing_webhook_events (
       `merchant_id` String,
       `event_id` String,
@@ -989,6 +1293,7 @@ data:
       `outgoing_webhook_event_type` LowCardinality(String),
       `payment_id` Nullable(String),
       `refund_id` Nullable(String),
+      `payout_id` Nullable(String),
       `attempt_id` Nullable(String),
       `dispute_id` Nullable(String),
       `payment_method_id` Nullable(String),
@@ -1000,7 +1305,9 @@ data:
       `status_code` Nullable(UInt16),
       `delivery_attempt` LowCardinality(String),
       `created_at` DateTime64(3),
-      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4)
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `processor_merchant_id` Nullable(String),
+      `initiator_merchant_id` Nullable(String)
     ) AS
     SELECT
       merchant_id,
@@ -1009,6 +1316,7 @@ data:
       outgoing_webhook_event_type,
       payment_id,
       refund_id,
+      payout_id,
       attempt_id,
       dispute_id,
       payment_method_id,
@@ -1020,7 +1328,9 @@ data:
       status_code,
       delivery_attempt,
       created_at_timestamp AS created_at,
-      now() AS inserted_at
+      now() AS inserted_at,
+      processor_merchant_id,
+      initiator_merchant_id
     FROM
       outgoing_webhook_events_queue
     WHERE
@@ -1044,7 +1354,9 @@ data:
       `status_code` Nullable(UInt16),
       `delivery_attempt` LowCardinality(String),
       `created_at` DateTime64(3),
-      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4)
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `processor_merchant_id` Nullable(String),
+      `initiator_merchant_id` Nullable(String)
     ) AS
     SELECT
       merchant_id,
@@ -1064,13 +1376,56 @@ data:
       status_code,
       delivery_attempt,
       created_at_timestamp AS created_at,
-      now() AS inserted_at
+      now() AS inserted_at,
+      processor_merchant_id,
+      initiator_merchant_id
     FROM
       outgoing_webhook_events_queue
     WHERE
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
 
+    CREATE MATERIALIZED VIEW IF NOT EXISTS outgoing_webhook_events_payout_audit_mv TO outgoing_webhook_events_payout_audit (
+      `merchant_id` String,
+      `event_id` String,
+      `event_type` LowCardinality(String),
+      `outgoing_webhook_event_type` LowCardinality(String),
+      `payout_id` String,
+      `attempt_id` Nullable(String),
+      `payment_method_id` Nullable(String),
+      `mandate_id` Nullable(String),
+      `content` Nullable(String),
+      `is_error` Bool,
+      `error` Nullable(String),
+      `initial_attempt_id` Nullable(String),
+      `status_code` Nullable(UInt16),
+      `delivery_attempt` LowCardinality(String),
+      `created_at` DateTime64(3),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4)
+    ) AS
+    SELECT
+      merchant_id,
+      event_id,
+      event_type,
+      outgoing_webhook_event_type,
+      payout_id,
+      attempt_id,
+      payment_method_id,
+      mandate_id,
+      content,
+      is_error,
+      error,
+      initial_attempt_id,
+      status_code,
+      delivery_attempt,
+      created_at_timestamp AS created_at,
+      now() AS inserted_at
+    FROM
+      outgoing_webhook_events_queue
+    WHERE
+      (length(_error) = 0)
+      AND (payout_id IS NOT NULL);
+    
     CREATE MATERIALIZED VIEW IF NOT EXISTS outgoing_webhook_parse_errors (
       `topic` String,
       `partition` Int64,
@@ -1135,6 +1490,12 @@ data:
       `organization_id` String,
       `profile_id` String,
       `card_network` Nullable(String),
+      `routing_approach` LowCardinality(Nullable(String)),
+      `debit_routing_savings` Nullable(UInt32),
+      `signature_network` Nullable(String),
+      `is_issuer_regulated` Nullable(Bool),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-payment-attempt-events',
@@ -1188,6 +1549,12 @@ data:
       `organization_id` String,
       `profile_id` String,
       `card_network` Nullable(String),
+      `routing_approach` LowCardinality(Nullable(String)),
+      `debit_routing_savings` Nullable(UInt32),
+      `signature_network` Nullable(String),
+      `is_issuer_regulated` Nullable(Bool),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
       INDEX connectorIndex connector TYPE bloom_filter GRANULARITY 1,
       INDEX paymentMethodIndex payment_method TYPE bloom_filter GRANULARITY 1,
@@ -1244,6 +1611,12 @@ data:
       `organization_id` String,
       `profile_id` String,
       `card_network` Nullable(String),
+      `routing_approach` LowCardinality(Nullable(String)),
+      `debit_routing_savings` Nullable(UInt32),
+      `signature_network` Nullable(String),
+      `is_issuer_regulated` Nullable(Bool),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) AS
     SELECT
@@ -1292,6 +1665,12 @@ data:
       organization_id,
       profile_id,
       card_network,
+      routing_approach,
+      debit_routing_savings,
+      signature_network,
+      is_issuer_regulated,
+      processor_merchant_id,
+      created_by,
       sign_flag
     FROM
       payment_attempt_queue
@@ -1323,6 +1702,8 @@ data:
       `created_at` DateTime CODEC(T64, LZ4),
       `last_synced` Nullable(DateTime) CODEC(T64, LZ4),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-payment-intent-events',
@@ -1357,6 +1738,8 @@ data:
       `last_synced` Nullable(DateTime) CODEC(T64, LZ4),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
       INDEX connectorIndex connector_id TYPE bloom_filter GRANULARITY 1,
       INDEX currencyIndex currency TYPE bloom_filter GRANULARITY 1,
@@ -1395,6 +1778,8 @@ data:
       `last_synced` Nullable(DateTime64(3)),
       `inserted_at` DateTime64(3),
       `organization_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) AS
     SELECT
@@ -1423,6 +1808,8 @@ data:
       last_synced,
       now() AS inserted_at,
       organization_id,
+      processor_merchant_id,
+      created_by,
       sign_flag
     FROM payment_intents_queue;
     CREATE TABLE IF NOT EXISTS payout_queue (
@@ -1455,6 +1842,8 @@ data:
       `business_country` LowCardinality(Nullable(String)),
       `business_label` Nullable(String),
       `merchant_connector_id` Nullable(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-payout-events',
@@ -1492,6 +1881,8 @@ data:
       `business_country` LowCardinality(Nullable(String)),
       `business_label` Nullable(String),
       `merchant_connector_id` Nullable(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `sign_flag` Int8,
       INDEX payoutTypeIndex payout_type TYPE bloom_filter GRANULARITY 1,
@@ -1534,6 +1925,8 @@ data:
       `business_country` LowCardinality(Nullable(String)),
       `business_label` Nullable(String),
       `merchant_connector_id` Nullable(String),
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `sign_flag` Int8
     ) AS
@@ -1567,6 +1960,8 @@ data:
       business_country,
       business_label,
       merchant_connector_id,
+      processor_merchant_id,
+      created_by,
       now() as inserted_at,
       sign_flag
     FROM
@@ -1596,13 +1991,15 @@ data:
       `modified_at` DateTime,
       `organization_id` String,
       `profile_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
     kafka_topic_list = 'hyperswitch-refund-events',
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
     kafka_handle_error_mode = 'stream';
-
+    
     CREATE TABLE IF NOT EXISTS refunds (
       `internal_reference_id` String,
       `refund_id` String,
@@ -1629,6 +2026,8 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `organization_id` String,
       `profile_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8,
       INDEX connectorIndex connector TYPE bloom_filter GRANULARITY 1,
       INDEX refundTypeIndex refund_type TYPE bloom_filter GRANULARITY 1,
@@ -1664,6 +2063,8 @@ data:
       `inserted_at` DateTime64(3),
       `organization_id` String,
       `profile_id` String,
+      `processor_merchant_id` Nullable(String),
+      `created_by` Nullable(String),
       `sign_flag` Int8
     ) AS
     SELECT
@@ -1692,9 +2093,202 @@ data:
       now() AS inserted_at,
       organization_id,
       profile_id,
+      processor_merchant_id,
+      created_by,
       sign_flag
     FROM
       refund_queue
+    WHERE
+      length(_error) = 0;
+    -- Need to discuss with the team about the structure of this table.
+    CREATE TABLE IF NOT EXISTS routing_events_queue
+    (
+      `merchant_id` String,
+      `profile_id` String,
+      `payment_id` String,
+      `refund_id` Nullable(String),
+      `dispute_id` Nullable(String),
+      `routable_connectors` String,
+      `payment_connector` Nullable(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `url` Nullable(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` Nullable(UInt32),
+      `created_at` DateTime64(9),
+      `method` LowCardinality(String),
+      `routing_engine` LowCardinality(String),
+      `routing_approach` Nullable(String)
+    )
+    ENGINE = Kafka
+    SETTINGS kafka_broker_list = 'kafka0:29092', kafka_topic_list = 'hyperswitch-routing-api-events', kafka_group_name = 'hyper', kafka_format = 'JSONEachRow', kafka_handle_error_mode = 'stream';
+    
+    CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_parse_errors (
+      `topic` String,
+      `partition` Int64,
+      `offset` Int64,
+      `raw` String,
+      `error` String
+    ) ENGINE = MergeTree
+    ORDER BY
+      (topic, partition, offset) SETTINGS index_granularity = 8192 AS
+    SELECT
+      _topic AS topic,
+      _partition AS partition,
+      _offset AS offset,
+      _raw_message AS raw,
+      _error AS error
+    FROM
+      routing_events_queue
+    WHERE
+      length(_error) > 0;
+    
+    CREATE TABLE IF NOT EXISTS routing_events (
+      `merchant_id` String,
+      `profile_id` String,
+      `payment_id` String,
+      `refund_id` Nullable(String),
+      `dispute_id` Nullable(String),
+      `routable_connectors` String,
+      `payment_connector` Nullable(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `url` Nullable(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` Nullable(UInt32),
+      `created_at` DateTime64(9),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `method` LowCardinality(String),
+      `routing_engine` LowCardinality(String),
+      `routing_approach` Nullable(String),
+      INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
+      INDEX profileIndex profile_id TYPE bloom_filter GRANULARITY 1
+    ) ENGINE = MergeTree
+    PARTITION BY toStartOfDay(created_at)
+    ORDER BY ( created_at, merchant_id, profile_id, payment_id )
+    SETTINGS index_granularity = 8192;
+    
+    CREATE TABLE IF NOT EXISTS routing_events_audit (
+      `merchant_id` String,
+      `profile_id` String,
+      `payment_id` String,
+      `refund_id` Nullable(String),
+      `dispute_id` Nullable(String),
+      `routable_connectors` String,
+      `payment_connector` Nullable(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `url` Nullable(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` Nullable(UInt32),
+      `created_at` DateTime64(9),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `method` LowCardinality(String),
+      `routing_engine` LowCardinality(String),
+      `routing_approach` Nullable(String),
+      INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
+      INDEX profileIndex profile_id TYPE bloom_filter GRANULARITY 1
+    ) ENGINE = MergeTree 
+    PARTITION BY (merchant_id)
+    ORDER BY ( merchant_id, payment_id ) 
+    SETTINGS index_granularity = 8192;
+    
+    
+    CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_mv TO routing_events (
+      `merchant_id` String,
+      `profile_id` String,
+      `payment_id` String,
+      `refund_id` Nullable(String),
+      `dispute_id` Nullable(String),
+      `routable_connectors` String,
+      `payment_connector` Nullable(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `url` Nullable(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` Nullable(UInt32),
+      `created_at` DateTime64(9),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `method` LowCardinality(String),
+      `routing_engine` LowCardinality(String),
+      `routing_approach` Nullable(String)
+    ) AS
+    SELECT
+      merchant_id,
+      profile_id,
+      payment_id,
+      refund_id,
+      dispute_id,
+      routable_connectors,
+      payment_connector,
+      request_id,
+      flow,
+      url,
+      request,
+      response,
+      error,
+      status_code,
+      created_at,
+      now() AS inserted_at,
+      method,
+      routing_engine,
+      routing_approach
+    FROM
+      routing_events_queue
+    WHERE
+      length(_error) = 0;
+    
+    CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_audit_mv TO routing_events_audit (
+      `merchant_id` String,
+      `profile_id` String,
+      `payment_id` String,
+      `refund_id` Nullable(String),
+      `dispute_id` Nullable(String),
+      `routable_connectors` String,
+      `payment_connector` Nullable(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `url` Nullable(String),
+      `request` String,
+      `response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` Nullable(UInt32),
+      `created_at` DateTime64(9),
+      `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+      `method` LowCardinality(String),
+      `routing_engine` LowCardinality(String),
+      `routing_approach` Nullable(String)
+    ) AS
+    SELECT
+      merchant_id,
+      profile_id,
+      payment_id,
+      refund_id,
+      dispute_id,
+      routable_connectors,
+      payment_connector,
+      request_id,
+      flow,
+      url,
+      request,
+      response,
+      error,
+      status_code,
+      created_at,
+      now() AS inserted_at,
+      method,
+      routing_engine,
+      routing_approach
+    FROM
+      routing_events_queue
     WHERE
       length(_error) = 0;
     CREATE TABLE IF NOT EXISTS sdk_events_queue (
