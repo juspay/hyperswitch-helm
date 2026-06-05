@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.1.2](https://img.shields.io/badge/Version-1.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
+![Version: 1.1.4](https://img.shields.io/badge/Version-1.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -1135,7 +1135,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td></td>
   </tr><tr>
     <td><div><a href="./values.yaml#L215">server.configs.analytics.source</a></div></td>
-    <td><div><code>"clickhouse"</code></div></td>
+    <td><div><code>"sqlx"</code></div></td>
     <td>The Analytics source/strategy to be used</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L241">server.configs.analytics.sqlx.connection_timeout</a></div></td>
@@ -2138,6 +2138,105 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><a href="./values.yaml#L3">services.router.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1908">superposition_fallback_cronjob.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable the CronJob that syncs superposition config to EFS</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1922">superposition_fallback_cronjob.failedJobsHistoryLimit</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Number of failed job runs to retain in history</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1914">superposition_fallback_cronjob.image</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Container image for the backup job</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1916">superposition_fallback_cronjob.imagePullPolicy</a></div></td>
+    <td><div><code>"IfNotPresent"</code></div></td>
+    <td>Image pull policy</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1910">superposition_fallback_cronjob.name</a></div></td>
+    <td><div><code>"superposition-config-backup-cronjob"</code></div></td>
+    <td>Name of the CronJob resource</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1940">superposition_fallback_cronjob.resources</a></div></td>
+    <td><div><code>{
+  "limits": {
+    "cpu": "100m",
+    "memory": "64Mi"
+  },
+  "requests": {
+    "cpu": "25m",
+    "memory": "32Mi"
+  }
+}</code></div></td>
+    <td>Resource requests and limits for the cronjob container</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1918">superposition_fallback_cronjob.restartPolicy</a></div></td>
+    <td><div><code>"OnFailure"</code></div></td>
+    <td>Restart policy for the job pod</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1924">superposition_fallback_cronjob.retentionCount</a></div></td>
+    <td><div><code>"10"</code></div></td>
+    <td>Number of backup files to retain in EFS</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1912">superposition_fallback_cronjob.schedule</a></div></td>
+    <td><div><code>"* * * * *"</code></div></td>
+    <td>Cron schedule (minimum Kubernetes CronJob interval is 1 minute)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1920">superposition_fallback_cronjob.successfulJobsHistoryLimit</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td>Number of successful job runs to retain in history</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1926">superposition_fallback_cronjob.superposition</a></div></td>
+    <td><div><code>{
+  "endpoint": "http://localhost:8081",
+  "orgId": "",
+  "tokenSecretKey": "ROUTER__SUPERPOSITION__TOKEN",
+  "tokenSecretName": "hyperswitch-secrets",
+  "workspaceId": ""
+}</code></div></td>
+    <td>Superposition service connection details</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1928">superposition_fallback_cronjob.superposition.endpoint</a></div></td>
+    <td><div><code>"http://localhost:8081"</code></div></td>
+    <td>Superposition API endpoint URL</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1936">superposition_fallback_cronjob.superposition.orgId</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Superposition organisation ID (must match superposition.org_id)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1934">superposition_fallback_cronjob.superposition.tokenSecretKey</a></div></td>
+    <td><div><code>"ROUTER__SUPERPOSITION__TOKEN"</code></div></td>
+    <td>Key within the secret that holds the token value</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1932">superposition_fallback_cronjob.superposition.tokenSecretName</a></div></td>
+    <td><div><code>"hyperswitch-secrets"</code></div></td>
+    <td>Name of the Kubernetes Secret containing the Superposition API token.   tokenSecretName: "hyperswitch-secrets"   tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1938">superposition_fallback_cronjob.superposition.workspaceId</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Superposition workspace ID (must match superposition.workspace_id)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1895">superposition_fallback_efs.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable creation of an EFS-backed PVC and volumeMounts in all pods</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1903">superposition_fallback_efs.mountPath</a></div></td>
+    <td><div><code>"/mnt/data"</code></div></td>
+    <td>Mount path inside the containers for the EFS volume</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1897">superposition_fallback_efs.pvcName</a></div></td>
+    <td><div><code>"superposition-config-backup"</code></div></td>
+    <td>Name of the PersistentVolumeClaim to create and reference</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1901">superposition_fallback_efs.storage</a></div></td>
+    <td><div><code>"1Gi"</code></div></td>
+    <td>Storage size for the PVC</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1899">superposition_fallback_efs.storageClassName</a></div></td>
+    <td><div><code>"efs-sc"</code></div></td>
+    <td>StorageClass to use for the PVC (must have an EFS CSI provisioner)</td>
   </tr>
 </tbody>
 </table>

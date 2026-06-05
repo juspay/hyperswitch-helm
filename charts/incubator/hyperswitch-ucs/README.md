@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -125,20 +125,41 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | config.server.port | int | `8000` | Server port |
 | config.server.type | string | `"grpc"` | Server type |
 
+### Istio
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| istio | object | `{"destinationRule":{"trafficPolicy":{}},"enabled":false,"virtualService":{"create":true,"gateways":[],"hosts":[],"http":[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}],"tcp":[]}}` | Istio configuration |
+
 ### Other Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| argoRollouts | object | `{"canary":{"steps":[],"trafficRouting":{"istio":{"destinationRule":{"canarySubsetName":"canary","stableSubsetName":"stable"},"enabled":false}}},"enabled":false,"revisionHistoryLimit":10}` | Argo Rollouts configuration |
+| argoRollouts | object | `{"canary":{"steps":[],"trafficRouting":{"headerRouting":{"enabled":false,"match":[],"routeName":"header-canary"},"istio":{"destinationRule":{"canarySubsetName":"canary","stableSubsetName":"stable"},"enabled":false,"virtualService":{"routeNames":["primary"]}}}},"enabled":false,"revisionHistoryLimit":10}` | Argo Rollouts configuration |
 | argoRollouts.canary.steps | list | `[]` | Canary deployment steps (see Argo Rollouts docs) |
+| argoRollouts.canary.trafficRouting.headerRouting | object | `{"enabled":false,"match":[],"routeName":"header-canary"}` | Header-based routing configuration |
+| argoRollouts.canary.trafficRouting.headerRouting.enabled | bool | `false` | Enable header-based canary routing |
+| argoRollouts.canary.trafficRouting.headerRouting.match | list | `[]` | Header match conditions |
+| argoRollouts.canary.trafficRouting.headerRouting.routeName | string | `"header-canary"` | Route name for header-based routing |
 | argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName | string | `"canary"` | Name of the canary subset in Istio DestinationRule |
 | argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName | string | `"stable"` | Name of the stable subset in Istio DestinationRule |
 | argoRollouts.canary.trafficRouting.istio.enabled | bool | `false` | Enable Istio traffic routing for canary |
+| argoRollouts.canary.trafficRouting.istio.virtualService | object | `{"routeNames":["primary"]}` | VirtualService configuration for Argo Rollouts |
+| argoRollouts.canary.trafficRouting.istio.virtualService.routeNames | list | `["primary"]` | Route names to be managed by Argo Rollouts |
 | argoRollouts.enabled | bool | `false` | Enable Argo Rollouts instead of standard Deployment |
 | argoRollouts.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback |
 | config.server.run_env | string | `"sandbox"` | Runtime environment (production, sandbox) |
 | env | list | `[]` |  |
 | global.imageRegistry | string | `nil` |  |
+| istio.destinationRule | object | `{"trafficPolicy":{}}` | DestinationRule configuration |
+| istio.destinationRule.trafficPolicy | object | `{}` | Traffic policy configuration - rendered directly as YAML |
+| istio.enabled | bool | `false` | Enable Istio resources |
+| istio.virtualService | object | `{"create":true,"gateways":[],"hosts":[],"http":[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}],"tcp":[]}` | VirtualService configuration |
+| istio.virtualService.create | bool | `true` | Create VirtualService |
+| istio.virtualService.gateways | list | `[]` | Gateways for the VirtualService |
+| istio.virtualService.hosts | list | `[]` | Hosts for the VirtualService |
+| istio.virtualService.http | list | `[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}]` | HTTP routing rules (ordered list) Note: Rules are processed in the order they appear in this list. |
+| istio.virtualService.tcp | list | `[]` | TCP routing rules for gRPC |
 | strategy | object | `{}` |  |
 
 ### Example Configuration
