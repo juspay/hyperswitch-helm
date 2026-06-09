@@ -95,6 +95,43 @@ service:
     # @section -- Connector Service
     targetPort: 8080
 
+# -- ServiceMonitor configuration for Victoria Metrics / Prometheus scraping
+# @section -- Connector Service
+serviceMonitor:
+  # -- Enable ServiceMonitor resource
+  # @section -- Connector Service
+  enabled: false
+  # -- Namespace to deploy ServiceMonitor (defaults to release namespace)
+  # @section -- Connector Service
+  namespace: ""
+  # -- Additional labels for the ServiceMonitor
+  # @section -- Connector Service
+  labels: {}
+  # -- Port name to scrape (must match service port name)
+  # @section -- Connector Service
+  portName: "metrics"
+  # -- Metrics path
+  # @section -- Connector Service
+  path: "/metrics"
+  # -- Scrape interval
+  # @section -- Connector Service
+  interval: ""
+  # -- Scrape timeout
+  # @section -- Connector Service
+  scrapeTimeout: ""
+  # -- HTTP scheme
+  # @section -- Connector Service
+  scheme: "http"
+  # -- Relabeling rules
+  # @section -- Connector Service
+  relabelings: []
+  # -- Metric relabeling rules
+  # @section -- Connector Service
+  metricRelabelings: []
+  # -- Target labels
+  # @section -- Connector Service
+  targetLabels: []
+
 # -- Ingress configuration
 # @section -- Connector Service
 ingress:
