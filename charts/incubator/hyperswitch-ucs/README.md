@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -108,6 +108,18 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| serviceMonitor | object | `{"enabled":false,"interval":"","labels":{},"metricRelabelings":[],"namespace":"","path":"/metrics","portName":"metrics","relabelings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[]}` | ServiceMonitor configuration for Victoria Metrics / Prometheus scraping |
+| serviceMonitor.enabled | bool | `false` | Enable ServiceMonitor resource |
+| serviceMonitor.interval | string | `""` | Scrape interval |
+| serviceMonitor.labels | object | `{}` | Additional labels for the ServiceMonitor |
+| serviceMonitor.metricRelabelings | list | `[]` | Metric relabeling rules |
+| serviceMonitor.namespace | string | `""` | Namespace to deploy ServiceMonitor (defaults to release namespace) |
+| serviceMonitor.path | string | `"/metrics"` | Metrics path |
+| serviceMonitor.portName | string | `"metrics"` | Port name to scrape (must match service port name) |
+| serviceMonitor.relabelings | list | `[]` | Relabeling rules |
+| serviceMonitor.scheme | string | `"http"` | HTTP scheme |
+| serviceMonitor.scrapeTimeout | string | `""` | Scrape timeout |
+| serviceMonitor.targetLabels | list | `[]` | Target labels |
 | tolerations | list | `[]` | Tolerations for pod assignment |
 
 ### Connector Service Configurations
