@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "2026.06.09.0"
+  tag: "2026.06.10.0"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
@@ -86,7 +86,6 @@ service:
     # -- Metrics container port
     # @section -- Connector Service
     targetPort: 8080
-
 # -- ServiceMonitor configuration for Victoria Metrics / Prometheus scraping
 # @section -- Connector Service
 serviceMonitor:
@@ -123,7 +122,6 @@ serviceMonitor:
   # -- Target labels
   # @section -- Connector Service
   targetLabels: []
-
 # -- Ingress configuration
 # @section -- Connector Service
 ingress:
