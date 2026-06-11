@@ -220,3 +220,4 @@ task ur
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-monitoring | 0.1.6 |
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.2 |
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-web | 0.2.12 |
+| oci://ghcr.io/juspay/helm-charts | superposition | 0.112.0 |
