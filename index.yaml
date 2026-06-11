@@ -3,6 +3,50 @@ entries:
   hyperswitch-app:
   - apiVersion: v2
     appVersion: v1.121.0
+    created: "2026-06-11T12:08:33.821852026Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.6.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.5.38
+    - condition: hyperswitch-card-vault.enabled
+      name: hyperswitch-card-vault
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.4
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 31.0.0
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.3
+    - condition: mailhog.enabled
+      name: mailhog
+      repository: https://codecentric.github.io/helm-charts
+      version: 4.0.0
+    - condition: vector.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.37.0
+    - name: superposition
+      repository: oci://ghcr.io/juspay/helm-charts
+      version: 0.112.0
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: 71420d81d80f60179c9c38126de50ff325e054b7dc387e89b172cd6afc16dfdc
+    name: hyperswitch-app
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-app-1.1.5/hyperswitch-app-1.1.5.tgz
+    version: 1.1.5
+  - apiVersion: v2
+    appVersion: v1.121.0
     created: "2026-06-04T14:27:59.425822896Z"
     dependencies:
     - condition: redis.enabled
@@ -1977,4 +2021,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-06-09T12:57:35.75155814Z"
+generated: "2026-06-11T12:08:34.196107877Z"
