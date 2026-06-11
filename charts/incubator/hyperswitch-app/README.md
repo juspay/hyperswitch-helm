@@ -145,6 +145,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 | https://codecentric.github.io/helm-charts | mailhog | 4.0.0 |
 | https://helm.vector.dev | vector | 0.37.0 |
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-card-vault | 0.1.4 |
+| oci://ghcr.io/juspay/helm-charts | superposition | 0.112.0 |
 
 ## Values
 <h3>Dependencies configuration</h3>

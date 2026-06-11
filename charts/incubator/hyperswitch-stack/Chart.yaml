@@ -39,6 +39,6 @@ dependencies:
     repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-ucs.enabled
   - name: hyperswitch-control-center
-    version: "1.1.0"
+    version: 1.1.0
     repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-control-center.enabled
