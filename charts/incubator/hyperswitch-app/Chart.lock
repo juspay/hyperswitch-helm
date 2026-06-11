@@ -20,5 +20,8 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
-digest: sha256:be66615f9b93561684e50297e91398ebecbf6360dd66cfac415e37b7646cfae9
-generated: "2025-10-30T18:41:59.456477849Z"
+- name: superposition
+  repository: oci://ghcr.io/juspay/helm-charts
+  version: 0.112.0
+digest: sha256:0bdea93099601e7fd5a0275f7dede8a49532b56b18910827847a4c4b9a230a9e
+generated: "2026-06-11T21:26:26.985720827Z"
