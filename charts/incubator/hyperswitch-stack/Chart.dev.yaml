@@ -34,3 +34,6 @@ dependencies:
   - name: hyperswitch-ucs
     repository: "file://../hyperswitch-ucs"
     condition: hyperswitch-ucs.enabled
+  - name: hyperswitch-control-center
+    repository: "file://../hyperswitch-control-center"
+    condition: hyperswitch-control-center.enabled

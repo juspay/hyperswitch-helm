@@ -313,7 +313,7 @@ hyperswitch-control-center:
       host: *web_sdk_host
       version: 0.129.0
       subversion: v1
-    clickhouse: 
+    clickhouse:
       enabled: true
   # Image configuration
   image:
