@@ -42,6 +42,3 @@ dependencies:
     version: 1.1.0
     repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-control-center.enabled
-  - name: superposition
-    version: 0.112.0
-    repository: "oci://ghcr.io/juspay/helm-charts"

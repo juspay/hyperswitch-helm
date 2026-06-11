@@ -1944,3 +1944,68 @@ superposition_fallback_cronjob:
     limits:
       memory: "64Mi"
       cpu: "100m"
+
+# @ignored
+superposition:
+  replicaCount: 1
+  image:
+    registry: ghcr.io/juspay
+    repository: superposition
+    pullPolicy: IfNotPresent
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 8080
+  configs:
+    database_url: ""
+    port: 8080
+    rust_log: debug
+    app_env: DEV
+    auth_provider: DISABLED
+  secrets:
+    db_password: ""
+    superposition_token: ""
+    oidc_client_secret: ""
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  resources: {}
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts: []
+    tls: []
+  tolerations: []
+  nodeSelector: {}
+  affinity: {}
+  istio:
+    enabled: false
+    virtualService:
+      enabled: false
+    destinationRule:
+      enabled: false
