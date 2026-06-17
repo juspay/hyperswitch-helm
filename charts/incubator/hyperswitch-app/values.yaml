@@ -1941,6 +1941,7 @@ superposition_fallback_cronjob:
       cpu: "100m"
 # @ignored
 superposition:
+  enabled: true
   replicaCount: 1
   image:
     registry: ghcr.io/juspay
