@@ -1,6 +1,6 @@
 # hyperswitch-encryption-service
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.12](https://img.shields.io/badge/AppVersion-v0.1.12-informational?style=flat-square)
+![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.13](https://img.shields.io/badge/AppVersion-v0.1.13-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch encryption-service
@@ -172,8 +172,6 @@ secrets:
 | configs.multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
 | configs.multitenancy.tenants.public.schema | string | `"public"` |  |
 | configs.pool_config.pool | int | `2` |  |
-| configs.secrets.access_token._secret | string | `"secret123"` |  |
-| configs.secrets.hash_context._secret | string | `"encryption-service:hyperswitch"` |  |
 | configs.secrets.master_key._secret | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
 | configs.server.host | string | `"0.0.0.0"` |  |
 | configs.server.port | int | `5000` |  |
@@ -210,7 +208,7 @@ secrets:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
-| image.tag | string | `"v0.1.12"` |  |
+| image.tag | string | `"v0.1.13"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
