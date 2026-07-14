@@ -30,8 +30,7 @@ spec:
             fsGroup: 1000
           containers:
             - name: superposition-config-backup-cronjob
-              image: {{ .Values.superposition_fallback_cronjob.image | default "python:3.13-alpine" }}
-              imagePullPolicy: {{ .Values.superposition_fallback_cronjob.imagePullPolicy | default "IfNotPresent" }}
+              image: python:3.13-alpine
               command:
                 - python3
                 - -c

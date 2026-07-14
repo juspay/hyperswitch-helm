@@ -1910,10 +1910,6 @@ superposition_fallback_cronjob:
   name: "superposition-config-backup-cronjob"
   # -- Cron schedule (minimum Kubernetes CronJob interval is 1 minute)
   schedule: "* * * * *"
-  # -- Container image for the backup job
-  image: ""
-  # -- Image pull policy
-  imagePullPolicy: IfNotPresent
   # -- Restart policy for the job pod
   restartPolicy: OnFailure
   # -- Number of successful job runs to retain in history
