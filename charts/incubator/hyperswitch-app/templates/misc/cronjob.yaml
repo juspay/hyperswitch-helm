@@ -30,8 +30,162 @@ spec:
             fsGroup: 1000
           containers:
             - name: superposition-config-backup-cronjob
-              image: {{ .Values.superposition_fallback_cronjob.image | default "" }}
-              imagePullPolicy: {{ .Values.superposition_fallback_cronjob.imagePullPolicy | default "IfNotPresent" }}
+              image: python:3.13-alpine
+              command:
+                - python3
+                - -c
+              args:
+                - |
+                  import json
+                  import os
+                  import time
+                  import urllib.error
+                  import urllib.request
+                  from pathlib import Path
+
+
+                  def log(message):
+                      print(message, flush=True)
+
+
+                  required_variables = (
+                      "SUPERPOSITION_ENDPOINT",
+                      "SUPERPOSITION_TOKEN",
+                      "SUPERPOSITION_ORG_ID",
+                      "SUPERPOSITION_WORKSPACE_ID",
+                      "EFS_MOUNT_PATH",
+                  )
+                  missing_variables = [
+                      name for name in required_variables if not os.environ.get(name)
+                  ]
+                  if missing_variables:
+                      raise RuntimeError(
+                          "Missing required environment variables: "
+                          + ", ".join(missing_variables)
+                      )
+
+                  endpoint = os.environ["SUPERPOSITION_ENDPOINT"].rstrip("/")
+                  token = os.environ["SUPERPOSITION_TOKEN"]
+                  org_id = os.environ["SUPERPOSITION_ORG_ID"]
+                  workspace_id = os.environ["SUPERPOSITION_WORKSPACE_ID"]
+                  mount_path = Path(os.environ["EFS_MOUNT_PATH"])
+                  retention = int(os.environ.get("RETENTION_COUNT", "10"))
+
+                  if retention < 0:
+                      raise ValueError("RETENTION_COUNT must be zero or greater")
+                  if not mount_path.exists():
+                      raise RuntimeError(f"Mount path does not exist: {mount_path}")
+                  if not mount_path.is_dir():
+                      raise RuntimeError(f"Mount path is not a directory: {mount_path}")
+
+                  started_at = time.monotonic()
+                  config_url = f"{endpoint}/config/json"
+                  log(
+                      "Starting Superposition config backup for "
+                      f"workspace {workspace_id} in org {org_id}"
+                  )
+                  log(f"Fetching configuration from {config_url}")
+
+                  request = urllib.request.Request(
+                      config_url,
+                      data=b"",
+                      method="POST",
+                      headers={
+                          "Authorization": f"Bearer {token}",
+                          "x-org-id": org_id,
+                          "x-workspace": workspace_id,
+                      },
+                  )
+
+                  response_body = None
+                  for attempt in range(1, 4):
+                      try:
+                          with urllib.request.urlopen(request, timeout=30) as response:
+                              response_body = response.read().decode("utf-8")
+                          break
+                      except urllib.error.HTTPError as error:
+                          details = error.read(4096).decode("utf-8", errors="replace")
+                          if (error.code == 429 or error.code >= 500) and attempt < 3:
+                              log(
+                                  f"Request failed with HTTP {error.code}; "
+                                  f"retrying ({attempt}/3)"
+                              )
+                              time.sleep(2 ** (attempt - 1))
+                              continue
+                          raise RuntimeError(
+                              f"Failed to fetch config: HTTP {error.code}: {details}"
+                          ) from error
+                      except urllib.error.URLError as error:
+                          if attempt < 3:
+                              log(f"Request failed; retrying ({attempt}/3): {error.reason}")
+                              time.sleep(2 ** (attempt - 1))
+                              continue
+                          raise RuntimeError(
+                              f"Failed to fetch config: {error.reason}"
+                          ) from error
+
+                  if response_body is None:
+                      raise RuntimeError("Failed to fetch config: empty response")
+
+                  json_content = response_body.replace("\r\n", "\n").replace("\r", "")
+                  log(f"Fetched JSON config ({len(json_content.encode('utf-8'))} bytes)")
+
+                  timestamp = int(time.time())
+                  versioned_filename = f"config-{timestamp}.json"
+                  versioned_file = mount_path / versioned_filename
+                  versioned_temp = mount_path / f".tmp-{versioned_filename}"
+                  latest_file = mount_path / "backup-LATEST.json"
+                  latest_temp = mount_path / ".tmp-backup-LATEST.json"
+
+                  versioned_temp.write_text(json_content, encoding="utf-8")
+                  os.replace(versioned_temp, versioned_file)
+                  log(f"Saved versioned config: {versioned_file}")
+
+                  latest_temp.write_text(json_content, encoding="utf-8")
+                  os.replace(latest_temp, latest_file)
+                  log(f"Created constant filename: {latest_file}")
+
+                  symlink_path = mount_path / "current"
+                  symlink_temp = mount_path / ".tmp-current"
+                  try:
+                      symlink_temp.unlink()
+                  except FileNotFoundError:
+                      pass
+                  symlink_temp.symlink_to(versioned_filename)
+                  os.replace(symlink_temp, symlink_path)
+                  log(f"Updated symlink: {symlink_path} -> {versioned_filename}")
+
+                  config_files = sorted(
+                      path
+                      for path in mount_path.iterdir()
+                      if path.name.startswith("config-")
+                      and path.name.endswith(".json")
+                  )
+                  files_to_delete = max(0, len(config_files) - retention)
+                  log(
+                      f"Found {len(config_files)} versions; "
+                      f"deleting {files_to_delete} old versions"
+                  )
+                  for old_file in config_files[:files_to_delete]:
+                      old_file.unlink()
+                      log(f"Deleted old version: {old_file}")
+
+                  with latest_file.open(encoding="utf-8") as backup_file:
+                      parsed_config = json.load(backup_file)
+                  if not isinstance(parsed_config, dict):
+                      raise RuntimeError("Backup file is not a JSON object")
+                  if not (
+                      "default-configs" in parsed_config
+                      or "default_configs" in parsed_config
+                  ):
+                      log("Warning: backup file missing default-configs/default_configs key")
+                  if "overrides" not in parsed_config:
+                      log("Warning: backup file missing overrides key")
+
+                  log(
+                      f"Backup completed successfully in "
+                      f"{time.monotonic() - started_at:.3f}s - {versioned_filename}"
+                  )
               env:
                 - name: SUPERPOSITION_ENDPOINT
                   value: {{ .Values.superposition_fallback_cronjob.superposition.endpoint | default "http://localhost:8081" | quote }}
