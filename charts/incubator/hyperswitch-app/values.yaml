@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "0da25bcf5a"
+    version: "704f1f88bd"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "0da25bcf5a"
+    version: "704f1f88bd"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "0da25bcf5a"
+    version: "704f1f88bd"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
