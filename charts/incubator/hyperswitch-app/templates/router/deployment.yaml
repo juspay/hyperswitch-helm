@@ -120,6 +120,16 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if and .Values.multiAz.enabled .Values.services.router.enabled }}
+      topologySpreadConstraints:
+        - maxSkew: {{ .Values.multiAz.maxSkew }}
+          topologyKey: {{ .Values.multiAz.topologyKey }}
+          whenUnsatisfiable: {{ .Values.multiAz.whenUnsatisfiable }}
+          labelSelector:
+            matchLabels:
+              app: {{ include "hyperswitch-server.name" . }}
+              app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- end }}
       {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

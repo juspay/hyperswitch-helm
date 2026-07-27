@@ -87,6 +87,27 @@ global:
     managedBy: hyperswitch
   # -- Environmant variables that are to be used by the hyperswitch application services
   env: []
+# Multi-AZ scheduling configuration for the Hyperswitch app workloads.
+# Currently applied to the router only.
+# @section -- Multi-AZ
+multiAz:
+  # -- Enable multi-AZ scheduling (topology spread constraints and PDBs)
+  enabled: false
+  # -- Topology key used to spread pods across failure domains
+  topologyKey: topology.kubernetes.io/zone
+  # -- Maximum difference in number of pods between zones
+  maxSkew: 1
+  # -- Scheduling policy when the spread constraint cannot be satisfied.
+  # Allowed values: DoNotSchedule | ScheduleAnyway
+  whenUnsatisfiable: DoNotSchedule
+  # PodDisruptionBudget configuration
+  podDisruptionBudget:
+    # -- Create PDBs for the app components
+    enabled: true
+    # -- Minimum available pods (mutually exclusive with maxUnavailable)
+    minAvailable: "50%"
+    # -- Maximum unavailable pods (mutually exclusive with minAvailable)
+    maxUnavailable: ""
 # -- Common references for templated resource names
 _references:
   # -- Hyperswitch secrets reference with release name prefix
