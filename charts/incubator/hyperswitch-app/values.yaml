@@ -1390,45 +1390,26 @@ argoRollouts:
     # maxUnavailable: stringOrInt
     # trafficRouting: object
 
-    # Canary metric Analysis Configuration
-    # Automated analysis of canary deployments using VictoriaMetrics (PromQL).
-    # Queries the router's own OpenMetrics series. `enforce=false` runs the    # whole analysis in dryRun mode so it never aborts a rollout while tuning.
+    # Canary metric analysis — queries the router's OpenMetrics series via
+    # VictoriaMetrics PromQL to gate canary promotion on 4xx/5xx latency.
     analysis:
-      # -- Enable canary metric analysis (renders the AnalysisTemplate)
+      # -- Render the AnalysisTemplate
       enabled: false
-
-      # ── Cross-cutting config (applies to the AnalysisTemplate, not per-metric) ──
-      # -- When false, all metrics run in dryRun mode (no auto-rollback)
+      # -- dryRun all metrics when false; hard-abort when true
       enforce: false
-      # -- Delay analysis until this canary step (used in Rollout spec, not here)
+      # -- Canary step index to start analysis at (used in Rollout spec, not here)
       startingStep: 2
-
-      # ── Shared metric defaults (injected into each metric, overridable per-metric) ──
-      # -- VictoriaMetrics (cluster) Prometheus-compatible read API address.
-      # vmselect serves PromQL at /select/<tenant>/prometheus (tenant 0 default).
-      # Example: http://victoria-metrics.monitoring:8428
-      victoriaMetrics:
-        address: ""
-      # -- Default interval between metric queries
+      # -- Prometheus-compatible read API (vmselect serves /select/<tenant>/prometheus)
       interval: "30s"
-      # -- Default timeout (seconds) for each metric query
+      # -- Per-query timeout (s)
       timeout: 30
-
-      # ── AnalysisTemplate args ──
-      # -- Referenced in queries as {{args.<name>}} — Argo Rollouts substitutes at runtime
+      # -- AnalysisTemplate args, referenced in queries as {{args.<name>}}.
+      # Argo Rollouts substitutes these at runtime, not Helm — pass through untouched.
       args:
         - name: canary-hash
         - name: stable-hash
-
-      # ── Dynamic metrics list ──
-      # Each entry becomes one AnalysisTemplate metric.
-      # Shared defaults (interval, provider.prometheus.address/timeout) are auto-injected.
-      # Override any field per-metric (e.g., interval: 60s, count: 3).
-      # To add a metric: append an entry. To remove: delete an entry. To modify: edit in place.
-      #
-      # Query strings may contain {{args.<name>}} placeholders.
-      # These are NOT Helm templates — Argo Rollouts substitutes them at runtime.
-      # Helm passes them through untouched.
+      # -- Metrics list; shared interval/address/timeout auto-injected via mergeOverwrite.
+      # Override per-metric (e.g. interval: 60s). Add/remove entries to customize.
       metrics:
         - name: canary-min-traffic
           successCondition: len(result) > 0 && result[0] >= 0.05
@@ -1459,7 +1440,7 @@ argoRollouts:
                 sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
                 or vector(0)
 
-        - name: canary-p99-vs-stable
+        - name: canary-p90-vs-stable
           interval: 60s
           count: 3
           failureCondition: len(result) > 0 && result[0] > 1.5
@@ -1467,10 +1448,23 @@ argoRollouts:
           provider:
             prometheus:
               query: |
-                histogram_quantile(0.99, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.canary-hash}}"}[5m])))
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.canary-hash}}"}[5m])))
                 /
-                histogram_quantile(0.99, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.stable-hash}}"}[5m])))
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.stable-hash}}"}[5m])))
                 or vector(1)
+
+        - name: canary-4xx-vs-stable
+          interval: 60s
+          count: 3
+          failureCondition: len(result) > 0 && result[0] > 2.0
+          failureLimit: 2
+          provider:
+            prometheus:
+              query: |
+                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.canary-hash}}"}[5m]))
+                /
+                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
+                or vector(0)
 
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:

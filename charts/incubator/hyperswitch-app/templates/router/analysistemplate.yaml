@@ -1,30 +1,12 @@
 {{- if and .Values.services.router.enabled .Values.argoRollouts.enabled .Values.argoRollouts.canary.analysis.enabled }}
-
 {{- $analysis := .Values.argoRollouts.canary.analysis }}
-
-{{- /* Reject old flat threshold keys — they have been replaced by the metrics list */}}
-{{- if or $analysis.failureThreshold $analysis.errorRatioThreshold $analysis.latencyRatioThreshold $analysis.minTrafficRate }}
-{{- fail "argoRollouts.canary.analysis: threshold keys (failureThreshold, errorRatioThreshold, latencyRatioThreshold, minTrafficRate) have been replaced by the metrics list. See migration guide in values.yaml." }}
-{{- end }}
-
-{{- /* At least one metric is required when analysis is enabled */}}
-{{- if not $analysis.metrics }}
-{{- fail "argoRollouts.canary.analysis.metrics must have at least one metric when analysis is enabled" }}
-{{- end }}
-
-{{- /* Critical field: no sensible default, must be provided */}}
+{{- include "hyperswitch.validateAnalysisConfig" . }}
 {{- $addr := $analysis.victoriaMetrics.address | required "argoRollouts.canary.analysis.victoriaMetrics.address is required when analysis is enabled" }}
-
-{{- /* Shared defaults injected into every metric via mergeOverwrite.
-      Each metric in values.yaml can override any of these. */}}
 {{- $defaults := dict "interval" $analysis.interval "provider" (dict "prometheus" (dict "address" $addr "timeout" $analysis.timeout)) }}
-
-{{- /* Merge defaults into each metric, building the final list */}}
 {{- $mergedMetrics := list }}
 {{- range $analysis.metrics }}
 {{- $mergedMetrics = append $mergedMetrics (mergeOverwrite (deepCopy $defaults) .) }}
 {{- end }}
-
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
