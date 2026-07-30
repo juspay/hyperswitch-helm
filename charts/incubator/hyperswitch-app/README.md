@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.1.6](https://img.shields.io/badge/Version-1.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
+![Version: 1.1.7](https://img.shields.io/badge/Version-1.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -156,39 +156,39 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1600">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1658">clickhouse.auth.password</a></div></td>
     <td><div><code>"jhdvfvsnbdj"</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1597">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1655">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1607">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1665">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1589">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1647">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1593">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1651">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1622">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L1680">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1613">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1671">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1610">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1668">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1619">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1677">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
@@ -256,55 +256,55 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"redis-ext-master"</code></div></td>
     <td>External redis host</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1537">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1595">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1532">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1590">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1525">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1583">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1528">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1586">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1556">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1614">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1568">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1626">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1564">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1622">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1560">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1618">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1572">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1630">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1551">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1609">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1546">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1604">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1637">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1695">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1640">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1698">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
@@ -372,11 +372,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1645">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1703">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1649">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L1707">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -710,43 +710,173 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"{{ .Release.Name }}-hyperswitch-secrets"</code></div></td>
     <td>Hyperswitch secrets reference with release name prefix</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1396">argoRollouts.canary.analysis</a></div></td>
+    <td><div><a href="./values.yaml#L1395">argoRollouts.canary.analysis</a></div></td>
     <td><div><code>{
-  "args": [],
+  "args": [
+    {
+      "name": "canary-hash"
+    },
+    {
+      "name": "stable-hash"
+    }
+  ],
   "enabled": false,
+  "enforce": false,
   "interval": "30s",
+  "metrics": [
+    {
+      "failureLimit": 0,
+      "name": "canary-min-traffic",
+      "provider": {
+        "prometheus": {
+          "query": "sum(rate(REQUESTS_RECEIVED_total{rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[2m]))\n"
+        }
+      },
+      "successCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e= 0.05"
+    },
+    {
+      "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e= 2",
+      "failureLimit": 1,
+      "name": "http-5xx-global",
+      "provider": {
+        "prometheus": {
+          "query": "sum(rate(REQUEST_TIME_count{status_code=~\"5..\"}[2m]))\n"
+        }
+      }
+    },
+    {
+      "count": 3,
+      "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 1.5",
+      "failureLimit": 2,
+      "interval": "60s",
+      "name": "canary-5xx-vs-stable",
+      "provider": {
+        "prometheus": {
+          "query": "sum(rate(REQUEST_TIME_count{status_code=~\"5..\",rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m]))\n/\nsum(rate(REQUEST_TIME_count{status_code=~\"5..\",rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m]))\nor vector(0)\n"
+        }
+      }
+    },
+    {
+      "count": 3,
+      "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 1.5",
+      "failureLimit": 2,
+      "interval": "60s",
+      "name": "canary-p90-vs-stable",
+      "provider": {
+        "prometheus": {
+          "query": "histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m])))\n/\nhistogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m])))\nor vector(1)\n"
+        }
+      }
+    },
+    {
+      "count": 3,
+      "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 2.0",
+      "failureLimit": 2,
+      "interval": "60s",
+      "name": "canary-4xx-vs-stable",
+      "provider": {
+        "prometheus": {
+          "query": "sum(rate(REQUEST_TIME_count{status_code=~\"4..\",rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m]))\n/\nsum(rate(REQUEST_TIME_count{status_code=~\"4..\",rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m]))\nor vector(0)\n"
+        }
+      }
+    }
+  ],
   "startingStep": 2,
-  "victoriaMetrics": {
-    "address": ""
+  "timeout": 30
+}</code></div></td>
+    <td>Optional Canary Configuration Settings antiAffinity: object canaryService: string stableService: string maxSurge: stringOrInt maxUnavailable: stringOrInt trafficRouting: object Canary metric analysis — queries the router's OpenMetrics series via VictoriaMetrics PromQL to gate canary promotion on 4xx/5xx latency.</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1408">argoRollouts.canary.analysis.args</a></div></td>
+    <td><div><code>[
+  {
+    "name": "canary-hash"
+  },
+  {
+    "name": "stable-hash"
   }
-}</code></div></td>
-    <td>Optional Canary Configuration Settings antiAffinity: object canaryService: string stableService: string maxSurge: stringOrInt maxUnavailable: stringOrInt trafficRouting: object AB Testing Analysis Configuration Performs automated analysis of canary deployments using VictoriaMetrics Checks for 5xx errors and fails the deployment after 3 occurrences</td>
+]</code></div></td>
+    <td>AnalysisTemplate args, referenced in queries as {{args.<name>}}. Argo Rollouts substitutes these at runtime, not Helm — pass through untouched.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1409">argoRollouts.canary.analysis.args</a></div></td>
-    <td><div><code>[]</code></div></td>
-    <td>Additional arguments to pass to the analysis template</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1398">argoRollouts.canary.analysis.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1397">argoRollouts.canary.analysis.enabled</a></div></td>
     <td><div><code>false</code></div></td>
-    <td>Enable AB testing analysis</td>
+    <td>Render the AnalysisTemplate</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1405">argoRollouts.canary.analysis.interval</a></div></td>
+    <td><div><a href="./values.yaml#L1399">argoRollouts.canary.analysis.enforce</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>dryRun all metrics when false; hard-abort when true</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1403">argoRollouts.canary.analysis.interval</a></div></td>
     <td><div><code>"30s"</code></div></td>
-    <td>Interval between metric queries</td>
+    <td>Prometheus-compatible read API (vmselect serves /select/<tenant>/prometheus)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1407">argoRollouts.canary.analysis.startingStep</a></div></td>
+    <td><div><a href="./values.yaml#L1413">argoRollouts.canary.analysis.metrics</a></div></td>
+    <td><div><code>[
+  {
+    "failureLimit": 0,
+    "name": "canary-min-traffic",
+    "provider": {
+      "prometheus": {
+        "query": "sum(rate(REQUESTS_RECEIVED_total{rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[2m]))\n"
+      }
+    },
+    "successCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e= 0.05"
+  },
+  {
+    "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e= 2",
+    "failureLimit": 1,
+    "name": "http-5xx-global",
+    "provider": {
+      "prometheus": {
+        "query": "sum(rate(REQUEST_TIME_count{status_code=~\"5..\"}[2m]))\n"
+      }
+    }
+  },
+  {
+    "count": 3,
+    "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 1.5",
+    "failureLimit": 2,
+    "interval": "60s",
+    "name": "canary-5xx-vs-stable",
+    "provider": {
+      "prometheus": {
+        "query": "sum(rate(REQUEST_TIME_count{status_code=~\"5..\",rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m]))\n/\nsum(rate(REQUEST_TIME_count{status_code=~\"5..\",rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m]))\nor vector(0)\n"
+      }
+    }
+  },
+  {
+    "count": 3,
+    "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 1.5",
+    "failureLimit": 2,
+    "interval": "60s",
+    "name": "canary-p90-vs-stable",
+    "provider": {
+      "prometheus": {
+        "query": "histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m])))\n/\nhistogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m])))\nor vector(1)\n"
+      }
+    }
+  },
+  {
+    "count": 3,
+    "failureCondition": "len(result) \u003e 0 \u0026\u0026 result[0] \u003e 2.0",
+    "failureLimit": 2,
+    "interval": "60s",
+    "name": "canary-4xx-vs-stable",
+    "provider": {
+      "prometheus": {
+        "query": "sum(rate(REQUEST_TIME_count{status_code=~\"4..\",rollouts_pod_template_hash=\"{{args.canary-hash}}\"}[5m]))\n/\nsum(rate(REQUEST_TIME_count{status_code=~\"4..\",rollouts_pod_template_hash=\"{{args.stable-hash}}\"}[5m]))\nor vector(0)\n"
+      }
+    }
+  }
+]</code></div></td>
+    <td>Metrics list; shared interval/address/timeout auto-injected via mergeOverwrite. Override per-metric (e.g. interval: 60s). Add/remove entries to customize.</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1401">argoRollouts.canary.analysis.startingStep</a></div></td>
     <td><div><code>2</code></div></td>
-    <td>Starting step for analysis (0-indexed)</td>
+    <td>Canary step index to start analysis at (used in Rollout spec, not here)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1400">argoRollouts.canary.analysis.victoriaMetrics</a></div></td>
-    <td><div><code>{
-  "address": ""
-}</code></div></td>
-    <td>VictoriaMetrics configuration</td>
-  </tr><tr>
-    <td><div><a href="./values.yaml#L1403">argoRollouts.canary.analysis.victoriaMetrics.address</a></div></td>
-    <td><div><code>""</code></div></td>
-    <td>VictoriaMetrics Prometheus-compatible API address Example: http://victoria-metrics.monitoring:8428</td>
+    <td><div><a href="./values.yaml#L1405">argoRollouts.canary.analysis.timeout</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td>Per-query timeout (s)</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1372">argoRollouts.canary.steps</a></div></td>
     <td><div><code>[
@@ -783,11 +913,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Canary deployment steps with traffic percentage and pause duration</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1428">argoRollouts.canary.trafficRouting.headerRouting.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1486">argoRollouts.canary.trafficRouting.headerRouting.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable header-based canary routing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1433">argoRollouts.canary.trafficRouting.headerRouting.match</a></div></td>
+    <td><div><a href="./values.yaml#L1491">argoRollouts.canary.trafficRouting.headerRouting.match</a></div></td>
     <td><div><code>[
   {
     "headerName": "X-Canary-Test",
@@ -798,11 +928,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Header matching rules</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1431">argoRollouts.canary.trafficRouting.headerRouting.routeName</a></div></td>
+    <td><div><a href="./values.yaml#L1489">argoRollouts.canary.trafficRouting.headerRouting.routeName</a></div></td>
     <td><div><code>"header-canary-route"</code></div></td>
     <td>Route name for managed header routing This route will be auto added to the VirtualService when headerRouting is enabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1414">argoRollouts.canary.trafficRouting.istio</a></div></td>
+    <td><div><a href="./values.yaml#L1472">argoRollouts.canary.trafficRouting.istio</a></div></td>
     <td><div><code>{
   "destinationRule": {
     "canarySubsetName": "canary",
@@ -817,14 +947,14 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Enable Istio traffic management for canary deployments</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1421">argoRollouts.canary.trafficRouting.istio.destinationRule</a></div></td>
+    <td><div><a href="./values.yaml#L1479">argoRollouts.canary.trafficRouting.istio.destinationRule</a></div></td>
     <td><div><code>{
   "canarySubsetName": "canary",
   "stableSubsetName": "stable"
 }</code></div></td>
     <td>DestinationRule subset names</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1417">argoRollouts.canary.trafficRouting.istio.virtualService</a></div></td>
+    <td><div><a href="./values.yaml#L1475">argoRollouts.canary.trafficRouting.istio.virtualService</a></div></td>
     <td><div><code>{
   "routeNames": [
     "primary"
@@ -836,55 +966,55 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>false</code></div></td>
     <td>Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment) When disabled, standard Kubernetes Deployment is used</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1439">argoRollouts.revisionHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L1497">argoRollouts.revisionHistoryLimit</a></div></td>
     <td><div><code>3</code></div></td>
     <td>Revision history limit for rollouts</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1443">autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1501">autoscaling.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1445">autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1503">autoscaling.maxReplicas</a></div></td>
     <td><div><code>5</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1444">autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L1502">autoscaling.minReplicas</a></div></td>
     <td><div><code>3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1446">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L1504">autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1586">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1644">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1602">clickhouse.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1660">clickhouse.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1603">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1661">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1590">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1648">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1616">clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1674">clickhouse.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1454">disableInternalSecrets</a></div></td>
+    <td><div><a href="./values.yaml#L1512">disableInternalSecrets</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1459">externalSecretsOperator.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1517">externalSecretsOperator.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable External Secrets Operator resources</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1496">externalSecretsOperator.externalSecrets.secrets</a></div></td>
+    <td><div><a href="./values.yaml#L1554">externalSecretsOperator.externalSecrets.secrets</a></div></td>
     <td><div><code>[
   {
     "creationPolicy": "Owner",
@@ -902,11 +1032,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>List of external secrets to create You can define multiple secrets here</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1503">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1561">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
     <td><div><code>"Owner"</code></div></td>
     <td>Creation policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1505">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
+    <td><div><a href="./values.yaml#L1563">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
     <td><div><code>[
   {
     "extract": {
@@ -916,19 +1046,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Extract configuration (use dataFrom.extract for full secret)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1501">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
+    <td><div><a href="./values.yaml#L1559">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
     <td><div><code>"1h"</code></div></td>
     <td>Refresh interval</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1499">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
+    <td><div><a href="./values.yaml#L1557">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Target secret name in Kubernetes</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1473">externalSecretsOperator.secretStore.name</a></div></td>
+    <td><div><a href="./values.yaml#L1531">externalSecretsOperator.secretStore.name</a></div></td>
     <td><div><code>"hyperswitch-secret-store"</code></div></td>
     <td>Name of the SecretStore</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1476">externalSecretsOperator.secretStore.provider</a></div></td>
+    <td><div><a href="./values.yaml#L1534">externalSecretsOperator.secretStore.provider</a></div></td>
     <td><div><code>{
   "aws": {
     "auth": {
@@ -944,43 +1074,43 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1465">externalSecretsOperator.serviceAccount.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L1523">externalSecretsOperator.serviceAccount.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Annotations for the service account (e.g., IRSA role)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1463">externalSecretsOperator.serviceAccount.create</a></div></td>
+    <td><div><a href="./values.yaml#L1521">externalSecretsOperator.serviceAccount.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Create service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1467">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1525">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Extra labels for the service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1469">externalSecretsOperator.serviceAccount.name</a></div></td>
+    <td><div><a href="./values.yaml#L1527">externalSecretsOperator.serviceAccount.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the service account (default: hyperswitch-eso-sa)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1448">hyperswitch-card-vault.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1506">hyperswitch-card-vault.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1452">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1510">hyperswitch-card-vault.initDB.checkPGisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1451">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1509">hyperswitch-card-vault.initDB.checkPGisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1582">initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1640">initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1581">initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1639">initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1583">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1641">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
@@ -1067,27 +1197,27 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>HTTP routing rules (ordered list) Note: Rules are processed in the order they appear in this list. Ensure specific routes (like /api/) come before catch-all routes (like /).</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1538">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1596">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1533">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1591">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1576">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1634">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1522">kafka.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1580">kafka.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/kafka"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1543">kafka.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1601">kafka.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1441">loadBalancer.targetSecurityGroup</a></div></td>
+    <td><div><a href="./values.yaml#L1499">loadBalancer.targetSecurityGroup</a></div></td>
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
@@ -2140,27 +2270,27 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1908">superposition_fallback_cronjob.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1966">superposition_fallback_cronjob.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the CronJob that syncs superposition config to EFS</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1922">superposition_fallback_cronjob.failedJobsHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L1980">superposition_fallback_cronjob.failedJobsHistoryLimit</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of failed job runs to retain in history</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1914">superposition_fallback_cronjob.image</a></div></td>
+    <td><div><a href="./values.yaml#L1972">superposition_fallback_cronjob.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Container image for the backup job</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1916">superposition_fallback_cronjob.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1974">superposition_fallback_cronjob.imagePullPolicy</a></div></td>
     <td><div><code>"IfNotPresent"</code></div></td>
     <td>Image pull policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1910">superposition_fallback_cronjob.name</a></div></td>
+    <td><div><a href="./values.yaml#L1968">superposition_fallback_cronjob.name</a></div></td>
     <td><div><code>"superposition-config-backup-cronjob"</code></div></td>
     <td>Name of the CronJob resource</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1940">superposition_fallback_cronjob.resources</a></div></td>
+    <td><div><a href="./values.yaml#L1998">superposition_fallback_cronjob.resources</a></div></td>
     <td><div><code>{
   "limits": {
     "cpu": "100m",
@@ -2173,23 +2303,23 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Resource requests and limits for the cronjob container</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1918">superposition_fallback_cronjob.restartPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1976">superposition_fallback_cronjob.restartPolicy</a></div></td>
     <td><div><code>"OnFailure"</code></div></td>
     <td>Restart policy for the job pod</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1924">superposition_fallback_cronjob.retentionCount</a></div></td>
+    <td><div><a href="./values.yaml#L1982">superposition_fallback_cronjob.retentionCount</a></div></td>
     <td><div><code>"10"</code></div></td>
     <td>Number of backup files to retain in EFS</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1912">superposition_fallback_cronjob.schedule</a></div></td>
+    <td><div><a href="./values.yaml#L1970">superposition_fallback_cronjob.schedule</a></div></td>
     <td><div><code>"* * * * *"</code></div></td>
     <td>Cron schedule (minimum Kubernetes CronJob interval is 1 minute)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1920">superposition_fallback_cronjob.successfulJobsHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L1978">superposition_fallback_cronjob.successfulJobsHistoryLimit</a></div></td>
     <td><div><code>3</code></div></td>
     <td>Number of successful job runs to retain in history</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1926">superposition_fallback_cronjob.superposition</a></div></td>
+    <td><div><a href="./values.yaml#L1984">superposition_fallback_cronjob.superposition</a></div></td>
     <td><div><code>{
   "endpoint": "http://localhost:8081",
   "orgId": "",
@@ -2199,43 +2329,43 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Superposition service connection details</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1928">superposition_fallback_cronjob.superposition.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L1986">superposition_fallback_cronjob.superposition.endpoint</a></div></td>
     <td><div><code>"http://localhost:8081"</code></div></td>
     <td>Superposition API endpoint URL</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1936">superposition_fallback_cronjob.superposition.orgId</a></div></td>
+    <td><div><a href="./values.yaml#L1994">superposition_fallback_cronjob.superposition.orgId</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Superposition organisation ID (must match superposition.org_id)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1934">superposition_fallback_cronjob.superposition.tokenSecretKey</a></div></td>
+    <td><div><a href="./values.yaml#L1992">superposition_fallback_cronjob.superposition.tokenSecretKey</a></div></td>
     <td><div><code>"ROUTER__SUPERPOSITION__TOKEN"</code></div></td>
     <td>Key within the secret that holds the token value</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1932">superposition_fallback_cronjob.superposition.tokenSecretName</a></div></td>
+    <td><div><a href="./values.yaml#L1990">superposition_fallback_cronjob.superposition.tokenSecretName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Name of the Kubernetes Secret containing the Superposition API token.   tokenSecretName: "hyperswitch-secrets"   tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1938">superposition_fallback_cronjob.superposition.workspaceId</a></div></td>
+    <td><div><a href="./values.yaml#L1996">superposition_fallback_cronjob.superposition.workspaceId</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Superposition workspace ID (must match superposition.workspace_id)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1895">superposition_fallback_efs.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1953">superposition_fallback_efs.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable creation of an EFS-backed PVC and volumeMounts in all pods</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1903">superposition_fallback_efs.mountPath</a></div></td>
+    <td><div><a href="./values.yaml#L1961">superposition_fallback_efs.mountPath</a></div></td>
     <td><div><code>"/mnt/data"</code></div></td>
     <td>Mount path inside the containers for the EFS volume</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1897">superposition_fallback_efs.pvcName</a></div></td>
+    <td><div><a href="./values.yaml#L1955">superposition_fallback_efs.pvcName</a></div></td>
     <td><div><code>"superposition-config-backup"</code></div></td>
     <td>Name of the PersistentVolumeClaim to create and reference</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1901">superposition_fallback_efs.storage</a></div></td>
+    <td><div><a href="./values.yaml#L1959">superposition_fallback_efs.storage</a></div></td>
     <td><div><code>"1Gi"</code></div></td>
     <td>Storage size for the PVC</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1899">superposition_fallback_efs.storageClassName</a></div></td>
+    <td><div><a href="./values.yaml#L1957">superposition_fallback_efs.storageClassName</a></div></td>
     <td><div><code>"efs-sc"</code></div></td>
     <td>StorageClass to use for the PVC (must have an EFS CSI provisioner)</td>
   </tr>
