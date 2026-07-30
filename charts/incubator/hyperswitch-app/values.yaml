@@ -1390,23 +1390,81 @@ argoRollouts:
     # maxUnavailable: stringOrInt
     # trafficRouting: object
 
-    # AB Testing Analysis Configuration
-    # Performs automated analysis of canary deployments using VictoriaMetrics
-    # Checks for 5xx errors and fails the deployment after 3 occurrences
+    # Canary metric analysis — queries the router's OpenMetrics series via
+    # VictoriaMetrics PromQL to gate canary promotion on 4xx/5xx latency.
     analysis:
-      # -- Enable AB testing analysis
+      # -- Render the AnalysisTemplate
       enabled: false
-      # -- VictoriaMetrics configuration
-      victoriaMetrics:
-        # -- VictoriaMetrics Prometheus-compatible API address
-        # Example: http://victoria-metrics.monitoring:8428
-        address: ""
-      # -- Interval between metric queries
-      interval: "30s"
-      # -- Starting step for analysis (0-indexed)
+      # -- dryRun all metrics when false; hard-abort when true
+      enforce: false
+      # -- Canary step index to start analysis at (used in Rollout spec, not here)
       startingStep: 2
-      # -- Additional arguments to pass to the analysis template
-      args: []
+      # -- Prometheus-compatible read API (vmselect serves /select/<tenant>/prometheus)
+      interval: "30s"
+      # -- Per-query timeout (s)
+      timeout: 30
+      # -- AnalysisTemplate args, referenced in queries as {{args.<name>}}.
+      # Argo Rollouts substitutes these at runtime, not Helm — pass through untouched.
+      args:
+        - name: canary-hash
+        - name: stable-hash
+      # -- Metrics list; shared interval/address/timeout auto-injected via mergeOverwrite.
+      # Override per-metric (e.g. interval: 60s). Add/remove entries to customize.
+      metrics:
+        - name: canary-min-traffic
+          successCondition: len(result) > 0 && result[0] >= 0.05
+          failureLimit: 0
+          provider:
+            prometheus:
+              query: |
+                sum(rate(REQUESTS_RECEIVED_total{rollouts_pod_template_hash="{{args.canary-hash}}"}[2m]))
+
+        - name: http-5xx-global
+          failureCondition: len(result) > 0 && result[0] >= 2
+          failureLimit: 1
+          provider:
+            prometheus:
+              query: |
+                sum(rate(REQUEST_TIME_count{status_code=~"5.."}[2m]))
+
+        - name: canary-5xx-vs-stable
+          interval: 60s
+          count: 3
+          failureCondition: len(result) > 0 && result[0] > 1.5
+          failureLimit: 2
+          provider:
+            prometheus:
+              query: |
+                sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.canary-hash}}"}[5m]))
+                /
+                sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
+                or vector(0)
+
+        - name: canary-p90-vs-stable
+          interval: 60s
+          count: 3
+          failureCondition: len(result) > 0 && result[0] > 1.5
+          failureLimit: 2
+          provider:
+            prometheus:
+              query: |
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.canary-hash}}"}[5m])))
+                /
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.stable-hash}}"}[5m])))
+                or vector(1)
+
+        - name: canary-4xx-vs-stable
+          interval: 60s
+          count: 3
+          failureCondition: len(result) > 0 && result[0] > 2.0
+          failureLimit: 2
+          provider:
+            prometheus:
+              query: |
+                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.canary-hash}}"}[5m]))
+                /
+                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
+                or vector(0)
 
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:

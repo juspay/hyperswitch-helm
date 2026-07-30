@@ -590,3 +590,13 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- define "hyperswitch.validateAnalysisConfig" -}}
+{{- $analysis := .Values.argoRollouts.canary.analysis }}
+{{- if or $analysis.failureThreshold $analysis.errorRatioThreshold $analysis.latencyRatioThreshold $analysis.minTrafficRate }}
+{{- fail "argoRollouts.canary.analysis: threshold keys (failureThreshold, errorRatioThreshold, latencyRatioThreshold, minTrafficRate) have been replaced by the metrics list. See values.yaml." }}
+{{- end }}
+{{- if eq (len $analysis.metrics) 0 }}
+{{- fail "argoRollouts.canary.analysis.metrics must have at least one metric when analysis is enabled" }}
+{{- end }}
+{{- end -}}
