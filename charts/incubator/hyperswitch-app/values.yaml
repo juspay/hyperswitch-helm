@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "2026.07.30.0"
+    version: "2026.07.31.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "2026.07.30.0"
+    version: "2026.07.31.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "2026.07.30.0"
+    version: "2026.07.31.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "2026.07.30.0"
+    version: "2026.07.31.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1417,7 +1417,6 @@ argoRollouts:
             prometheus:
               query: |
                 sum(rate(REQUESTS_RECEIVED_total{rollouts_pod_template_hash="{{args.canary-hash}}"}[2m]))
-
         - name: http-5xx-global
           failureCondition: len(result) > 0 && result[0] >= 2
           failureLimit: 1
@@ -1425,7 +1424,6 @@ argoRollouts:
             prometheus:
               query: |
                 sum(rate(REQUEST_TIME_count{status_code=~"5.."}[2m]))
-
         - name: canary-5xx-vs-stable
           interval: 60s
           count: 3
@@ -1438,7 +1436,6 @@ argoRollouts:
                 /
                 sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
                 or vector(0)
-
         - name: canary-p90-vs-stable
           interval: 60s
           count: 3
@@ -1451,7 +1448,6 @@ argoRollouts:
                 /
                 histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.stable-hash}}"}[5m])))
                 or vector(1)
-
         - name: canary-4xx-vs-stable
           interval: 60s
           count: 3
@@ -1464,7 +1460,6 @@ argoRollouts:
                 /
                 sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
                 or vector(0)
-
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
