@@ -1402,8 +1402,6 @@ argoRollouts:
       interval: "30s"
       # -- Per-query timeout (s)
       timeout: 30
-      # -- AnalysisTemplate args, referenced in queries as {{args.<name>}}.
-      # Argo Rollouts substitutes these at runtime, not Helm — pass through untouched.
       args:
         - name: canary-hash
         - name: stable-hash
@@ -1411,55 +1409,82 @@ argoRollouts:
       # Override per-metric (e.g. interval: 60s). Add/remove entries to customize.
       metrics:
         - name: canary-min-traffic
-          successCondition: len(result) > 0 && result[0] >= 0.05
-          failureLimit: 0
+          interval: 30s
+          count: 20
+          successCondition: len(result) > 0 && result[0] >= 100
+          inconclusiveLimit: 20
+          failureLimit: 20
           provider:
             prometheus:
               query: |
-                sum(rate(REQUESTS_RECEIVED_total{rollouts_pod_template_hash="{{args.canary-hash}}"}[2m]))
+                sum(increase(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+
         - name: http-5xx-global
-          failureCondition: len(result) > 0 && result[0] >= 2
+          failureCondition: len(result) > 0 && result[0] > 1.0
           failureLimit: 1
           provider:
             prometheus:
               query: |
-                sum(rate(REQUEST_TIME_count{status_code=~"5.."}[2m]))
-        - name: canary-5xx-vs-stable
+                (100 * sum(rate(REQUEST_TIME_count{status_code=~"5.."}[5m]))
+                    / clamp_min(sum(rate(REQUEST_TIME_count[5m])), 0.001)) or vector(0)
+
+        - name: canary-5xx-pct-delta
           interval: 60s
-          count: 3
+          count: 10
+          failureCondition: len(result) > 0 && result[0] > 1.0
+          failureLimit: 3
+          inconclusiveLimit: 5
+          provider:
+            prometheus:
+              query: |
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"5..", pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                -
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"5..", pod=~".*-{{args.stable-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+
+        - name: canary-p90-ratio
+          interval: 60s
+          count: 10
           failureCondition: len(result) > 0 && result[0] > 1.5
-          failureLimit: 2
+          failureLimit: 3
+          inconclusiveLimit: 5
           provider:
             prometheus:
               query: |
-                sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.canary-hash}}"}[5m]))
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{pod=~".*-{{args.canary-hash}}-.*"}[5m])))
                 /
-                sum(rate(REQUEST_TIME_count{status_code=~"5..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
-                or vector(0)
-        - name: canary-p90-vs-stable
+                clamp_min(
+                  histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{pod=~".*-{{args.stable-hash}}-.*"}[5m]))),
+                  0.001
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+
+        - name: canary-4xx-pct-delta
           interval: 60s
-          count: 3
-          failureCondition: len(result) > 0 && result[0] > 1.5
-          failureLimit: 2
+          count: 10
+          failureCondition: len(result) > 0 && result[0] > 5.0
+          failureLimit: 3
+          inconclusiveLimit: 5
           provider:
             prometheus:
               query: |
-                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.canary-hash}}"}[5m])))
-                /
-                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{rollouts_pod_template_hash="{{args.stable-hash}}"}[5m])))
-                or vector(1)
-        - name: canary-4xx-vs-stable
-          interval: 60s
-          count: 3
-          failureCondition: len(result) > 0 && result[0] > 2.0
-          failureLimit: 2
-          provider:
-            prometheus:
-              query: |
-                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.canary-hash}}"}[5m]))
-                /
-                sum(rate(REQUEST_TIME_count{status_code=~"4..",rollouts_pod_template_hash="{{args.stable-hash}}"}[5m]))
-                or vector(0)
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"4..", pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                -
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"4..", pod=~".*-{{args.stable-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
