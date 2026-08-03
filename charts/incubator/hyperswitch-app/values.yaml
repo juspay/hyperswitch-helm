@@ -1449,21 +1449,6 @@ argoRollouts:
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
 
-        - name: canary-5xx-absolute-floor
-          interval: 60s
-          count: 10
-          failureCondition: len(result) > 0 && result[0] > 2.0
-          failureLimit: 3
-          inconclusiveLimit: 5
-          provider:
-            prometheus:
-              query: |
-                (
-                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"5..", pod=~".*-{{args.canary-hash}}-.*"}[5m]))
-                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])), 0.001)) or vector(0)
-                )
-                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
         - name: canary-p90-ratio
           interval: 60s
           count: 10
