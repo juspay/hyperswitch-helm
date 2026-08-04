@@ -52,12 +52,15 @@ spec:
       {{- if .Values.argoRollouts.canary.analysis.enabled }}
       analysis:
         templates:
-        - templateName: {{ include "hyperswitch-server.name" . }}-ab-testing
+        - templateName: {{ include "hyperswitch-server.name" . }}-canary
         startingStep: {{ .Values.argoRollouts.canary.analysis.startingStep | default 2 }}
-        {{- with .Values.argoRollouts.canary.analysis.args }}
         args:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+        - name: canary-hash
+          valueFrom:
+            podTemplateHashValue: Latest
+        - name: stable-hash
+          valueFrom:
+            podTemplateHashValue: Stable
       {{- end }}
       {{- with .Values.argoRollouts.canary.antiAffinity}}
       antiAffinity:
