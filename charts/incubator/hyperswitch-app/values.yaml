@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "2026.08.03.0"
+    version: "e3d70a06a3"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -1418,7 +1418,6 @@ argoRollouts:
             prometheus:
               query: |
                 sum(increase(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m]))
-
         - name: http-5xx-global
           failureCondition: len(result) > 0 && result[0] > 1.0
           failureLimit: 1
@@ -1427,7 +1426,6 @@ argoRollouts:
               query: |
                 (100 * sum(rate(REQUEST_TIME_count{status_code=~"5.."}[5m]))
                     / clamp_min(sum(rate(REQUEST_TIME_count[5m])), 0.001)) or vector(0)
-
         - name: canary-5xx-pct-delta
           interval: 60s
           count: 10
@@ -1447,7 +1445,6 @@ argoRollouts:
                       / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
         - name: canary-p90-ratio
           interval: 60s
           count: 10
@@ -1464,7 +1461,6 @@ argoRollouts:
                   0.001
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
         - name: canary-4xx-pct-delta
           interval: 60s
           count: 10
@@ -1484,7 +1480,6 @@ argoRollouts:
                       / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
