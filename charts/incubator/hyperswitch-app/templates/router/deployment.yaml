@@ -61,6 +61,11 @@ spec:
         - name: stable-hash
           valueFrom:
             podTemplateHashValue: Stable
+        {{- range .Values.argoRollouts.canary.analysis.args }}
+        {{- if not (and .valueFrom .valueFrom.secretKeyRef) }}
+        - {{ toYaml . | nindent 10 | trim }}
+        {{- end }}
+        {{- end }}
       {{- end }}
       {{- with .Values.argoRollouts.canary.antiAffinity}}
       antiAffinity:
