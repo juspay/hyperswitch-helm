@@ -2,10 +2,10 @@
 {{- $analysis := .Values.argoRollouts.canary.analysis }}
 {{- include "hyperswitch.validateAnalysisConfig" . }}
 {{- $addr := $analysis.victoriaMetrics.address | required "argoRollouts.canary.analysis.victoriaMetrics.address is required when analysis is enabled" }}
-{{- $defaults := dict "interval" $analysis.interval "provider" (dict "prometheus" (dict "address" $addr "timeout" $analysis.timeout)) }}
 {{- $mergedMetrics := list }}
 {{- range $analysis.metrics }}
-{{- $mergedMetrics = append $mergedMetrics (mergeOverwrite (deepCopy $defaults) .) }}
+{{- $merged := include "hyperswitch.mergeAnalysisMetric" (dict "metric" . "sharedInterval" $analysis.interval "prometheusAddress" $addr "prometheusTimeout" $analysis.timeout) | fromYaml }}
+{{- $mergedMetrics = append $mergedMetrics $merged }}
 {{- end }}
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate

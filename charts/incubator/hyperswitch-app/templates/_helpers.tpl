@@ -600,3 +600,13 @@ log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
 {{- fail "argoRollouts.canary.analysis.metrics must have at least one metric when analysis is enabled" }}
 {{- end }}
 {{- end -}}
+
+{{- /* Merge one metric with the chart's shared defaults. Scalar interval applies to all metrics. Prometheus provider defaults apply only to prometheus metrics. */ -}}
+{{- define "hyperswitch.mergeAnalysisMetric" -}}
+{{- $shared := dict "interval" .sharedInterval -}}
+{{- $metric := mergeOverwrite (deepCopy $shared) .metric -}}
+{{- if or (not (hasKey .metric "provider")) (hasKey .metric.provider "prometheus") -}}
+{{- $metric = mergeOverwrite $metric (dict "provider" (dict "prometheus" (dict "address" .prometheusAddress "timeout" .prometheusTimeout))) -}}
+{{- end -}}
+{{- toYaml $metric -}}
+{{- end -}}
