@@ -50,3 +50,8 @@
     fieldRef:
       fieldPath: metadata.labels['version']
 {{- end -}}
+
+{{- define "router.infra.values.envs" -}}
+- name: IMAGE_VERSION_VALUE
+  value: {{ .Values.services.router.version | toString | quote }}
+{{- end -}}
