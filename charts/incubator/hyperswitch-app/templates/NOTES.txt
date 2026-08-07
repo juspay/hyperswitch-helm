@@ -1,3 +1,17 @@
+{{- if .Values.multiAz.enabled }}
+
+*******************************************************************************
+NOTICE: multi-AZ scheduling is enabled for the router.
+
+- Worker nodes MUST be labelled with "{{ .Values.multiAz.topologyKey }}".
+- Router replicas (or autoscaling minReplicas) should be at least the number of
+  availability zones, otherwise pods may remain Pending because
+  "whenUnsatisfiable: {{ .Values.multiAz.whenUnsatisfiable }}" is set.
+- Consider using external managed PostgreSQL/Redis/Kafka/ClickHouse for full
+  data-plane high availability.
+*******************************************************************************
+
+{{- end }}
 1. Get the Application URL:
    - If Ingress is not available, use port-forwarding:
      ```shell

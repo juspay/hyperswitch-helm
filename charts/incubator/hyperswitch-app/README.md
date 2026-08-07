@@ -416,6 +416,43 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Istio configuration</td>
   </tr></tbody>
 </table>
+<h3>Multi-AZ</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="./values.yaml#L93">multiAz.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable multi-AZ scheduling (topology spread constraints and PDBs)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L97">multiAz.topologyKey</a></div></td>
+    <td><div><code>"topology.kubernetes.io/zone"</code></div></td>
+    <td>Topology key used to spread pods across failure domains</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L99">multiAz.maxSkew</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td>Maximum difference in number of pods between zones</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L102">multiAz.whenUnsatisfiable</a></div></td>
+    <td><div><code>"DoNotSchedule"</code></div></td>
+    <td>Scheduling policy when the spread constraint cannot be satisfied. Allowed values: DoNotSchedule | ScheduleAnyway</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L106">multiAz.podDisruptionBudget.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td>Create PDBs for the app components</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L108">multiAz.podDisruptionBudget.minAvailable</a></div></td>
+    <td><div><code>"50%"</code></div></td>
+    <td>Minimum available pods (mutually exclusive with maxUnavailable)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L110">multiAz.podDisruptionBudget.maxUnavailable</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Maximum unavailable pods (mutually exclusive with minAvailable)</td>
+  </tr></tbody>
+</table>
 <h3>App Server Secrets</h3>
 <table height="400px">
 <thead>
