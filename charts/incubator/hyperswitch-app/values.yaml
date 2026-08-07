@@ -189,8 +189,7 @@ server:
   #       name: <name_of_configmap_or_secret>
   #       key: <key_in_configmap_or_secret>
   configs:
-    infra_values:
-      version: IMAGE_VERSION_VALUE
+
     chat:
       # Enable or disable chat features
       enabled: false
