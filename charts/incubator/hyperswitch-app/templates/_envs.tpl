@@ -52,6 +52,6 @@
 {{- end -}}
 
 {{- define "router.infra.values.envs" -}}
-- name: ROUTER__INFRA_VALUES__VERSION
+- name: IMAGE_VERSION_VALUE
   value: {{ .Values.services.router.version | toString | quote }}
 {{- end -}}
