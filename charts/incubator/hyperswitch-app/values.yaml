@@ -1407,7 +1407,11 @@ argoRollouts:
       timeout: 30
       args:
         - name: canary-hash
+          valueFrom:
+            podTemplateHashValue: Latest
         - name: stable-hash
+          valueFrom:
+            podTemplateHashValue: Stable
       # -- Metrics list; shared interval/address/timeout auto-injected via mergeOverwrite.
       # Override per-metric (e.g. interval: 60s). Add/remove entries to customize.
       metrics:
