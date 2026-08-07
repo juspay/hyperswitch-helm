@@ -55,12 +55,6 @@ spec:
         - templateName: {{ include "hyperswitch-server.name" . }}-canary
         startingStep: {{ .Values.argoRollouts.canary.analysis.startingStep | default 2 }}
         args:
-        - name: canary-hash
-          valueFrom:
-            podTemplateHashValue: Latest
-        - name: stable-hash
-          valueFrom:
-            podTemplateHashValue: Stable
         {{- range .Values.argoRollouts.canary.analysis.args }}
         {{- if not (and .valueFrom .valueFrom.secretKeyRef) }}
         - {{ toYaml . | nindent 10 | trim }}
