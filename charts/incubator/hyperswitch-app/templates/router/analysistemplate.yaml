@@ -17,7 +17,13 @@ metadata:
 spec:
   {{- if $analysis.args }}
   args:
-{{ toYaml $analysis.args | nindent 4 }}
+  {{- range $analysis.args }}
+  {{- if and .valueFrom .valueFrom.secretKeyRef }}
+  - {{ toYaml . | nindent 4 | trim }}
+  {{- else }}
+  - name: {{ .name }}
+  {{- end }}
+  {{- end }}
   {{- end }}
   {{- if not $analysis.enforce }}
   dryRun:
