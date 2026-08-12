@@ -26,6 +26,22 @@ Convert version format from v1.115.0 to v1o115o0 for Kubernetes labels
 {{- . | replace "." "o" -}}
 {{- end -}}
 
+{{/*
+Release-scoped router image version, e.g. `integ_2026.08.12.0-fred`.
+
+Used for BOTH the `image-version` pod label and the IMAGE_VERSION_VALUE env var the
+router emits as the analytics `version` field. Canary analysis reads the label and
+matches it against that column, so the two must never drift.
+
+The release segment scopes canary SR to one rollout: several releases share a Kafka
+topic and the AB tables, so without it other releases land in the "stable" bucket.
+`_` is used because release names are prefixes of each other (`integ` vs
+`integ-custom`), so a `-` separator could not be split unambiguously.
+*/}}
+{{- define "router.image.version" -}}
+{{- printf "%s_%s" .Release.Name (.Values.services.router.version | toString) -}}
+{{- end -}}
+
 # Define `hyperswitch-server.name` template
 {{- define "hyperswitch-server.name" -}}
 {{- printf "%s-hyperswitch-server" .Release.Name | trunc 63 | trimSuffix "-" -}}
