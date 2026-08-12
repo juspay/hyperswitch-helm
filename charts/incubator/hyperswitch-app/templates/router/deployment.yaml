@@ -109,7 +109,7 @@ spec:
       labels:
         app: {{ include "hyperswitch-server.name" . }}
         version: {{ include "version.suffix" (.Values.services.router.version | toString) | quote }}
-        image-version: {{ .Values.services.router.version | toString | quote }}
+        image-version: {{ include "router.image.version" . | quote }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.server.labels | default .Values.global.labels) }}
         {{- toYaml . | nindent 8 }}
