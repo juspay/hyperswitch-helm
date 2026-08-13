@@ -2371,4 +2371,3 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
   </tr>
 </tbody>
 </table>
-
