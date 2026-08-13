@@ -22,6 +22,7 @@ spec:
             app: {{ .Values.superposition_fallback_cronjob.name | default "superposition-config-backup-cronjob" }}
             {{- include "hyperswitch.labels" . | nindent 12 }}
         spec:
+          serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
           restartPolicy: {{ .Values.superposition_fallback_cronjob.restartPolicy | default "OnFailure" }}
           securityContext:
             runAsNonRoot: true
