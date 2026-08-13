@@ -2006,6 +2006,12 @@ superposition_fallback_cronjob:
   failedJobsHistoryLimit: 1
   # -- Number of backup files to retain in EFS
   retentionCount: "10"
+  # -- AWS KMS configuration used by the config backup job
+  aws_kms:
+    # -- AWS region containing the KMS key
+    region: ""
+    # -- KMS key ID or ARN used for encryption and decryption
+    key_id: ""
   # -- Superposition service connection details
   superposition:
     # -- Superposition API endpoint URL
