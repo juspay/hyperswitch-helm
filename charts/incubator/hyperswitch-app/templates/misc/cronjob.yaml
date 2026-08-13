@@ -48,6 +48,16 @@ spec:
                   value: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" | quote }}
                 - name: RETENTION_COUNT
                   value: {{ .Values.superposition_fallback_cronjob.retentionCount | default "10" | quote }}
+                {{- with .Values.superposition_fallback_cronjob.aws_kms }}
+                {{- with .region }}
+                - name: AWS_KMS__REGION
+                  value: {{ . | quote }}
+                {{- end }}
+                {{- with .key_id }}
+                - name: AWS_KMS__KEY_ID
+                  value: {{ . | quote }}
+                {{- end }}
+                {{- end }}
               volumeMounts:
                 - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
                   mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
