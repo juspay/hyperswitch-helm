@@ -3,7 +3,7 @@ appVersion: v1.121.0
 description: Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 name: hyperswitch-app
 type: application
-version: 1.1.7-app-2ce7ce642b
+version: 1.1.7-cus-2ce7ce642b
 dependencies:
   - name: redis
     version: 18.6.1
