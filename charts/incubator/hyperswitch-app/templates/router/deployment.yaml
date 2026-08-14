@@ -55,12 +55,6 @@ spec:
         - templateName: {{ include "hyperswitch-server.name" . }}-canary
         startingStep: {{ .Values.argoRollouts.canary.analysis.startingStep | default 2 }}
         args:
-        - name: canary-hash
-          valueFrom:
-            podTemplateHashValue: Latest
-        - name: stable-hash
-          valueFrom:
-            podTemplateHashValue: Stable
         {{- range .Values.argoRollouts.canary.analysis.args }}
         {{- if not (and .valueFrom .valueFrom.secretKeyRef) }}
         - {{ toYaml . | nindent 10 | trim }}
@@ -115,6 +109,7 @@ spec:
       labels:
         app: {{ include "hyperswitch-server.name" . }}
         version: {{ include "version.suffix" (.Values.services.router.version | toString) | quote }}
+        image-version: {{ include "router.image.version" . | quote }}
         {{- include "hyperswitch.labels" . | nindent 8 }}
         {{- with (.Values.server.labels | default .Values.global.labels) }}
         {{- toYaml . | nindent 8 }}
@@ -161,6 +156,7 @@ spec:
           {{- with .Values.server.env }}
           {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- include "router.infra.values.envs" . | nindent 12 }}
           {{- include "metadata.envs" . | nindent 12 }}
           {{- include "generic.envs" . | nindent 12 }}
           {{- include "postgresql.secrets.envs" . | nindent 12 }}
