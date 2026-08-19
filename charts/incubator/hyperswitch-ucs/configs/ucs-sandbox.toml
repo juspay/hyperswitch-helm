@@ -23,8 +23,10 @@ connector_request_timeout = 30
 bypass_urls = ["localhost", "local"]
 
 [connectors]
+citigate.base_url = "https://gw-test.cgate.tech"
 grabpay.base_url = "https://partner-api.stg-myteksi.com/grabpay/partner/v2"
 maya.base_url = "https://pg-sandbox.paymaya.com"
+boost.base_url = "https://stage-api.boostconnect.biz/gateway"
 tesouro.base_url = "https://api.sandbox.tesouro.com"
 kount.base_url = "https://api-sandbox.kount.com"
 kount.secondary_base_url = "https://login.kount.com"
@@ -100,6 +102,7 @@ novalnet.base_url = "https://payport.novalnet.de/v2"
 nexinets.base_url = "https://apitest.payengine.de/v1"
 noon.base_url = "https://api-test.noonpayments.com/"
 mifinity.base_url = "https://demo.mifinity.com/"
+moneris.base_url = "https://api.sb.moneris.io"
 braintree.base_url = "https://payments.sandbox.braintree-api.com/graphql"
 volt.base_url = "https://gateway.sandbox.volt.io"
 volt.secondary_base_url = "https://api.sandbox.volt.io"
@@ -182,17 +185,3 @@ keys = ["x-request-id","x-merchant-id","x-lineage-ids","x-reference-id","x-conne
 # Connectors that require an external API call for webhook source verification
 [webhook_source_verification_call] # comma-separated list of connector names (case-insensitive)
 connectors_with_webhook_source_verification_call = "paypal, truelayer"
-
-# --- Déjà record/replay ---------------------------------------------------------
-# Only has any effect when built with the `deja` feature; ignored otherwise.
-# mode: "disabled" (default, byte-identical to today) | "record" | "replay".
-[deja]
-mode = "disabled"
-
-[deja.recording.kafka]
-topic = "ucs-deja-recording-events"
-brokers = []          # empty => inherit the [events] brokers at boot
-
-[deja.sampler]
-record_key = "deja_record"
-fail_closed = true
