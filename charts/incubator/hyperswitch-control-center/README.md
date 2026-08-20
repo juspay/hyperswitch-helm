@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.2](https://img.shields.io/badge/AppVersion-v1.38.2-informational?style=flat-square)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.7](https://img.shields.io/badge/AppVersion-v1.38.7-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -125,9 +125,15 @@ After deployment, verify the Control Center is working:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| config.default.connector_clone.paymentProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.paymentProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.payoutProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.threedsAuthProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.vaultProcessors | list | `[]` |  |
 | config.default.endpoints.agreement_url | string | `"https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"` |  |
 | config.default.endpoints.agreement_version | string | `"1.0.0"` |  |
 | config.default.endpoints.dss_certificate_url | string | `"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"` |  |
+| config.default.endpoints.dynamo_simulation_template_url | string | `""` |  |
 | config.default.endpoints.favicon_url | string | `""` |  |
 | config.default.endpoints.hypersense_url | string | `""` |  |
 | config.default.endpoints.logo_url | string | `""` |  |
@@ -137,6 +143,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.branding | string | `"false"` |  |
 | config.default.features.compliance_certificate | string | `"true"` |  |
 | config.default.features.configure_pmts | string | `"true"` |  |
+| config.default.features.connector_clone | bool | `true` |  |
 | config.default.features.custom_webhook_headers | string | `"false"` |  |
 | config.default.features.dev_alt_payment_methods | bool | `false` |  |
 | config.default.features.dev_click_to_pay | string | `"true"` |  |
@@ -161,7 +168,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.granularity | bool | `false` |  |
 | config.default.features.is_live_mode | string | `"false"` |  |
 | config.default.features.live_users_counter | string | `"false"` |  |
-| config.default.features.maintainence_alert | string | `""` |  |
+| config.default.features.maintenance_alert | string | `""` |  |
 | config.default.features.mixpanel | string | `"false"` |  |
 | config.default.features.new_analytics | string | `"true"` |  |
 | config.default.features.new_analytics_filters | string | `"true"` |  |
@@ -176,7 +183,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.sample_data | string | `"true"` |  |
 | config.default.features.surcharge | string | `"true"` |  |
 | config.default.features.system_metrics | string | `"false"` |  |
-| config.default.features.tax_processors | string | `"true"` |  |
+| config.default.features.tax_processor | string | `"true"` |  |
 | config.default.features.tenant_user | string | `"true"` |  |
 | config.default.features.test_live_toggle | string | `"false"` |  |
 | config.default.features.test_processors | string | `"true"` |  |
@@ -184,9 +191,12 @@ After deployment, verify the Control Center is working:
 | config.default.features.totp | string | `"false"` |  |
 | config.default.features.transaction_view | bool | `true` |  |
 | config.default.features.user_journey_analytics | string | `"false"` |  |
-| config.default.merchant_config.new_analytics.merchant_ids | list | `[]` |  |
-| config.default.merchant_config.new_analytics.org_ids | list | `[]` |  |
-| config.default.merchant_config.new_analytics.profile_ids | list | `[]` |  |
+| config.default.merchant_config.allowlist.dev_recon_engine_v1.merchant_ids | list | `[]` |  |
+| config.default.merchant_config.allowlist.dev_recon_engine_v1.org_ids | list | `[]` |  |
+| config.default.merchant_config.allowlist.dev_recon_engine_v1.profile_ids | list | `[]` |  |
+| config.default.merchant_config.denylist.new_analytics.merchant_ids | list | `[]` |  |
+| config.default.merchant_config.denylist.new_analytics.org_ids | list | `[]` |  |
+| config.default.merchant_config.denylist.new_analytics.profile_ids | list | `[]` |  |
 | config.default.theme.primary_color | string | `"#006DF9"` |  |
 | config.default.theme.primary_hover_color | string | `"#005ED6"` |  |
 | config.default.theme.sidebar_border_color | string | `"#ECEFF3"` |  |
@@ -208,7 +218,7 @@ After deployment, verify the Control Center is working:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `"v1.38.2"` |  |
+| image.tag | string | `"v1.38.7"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
