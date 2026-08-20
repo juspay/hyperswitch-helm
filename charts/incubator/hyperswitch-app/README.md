@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.1.7](https://img.shields.io/badge/Version-1.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.121.0](https://img.shields.io/badge/AppVersion-v1.121.0-informational?style=flat-square)
+![Version: 1.1.8](https://img.shields.io/badge/Version-1.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.126.0](https://img.shields.io/badge/AppVersion-v1.126.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -629,7 +629,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Consumer image registry</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L20">services.consumer.version</a></div></td>
-    <td><div><code>"v1.121.0"</code></div></td>
+    <td><div><code>"v1.126.0"</code></div></td>
     <td>Consumer version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L48">services.drainer.image</a></div></td>
@@ -641,7 +641,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Drainer image registry</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L42">services.drainer.version</a></div></td>
-    <td><div><code>"v1.121.0"</code></div></td>
+    <td><div><code>"v1.126.0"</code></div></td>
     <td>Drainer version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L37">services.producer.image</a></div></td>
@@ -653,7 +653,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Producer image registry</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L31">services.producer.version</a></div></td>
-    <td><div><code>"v1.121.0"</code></div></td>
+    <td><div><code>"v1.126.0"</code></div></td>
     <td>Producer version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L15">services.router.host</a></div></td>
@@ -669,7 +669,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>Router image registry</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L6">services.router.version</a></div></td>
-    <td><div><code>"v1.121.0"</code></div></td>
+    <td><div><code>"v1.126.0"</code></div></td>
     <td>Router version</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L52">services.sdk.host</a></div></td>

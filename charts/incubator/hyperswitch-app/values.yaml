@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: v1.121.0
+    version: "v1.126.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: v1.121.0
+    version: "v1.126.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: v1.121.0
+    version: "v1.126.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: v1.121.0
+    version: "v1.126.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -279,8 +279,8 @@ server:
       apple_pay_ppc_key:
         _secret: dummy_val
     cell_information:
-      # -- Default CellID for Global Cell Information
-      id: '12345'
+      # -- Default CellID for Global Cell Information (max 2 characters)
+      id: '0a'
     clone_connector_allowlist:
       # Comma-separated list of allowed merchant IDs
       merchant_ids: "merchant_ids"
@@ -310,6 +310,13 @@ server:
       unified_authentication_service:
         # -- base url to call unified authentication service
         base_url: "http://localhost:8080"
+      # -- citigate and ilixium have no base_url in configs/router-*.toml on
+      # this tag either - the router hard-fails validation on any connector
+      # with an empty base_url.
+      citigate:
+        base_url: "https://gw-test.cgate.tech"
+      ilixium:
+        base_url: "https://prprocessing.ilixium.com/platform/ili"
     network_tokenization_service:
       # base url to generate token
       generate_token_url: "https://example.com/generate"
@@ -329,6 +336,8 @@ server:
       check_token_status_url: "https://example.com/status"
       # base url to check network tokenization eligibility
       check_tokenize_eligibility_url: "https://example.com/cardbins"
+      # base url to fetch Alt-ID and cryptogram for guest checkout tokenization
+      fetch_altid_url: "https://example.com/altid"
       # webhook source verification key to verify the webhook payload from token service
       webhook_source_verification_key: "placeholder_webhook_key"
     cors:
@@ -695,6 +704,8 @@ server:
       region: report_download_config_region
       # -- Config to authentication function
       authentication_function: report_download_config_authentication_function
+      # -- Config to download relay report
+      relay_function: report_download_config_relay_function
     revenue_recovery:
       # monitoring threshold -  120 days
       monitoring_threshold_in_seconds: 10368000
@@ -716,8 +727,13 @@ server:
           max_retry_count_for_thirty_day: 20
       # Timestamp configuration for Revenue Recovery
       recovery_timestamp:
-        # number of hours added to start time for Decider service of Revenue Recovery
-        initial_timestamp_in_hours: 1
+        # number of seconds added to start time for Decider service of Revenue Recovery
+        initial_timestamp_in_seconds: 3600
+        job_schedule_buffer_time_in_seconds: 900
+        reopen_workflow_buffer_time_in_seconds: 3600
+        max_random_schedule_delay_in_seconds: 18000
+        redis_ttl_buffer_in_seconds: 300
+        unretried_invoice_schedule_time_offset_seconds: 300
     secrets_management:
       # -- Secrets manager client to be used
       secrets_manager: no_encryption
@@ -730,6 +746,17 @@ server:
       # hc_vault:
       #   url: http://vault:8200
       #   token: vault_token
+    # -- Superposition client config (mandatory at boot as of newer router builds).
+    # Defaults assume the bundled `superposition` subchart under this release name.
+    superposition:
+      # -- Bundled subchart's Service URL - update release name/namespace to match.
+      endpoint: "http://hyperswitch-v1-superposition.hyperswitch.svc.cluster.local:80"
+      # -- Must match the subchart's SUPERPOSITION_TOKEN below (defaults to "123456").
+      token: "123456"
+      org_id: hyperswitch
+      workspace_id: hyperswitch
+      # -- Fallback config file, used if the live endpoint above is unreachable.
+      # backup_file_path: "/superposition/backup-config/superposition_seed.toml"
     # Server configuration
     server:
       host: 0.0.0.0
@@ -1320,30 +1347,30 @@ istio:
         weight: 100
         timeout: 50s
         retries: {}
-    # Example:
-    # hosts:
-    #   - hyperswitch.example.com
-    # gateways:
-    #   - istio-system/gateway
-    # http:
-    #   - name: "api-routes"
-    #     match:
-    #       - uri:
-    #           prefix: /api/
-    #     rewrite:
-    #       uri: /
-    #     weight: 100
-    #     timeout: 30s
-    #     retries:
-    #       attempts: 3
-    #       perTryTimeout: 10s
-    #   - name: "health-routes"
-    #     match:
-    #       - uri:
-    #           exact: /health
-    #     weight: 100
-    #     timeout: 10s
-    #     retries: {}
+        # Example:
+        # hosts:
+        #   - hyperswitch.example.com
+        # gateways:
+        #   - istio-system/gateway
+        # http:
+        #   - name: "api-routes"
+        #     match:
+        #       - uri:
+        #           prefix: /api/
+        #     rewrite:
+        #       uri: /
+        #     weight: 100
+        #     timeout: 30s
+        #     retries:
+        #       attempts: 3
+        #       perTryTimeout: 10s
+        #   - name: "health-routes"
+        #     match:
+        #       - uri:
+        #           exact: /health
+        #     weight: 100
+        #     timeout: 10s
+        #     retries: {}
   # -- DestinationRule configuration
   destinationRule:
     # -- Traffic policy configuration for router - rendered directly as YAML
@@ -1383,7 +1410,6 @@ argoRollouts:
       - pause:
           duration: 1m
       - setWeight: 100
-
     # -- Optional Canary Configuration Settings
     # antiAffinity: object
     # canaryService: string
@@ -1425,7 +1451,6 @@ argoRollouts:
             prometheus:
               query: |
                 sum(increase(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m]))
-
         - name: http-5xx-global
           failureCondition: len(result) > 0 && result[0] > 1.0
           failureLimit: 1
@@ -1434,7 +1459,6 @@ argoRollouts:
               query: |
                 (100 * sum(rate(REQUEST_TIME_count{status_code=~"5.."}[5m]))
                     / clamp_min(sum(rate(REQUEST_TIME_count[5m])), 0.001)) or vector(0)
-
         - name: canary-5xx-pct-delta
           interval: 60s
           count: 10
@@ -1454,7 +1478,6 @@ argoRollouts:
                       / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
         - name: canary-p90-ratio
           interval: 60s
           count: 10
@@ -1471,7 +1494,6 @@ argoRollouts:
                   0.001
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
         - name: canary-4xx-pct-delta
           interval: 60s
           count: 10
@@ -1491,7 +1513,6 @@ argoRollouts:
                       / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
                 )
                 and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
-
     # Traffic routing via Istio (requires istio.enabled: true)
     trafficRouting:
       # -- Enable Istio traffic management for canary deployments
@@ -1565,14 +1586,13 @@ externalSecretsOperator:
           jwt:
             serviceAccountRef:
               name: hyperswitch-eso-sa
-      # gcpsm:
-      #   auth:
-      #     secretRef:
-      #       secretAccessKeySecretRef:
-      #         name: gcpsm-secret
-      #         key: secret-access-credentials
-      #   projectID: myproject
-
+              # gcpsm:
+              #   auth:
+              #     secretRef:
+              #       secretAccessKeySecretRef:
+              #         name: gcpsm-secret
+              #         key: secret-access-credentials
+              #   projectID: myproject
   # ExternalSecret configuration
   externalSecrets:
     # -- List of external secrets to create
@@ -1589,12 +1609,12 @@ externalSecretsOperator:
         dataFrom:
           - extract:
               key: "HyperswitchKmsDataSecret"
-        # -- Individual data mappings (use data for specific keys)
-        # data:
-        #   - secretKey: "admin_api_key"
-        #     remoteRef:
-        #       key: "hyperswitch/admin"
-        #       property: "api_key"
+              # -- Individual data mappings (use data for specific keys)
+              # data:
+              #   - secretKey: "admin_api_key"
+              #     remoteRef:
+              #       key: "hyperswitch/admin"
+              #       property: "api_key"
     # - name: "database-secrets"
     #   targetName: "database-secrets"
     #   dataFrom:
@@ -1972,7 +1992,6 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
-
 # EFS PersistentVolumeClaim configuration for superposition fallback
 superposition_fallback_efs:
   # -- Enable creation of an EFS-backed PVC and volumeMounts in all pods
@@ -1985,7 +2004,6 @@ superposition_fallback_efs:
   storage: "1Gi"
   # -- Mount path inside the containers for the EFS volume
   mountPath: "/mnt/data"
-
 # CronJob configuration to sync superposition config into the EFS volume
 superposition_fallback_cronjob:
   # -- Enable the CronJob that syncs superposition config to EFS
@@ -2034,7 +2052,6 @@ superposition_fallback_cronjob:
     limits:
       memory: "64Mi"
       cpu: "100m"
-
 # @ignored
 superposition:
   enabled: true
@@ -2048,11 +2065,16 @@ superposition:
     type: ClusterIP
     port: 8080
   configs:
+    # -- Postgres URL for superposition's own schema (release/credential-specific).
     database_url: ""
     port: 8080
     rust_log: debug
     app_env: DEV
+    # -- Required; binary panics if absent or empty.
+    service_prefix: "/"
     auth_provider: DISABLED
+    # -- Required; binary panics if absent.
+    auth_z_provider: DISABLED
   secrets:
     db_password: ""
     superposition_token: ""
