@@ -39,7 +39,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2026.08.19.2
+  tag: v1.38.7
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
@@ -152,6 +152,9 @@ config:
       # Core features
       email: "true"
       branding: "false"
+      # Real deployment-configs (sandbox/integ/fnb) all set this to true so the
+      # in-app "clone connector" action is available; chart previously omitted it.
+      connector_clone: true
       surcharge: "true"
       quick_start: "true"
       recon: "true"
@@ -183,7 +186,10 @@ config:
       tenant_user: "true"
       transaction_view: true
       pm_authentication_processor: "true"
-      tax_processors: "true"
+      # Renamed from "tax_processors" (plural): real deployment-configs (sandbox/
+      # integ/fnb) all key this singular "tax_processor" - the plural spelling the
+      # chart previously shipped isn't read by the app and silently did nothing.
+      tax_processor: "true"
       threeds_authenticator: "true"
       # Development features (typically disabled in production)
       dev_alt_payment_methods: false
@@ -204,7 +210,10 @@ config:
       global_search_filters: false
       granularity: false
       live_users_counter: "false"
-      maintainence_alert: ""
+      # Renamed from "maintainence_alert" (typo): real deployment-configs
+      # (sandbox/integ/fnb) all key this correctly-spelled "maintenance_alert" -
+      # the misspelled key the chart previously shipped isn't read by the app.
+      maintenance_alert: ""
       recon_v2: false
     endpoints:
       dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
@@ -215,6 +224,9 @@ config:
       mixpanel_token: "dd4da7f62941557e716fbc0a19f9cc7e"
       hypersense_url: ""
       recon_iframe_url: ""
+      # Absent from the chart before; every real deployment-configs env
+      # (sandbox/integ/fnb) sets this for the incident-simulation CSV download.
+      dynamo_simulation_template_url: ""
     theme:
       primary_color: "#006DF9"
       primary_hover_color: "#005ED6"
@@ -224,11 +236,34 @@ config:
       sidebar_primary_text_color: "#1C6DEA"
       sidebar_secondary: "#FFFFFF"
       sidebar_secondary_text_color: "#525866"
+    # Restructured from the old flat "new_analytics: {...}" shape: every real
+    # deployment-configs env (sandbox/integ/fnb) nests this under denylist/allowlist,
+    # and the app no longer reads the old flat shape. org_ids/merchant_ids/profile_ids
+    # are left empty here (generic chart default) - real deployments populate their
+    # own org/merchant allowlists and denylists via their environment overlay.
     merchant_config:
-      new_analytics:
-        merchant_ids: []
-        org_ids: []
-        profile_ids: []
+      denylist:
+        new_analytics:
+          org_ids: []
+          merchant_ids: []
+          profile_ids: []
+      allowlist:
+        dev_recon_engine_v1:
+          org_ids: []
+          merchant_ids: []
+          profile_ids: []
+    # Absent from the chart before; every real deployment-configs env (sandbox/
+    # integ/fnb) sets this (currently to the same empty lists in all of them),
+    # and features.connector_clone above depends on this list being present.
+    connector_clone:
+      paymentProcessors: []
+    # Absent from the chart before; every real deployment-configs env (sandbox/
+    # integ/fnb) sets this explicitly (all currently empty in those envs too).
+    connector_list_for_live:
+      paymentProcessors: []
+      payoutProcessors: []
+      threedsAuthProcessors: []
+      vaultProcessors: []
 # Additional environment variables (key-value pairs, no transformation)
 extraEnvVars: []
 # Istio configuration (optional)
