@@ -1,4 +1,4 @@
-{{- if .Values.serviceMonitor.enabled }}
+{{- if and .Values.serviceMonitor.enabled (eq (.Values.configs.metrics.mode | default "") "prometheus") }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor

@@ -23,10 +23,12 @@ spec:
   ipFamilyPolicy: SingleStack
   ports:
     {{- range .Values.service.ports }}
+    {{- if not (and (eq .name "metrics") (ne ($.Values.configs.metrics.mode | default "") "prometheus")) }}
     - name: {{ .name }}
       port: {{ .port }}
       targetPort: {{ .targetPort }}
       protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
     {{- end }}
   selector:
     {{- include "hyperswitch-encryption-service.selectorLabels" . | nindent 4 }}

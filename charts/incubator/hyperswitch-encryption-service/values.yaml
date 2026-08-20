@@ -28,7 +28,7 @@ image:
   registry: docker.juspay.io
   repository: juspaydotin/hyperswitch-encryption-service
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v0.1.13
+  tag: v0.1.14
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
 
@@ -53,22 +53,30 @@ configs:
     tls_cert: sample_cert
     tls_key: sample_cert
   database:
+    connect_timeout_secs: 5
+    connection_acquire_timeout_secs: 30
+    idle_timeout_secs: 600
+    max_lifetime_secs: 1800
     min_idle: 2
     pool_size: 5
     root_ca: ""
+  cache:
+    max_capacity: 10000
+    time_to_idle_secs: 30
+    time_to_live_secs: 30
   log:
+    enabled: true
     log_format: json
     log_level: debug
-  metrics_server:
-    port: 6128
+  metrics:
     host: 0.0.0.0
+    mode: prometheus
+    port: 6128
   multitenancy:
     tenants:
       global:
-        cache_prefix: global
         schema: global
       public:
-        cache_prefix: public
         schema: public
   pool_config:
     pool: 2
