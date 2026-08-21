@@ -767,13 +767,6 @@ server:
       # -- For more details: https://actix.rs/docs/server/#graceful-shutdown
       shutdown_timeout: 30
       workers: 8
-    user:
-      base_url: http://localhost:9000
-      force_two_factor_auth: false
-      password_validity_in_days: '90'
-      totp_issuer_name: Hyperswitch Sandbox
-      two_factor_auth_expiry_in_secs: '300'
-      force_cookies: false
     file_upload_config:
       bucket_name: "bucket"
       region: "us-east-1"
