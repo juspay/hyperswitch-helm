@@ -878,6 +878,21 @@ entries:
     version: 1.0.0
   hyperswitch-encryption-service:
   - apiVersion: v2
+    appVersion: v0.1.14
+    created: "2026-08-24T13:01:05.039403785Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.5.38
+    description: A Helm chart for deploying Hyperswitch encryption-service
+    digest: 193e74b269d16a5edb5dab41e627a03423cef1c9784064b0f41fc51fd544b660
+    name: hyperswitch-encryption-service
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-encryption-service-0.1.10/hyperswitch-encryption-service-0.1.10.tgz
+    version: 0.1.10
+  - apiVersion: v2
     appVersion: v0.1.13
     created: "2026-07-03T13:55:12.545753921Z"
     dependencies:
@@ -2229,4 +2244,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-08-20T09:40:27.981787975Z"
+generated: "2026-08-24T13:01:05.039614607Z"
