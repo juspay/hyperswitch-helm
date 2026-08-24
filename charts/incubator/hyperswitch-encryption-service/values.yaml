@@ -70,6 +70,9 @@ configs:
     log_level: debug
   metrics:
     host: 0.0.0.0
+    # Set to "prometheus" to expose the metrics port on the service.
+    # ServiceMonitor would only be created when Prometheus metrics are enabled,
+    # so serviceMonitor.enabled has no effect with any other mode.
     mode: prometheus
     port: 6128
   multitenancy:
@@ -212,6 +215,10 @@ ingress:
 serviceMonitor:
   ## If true, a ServiceMonitor CR is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
+  ## NOTE: ServiceMonitor would only be created when Prometheus metrics are enabled,
+  ## i.e. when configs.metrics.mode is set to "prometheus". With any other metrics mode
+  ## the metrics port is not exposed on the service, so no ServiceMonitor is created
+  ## even if this is set to true.
   enabled: false
   # Name of the service port to scrape metrics from
   # Defaults to "metrics" which matches the service.ports[].name for metrics
