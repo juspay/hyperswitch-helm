@@ -1,6 +1,6 @@
 # hyperswitch-encryption-service
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.13](https://img.shields.io/badge/AppVersion-v0.1.13-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.14](https://img.shields.io/badge/AppVersion-v0.1.14-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch encryption-service
@@ -68,10 +68,8 @@ The encryption service supports multi-tenant deployments:
 multitenancy:
   tenants:
     public:
-      cache_prefix: "public"
       schema: "public"
     global:
-      cache_prefix: "global"
       schema: "global"
 ```
 
@@ -157,19 +155,26 @@ secrets:
 | autoscaling.maxReplicas | int | `3` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| configs.cache.max_capacity | int | `10000` |  |
+| configs.cache.time_to_idle_secs | int | `30` |  |
+| configs.cache.time_to_live_secs | int | `30` |  |
 | configs.certs.root_ca | string | `"sample_cert"` |  |
 | configs.certs.tls_cert | string | `"sample_cert"` |  |
 | configs.certs.tls_key | string | `"sample_cert"` |  |
+| configs.database.connect_timeout_secs | int | `5` |  |
+| configs.database.connection_acquire_timeout_secs | int | `30` |  |
+| configs.database.idle_timeout_secs | int | `600` |  |
+| configs.database.max_lifetime_secs | int | `1800` |  |
 | configs.database.min_idle | int | `2` |  |
 | configs.database.pool_size | int | `5` |  |
 | configs.database.root_ca | string | `""` |  |
+| configs.log.enabled | bool | `true` |  |
 | configs.log.log_format | string | `"json"` |  |
 | configs.log.log_level | string | `"debug"` |  |
-| configs.metrics_server.host | string | `"0.0.0.0"` |  |
-| configs.metrics_server.port | int | `6128` |  |
-| configs.multitenancy.tenants.global.cache_prefix | string | `"global"` |  |
+| configs.metrics.host | string | `"0.0.0.0"` |  |
+| configs.metrics.mode | string | `"prometheus"` |  |
+| configs.metrics.port | int | `6128` |  |
 | configs.multitenancy.tenants.global.schema | string | `"global"` |  |
-| configs.multitenancy.tenants.public.cache_prefix | string | `"public"` |  |
 | configs.multitenancy.tenants.public.schema | string | `"public"` |  |
 | configs.pool_config.pool | int | `2` |  |
 | configs.secrets.master_key._secret | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
@@ -208,7 +213,7 @@ secrets:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
-| image.tag | string | `"v0.1.13"` |  |
+| image.tag | string | `"v0.1.14"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
@@ -383,13 +388,10 @@ backend: local
 multitenancy:
   tenants:
     public:
-      cache_prefix: "public"
       schema: "public"
     tenant1:
-      cache_prefix: "tenant1"
       schema: "tenant1"
     tenant2:
-      cache_prefix: "tenant2"
       schema: "tenant2"
 
 # Enable mTLS

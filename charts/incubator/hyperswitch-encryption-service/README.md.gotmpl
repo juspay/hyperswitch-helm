@@ -71,10 +71,8 @@ The encryption service supports multi-tenant deployments:
 multitenancy:
   tenants:
     public:
-      cache_prefix: "public"
       schema: "public"
     global:
-      cache_prefix: "global"
       schema: "global"
 ```
 
@@ -231,13 +229,10 @@ backend: local
 multitenancy:
   tenants:
     public:
-      cache_prefix: "public"
       schema: "public"
     tenant1:
-      cache_prefix: "tenant1"
       schema: "tenant1"
     tenant2:
-      cache_prefix: "tenant2"
       schema: "tenant2"
 
 # Enable mTLS
