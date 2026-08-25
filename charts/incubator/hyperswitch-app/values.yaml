@@ -493,8 +493,6 @@ server:
         base_url: "http://localhost:8000"
         # Connection Timeout Duration in Seconds
         connection_timeout: "10"
-        # Comma-separated list of connectors that use UCS only
-        ucs_only_connectors: "paytm, phonepe"
       # Revenue recovery client base url
       recovery_decider_client:
         # Base URL
