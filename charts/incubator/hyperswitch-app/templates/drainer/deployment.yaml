@@ -97,17 +97,32 @@ spec:
             - secretRef:
                 name: drainer-secret-{{ .Release.Name }}
           {{- end }}
-          {{- if .Values.superposition_fallback_efs.enabled }}
+          {{- $drainerExtraMounts := .Values.drainer.extraVolumeMounts | default .Values.server.extraVolumeMounts }}
+          {{- if or .Values.superposition_fallback_efs.enabled $drainerExtraMounts .Values.superpositionFallback.enabled }}
           volumeMounts:
+            {{- if .Values.superposition_fallback_efs.enabled }}
             - mountPath: {{ .Values.superposition_fallback_efs.mountPath | default "/mnt/data" }}
               name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
               readOnly: true
+            {{- end }}
+            {{- if .Values.superpositionFallback.enabled }}
+            {{- include "hyperswitch.superpositionFallback.volumeMount" . | nindent 12 }}
+            {{- end }}
+            {{- with $drainerExtraMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
       volumes:
         {{- if .Values.superposition_fallback_efs.enabled }}
         - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
           persistentVolumeClaim:
             claimName: {{ .Values.superposition_fallback_efs.pvcName }}
+        {{- end }}
+        {{- if .Values.superpositionFallback.enabled }}
+        {{- include "hyperswitch.superpositionFallback.volume" . | nindent 8 }}
+        {{- end }}
+        {{- with (.Values.drainer.extraVolumes | default .Values.server.extraVolumes) }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       serviceAccountName: {{ include "hyperswitch-router-sa.name" . }}
 {{- end }}

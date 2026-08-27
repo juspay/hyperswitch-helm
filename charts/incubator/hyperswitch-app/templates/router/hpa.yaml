@@ -1,26 +1,4 @@
-{{- if .Values.autoscaling.enabled }}
+{{- if and .Values.services.router.enabled .Values.autoscaling.enabled }}
 ---
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: {{ include "hyperswitch-server.name" . }}
-spec:
-  scaleTargetRef:
-    {{- if .Values.argoRollouts.enabled }}
-    apiVersion: argoproj.io/v1alpha1
-    kind: Rollout
-    {{- else }}
-    apiVersion: apps/v1
-    kind: Deployment
-    {{- end }}
-    name: {{ include "hyperswitch-server.name" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
+{{ include "hyperswitch.router.hpa" (dict "root" . "key" "") }}
 {{- end }}

@@ -123,6 +123,12 @@ spec:
               name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
               readOnly: true
             {{- end }}
+            {{- if .Values.superpositionFallback.enabled }}
+            {{- include "hyperswitch.superpositionFallback.volumeMount" . | nindent 12 }}
+            {{- end }}
+            {{- with (.Values.consumer.extraVolumeMounts | default .Values.server.extraVolumeMounts) }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -138,5 +144,11 @@ spec:
         - name: {{ .Values.superposition_fallback_efs.volumeName | default "superposition-config-backup" }}
           persistentVolumeClaim:
             claimName: {{ .Values.superposition_fallback_efs.pvcName }}
+        {{- end }}
+        {{- if .Values.superpositionFallback.enabled }}
+        {{- include "hyperswitch.superpositionFallback.volume" . | nindent 8 }}
+        {{- end }}
+        {{- with (.Values.consumer.extraVolumes | default .Values.server.extraVolumes) }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
 {{- end }}
