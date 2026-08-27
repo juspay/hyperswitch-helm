@@ -146,6 +146,31 @@ hyperswitch-app:
     maxReplicas: 4
     targetCPUUtilizationPercentage: 80
 
+  # Extra routers that run inside this release, sharing its PostgreSQL, Redis, Kafka and
+  # ClickHouse. Both ship disabled - flip `enabled` to run them. Each one differs from the main
+  # router by configuration alone; see charts/incubator/hyperswitch-app/values.yaml for the full
+  # set of options.
+  #
+  # olap:                        # read/analytics traffic under /olap, write handle on the replica
+  #   enabled: true
+  #   istio:
+  #     enabled: true
+  #     virtualService:
+  #       # same host and gateway as hyperswitch-app.istio.virtualService
+  #       hosts:
+  #         - hyperswitch.example.com
+  #       gateways:
+  #         - istio-system/gateway
+  # paymentMethodModular:        # /v1/payment-methods, /v1/customers, /v1/proxy ...
+  #   enabled: true
+  #   istio:
+  #     enabled: true
+  #     virtualService:
+  #       hosts:
+  #         - hyperswitch.example.com
+  #       gateways:
+  #         - istio-system/gateway
+
   hyperswitch-card-vault:
     enabled: true
     server:

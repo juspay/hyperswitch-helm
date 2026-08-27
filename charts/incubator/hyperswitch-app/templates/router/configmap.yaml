@@ -1,4 +1,4 @@
-{{- if .Values.services.router.enabled }}
+{{- if include "hyperswitch.anyRouterEnabled" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
