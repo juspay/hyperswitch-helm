@@ -1,32 +1,3 @@
 {{- if and .Values.services.router.enabled .Values.server.ingress.enabled}}
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: {{ .Release.Name }}-hyperswitch-server-ingress
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    {{- with .Values.server.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-spec:
-  {{- if .Values.server.ingress.className }}
-  ingressClassName: {{ .Values.server.ingress.className }}
-  {{- end }}
-  {{- with .Values.server.ingress.tls }}
-  tls:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  rules:
-    - {{- if .Values.server.ingress.hostname }}
-      host: {{ .Values.server.ingress.hostname | quote }}
-      {{- end }}
-      http:
-        paths:
-          - path: {{ .Values.server.ingress.path | default "/" }}
-            pathType: {{ .Values.server.ingress.pathType | default "Prefix" }}
-            backend:
-              service:
-                name: {{ include "hyperswitch-server.name" . }}
-                port:
-                  number: 80
+{{- include "hyperswitch.router.ingress" (dict "root" . "key" "") }}
 {{- end }}

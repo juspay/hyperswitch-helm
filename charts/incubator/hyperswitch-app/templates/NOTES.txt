@@ -28,3 +28,33 @@
      fi
      ```
 ========================================================
+
+{{- $extra := list }}
+{{- range $key := list "olap" "paymentMethodModular" }}
+{{- $svc := default dict (index $.Values $key) }}
+{{- if $svc.enabled }}
+{{- $extra = append $extra $key }}
+{{- end }}
+{{- end }}
+{{- if $extra }}
+
+2. Router services running in this release:
+{{- range $key := $extra }}
+{{- $ctx := dict "root" $ "key" $key }}
+{{- $svc := index $.Values $key }}
+
+   - {{ $key }} -> service/{{ include "hyperswitch.router.name" $ctx }}
+     ```shell
+     kubectl port-forward service/{{ include "hyperswitch.router.name" $ctx }} 8081:80 -n {{ $.Release.Namespace }}
+     ```
+{{- $db := $svc.database | default dict }}
+{{- if and $db.useReplicaForMaster (not (include "hyperswitch.router.replicaAvailable" $ctx)) }}
+
+     WARNING: {{ $key }}.database.useReplicaForMaster is set, but this release has no PostgreSQL
+     read replica (postgresql.readReplicas.replicaCount is 0, or externalPostgresql.readOnly is
+     disabled). This service is talking to the PRIMARY, so writes reaching it are NOT blocked.
+     Configure a read replica, or set {{ $key }}.database.masterHost explicitly.
+{{- end }}
+{{- end }}
+========================================================
+{{- end }}

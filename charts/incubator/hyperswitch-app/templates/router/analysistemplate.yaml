@@ -1,34 +1,3 @@
 {{- if and .Values.services.router.enabled .Values.argoRollouts.enabled .Values.argoRollouts.canary.analysis.enabled }}
-{{- $analysis := .Values.argoRollouts.canary.analysis }}
-{{- include "hyperswitch.validateAnalysisConfig" . }}
-{{- $addr := $analysis.victoriaMetrics.address | required "argoRollouts.canary.analysis.victoriaMetrics.address is required when analysis is enabled" }}
-{{- $mergedMetrics := list }}
-{{- range $analysis.metrics }}
-{{- $merged := include "hyperswitch.mergeAnalysisMetric" (dict "metric" . "sharedInterval" $analysis.interval "prometheusAddress" $addr "prometheusTimeout" $analysis.timeout) | fromYaml }}
-{{- $mergedMetrics = append $mergedMetrics $merged }}
-{{- end }}
-apiVersion: argoproj.io/v1alpha1
-kind: AnalysisTemplate
-metadata:
-  name: {{ include "hyperswitch-server.name" . }}-canary
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "hyperswitch.labels" . | nindent 4 }}
-spec:
-  {{- if $analysis.args }}
-  args:
-  {{- range $analysis.args }}
-  {{- if and .valueFrom .valueFrom.secretKeyRef }}
-  - {{ toYaml . | nindent 4 | trim }}
-  {{- else }}
-  - name: {{ .name }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- if not $analysis.enforce }}
-  dryRun:
-    - metricName: .*
-  {{- end }}
-  metrics:
-{{ toYaml $mergedMetrics | nindent 4 }}
+{{- include "hyperswitch.router.analysistemplate" (dict "root" . "key" "") }}
 {{- end }}

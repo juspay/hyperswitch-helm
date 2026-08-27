@@ -164,6 +164,11 @@ server:
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels: {}
   # Service Account configuration for Hyperswitch Router
+  # -- Extra volumes for the router pods, e.g. a ConfigMap holding a Superposition fallback seed.
+  # Inherited by the olap and paymentMethodModular services unless they set their own.
+  extraVolumes: []
+  # -- Extra volume mounts for the router container
+  extraVolumeMounts: []
   serviceAccount:
     # -- Service account creation for the application
     create: true
@@ -749,8 +754,10 @@ server:
     # -- Superposition client config (mandatory at boot as of newer router builds).
     # Defaults assume the bundled `superposition` subchart under this release name.
     superposition:
-      # -- Bundled subchart's Service URL - update release name/namespace to match.
-      endpoint: "http://hyperswitch-v1-superposition.hyperswitch.svc.cluster.local:80"
+      # -- Superposition service URL. Left empty it resolves to the Superposition of this release
+      # (`http://<release>-superposition.<namespace>.svc.cluster.local:80`), so it follows the
+      # release name instead of being pinned to one. Set it explicitly to point somewhere else.
+      endpoint: ""
       # -- Must match the subchart's SUPERPOSITION_TOKEN below (defaults to "123456").
       token: "123456"
       org_id: hyperswitch
@@ -1548,6 +1555,30 @@ hyperswitch-card-vault:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+# Superposition fallback seed.
+#
+# The router needs a Superposition config source at boot, and the bundled `superposition` subchart
+# ships without database migrations, so it cannot serve config on its own. If you are not running a
+# working Superposition service, mount the seed file that ships with hyperswitch and the router
+# falls back to it when the endpoint is unreachable:
+#
+#   curl -sfLO https://raw.githubusercontent.com/juspay/hyperswitch/<version>/config/superposition_seed.toml
+#   kubectl create configmap superposition-seed -n <namespace> \
+#     --from-file=superposition_seed.toml=superposition_seed.toml
+#   helm install ... --set superpositionFallback.enabled=true
+#
+# The file is mounted into every workload that runs the router binary (router, consumer, producer,
+# drainer, and the olap / paymentMethodModular services), and the chart points
+# `ROUTER__SUPERPOSITION__BACKUP_FILE_PATH` at it.
+superpositionFallback:
+  # -- Mount a Superposition seed file as the fallback config source
+  enabled: false
+  # -- Name of the ConfigMap holding the seed file. Create it yourself; it is not part of the chart.
+  configMap: superposition-seed
+  # -- Key inside that ConfigMap
+  key: superposition_seed.toml
+  # -- Path the file is mounted at, and the value of ROUTER__SUPERPOSITION__BACKUP_FILE_PATH
+  mountPath: /local/config/superposition_seed.toml
 # Disable internal secret creation (use when managing secrets externally)
 disableInternalSecrets: false
 # External Secrets Operator Configuration (recommend setting disableInternalSecrets to true)
@@ -2115,3 +2146,215 @@ superposition:
       enabled: false
     destinationRule:
       enabled: false
+# -- Name of the Helm release that owns this environment's shared infrastructure.
+# Set it when this release is a *second* release of the chart running a single service (OLAP or
+# payment method modular) against the datastores of a main release. The host and secret-name values
+# are templated, so an overlay can refer to `{{ .Values.baseRelease }}-postgresql`,
+# `{{ .Values.baseRelease }}-redis-master`, `{{ .Values.baseRelease }}-hyperswitch-router-role` and
+# have them follow the base release. Ignored when left empty.
+# @section -- Router services
+baseRelease: ""
+# Extra routers that run inside this release.
+#
+# Each one uses the same image and the same release-wide ConfigMap, Secret and ServiceAccount as
+# the main router, and differs only in configuration - `configs` here is merged over
+# `server.configs` and rendered as inline env on that service's pods, which take precedence over
+# the shared ConfigMap. `_secret` values are not supported in these deltas (they would be
+# plaintext in the pod spec); use `_secretRef`.
+#
+# Set `services.router.enabled: false` to run a release that serves only one of these.
+#
+# OLAP - read and analytics traffic, served under /olap.
+# @section -- Router services
+olap:
+  # -- Enable the OLAP router
+  # @section -- Router services
+  enabled: false
+  # -- Override the generated name `<release>-hyperswitch-olap-server`
+  # @section -- Router services
+  fullnameOverride: ""
+  # -- Image tag, registry and repository. Empty values fall back to `services.router.*`
+  # @section -- Router services
+  version: ""
+  imageRegistry: ""
+  image: ""
+  imagePullPolicy: ""
+  # -- Number of replicas; ignored when this service's autoscaling is enabled
+  # @section -- Router services
+  replicas: 1
+  # -- ServiceAccount to run as. Empty reuses the release's router ServiceAccount, so this
+  # service inherits the same cloud identity instead of needing one of its own.
+  # @section -- Router services
+  serviceAccountName: ""
+  database:
+    # -- Point the master (write) database handle at the read replica. A write attempted against
+    # this service then fails at the replica instead of reaching the writer. When the release has
+    # no read replica the primary is used instead, so the service still runs - `helm install`
+    # prints a warning in that case.
+    # @section -- Router services
+    useReplicaForMaster: true
+    # -- Explicit host overrides. Templated, e.g. `{{ .Release.Name }}-postgresql`
+    # @section -- Router services
+    masterHost: ""
+    replicaHost: ""
+  # -- Config overrides merged over `server.configs`, rendered as inline env
+  # @section -- Router services
+  configs:
+    master_database:
+      # This service only reads, so it does not need the write pool the main router sizes for.
+      pool_size: "5"
+  # -- Workload settings; empty values fall back to `server.*` and then `global.*`
+  # @section -- Router services
+  resources: {}
+  env: []
+  tolerations: []
+  affinity: {}
+  nodeSelector: {}
+  annotations: {}
+  podAnnotations: {}
+  labels: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  strategy: {}
+  extraVolumes: []
+  extraVolumeMounts: []
+  progressDeadlineSeconds: ""
+  terminationGracePeriodSeconds: ""
+  autoscaling:
+    # -- Enable a HorizontalPodAutoscaler for this service
+    # @section -- Router services
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    # -- Publish this service through an Ingress
+    # @section -- Router services
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: ""
+    path: /olap
+    pathType: Prefix
+    tls: []
+  istio:
+    # -- Render a VirtualService and DestinationRule for this service. Set `hosts` and `gateways`
+    # to the same values as `istio.virtualService` above so Istio merges the two into one route
+    # table for the host. Istio does not guarantee rule ordering across VirtualServices on the
+    # same host, so keep the main router's catch-all from shadowing the paths claimed here.
+    # @section -- Router services
+    enabled: false
+    virtualService:
+      create: true
+      hosts: []
+      gateways: []
+      http:
+        # Everything under /olap/ reaches this service with the prefix stripped, so the router
+        # still sees its usual paths (/olap/health -> /health).
+        - name: primary
+          match:
+            - uri:
+                prefix: /olap/
+          rewrite:
+            uri: /
+          weight: 100
+          timeout: 50s
+          retries: {}
+    destinationRule:
+      trafficPolicy: {}
+  # -- Argo Rollouts settings for this service, merged over the release-level `argoRollouts`
+  # block. Lists (canary steps, analysis metrics) replace rather than extend the inherited value.
+  # Omit to inherit the release's rollout behaviour as-is.
+  # @section -- Router services
+  argoRollouts: {}
+# Payment method modular - the payment method APIs, served from their own router.
+# @section -- Router services
+paymentMethodModular:
+  # -- Enable the payment method modular router
+  # @section -- Router services
+  enabled: false
+  # -- Override the generated name `<release>-hyperswitch-payment-method-modular-server`. Worth
+  # setting for release names longer than 21 characters, where the generated name is truncated at
+  # Kubernetes' 63 character limit.
+  # @section -- Router services
+  fullnameOverride: ""
+  version: ""
+  imageRegistry: ""
+  image: ""
+  imagePullPolicy: ""
+  replicas: 1
+  serviceAccountName: ""
+  database:
+    # This service reads and writes, so it uses the release's normal database endpoints.
+    useReplicaForMaster: false
+    masterHost: ""
+    replicaHost: ""
+  # -- Config overrides merged over `server.configs`, rendered as inline env
+  # @section -- Router services
+  configs:
+    micro_services:
+      payment_methods_prefix: v1
+    trace_header:
+      header_name: x-request-id
+      id_reuse_strategy: use_incoming
+    # Authentication between the main router and this service. The secret referenced here must
+    # already exist in the namespace, and the main router must carry the same key.
+    # internal_merchant_id_profile_id_auth:
+    #   enabled: true
+    #   internal_api_key:
+    #     _secretRef:
+    #       name: hyperswitch-secrets
+    #       key: ROUTER__INTERNAL_MERCHANT_ID_PROFILE_ID_AUTH__INTERNAL_API_KEY
+  resources: {}
+  env: []
+  tolerations: []
+  affinity: {}
+  nodeSelector: {}
+  annotations: {}
+  podAnnotations: {}
+  labels: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  strategy: {}
+  extraVolumes: []
+  extraVolumeMounts: []
+  progressDeadlineSeconds: ""
+  terminationGracePeriodSeconds: ""
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: ""
+    path: /v1/payment-methods
+    pathType: Prefix
+    tls: []
+  istio:
+    enabled: false
+    virtualService:
+      create: true
+      hosts: []
+      gateways: []
+      http:
+        # The payment method APIs are served by this service; everything else on the host stays
+        # with the main router. Paths are passed through unchanged - no rewrite.
+        - name: primary
+          match:
+            - uri:
+                prefix: /v1/payment-methods
+            - uri:
+                prefix: /v1/payment-method-sessions
+            - uri:
+                prefix: /v1/customers
+            - uri:
+                prefix: /v1/proxy
+          weight: 100
+          timeout: 50s
+          retries: {}
+    destinationRule:
+      trafficPolicy: {}
+  argoRollouts: {}
