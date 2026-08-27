@@ -1,4 +1,4 @@
-{{- if .Values.services.router.enabled }}
+{{- if include "hyperswitch.anyRouterEnabled" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -20,6 +20,10 @@ data:
   # Redis configs
   ROUTER__REDIS__HOST: {{ include "redis.host" . }}
   ROUTER__REDIS__PORT: {{ include "redis.port" . | quote }}
+  {{- if and .Values.superpositionFallback.enabled (not .Values.server.configs.superposition.backup_file_path) }}
+  # Superposition fallback seed, mounted from the {{ .Values.superpositionFallback.configMap }} ConfigMap
+  ROUTER__SUPERPOSITION__BACKUP_FILE_PATH: {{ .Values.superpositionFallback.mountPath | quote }}
+  {{- end }}
   # Configs from values.server.configs will be generated as environment variables with prefix ROUTER_
   {{- include "hyperswitch.configToEnvVars" (dict "config" .Values.server.configs "prefix" "ROUTER" "context" .) | nindent 2 }}
 {{- end }}

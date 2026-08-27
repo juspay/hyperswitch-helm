@@ -64,7 +64,11 @@ topic and the AB tables, so without it other releases land in the "stable" bucke
 
 # Define `hyperswitch-router-sa.name` template
 {{- define "hyperswitch-router-sa.name" -}}
-{{- default (printf "%s-hyperswitch-router-role" .Release.Name) .Values.server.serviceAccount.name -}}
+{{- if .Values.server.serviceAccount.name -}}
+{{- tpl (.Values.server.serviceAccount.name | toString) . -}}
+{{- else -}}
+{{- printf "%s-hyperswitch-router-role" .Release.Name -}}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -148,7 +152,7 @@ Allow the release namespace to be overridden for multi-namespace deployments
     {{- if .Values.redis.enabled }}
         {{- printf "%s-redis-master"  .Release.Name | trunc 63 | trimSuffix "-" -}}
     {{- else if .Values.externalRedis.enabled }}
-        {{- printf "%s" .Values.externalRedis.host -}}
+        {{- tpl (.Values.externalRedis.host | toString) . -}}
     {{- end -}}
 {{- end -}}
 
@@ -177,7 +181,7 @@ Allow the release namespace to be overridden for multi-namespace deployments
     {{- if .Values.postgresql.enabled }}
         {{- printf "%s-postgresql" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
     {{- else if .Values.externalPostgresql.enabled }}
-        {{- printf "%s" .Values.externalPostgresql.primary.host -}}
+        {{- tpl (.Values.externalPostgresql.primary.host | toString) . -}}
     {{- end -}}
 {{- end -}}
 
@@ -188,7 +192,7 @@ Allow the release namespace to be overridden for multi-namespace deployments
     {{- if .Values.postgresql.enabled }}
         {{- printf "%s-postgresql-read" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
     {{- else if .Values.externalPostgresql.enabled }}
-        {{- printf "%s" .Values.externalPostgresql.readOnly.host -}}
+        {{- tpl (.Values.externalPostgresql.readOnly.host | toString) . -}}
     {{- end -}}
 {{- end -}}
 
@@ -281,14 +285,14 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- if .Values.postgresql.enabled -}}
     {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
     {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
-      {{- printf "%s" $passwordConfig._secretRef.name -}}
+      {{- tpl ($passwordConfig._secretRef.name | toString) . -}}
     {{- else -}}
       {{- include "postgresql.default.secret.name" . -}}
     {{- end -}}
   {{- else if .Values.externalPostgresql.enabled -}}
     {{- $passwordConfig := .Values.externalPostgresql.primary.auth.password -}}
     {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
-      {{- printf "%s" $passwordConfig._secretRef.name -}}
+      {{- tpl ($passwordConfig._secretRef.name | toString) . -}}
     {{- else -}}
       {{- include "postgresql.default.secret.name" . -}}
     {{- end -}}
@@ -319,14 +323,14 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- if .Values.postgresql.enabled -}}
     {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
     {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
-      {{- printf "%s" $passwordConfig._secretRef.name -}}
+      {{- tpl ($passwordConfig._secretRef.name | toString) . -}}
     {{- else -}}
       {{- include "postgresql.master.password.secret" . -}}
     {{- end -}}
   {{- else if .Values.externalPostgresql.enabled -}}
     {{- $plainPasswordConfig := .Values.externalPostgresql.primary.auth.plainpassword -}}
     {{- if and $plainPasswordConfig (eq (include "postgresql.password.uses.secretRef" $plainPasswordConfig) "true") -}}
-      {{- printf "%s" $plainPasswordConfig._secretRef.name -}}
+      {{- tpl ($plainPasswordConfig._secretRef.name | toString) . -}}
     {{- else if and $plainPasswordConfig (not (kindIs "map" $plainPasswordConfig)) -}}
       {{- include "postgresql.default.secret.name" . -}}
     {{- else -}}
@@ -361,14 +365,14 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- if .Values.postgresql.enabled -}}
     {{- $passwordConfig := .Values.postgresql.global.postgresql.auth.password -}}
     {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
-      {{- printf "%s" $passwordConfig._secretRef.name -}}
+      {{- tpl ($passwordConfig._secretRef.name | toString) . -}}
     {{- else -}}
       {{- include "postgresql.default.secret.name" . -}}
     {{- end -}}
   {{- else if .Values.externalPostgresql.enabled -}}
     {{- $passwordConfig := .Values.externalPostgresql.readOnly.auth.password -}}
     {{- if eq (include "postgresql.password.uses.secretRef" $passwordConfig) "true" -}}
-      {{- printf "%s" $passwordConfig._secretRef.name -}}
+      {{- tpl ($passwordConfig._secretRef.name | toString) . -}}
     {{- else -}}
       {{- include "postgresql.default.secret.name" . -}}
     {{- end -}}
@@ -422,12 +426,32 @@ Allow the release namespace to be overridden for multi-namespace deployments
   {{- end -}}
 {{- end -}}
 
+{{/* Define the Superposition service URL of this release, used when the endpoint is left empty */}}
+{{- define "superposition.url" -}}
+{{- printf "http://%s-superposition.%s.svc.cluster.local:80" .Release.Name .Release.Namespace -}}
+{{- end -}}
+
+{{/* Superposition fallback seed volume, mounted into every workload that runs the router binary */}}
+{{- define "hyperswitch.superpositionFallback.volume" -}}
+- name: superposition-seed
+  configMap:
+    name: {{ .Values.superpositionFallback.configMap }}
+{{- end -}}
+
+{{- define "hyperswitch.superpositionFallback.volumeMount" -}}
+- name: superposition-seed
+  mountPath: {{ .Values.superpositionFallback.mountPath }}
+  subPath: {{ .Values.superpositionFallback.key }}
+  readOnly: true
+{{- end -}}
+
 {{/* Define mapping of config keys to helper functions */}}
 {{- define "hyperswitch.configKeyToHelperMapping" -}}
 generic_link.payment_method_collect.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 generic_link.payout_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 payment_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
+superposition.endpoint: "superposition.url"
 {{- end -}}
 
 {{/* Helper: Check if a config value is a secret field (_secret) */}}
