@@ -55,8 +55,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if or .Values.initDB.enable .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+      {{- if or .Values.initDB.enable .Values.redisMiscConfig.checkRedisIsUp.initContainer.enable (eq (include "hyperswitch.superpositionFallback.fetchEnabled" .) "true") }}
       initContainers:
+        {{- if eq (include "hyperswitch.superpositionFallback.fetchEnabled" .) "true" }}
+        {{- include "hyperswitch.superpositionFallback.initContainer" . | nindent 8 }}
+        {{- end }}
         {{- if .Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
         {{- end }}

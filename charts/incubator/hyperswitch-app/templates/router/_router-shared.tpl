@@ -296,8 +296,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if or $root.Values.initDB.enable $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
+      {{- if or $root.Values.initDB.enable $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable (eq (include "hyperswitch.superpositionFallback.fetchEnabled" $root) "true") }}
       initContainers:
+        {{- if eq (include "hyperswitch.superpositionFallback.fetchEnabled" $root) "true" }}
+        {{- include "hyperswitch.superpositionFallback.initContainer" $root | nindent 8 }}
+        {{- end }}
         {{- if $root.Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" $root | nindent 8 }}
         {{- end }}
