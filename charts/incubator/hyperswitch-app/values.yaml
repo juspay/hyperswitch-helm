@@ -1321,7 +1321,7 @@ initDB:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags # tags or heads
+  refs: tags  # tags or heads
   migration:
     imageRegistry: docker.io
     # -- Base image for the migration Job. It needs `bash`, `apt-get` and network access: the Job
