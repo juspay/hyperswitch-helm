@@ -1,0 +1,114 @@
+{{/*
+The bundled `superposition` subchart takes its database connection from plain values
+(`superposition.configs.db_host` and friends), and Helm does not template values, so that host
+cannot carry the release name. Two objects bridge that gap:
+
+  1. an ExternalName Service under a fixed name, which resolves to whatever `postgresql.host`
+     resolves to for this release, so the static `db_host` works under any release name; and
+  2. a Job that fetches the Superposition global schema from the superposition repository and
+     applies it to the database - the same shape as the hyperswitch migration Job, which pulls its
+     migrations from the hyperswitch repo. Without it Superposition crash-loops on
+     `Failed to find a type oid for superposition.org_status`.
+
+Both are skipped when `superpositionDB.enable` is false - set that when you point Superposition at
+a database you manage yourself.
+*/}}
+{{- if and .Values.superposition.enabled .Values.superpositionDB.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.superpositionDB.aliasService }}
+  labels:
+    app: {{ .Release.Name }}-superposition-db
+spec:
+  type: ExternalName
+  externalName: {{ if .Values.postgresql.enabled }}{{ printf "%s.%s.svc.cluster.local" (include "postgresql.host" .) .Release.Namespace }}{{ else }}{{ include "postgresql.host" . }}{{ end }}
+{{- if .Values.superpositionDB.migration.enable }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-superposition-schema
+  labels:
+    app: {{ .Release.Name }}-superposition-schema
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 10
+  template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
+    spec:
+      restartPolicy: OnFailure
+      {{- with (default .Values.global.tolerations .Values.server.tolerations) }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.affinity .Values.server.affinity) }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.global.nodeSelector .Values.server.nodeSelector) }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{/* The PostgreSQL client image ships psql but neither curl nor wget, so the download
+             happens in its own container and lands in a shared emptyDir. */}}
+        - name: fetch-superposition-schema
+          {{- $fetchRegistry := .Values.global.imageRegistry | default .Values.superpositionDB.migration.fetch.imageRegistry }}
+          image: "{{ $fetchRegistry }}/{{ .Values.superpositionDB.migration.fetch.image }}"
+          imagePullPolicy: IfNotPresent
+          command: [ '/bin/sh', '-c' ]
+          #language=sh
+          args:
+            - |-
+              set -eu
+              curl -sfL --retry 5 --retry-delay 3 --retry-connrefused \
+                -o /schema/superposition.sql "$SCHEMA_URL"
+              echo "Fetched the superposition global schema from $SCHEMA_URL"
+          env:
+            - name: SCHEMA_URL
+              value: {{ include "hyperswitch.superpositionDB.schemaUrl" . | quote }}
+          volumeMounts:
+            - name: schema
+              mountPath: /schema
+      containers:
+        - name: apply-superposition-schema
+          {{- $registry := .Values.global.imageRegistry | default .Values.superpositionDB.migration.imageRegistry }}
+          image: "{{ $registry }}/{{ .Values.superpositionDB.migration.image }}"
+          imagePullPolicy: IfNotPresent
+          command: [ '/bin/sh', '-c' ]
+          #language=sh
+          args:
+            - |-
+              set -eu
+              export PGPASSWORD="$POSTGRES_PASSWORD"
+              psql -v ON_ERROR_STOP=1 -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" \
+                -U "$POSTGRES_USER" -d "$DBNAME" -f /schema/superposition.sql
+              echo "Applied the superposition global schema to $DBNAME"
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "postgresql.host" . }}
+            - name: POSTGRES_PORT
+              value: {{ include "postgresql.port" . | quote }}
+            - name: DBNAME
+              value: {{ .Values.superposition.configs.db_name | default (include "postgresql.database" .) | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.superposition.configs.db_user | default (include "postgresql.username" .) | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "postgresql.master.plainPassword.secret" . }}
+                  key: {{ include "postgresql.master.plainPassword.key" . }}
+          volumeMounts:
+            - name: schema
+              mountPath: /schema
+      volumes:
+        - name: schema
+          emptyDir: {}
+{{- end }}
+{{- end }}

@@ -190,7 +190,16 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- define "postgresqlreplica.host" -}}
 {{- $test_pg := include "validate.postgresql.config" . }}
     {{- if .Values.postgresql.enabled }}
-        {{- printf "%s-postgresql-read" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+        {{- /* The Bitnami chart only creates the `-read` Service under `architecture: replication`,
+             and it only has endpoints once `readReplicas.replicaCount` is at least 1. Pointing the
+             replica pool at an endpoint-less Service makes the router fail to boot, so fall back to
+             the primary whenever no read replica is actually running. */ -}}
+        {{- $replicaCount := int (dig "readReplicas" "replicaCount" 0 .Values.postgresql) -}}
+        {{- if and (eq (default "replication" .Values.postgresql.architecture) "replication") (gt $replicaCount 0) -}}
+            {{- printf "%s-postgresql-read" .Release.Name | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+        {{- else -}}
+            {{- include "postgresql.host" . -}}
+        {{- end -}}
     {{- else if .Values.externalPostgresql.enabled }}
         {{- tpl (.Values.externalPostgresql.readOnly.host | toString) . -}}
     {{- end -}}
@@ -431,18 +440,81 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- printf "http://%s-superposition.%s.svc.cluster.local:80" .Release.Name .Release.Namespace -}}
 {{- end -}}
 
-{{/* Superposition fallback seed volume, mounted into every workload that runs the router binary */}}
+{{/* Superposition fallback seed, mounted into every workload that runs the router binary. */}}
+
+{{/* Is the seed file fetched by an init container, rather than supplied as a ConfigMap? */}}
+{{- define "hyperswitch.superpositionFallback.fetchEnabled" -}}
+  {{- if and .Values.superpositionFallback.enabled (ne (default "fetch" .Values.superpositionFallback.source) "configMap") -}}
+    {{- print "true" -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* URL the seed file is fetched from; defaults to the router version this release runs. */}}
+{{- define "hyperswitch.superpositionFallback.url" -}}
+  {{- $fetch := .Values.superpositionFallback.fetch -}}
+  {{- $version := default (.Values.services.router.version | toString) ($fetch.version | toString) -}}
+  {{- printf "%s/%s/%s" (trimSuffix "/" $fetch.baseUrl) $version (trimPrefix "/" $fetch.path) -}}
+{{- end -}}
+
 {{- define "hyperswitch.superpositionFallback.volume" -}}
+{{- if eq (include "hyperswitch.superpositionFallback.fetchEnabled" .) "true" }}
+- name: superposition-seed
+  emptyDir: {}
+{{- else }}
 - name: superposition-seed
   configMap:
     name: {{ .Values.superpositionFallback.configMap }}
+{{- end }}
 {{- end -}}
 
 {{- define "hyperswitch.superpositionFallback.volumeMount" -}}
+{{- if eq (include "hyperswitch.superpositionFallback.fetchEnabled" .) "true" }}
+- name: superposition-seed
+  mountPath: {{ dir .Values.superpositionFallback.mountPath }}
+  readOnly: true
+{{- else }}
 - name: superposition-seed
   mountPath: {{ .Values.superpositionFallback.mountPath }}
   subPath: {{ .Values.superpositionFallback.key }}
   readOnly: true
+{{- end }}
+{{- end -}}
+
+{{/* URL the Superposition global schema is fetched from. Mirrors the way the hyperswitch
+     migration Job pulls its migrations from the hyperswitch repo at `services.router.version`:
+     the version is a value, and must be kept in step with the `superposition` dependency in
+     Chart.yaml - the schema and the binary are released together. */}}
+{{- define "hyperswitch.superpositionDB.schemaUrl" -}}
+  {{- $m := .Values.superpositionDB.migration -}}
+  {{- printf "%s/%s/%s" (trimSuffix "/" $m.baseUrl) ($m.version | toString) (trimPrefix "/" $m.path) -}}
+{{- end -}}
+
+{{/* Init container that downloads the Superposition seed file the router falls back to.
+     Rendered only when superpositionFallback.source is "fetch" (the default), so that a user who
+     prefers to supply their own ConfigMap - or has no egress to GitHub - is unaffected. */}}
+{{- define "hyperswitch.superpositionFallback.initContainer" -}}
+{{- $registry := .Values.global.imageRegistry | default .Values.superpositionFallback.fetch.imageRegistry }}
+- name: fetch-superposition-seed
+  image: "{{ $registry }}/{{ .Values.superpositionFallback.fetch.image }}"
+  imagePullPolicy: IfNotPresent
+  command: ['/bin/sh', '-c']
+  #language=sh
+  args:
+    - |-
+      set -eu
+      curl -sfL --retry 5 --retry-delay 3 --retry-connrefused \
+        -o "{{ .Values.superpositionFallback.mountPath }}" "$SEED_URL"
+      echo "fetched superposition seed from $SEED_URL"
+  env:
+    - name: SEED_URL
+      value: {{ include "hyperswitch.superpositionFallback.url" . | quote }}
+  {{- with .Values.superpositionFallback.fetch.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  volumeMounts:
+    - name: superposition-seed
+      mountPath: {{ dir .Values.superpositionFallback.mountPath }}
 {{- end -}}
 
 {{/* Define mapping of config keys to helper functions */}}

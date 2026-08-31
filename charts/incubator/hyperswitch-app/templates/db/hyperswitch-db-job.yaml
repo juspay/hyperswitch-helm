@@ -34,16 +34,29 @@ spec:
           {{- $registry := .Values.global.imageRegistry | default .Values.initDB.migration.imageRegistry }}
           image: "{{ $registry }}/{{ .Values.initDB.migration.image }}"
           imagePullPolicy: IfNotPresent
-          command: [ '/bin/sh', '-c' ]
-          #language=sh
+          command: [ '/bin/bash', '-c' ]
+          #language=bash
           args:
             - |-
-              curl -L -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
-              tar -xzvf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
+              set -eo pipefail
+              apt-get update -qq
+              apt-get install -y -qq curl tar xz-utils libpq5 ca-certificates
+              # Install diesel_cli the same way hyperswitch's own migration runner does
+              # (docker/migration-runner.Dockerfile). The migrations that create indexes
+              # concurrently carry `run_in_transaction = false` in metadata.toml, which only
+              # diesel_cli 2.x honours - an older CLI stops at the first such migration and
+              # leaves the schema half-applied.
+              curl --proto '=https' --tlsv1.2 -LsSf "$DIESEL_INSTALLER" | sh
+              export PATH="$HOME/.cargo/bin:$PATH"
+              diesel --version
+              curl -fsSL --retry 3 --retry-delay 5 -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
+              tar -xzf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
               cd hyperswitch
               diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
               echo "Completed hyperswitch database migration"
           env:
+            - name: DIESEL_INSTALLER
+              value: {{ .Values.initDB.migration.dieselInstaller | quote }}
             - name: REFERENCE
               value: {{ .Values.initDB.refs }}
             - name: ROUTER_VERSION

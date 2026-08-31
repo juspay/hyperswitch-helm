@@ -58,3 +58,34 @@
 {{- end }}
 ========================================================
 {{- end }}
+{{- if and .Values.superposition.enabled (not .Values.superpositionDB.enable) }}
+
+NOTE: the bundled `superposition` subchart is enabled but `superpositionDB.enable` is false, so
+nothing points it at a database or applies its schema. It will crash-loop on
+`Failed to find a type oid for superposition.org_status`. Either
+
+  - turn the wiring on (only safe when this release owns the namespace - the alias Service has a
+    release-independent name):
+
+      superpositionDB:
+        enable: true
+      superposition:
+        configs:
+          db_host: "superposition-db:5432"
+          db_name: {{ include "postgresql.database" . | quote }}
+          db_user: {{ include "postgresql.username" . | quote }}
+        secrets:
+          db_password: "<the password for that user>"
+          superposition_token: {{ .Values.server.configs.superposition.token | default "123456" | quote }}
+
+    (`hyperswitch-stack` ships exactly this), or
+
+  - turn it off with `superposition.enabled: false` and leave the router on the seed fallback
+    (`superpositionFallback.enabled: true`).
+{{- end }}
+{{- if not .Values.superpositionFallback.enabled }}
+
+NOTE: `superpositionFallback.enabled` is false. The router needs a Superposition config source at
+boot; if the endpoint is unreachable or its workspace is empty it has nothing to fall back on and
+will fail to start. Set `superpositionFallback.enabled: true` unless you run a seeded Superposition.
+{{- end }}
