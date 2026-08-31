@@ -20,7 +20,9 @@ All notable changes to HyperSwitch-Helm will be documented here.
   `failed to create replica pool ... Connection refused`.
 - *(superposition)* Wire the bundled subchart to this release's PostgreSQL and apply the
   Superposition global schema, so it no longer crash-loops on
-  `Failed to find a type oid for superposition.org_status`. See the new `superpositionDB` values.
+  `Failed to find a type oid for superposition.org_status`. The schema is fetched from the
+  superposition repository at `superpositionDB.migration.version`, the same way `initDB` pulls the
+  hyperswitch migrations at `services.router.version`. See the new `superpositionDB` values.
 - *(superposition)* Default `superposition.enabled` to `false`. Without its global schema the
   service still answers `/health` with 200, so it reported Healthy to Kubernetes while every API
   call returned 500 - shipping that enabled by default hid the failure. `hyperswitch-stack`

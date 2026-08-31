@@ -2139,10 +2139,24 @@ superpositionDB:
   # Change both together if two releases share a namespace.
   aliasService: superposition-db
   migration:
-    # -- Apply files/superposition.sql to `superposition.configs.db_name`
+    # -- Fetch the Superposition global schema and apply it to `superposition.configs.db_name`
     enable: true
+    # -- Image that runs `psql`. Needs the PostgreSQL client only; the download happens in a
+    # separate init container because this image ships neither curl nor wget.
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+    # -- Superposition ref the schema is fetched from. Keep this in step with the `superposition`
+    # dependency in Chart.yaml - the schema and the binary are released together. This mirrors
+    # `initDB`, which pulls the hyperswitch migrations at `services.router.version`.
+    version: v0.112.0
+    # -- Base URL of the superposition source repository
+    baseUrl: https://raw.githubusercontent.com/juspay/superposition
+    # -- Path of the global schema inside that repository
+    path: superposition.sql
+    # -- Image used to download the schema; needs `curl` and `sh`
+    fetch:
+      imageRegistry: docker.io
+      image: curlimages/curl:8.11.1
 # @ignored
 superposition:
   # Off by default. The subchart cannot serve configuration until the Superposition global schema

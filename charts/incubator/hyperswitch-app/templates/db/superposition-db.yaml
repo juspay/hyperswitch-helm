@@ -5,8 +5,9 @@ cannot carry the release name. Two objects bridge that gap:
 
   1. an ExternalName Service under a fixed name, which resolves to whatever `postgresql.host`
      resolves to for this release, so the static `db_host` works under any release name; and
-  2. a Job that applies the Superposition global schema (files/superposition.sql, matching the
-     pinned subchart version) to the database. Without it Superposition crash-loops on
+  2. a Job that fetches the Superposition global schema from the superposition repository and
+     applies it to the database - the same shape as the hyperswitch migration Job, which pulls its
+     migrations from the hyperswitch repo. Without it Superposition crash-loops on
      `Failed to find a type oid for superposition.org_status`.
 
 Both are skipped when `superpositionDB.enable` is false - set that when you point Superposition at
@@ -23,20 +24,6 @@ spec:
   type: ExternalName
   externalName: {{ if .Values.postgresql.enabled }}{{ printf "%s.%s.svc.cluster.local" (include "postgresql.host" .) .Release.Namespace }}{{ else }}{{ include "postgresql.host" . }}{{ end }}
 {{- if .Values.superpositionDB.migration.enable }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-superposition-schema
-  labels:
-    app: {{ .Release.Name }}-superposition-schema
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": before-hook-creation
-data:
-  superposition.sql: |-
-{{ .Files.Get "files/superposition.sql" | indent 4 }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -69,6 +56,26 @@ spec:
       {{- end }}
       initContainers:
         {{- include "postgresql.initContainer.check.ready" . | nindent 8 }}
+        {{/* The PostgreSQL client image ships psql but neither curl nor wget, so the download
+             happens in its own container and lands in a shared emptyDir. */}}
+        - name: fetch-superposition-schema
+          {{- $fetchRegistry := .Values.global.imageRegistry | default .Values.superpositionDB.migration.fetch.imageRegistry }}
+          image: "{{ $fetchRegistry }}/{{ .Values.superpositionDB.migration.fetch.image }}"
+          imagePullPolicy: IfNotPresent
+          command: [ '/bin/sh', '-c' ]
+          #language=sh
+          args:
+            - |-
+              set -eu
+              curl -sfL --retry 5 --retry-delay 3 --retry-connrefused \
+                -o /schema/superposition.sql "$SCHEMA_URL"
+              echo "Fetched the superposition global schema from $SCHEMA_URL"
+          env:
+            - name: SCHEMA_URL
+              value: {{ include "hyperswitch.superpositionDB.schemaUrl" . | quote }}
+          volumeMounts:
+            - name: schema
+              mountPath: /schema
       containers:
         - name: apply-superposition-schema
           {{- $registry := .Values.global.imageRegistry | default .Values.superpositionDB.migration.imageRegistry }}
@@ -102,7 +109,6 @@ spec:
               mountPath: /schema
       volumes:
         - name: schema
-          configMap:
-            name: {{ .Release.Name }}-superposition-schema
+          emptyDir: {}
 {{- end }}
 {{- end }}
