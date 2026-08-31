@@ -1321,10 +1321,18 @@ initDB:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
     maxAttempt: 60
-  refs: tags # tags or heads
+  refs: tags  # tags or heads
   migration:
     imageRegistry: docker.io
-    image: christophwurst/diesel-cli:latest
+    # -- Base image for the migration Job. It needs `bash`, `apt-get` and network access: the Job
+    # installs diesel_cli into it, mirroring hyperswitch's own migration runner. The previous
+    # default (christophwurst/diesel-cli) pinned diesel 1.4.1, which ignores the
+    # `run_in_transaction = false` marker on the `CREATE INDEX CONCURRENTLY` migrations and so
+    # silently stopped part-way through the schema.
+    image: debian:trixie-slim
+    # -- Installer used to place diesel_cli in the migration Job. Pin a release tag instead of
+    # `latest` if you need the CLI version to be reproducible.
+    dieselInstaller: https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.sh
 # -- Istio configuration
 # @section -- Istio
 istio:
@@ -1557,28 +1565,62 @@ hyperswitch-card-vault:
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
 # Superposition fallback seed.
 #
-# The router needs a Superposition config source at boot, and the bundled `superposition` subchart
-# ships without database migrations, so it cannot serve config on its own. If you are not running a
-# working Superposition service, mount the seed file that ships with hyperswitch and the router
-# falls back to it when the endpoint is unreachable:
+# The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
+# and only falls back to this file when that call fails, so the fallback is what keeps the release
+# bootable while Superposition is starting, empty, or not deployed at all.
 #
-#   curl -sfLO https://raw.githubusercontent.com/juspay/hyperswitch/<version>/config/superposition_seed.toml
-#   kubectl create configmap superposition-seed -n <namespace> \
-#     --from-file=superposition_seed.toml=superposition_seed.toml
-#   helm install ... --set superpositionFallback.enabled=true
+# Two ways to supply the file, chosen with `source`:
+#
+#   source: fetch      (default) an init container downloads
+#                      config/superposition_seed.toml from the hyperswitch repo at
+#                      `services.router.version`, so the file always matches the running router
+#                      and there is no manual step. Needs egress to raw.githubusercontent.com
+#                      from the pod - the same assumption `initDB` already makes.
+#   source: configMap  mount a ConfigMap you created yourself, for clusters without that egress:
+#
+#                        curl -sfLO https://raw.githubusercontent.com/juspay/hyperswitch/<version>/config/superposition_seed.toml
+#                        kubectl create configmap superposition-seed -n <namespace> \
+#                          --from-file=superposition_seed.toml=superposition_seed.toml
+#
+#                      (use `kubectl create`, not `kubectl apply` - the file is ~450 kB and the
+#                      last-applied annotation `apply` writes would exceed the annotation limit)
 #
 # The file is mounted into every workload that runs the router binary (router, consumer, producer,
-# drainer, and the olap / paymentMethodModular services), and the chart points
+# and the olap / paymentMethodModular services), and the chart points
 # `ROUTER__SUPERPOSITION__BACKUP_FILE_PATH` at it.
 superpositionFallback:
   # -- Mount a Superposition seed file as the fallback config source
   enabled: false
-  # -- Name of the ConfigMap holding the seed file. Create it yourself; it is not part of the chart.
+  # -- Where the seed file comes from: `fetch` (init container) or `configMap` (bring your own)
+  source: fetch
+  # -- Settings for `source: fetch`
+  fetch:
+    # -- Registry for the image that performs the download
+    imageRegistry: docker.io
+    # -- Image that performs the download; needs `curl` and `sh`
+    image: curlimages/curl:8.11.1
+    # -- Base URL of the hyperswitch source repository
+    baseUrl: https://raw.githubusercontent.com/juspay/hyperswitch
+    # -- Path of the seed file inside that repository
+    path: config/superposition_seed.toml
+    # -- Ref to download from. Empty means `services.router.version`, so the seed matches the router.
+    version: ""
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 128Mi
+        cpu: 200m
+  # -- Name of the ConfigMap holding the seed file, for `source: configMap`. Create it yourself;
+  # it is not part of the chart.
   configMap: superposition-seed
   # -- Key inside that ConfigMap
   key: superposition_seed.toml
-  # -- Path the file is mounted at, and the value of ROUTER__SUPERPOSITION__BACKUP_FILE_PATH
-  mountPath: /local/config/superposition_seed.toml
+  # -- Path the file is mounted at, and the value of ROUTER__SUPERPOSITION__BACKUP_FILE_PATH.
+  # Under `source: fetch` the parent directory is the mount point, so keep it in a directory of
+  # its own rather than directly in /local/config.
+  mountPath: /local/config/superposition/superposition_seed.toml
 # Disable internal secret creation (use when managing secrets externally)
 disableInternalSecrets: false
 # External Secrets Operator Configuration (recommend setting disableInternalSecrets to true)
@@ -2076,9 +2118,42 @@ superposition_fallback_cronjob:
     limits:
       memory: "64Mi"
       cpu: "100m"
+# Wiring between this release's PostgreSQL and the bundled `superposition` subchart.
+#
+# The subchart reads its database host from a plain value, which cannot reference the release name,
+# and it ships without any migration step - so on its own it crash-loops with
+# `Failed to find a type oid for superposition.org_status`. This chart closes both gaps: an alias
+# Service that gives the static host a release-independent name, and a post-install Job that
+# applies the Superposition global schema (files/superposition.sql, matching the pinned subchart
+# version). Turn it off when Superposition points at a database you manage yourself.
+superpositionDB:
+  # -- Create the alias Service and, if enabled below, run the schema Job.
+  #
+  # Off by default: the alias Service has a fixed, release-independent name (that is the point of
+  # it), so two releases of this chart in one namespace would collide on it. Turn it on when a
+  # single release owns the namespace - `hyperswitch-stack` does exactly that. When you do, set
+  # `superposition.configs.db_host` to `<aliasService>:5432` and `db_name` / `db_user` /
+  # `secrets.db_password` to this release's PostgreSQL credentials.
+  enable: false
+  # -- Name of the ExternalName Service. Must match the host in `superposition.configs.db_host`.
+  # Change both together if two releases share a namespace.
+  aliasService: superposition-db
+  migration:
+    # -- Apply files/superposition.sql to `superposition.configs.db_name`
+    enable: true
+    imageRegistry: docker.io
+    image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
 # @ignored
 superposition:
-  enabled: true
+  # Off by default. The subchart cannot serve configuration until the Superposition global schema
+  # has been applied to its database - upstream expects an operator to run `superposition.sql` out
+  # of band, and its own Helm README does not mention the step. A schema-less Superposition still
+  # answers /health with 200, so it reports Healthy to Kubernetes while every API call fails;
+  # shipping that on by default is a trap rather than a feature.
+  #
+  # `hyperswitch-stack` turns this on together with `superpositionDB`, which applies the schema.
+  # To do the same in a standalone release of this chart, see the `superpositionDB` block above.
+  enabled: false
   replicaCount: 1
   image:
     registry: ghcr.io/juspay
@@ -2089,8 +2164,18 @@ superposition:
     type: ClusterIP
     port: 8080
   configs:
-    # -- Postgres URL for superposition's own schema (release/credential-specific).
+    # -- Postgres URL for superposition's own schema. Leave empty: Superposition builds its own
+    # connection string from db_host / db_name / db_user / DB_PASSWORD below.
     database_url: ""
+    # -- Database host. Helm does not template values, so this cannot carry the release name.
+    # Leave it at the subchart default unless you enable `superpositionDB` above, in which case
+    # set it to `<superpositionDB.aliasService>:5432`.
+    # db_host: "superposition-db:5432"
+    # -- Database Superposition keeps its `superposition` schema in. The schema is namespaced, so
+    # it can live in the same database the router uses.
+    # db_name: "hyperswitch"
+    # -- Database user. Must match the user that owns the database above.
+    # db_user: "hyperswitch"
     port: 8080
     rust_log: debug
     app_env: DEV
@@ -2100,7 +2185,9 @@ superposition:
     # -- Required; binary panics if absent.
     auth_z_provider: DISABLED
   secrets:
+    # -- Password for `db_user`. Set it together with `db_host` above when `superpositionDB` is on.
     db_password: ""
+    # -- Must match `server.configs.superposition.token`.
     superposition_token: ""
     oidc_client_secret: ""
   serviceAccount:
