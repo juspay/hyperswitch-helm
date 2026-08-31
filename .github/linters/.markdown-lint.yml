@@ -1,0 +1,14 @@
+# Configuration for markdownlint, as run by the Super Linter workflow.
+#
+# CHANGELOG.md is generated (git-cliff) from commit messages rather than hand-written, so a couple
+# of markdownlint's prose rules produce false positives on it that these overrides account for.
+#
+# MD024 (no-duplicate-heading) defaults to flagging any two headings in the file with the same
+# text. CHANGELOG.md repeats headings like "### Features" under every version section by design
+# (see https://keepachangelog.com/). Some early entries also repeat the same "## [version] - date"
+# heading verbatim (a generation artifact from that period), which a `siblings_only` scope would
+# not catch since those are siblings at the document root too - disable the rule outright.
+MD024: false
+# MD013 (line-length) defaults to wrapping prose at 80 characters. Changelog bullets are copied
+# verbatim from commit subjects/PR descriptions and shouldn't be rewrapped to fit.
+MD013: false
