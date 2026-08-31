@@ -78,10 +78,28 @@ nothing points it at a database or applies its schema. It will crash-loop on
           db_password: "<the password for that user>"
           superposition_token: {{ .Values.server.configs.superposition.token | default "123456" | quote }}
 
-    (`hyperswitch-stack` ships exactly this), or
+    (this is the chart's default - see below if you have drifted from it), or
 
   - turn it off with `superposition.enabled: false` and leave the router on the seed fallback
     (`superpositionFallback.enabled: true`).
+{{- end }}
+{{- if .Values.superposition.enabled }}
+{{- if and .Values.superpositionDB.enable (ne .Values.superposition.configs.db_host (printf "%s:5432" .Values.superpositionDB.aliasService)) }}
+
+WARNING: superposition.configs.db_host ({{ .Values.superposition.configs.db_host | quote }}) does not
+match superpositionDB.aliasService ({{ printf "%s:5432" .Values.superpositionDB.aliasService | quote }}).
+Superposition will not be able to reach the alias Service the schema Job applied its schema to.
+{{- end }}
+{{- if ne (.Values.superposition.secrets.superposition_token | toString) (.Values.server.configs.superposition.token | toString) }}
+
+WARNING: superposition.secrets.superposition_token does not match server.configs.superposition.token.
+The router will send a token Superposition does not recognise and every call will be unauthorized.
+{{- end }}
+{{- if not .Values.superposition.secrets.db_password }}
+
+WARNING: superposition.secrets.db_password is empty, so the subchart's Secret will omit DB_PASSWORD
+entirely and Superposition will fail to authenticate against Postgres.
+{{- end }}
 {{- end }}
 {{- if not .Values.superpositionFallback.enabled }}
 

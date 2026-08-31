@@ -1590,7 +1590,7 @@ hyperswitch-card-vault:
 # `ROUTER__SUPERPOSITION__BACKUP_FILE_PATH` at it.
 superpositionFallback:
   # -- Mount a Superposition seed file as the fallback config source
-  enabled: false
+  enabled: true
   # -- Where the seed file comes from: `fetch` (init container) or `configMap` (bring your own)
   source: fetch
   # -- Settings for `source: fetch`
@@ -2129,12 +2129,13 @@ superposition_fallback_cronjob:
 superpositionDB:
   # -- Create the alias Service and, if enabled below, run the schema Job.
   #
-  # Off by default: the alias Service has a fixed, release-independent name (that is the point of
-  # it), so two releases of this chart in one namespace would collide on it. Turn it on when a
-  # single release owns the namespace - `hyperswitch-stack` does exactly that. When you do, set
-  # `superposition.configs.db_host` to `<aliasService>:5432` and `db_name` / `db_user` /
-  # `secrets.db_password` to this release's PostgreSQL credentials.
-  enable: false
+  # On by default, wired to this release's own PostgreSQL (see `superposition.configs.db_host` /
+  # `db_name` / `db_user` / `secrets.db_password` below). The alias Service has a fixed,
+  # release-independent name (that is the point of it - Helm does not template subchart values),
+  # so two releases of this chart in one namespace will collide on it. Turn it off, or change
+  # `aliasService` per release, when running more than one release of this chart in a namespace or
+  # when pointing Superposition at a database you manage yourself.
+  enable: true
   # -- Name of the ExternalName Service. Must match the host in `superposition.configs.db_host`.
   # Change both together if two releases share a namespace.
   aliasService: superposition-db
@@ -2145,15 +2146,12 @@ superpositionDB:
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
 # @ignored
 superposition:
-  # Off by default. The subchart cannot serve configuration until the Superposition global schema
-  # has been applied to its database - upstream expects an operator to run `superposition.sql` out
-  # of band, and its own Helm README does not mention the step. A schema-less Superposition still
-  # answers /health with 200, so it reports Healthy to Kubernetes while every API call fails;
-  # shipping that on by default is a trap rather than a feature.
-  #
-  # `hyperswitch-stack` turns this on together with `superpositionDB`, which applies the schema.
-  # To do the same in a standalone release of this chart, see the `superpositionDB` block above.
-  enabled: false
+  # On by default, together with `superpositionDB` above, which applies the Superposition global
+  # schema this subchart needs before it can serve configuration - upstream expects an operator to
+  # run `superposition.sql` out of band, and its own Helm README does not mention the step. A
+  # schema-less Superposition still answers /health with 200, so it reports Healthy to Kubernetes
+  # while every API call fails; do not disable `superpositionDB` without also disabling this.
+  enabled: true
   replicaCount: 1
   image:
     registry: ghcr.io/juspay
@@ -2168,14 +2166,18 @@ superposition:
     # connection string from db_host / db_name / db_user / DB_PASSWORD below.
     database_url: ""
     # -- Database host. Helm does not template values, so this cannot carry the release name.
-    # Leave it at the subchart default unless you enable `superpositionDB` above, in which case
-    # set it to `<superpositionDB.aliasService>:5432`.
-    # db_host: "superposition-db:5432"
+    # Must equal `<superpositionDB.aliasService>:5432` while `superpositionDB.enable` is on;
+    # point it elsewhere (and turn `superpositionDB` off) only when you manage the database
+    # yourself.
+    db_host: "superposition-db:5432"
     # -- Database Superposition keeps its `superposition` schema in. The schema is namespaced, so
-    # it can live in the same database the router uses.
-    # db_name: "hyperswitch"
-    # -- Database user. Must match the user that owns the database above.
-    # db_user: "hyperswitch"
+    # it can live in the same database the router uses. Must match
+    # `postgresql.global.postgresql.auth.database` (or, with `postgresql.enabled: false`,
+    # `externalPostgresql.primary.auth.database`) - the schema Job resolves the same value.
+    db_name: "hyperswitch"
+    # -- Database user. Must match `postgresql.global.postgresql.auth.username` (or the
+    # `externalPostgresql` equivalent) - the user that owns the database above.
+    db_user: "hyperswitch"
     port: 8080
     rust_log: debug
     app_env: DEV
@@ -2185,10 +2187,12 @@ superposition:
     # -- Required; binary panics if absent.
     auth_z_provider: DISABLED
   secrets:
-    # -- Password for `db_user`. Set it together with `db_host` above when `superpositionDB` is on.
-    db_password: ""
-    # -- Must match `server.configs.superposition.token`.
-    superposition_token: ""
+    # -- Password for `db_user`. Must match `postgresql.global.postgresql.auth.password` (or the
+    # `externalPostgresql` equivalent). Set together with `db_host`/`db_name`/`db_user` above.
+    db_password: "ZGJwYXNzd29yZDEx"
+    # -- Must match `server.configs.superposition.token` above, and stay quoted - the subchart's
+    # own template b64-encodes this as a bare string and fails to render on an unquoted number.
+    superposition_token: "123456"
     oidc_client_secret: ""
   serviceAccount:
     create: true

@@ -4,6 +4,23 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-app-1.3.0] - 2026-08-31
+
+### 🚀 Features
+
+- *(superposition)* Default `superposition.enabled`, `superpositionDB.enable` and
+  `superpositionFallback.enabled` to `true`, so a default install comes up with a working,
+  schema-applied Superposition and no extra flags. Also fill in the `superposition.configs.db_host`
+  / `db_name` / `db_user` and `superposition.secrets.db_password` / `superposition_token` values
+  those flags depend on - they were previously left commented out / empty, which would have left
+  the subchart pointed at its own upstream defaults (wrong host, wrong database, no password, no
+  token) even with the flags on.
+
+  If you point Superposition at a database you manage yourself, or run more than one release of
+  this chart in a namespace, see the updated comments on `superpositionDB` and `superposition.configs`
+  in `values.yaml` - the alias Service `superpositionDB` creates has a fixed, release-independent
+  name and will collide across releases sharing a namespace.
+
 ## [hyperswitch-app-1.2.1] - 2026-08-27
 
 ### 🐛 Bug Fixes
@@ -23,8 +40,9 @@ All notable changes to HyperSwitch-Helm will be documented here.
   `Failed to find a type oid for superposition.org_status`. See the new `superpositionDB` values.
 - *(superposition)* Default `superposition.enabled` to `false`. Without its global schema the
   service still answers `/health` with 200, so it reported Healthy to Kubernetes while every API
-  call returned 500 - shipping that enabled by default hid the failure. `hyperswitch-stack`
-  enables it together with `superpositionDB`, which applies the schema.
+  call returned 500 - shipping that enabled by default hid the failure. Superseded in
+  hyperswitch-app-1.3.0, which defaults it back to `true` together with the `superpositionDB`
+  wiring that applies the schema.
 
 ### 🚀 Features
 
