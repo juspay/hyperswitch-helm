@@ -480,6 +480,15 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- end }}
 {{- end -}}
 
+{{/* URL the Superposition global schema is fetched from. Mirrors the way the hyperswitch
+     migration Job pulls its migrations from the hyperswitch repo at `services.router.version`:
+     the version is a value, and must be kept in step with the `superposition` dependency in
+     Chart.yaml - the schema and the binary are released together. */}}
+{{- define "hyperswitch.superpositionDB.schemaUrl" -}}
+  {{- $m := .Values.superpositionDB.migration -}}
+  {{- printf "%s/%s/%s" (trimSuffix "/" $m.baseUrl) ($m.version | toString) (trimPrefix "/" $m.path) -}}
+{{- end -}}
+
 {{/* Init container that downloads the Superposition seed file the router falls back to.
      Rendered only when superpositionFallback.source is "fetch" (the default), so that a user who
      prefers to supply their own ConfigMap - or has no egress to GitHub - is unaffected. */}}

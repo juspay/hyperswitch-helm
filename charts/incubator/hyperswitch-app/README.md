@@ -156,19 +156,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L2243">baseRelease</a></div></td>
+    <td><div><a href="./values.yaml#L2257">baseRelease</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the Helm release that owns this environment's shared infrastructure. Set it when this release is a *second* release of the chart running a single service (OLAP or payment method modular) against the datastores of a main release. The host and secret-name values are templated, so an overlay can refer to `{{ .Values.baseRelease }}-postgresql`, `{{ .Values.baseRelease }}-redis-master`, `{{ .Values.baseRelease }}-hyperswitch-router-role` and have them follow the base release. Ignored when left empty.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2356">olap.argoRollouts</a></div></td>
+    <td><div><a href="./values.yaml#L2370">olap.argoRollouts</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Argo Rollouts settings for this service, merged over the release-level `argoRollouts` block. Lists (canary steps, analysis metrics) replace rather than extend the inherited value. Omit to inherit the release's rollout behaviour as-is.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2313">olap.autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2327">olap.autoscaling.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable a HorizontalPodAutoscaler for this service</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2289">olap.configs</a></div></td>
+    <td><div><a href="./values.yaml#L2303">olap.configs</a></div></td>
     <td><div><code>{
   "master_database": {
     "pool_size": "5"
@@ -176,47 +176,47 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Config overrides merged over `server.configs`, rendered as inline env</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2285">olap.database.masterHost</a></div></td>
+    <td><div><a href="./values.yaml#L2299">olap.database.masterHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Explicit host overrides. Templated, e.g. `{{ .Release.Name }}-postgresql`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2282">olap.database.useReplicaForMaster</a></div></td>
+    <td><div><a href="./values.yaml#L2296">olap.database.useReplicaForMaster</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Point the master (write) database handle at the read replica. A write attempted against this service then fails at the replica instead of reaching the writer. When the release has no read replica the primary is used instead, so the service still runs - `helm install` prints a warning in that case.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2259">olap.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2273">olap.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the OLAP router</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2262">olap.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L2276">olap.fullnameOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Override the generated name `<release>-hyperswitch-olap-server`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2320">olap.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2334">olap.ingress.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Publish this service through an Ingress</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2333">olap.istio.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2347">olap.istio.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Render a VirtualService and DestinationRule for this service. Set `hosts` and `gateways` to the same values as `istio.virtualService` above so Istio merges the two into one route table for the host. Istio does not guarantee rule ordering across VirtualServices on the same host, so keep the main router's catch-all from shadowing the paths claimed here.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2271">olap.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L2285">olap.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas; ignored when this service's autoscaling is enabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2295">olap.resources</a></div></td>
+    <td><div><a href="./values.yaml#L2309">olap.resources</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Workload settings; empty values fall back to `server.*` and then `global.*`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2275">olap.serviceAccountName</a></div></td>
+    <td><div><a href="./values.yaml#L2289">olap.serviceAccountName</a></div></td>
     <td><div><code>""</code></div></td>
     <td>ServiceAccount to run as. Empty reuses the release's router ServiceAccount, so this service inherits the same cloud identity instead of needing one of its own.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2265">olap.version</a></div></td>
+    <td><div><a href="./values.yaml#L2279">olap.version</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Image tag, registry and repository. Empty values fall back to `services.router.*`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2381">paymentMethodModular.configs</a></div></td>
+    <td><div><a href="./values.yaml#L2395">paymentMethodModular.configs</a></div></td>
     <td><div><code>{
   "micro_services": {
     "payment_methods_prefix": "v1"
@@ -228,11 +228,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Config overrides merged over `server.configs`, rendered as inline env</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2362">paymentMethodModular.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2376">paymentMethodModular.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the payment method modular router</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2367">paymentMethodModular.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L2381">paymentMethodModular.fullnameOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Override the generated name `<release>-hyperswitch-payment-method-modular-server`. Worth setting for release names longer than 21 characters, where the generated name is truncated at Kubernetes' 63 character limit.</td>
   </tr></tbody>
@@ -1249,347 +1249,347 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"loadBalancer-sg"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2298">olap.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L2312">olap.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2300">olap.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2314">olap.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2315">olap.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2329">olap.autoscaling.maxReplicas</a></div></td>
     <td><div><code>4</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2314">olap.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2328">olap.autoscaling.minReplicas</a></div></td>
     <td><div><code>2</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2316">olap.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L2330">olap.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2286">olap.database.replicaHost</a></div></td>
+    <td><div><a href="./values.yaml#L2300">olap.database.replicaHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2296">olap.env</a></div></td>
+    <td><div><a href="./values.yaml#L2310">olap.env</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2307">olap.extraVolumeMounts</a></div></td>
+    <td><div><a href="./values.yaml#L2321">olap.extraVolumeMounts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2306">olap.extraVolumes</a></div></td>
+    <td><div><a href="./values.yaml#L2320">olap.extraVolumes</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2267">olap.image</a></div></td>
+    <td><div><a href="./values.yaml#L2281">olap.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2268">olap.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2282">olap.imagePullPolicy</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2266">olap.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2280">olap.imageRegistry</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2322">olap.ingress.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2336">olap.ingress.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2321">olap.ingress.className</a></div></td>
+    <td><div><a href="./values.yaml#L2335">olap.ingress.className</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2323">olap.ingress.hostname</a></div></td>
+    <td><div><a href="./values.yaml#L2337">olap.ingress.hostname</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2324">olap.ingress.path</a></div></td>
+    <td><div><a href="./values.yaml#L2338">olap.ingress.path</a></div></td>
     <td><div><code>"/olap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2325">olap.ingress.pathType</a></div></td>
+    <td><div><a href="./values.yaml#L2339">olap.ingress.pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2326">olap.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L2340">olap.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2351">olap.istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2365">olap.istio.destinationRule.trafficPolicy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2335">olap.istio.virtualService.create</a></div></td>
+    <td><div><a href="./values.yaml#L2349">olap.istio.virtualService.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2337">olap.istio.virtualService.gateways</a></div></td>
+    <td><div><a href="./values.yaml#L2351">olap.istio.virtualService.gateways</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2336">olap.istio.virtualService.hosts</a></div></td>
+    <td><div><a href="./values.yaml#L2350">olap.istio.virtualService.hosts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2344">olap.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2358">olap.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
     <td><div><code>"/olap/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2341">olap.istio.virtualService.http[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L2355">olap.istio.virtualService.http[0].name</a></div></td>
     <td><div><code>"primary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2349">olap.istio.virtualService.http[0].retries</a></div></td>
+    <td><div><a href="./values.yaml#L2363">olap.istio.virtualService.http[0].retries</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2346">olap.istio.virtualService.http[0].rewrite.uri</a></div></td>
+    <td><div><a href="./values.yaml#L2360">olap.istio.virtualService.http[0].rewrite.uri</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2348">olap.istio.virtualService.http[0].timeout</a></div></td>
+    <td><div><a href="./values.yaml#L2362">olap.istio.virtualService.http[0].timeout</a></div></td>
     <td><div><code>"50s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2347">olap.istio.virtualService.http[0].weight</a></div></td>
+    <td><div><a href="./values.yaml#L2361">olap.istio.virtualService.http[0].weight</a></div></td>
     <td><div><code>100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2302">olap.labels</a></div></td>
+    <td><div><a href="./values.yaml#L2316">olap.labels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2303">olap.livenessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2317">olap.livenessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2299">olap.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L2313">olap.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2301">olap.podAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L2315">olap.podAnnotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2308">olap.progressDeadlineSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2322">olap.progressDeadlineSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2304">olap.readinessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2318">olap.readinessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2305">olap.strategy</a></div></td>
+    <td><div><a href="./values.yaml#L2319">olap.strategy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2309">olap.terminationGracePeriodSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2323">olap.terminationGracePeriodSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2297">olap.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L2311">olap.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2398">paymentMethodModular.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L2412">paymentMethodModular.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2400">paymentMethodModular.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2414">paymentMethodModular.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2447">paymentMethodModular.argoRollouts</a></div></td>
+    <td><div><a href="./values.yaml#L2461">paymentMethodModular.argoRollouts</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2411">paymentMethodModular.autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2425">paymentMethodModular.autoscaling.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2413">paymentMethodModular.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2427">paymentMethodModular.autoscaling.maxReplicas</a></div></td>
     <td><div><code>4</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2412">paymentMethodModular.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2426">paymentMethodModular.autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2414">paymentMethodModular.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L2428">paymentMethodModular.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2377">paymentMethodModular.database.masterHost</a></div></td>
+    <td><div><a href="./values.yaml#L2391">paymentMethodModular.database.masterHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2378">paymentMethodModular.database.replicaHost</a></div></td>
+    <td><div><a href="./values.yaml#L2392">paymentMethodModular.database.replicaHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2376">paymentMethodModular.database.useReplicaForMaster</a></div></td>
+    <td><div><a href="./values.yaml#L2390">paymentMethodModular.database.useReplicaForMaster</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2396">paymentMethodModular.env</a></div></td>
+    <td><div><a href="./values.yaml#L2410">paymentMethodModular.env</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2407">paymentMethodModular.extraVolumeMounts</a></div></td>
+    <td><div><a href="./values.yaml#L2421">paymentMethodModular.extraVolumeMounts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2406">paymentMethodModular.extraVolumes</a></div></td>
+    <td><div><a href="./values.yaml#L2420">paymentMethodModular.extraVolumes</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2370">paymentMethodModular.image</a></div></td>
+    <td><div><a href="./values.yaml#L2384">paymentMethodModular.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2371">paymentMethodModular.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2385">paymentMethodModular.imagePullPolicy</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2369">paymentMethodModular.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2383">paymentMethodModular.imageRegistry</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2418">paymentMethodModular.ingress.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2432">paymentMethodModular.ingress.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2417">paymentMethodModular.ingress.className</a></div></td>
+    <td><div><a href="./values.yaml#L2431">paymentMethodModular.ingress.className</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2416">paymentMethodModular.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2430">paymentMethodModular.ingress.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2419">paymentMethodModular.ingress.hostname</a></div></td>
+    <td><div><a href="./values.yaml#L2433">paymentMethodModular.ingress.hostname</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2420">paymentMethodModular.ingress.path</a></div></td>
+    <td><div><a href="./values.yaml#L2434">paymentMethodModular.ingress.path</a></div></td>
     <td><div><code>"/v1/payment-methods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2421">paymentMethodModular.ingress.pathType</a></div></td>
+    <td><div><a href="./values.yaml#L2435">paymentMethodModular.ingress.pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2422">paymentMethodModular.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L2436">paymentMethodModular.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2446">paymentMethodModular.istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2460">paymentMethodModular.istio.destinationRule.trafficPolicy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2424">paymentMethodModular.istio.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2438">paymentMethodModular.istio.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2426">paymentMethodModular.istio.virtualService.create</a></div></td>
+    <td><div><a href="./values.yaml#L2440">paymentMethodModular.istio.virtualService.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2428">paymentMethodModular.istio.virtualService.gateways</a></div></td>
+    <td><div><a href="./values.yaml#L2442">paymentMethodModular.istio.virtualService.gateways</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2427">paymentMethodModular.istio.virtualService.hosts</a></div></td>
+    <td><div><a href="./values.yaml#L2441">paymentMethodModular.istio.virtualService.hosts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2435">paymentMethodModular.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2449">paymentMethodModular.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
     <td><div><code>"/v1/payment-methods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2437">paymentMethodModular.istio.virtualService.http[0].match[1].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2451">paymentMethodModular.istio.virtualService.http[0].match[1].uri.prefix</a></div></td>
     <td><div><code>"/v1/payment-method-sessions"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2439">paymentMethodModular.istio.virtualService.http[0].match[2].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2453">paymentMethodModular.istio.virtualService.http[0].match[2].uri.prefix</a></div></td>
     <td><div><code>"/v1/customers"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2441">paymentMethodModular.istio.virtualService.http[0].match[3].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2455">paymentMethodModular.istio.virtualService.http[0].match[3].uri.prefix</a></div></td>
     <td><div><code>"/v1/proxy"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2432">paymentMethodModular.istio.virtualService.http[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L2446">paymentMethodModular.istio.virtualService.http[0].name</a></div></td>
     <td><div><code>"primary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2444">paymentMethodModular.istio.virtualService.http[0].retries</a></div></td>
+    <td><div><a href="./values.yaml#L2458">paymentMethodModular.istio.virtualService.http[0].retries</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2443">paymentMethodModular.istio.virtualService.http[0].timeout</a></div></td>
+    <td><div><a href="./values.yaml#L2457">paymentMethodModular.istio.virtualService.http[0].timeout</a></div></td>
     <td><div><code>"50s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2442">paymentMethodModular.istio.virtualService.http[0].weight</a></div></td>
+    <td><div><a href="./values.yaml#L2456">paymentMethodModular.istio.virtualService.http[0].weight</a></div></td>
     <td><div><code>100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2402">paymentMethodModular.labels</a></div></td>
+    <td><div><a href="./values.yaml#L2416">paymentMethodModular.labels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2403">paymentMethodModular.livenessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2417">paymentMethodModular.livenessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2399">paymentMethodModular.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L2413">paymentMethodModular.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2401">paymentMethodModular.podAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L2415">paymentMethodModular.podAnnotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2408">paymentMethodModular.progressDeadlineSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2422">paymentMethodModular.progressDeadlineSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2404">paymentMethodModular.readinessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2418">paymentMethodModular.readinessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2372">paymentMethodModular.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L2386">paymentMethodModular.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2395">paymentMethodModular.resources</a></div></td>
+    <td><div><a href="./values.yaml#L2409">paymentMethodModular.resources</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2373">paymentMethodModular.serviceAccountName</a></div></td>
+    <td><div><a href="./values.yaml#L2387">paymentMethodModular.serviceAccountName</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2405">paymentMethodModular.strategy</a></div></td>
+    <td><div><a href="./values.yaml#L2419">paymentMethodModular.strategy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2409">paymentMethodModular.terminationGracePeriodSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2423">paymentMethodModular.terminationGracePeriodSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2397">paymentMethodModular.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L2411">paymentMethodModular.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2368">paymentMethodModular.version</a></div></td>
+    <td><div><a href="./values.yaml#L2382">paymentMethodModular.version</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
@@ -2693,17 +2693,36 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>false</code></div></td>
     <td>Create the alias Service and, if enabled below, run the schema Job.  Off by default: the alias Service has a fixed, release-independent name (that is the point of it), so two releases of this chart in one namespace would collide on it. Turn it on when a single release owns the namespace - `hyperswitch-stack` does exactly that. When you do, set `superposition.configs.db_host` to `<aliasService>:5432` and `db_name` / `db_user` / `secrets.db_password` to this release's PostgreSQL credentials.</td>
   </tr><tr>
+    <td><div><a href="./values.yaml#L2153">superpositionDB.migration.baseUrl</a></div></td>
+    <td><div><code>"https://raw.githubusercontent.com/juspay/superposition"</code></div></td>
+    <td>Base URL of the superposition source repository</td>
+  </tr><tr>
     <td><div><a href="./values.yaml#L2143">superpositionDB.migration.enable</a></div></td>
     <td><div><code>true</code></div></td>
-    <td>Apply files/superposition.sql to `superposition.configs.db_name`</td>
+    <td>Fetch the Superposition global schema and apply it to `superposition.configs.db_name`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2145">superpositionDB.migration.image</a></div></td>
+    <td><div><a href="./values.yaml#L2157">superpositionDB.migration.fetch</a></div></td>
+    <td><div><code>{
+  "image": "curlimages/curl:8.11.1",
+  "imageRegistry": "docker.io"
+}</code></div></td>
+    <td>Image used to download the schema; needs `curl` and `sh`</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2147">superpositionDB.migration.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2144">superpositionDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2146">superpositionDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
-    <td></td>
+    <td>Image that runs `psql`. Needs the PostgreSQL client only; the download happens in a separate init container because this image ships neither curl nor wget.</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2155">superpositionDB.migration.path</a></div></td>
+    <td><div><code>"superposition.sql"</code></div></td>
+    <td>Path of the global schema inside that repository</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2151">superpositionDB.migration.version</a></div></td>
+    <td><div><code>"v0.112.0"</code></div></td>
+    <td>Superposition ref the schema is fetched from. Keep this in step with the `superposition` dependency in Chart.yaml - the schema and the binary are released together. This mirrors `initDB`, which pulls the hyperswitch migrations at `services.router.version`.</td>
   </tr><tr>
     <td><div><a href="./values.yaml#L1617">superpositionFallback.configMap</a></div></td>
     <td><div><code>"superposition-seed"</code></div></td>
