@@ -22,8 +22,10 @@ spec:
   # Argo Rollouts strategy configuration
   strategy:
     canary:
+      {{- with .Values.argoRollouts.canary.steps }}
       steps:
-      {{- toYaml .Values.argoRollouts.canary.steps | nindent 6 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
       trafficRouting:
         istio:
@@ -98,13 +100,18 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.env }}
           env:
-            {{- if .Values.env }}
-            {{- range .Values.env }}
+            {{- range . }}
             - name: {{ .name }}
-              value: {{ .value | quote }}
+              {{- with .valueFrom }}
+              valueFrom:
+                {{- toYaml . | nindent 16 }}
+              {{- else }}
+              value: {{ if kindIs "invalid" .value }}""{{ else }}{{ .value | quote }}{{ end }}
+              {{- end }}
             {{- end }}
-            {{- end }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-hyperswitch-ucs-configs
