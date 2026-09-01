@@ -12,6 +12,15 @@ metadata:
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- else if .Values.argoRollouts.enabled }}
+  # Seed value only - the HPA owns this field once it takes over, but the field has to be
+  # there. The Rollout CRD's scale subresource reads .spec.replicas and the schema sets no
+  # default, so an absent field makes every HPA GetScale call fail with 'the spec replicas
+  # field .spec.replicas does not exist' and the HPA reports AbleToScale=False. apps/v1
+  # Deployment defaults replicas server-side, so the Deployment path deliberately still
+  # omits it and leaves the field entirely to the HPA. Argo CD has to ignore drift here -
+  # see the ignoreDifferences / RespectIgnoreDifferences entries on the Application.
+  replicas: {{ .Values.autoscaling.minReplicas }}
   {{- end }}
   {{- if .Values.argoRollouts.enabled }}
   revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
@@ -22,11 +31,24 @@ spec:
   # Argo Rollouts strategy configuration
   strategy:
     canary:
+      {{- if not .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      {{- range .Values.argoRollouts.canary.steps }}
+      {{- if .setCanaryScale }}
+      {{- fail "argoRollouts.canary.steps: a setCanaryScale step requires traffic routing; set argoRollouts.canary.trafficRouting.istio.enabled (and istio.enabled) to true, or drop the step" }}
+      {{- end }}
+      {{- if or .setHeaderRoute .setMirrorRoute }}
+      {{- fail "argoRollouts.canary.steps: setHeaderRoute/setMirrorRoute steps require traffic routing; set argoRollouts.canary.trafficRouting.istio.enabled (and istio.enabled) to true, or drop the step" }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
       {{- with .Values.argoRollouts.canary.steps }}
       steps:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      {{- if not .Values.istio.enabled }}
+      {{- fail "argoRollouts.canary.trafficRouting.istio.enabled requires istio.enabled: true - the VirtualService and DestinationRule the Rollout references are only rendered when istio.enabled is set" }}
+      {{- end }}
       trafficRouting:
         istio:
           virtualService:
