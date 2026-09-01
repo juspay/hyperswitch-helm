@@ -18,6 +18,23 @@ spec:
   {{- end }}
   {{- if .Values.istio.virtualService.http }}
   http:
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled .Values.argoRollouts.canary.trafficRouting.headerRouting.enabled }}
+  # Header-based canary routing (highest priority)
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.headerRouting.routeName | quote }}
+    match:
+    {{- range .Values.argoRollouts.canary.trafficRouting.headerRouting.match }}
+    - headers:
+        {{ .headerName }}:
+          {{- toYaml .headerValue | nindent 10 }}
+    {{- end }}
+    route:
+    - destination:
+        host: {{ include "hyperswitch-encryption-service.fullname" . }}
+        subset: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+        port:
+          number: {{ .Values.service.port }}
+      weight: 100
+  {{- end }}
   {{- range .Values.istio.virtualService.http }}
   - {{- if .name }}
     name: {{ .name | quote }}
@@ -38,6 +55,21 @@ spec:
       {{- toYaml .retries | nindent 6 }}
     {{- end }}
     route:
+    {{- if and $.Values.argoRollouts.enabled $.Values.argoRollouts.canary.trafficRouting.istio.enabled (mustHas .name $.Values.argoRollouts.canary.trafficRouting.istio.virtualService.routeNames) }}
+    # Argo Rollouts manages these weights during a canary deployment
+    - destination:
+        host: {{ include "hyperswitch-encryption-service.fullname" $ }}
+        subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+        port:
+          number: {{ $.Values.service.port }}
+      weight: 100
+    - destination:
+        host: {{ include "hyperswitch-encryption-service.fullname" $ }}
+        subset: {{ $.Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+        port:
+          number: {{ $.Values.service.port }}
+      weight: 0
+    {{- else }}
     - destination:
         host: {{ include "hyperswitch-encryption-service.fullname" $ }}
         port:
@@ -47,6 +79,7 @@ spec:
       {{- else }}
       weight: 100
       {{- end }}
+    {{- end }}
   {{- end }}
   {{- end }}
 {{- end }}

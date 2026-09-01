@@ -208,3 +208,27 @@ vaultKeysJob:
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"
     key2: "7de95dbbd5d020e6b2a44847b8942bf5"
+
+# -- Argo Rollouts configuration
+argoRollouts:
+  # -- Enable Argo Rollouts instead of standard Deployment
+  enabled: false
+  # -- Number of old ReplicaSets to retain for rollback
+  revisionHistoryLimit: 10
+  canary:
+    # -- Canary deployment steps (see Argo Rollouts docs). This chart has no Istio resources
+    # and no traffic router, so the canary is replica-based: `setWeight: N` sizes the canary
+    # ReplicaSet to N% of the (currently fixed, single) replica. Use `setCanaryScale` to run an
+    # explicit number of canary pods alongside stable.
+    steps: []
+    # Example:
+    # steps:
+    #   - setCanaryScale:
+    #       replicas: 1
+    #   - pause:
+    #       duration: 5m
+    #   - setWeight: 100
+    # -- Maximum number of pods that can be created above the desired count during a rollout
+    maxSurge: ""
+    # -- Maximum number of pods that can be unavailable during a rollout
+    maxUnavailable: ""

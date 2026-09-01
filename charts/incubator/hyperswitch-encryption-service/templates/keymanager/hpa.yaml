@@ -8,8 +8,13 @@ metadata:
     {{- include "hyperswitch-encryption-service.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
+    {{- if .Values.argoRollouts.enabled }}
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    {{- else }}
     apiVersion: apps/v1
     kind: Deployment
+    {{- end }}
     name: {{ include "hyperswitch-encryption-service.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}

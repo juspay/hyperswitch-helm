@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -127,6 +127,12 @@ external:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| argoRollouts | object | `{"canary":{"maxSurge":"","maxUnavailable":"","steps":[]},"enabled":false,"revisionHistoryLimit":10}` | Argo Rollouts configuration |
+| argoRollouts.canary.maxSurge | string | `""` | Maximum number of pods that can be created above the desired count during a rollout |
+| argoRollouts.canary.maxUnavailable | string | `""` | Maximum number of pods that can be unavailable during a rollout |
+| argoRollouts.canary.steps | list | `[]` | Canary deployment steps (see Argo Rollouts docs). This chart has no Istio resources and no traffic router, so the canary is replica-based: `setWeight: N` sizes the canary ReplicaSet to N% of the (currently fixed, single) replica. Use `setCanaryScale` to run an explicit number of canary pods alongside stable. |
+| argoRollouts.enabled | bool | `false` | Enable Argo Rollouts instead of standard Deployment |
+| argoRollouts.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback |
 | backend | string | `"local"` |  |
 | external.postgresql.config.database | string | `nil` |  |
 | external.postgresql.config.host | string | `nil` |  |

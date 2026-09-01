@@ -1,5 +1,10 @@
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+{{- else }}
 apiVersion: apps/v1
 kind: Deployment
+{{- end }}
 metadata:
   name: hyperswitch-card-vault-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
@@ -9,13 +14,35 @@ metadata:
   {{- end }}
 spec:
   replicas: 1
+  {{- if .Values.argoRollouts.enabled }}
+  revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       app: hyperswitch-card-vault
+  {{- if .Values.argoRollouts.enabled }}
+  # Argo Rollouts strategy configuration.
+  # This chart has no Service-level traffic split and no Istio resources, so the canary is
+  # replica-based: `setWeight: N` sizes the canary ReplicaSet to N% of `replicas` and the
+  # ClusterIP Service load-balances across both.
+  strategy:
+    canary:
+      {{- with .Values.argoRollouts.canary.steps }}
+      steps:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxSurge }}
+      maxSurge: {{ . }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxUnavailable }}
+      maxUnavailable: {{ . }}
+      {{- end }}
+  {{- else }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 0
+  {{- end }}
   template:
     metadata:
       annotations:

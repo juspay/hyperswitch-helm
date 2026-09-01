@@ -1063,6 +1063,14 @@ drainer:
   annotations: {}
   # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
   labels: {}
+  # -- Argo Rollouts settings for the drainer, merged over the release-level `argoRollouts`
+  # block. Lists (canary steps) replace rather than extend the inherited value. Omit to inherit
+  # the release's rollout behaviour; set `enabled: false` to keep the drainer a plain Deployment
+  # while the routers use Rollouts.
+  # `canary.trafficRouting` and `canary.analysis` are ignored for this workload - the drainer has
+  # no Service, so the canary is replica-based. Canary and stable drainer pods consume the Redis
+  # stream concurrently for the duration of the canary.
+  argoRollouts: {}
   # -- Namespace override for the drainer
   namespaceOverride: ""
   # -- Environment variables that are to be used by the hyperswitch drainer service
