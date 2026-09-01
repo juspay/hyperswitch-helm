@@ -309,13 +309,13 @@ global:
 hyperswitch-app:
   global:
     imageRegistry: "${OCIR_REGISTRY}"
+  hyperswitch-ucs:
+    global:
+      imageRegistry: "${OCIR_REGISTRY}"
 hyperswitch-control-center:
   global:
     imageRegistry: "${OCIR_REGISTRY}"
 hyperswitch-monitoring:
-  global:
-    imageRegistry: "${OCIR_REGISTRY}"
-hyperswitch-ucs:
   global:
     imageRegistry: "${OCIR_REGISTRY}"
 EOF

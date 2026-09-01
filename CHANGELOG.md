@@ -4,6 +4,25 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-stack-0.2.27] - 2026-09-01
+
+### 🚜 Refactor
+
+- Move the `hyperswitch-ucs` dependency out of `hyperswitch-stack` and into `hyperswitch-app`, since
+  it is a router-side concern and standalone `hyperswitch-app` deployments had no way to enable it.
+  **Breaking for values**: anything set under the top-level `hyperswitch-ucs:` key must move to
+  `hyperswitch-app.hyperswitch-ucs:`. The chart still ships disabled by default
+  (`hyperswitch-app.hyperswitch-ucs.enabled: false`), so no running deployment changes.
+
+## [hyperswitch-app-1.3.0] - 2026-09-01
+
+### 🚀 Features
+
+- Add `hyperswitch-ucs` as a dependency (`condition: hyperswitch-ucs.enabled`, default `false`), so
+  the Unified Connector Service can be deployed alongside a standalone `hyperswitch-app` release and
+  not only through `hyperswitch-stack`. Configuration is unchanged from the values previously set
+  under `hyperswitch-stack`'s `hyperswitch-ucs:` key.
+
 ## [hyperswitch-app-1.2.1] - 2026-08-27
 
 ### 🐛 Bug Fixes
