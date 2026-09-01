@@ -93,28 +93,63 @@ hyperswitch-web:
                   number: 80
 # @ignored
 hyperswitch-app:
+  # The router needs a Superposition config source at boot: it calls `superposition.endpoint` and
+  # only falls back to a local seed file when that call fails. Superposition starts empty, so the
+  # fallback is what makes the first install come up - keep it on.
+  #
+  # By default an init container downloads config/superposition_seed.toml from the hyperswitch
+  # repo at the router version this chart runs, so there is nothing to prepare. On a cluster with
+  # no egress to raw.githubusercontent.com, create the ConfigMap yourself and switch source:
+  #
+  #   curl -sfLO https://raw.githubusercontent.com/juspay/hyperswitch/v1.126.0/config/superposition_seed.toml
+  #   kubectl create configmap superposition-seed -n <namespace> \
+  #     --from-file=superposition_seed.toml=superposition_seed.toml
+  #   # then: superpositionFallback.source: configMap
+  superpositionFallback:
+    enabled: true
+    source: fetch
+  # Superposition runs against this release's PostgreSQL. The subchart takes its database host
+  # from a plain value, which cannot carry the release name, so the chart publishes a fixed alias
+  # Service that resolves to whatever this release's `postgresql.host` resolves to, and a Job that
+  # applies the Superposition global schema. Safe here because one release owns the namespace.
+  superpositionDB:
+    enable: true
+    aliasService: superposition-db
+    migration:
+      enable: true
+  superposition:
+    enabled: true
+    configs:
+      db_host: "superposition-db:5432"
+      db_name: "hyperswitch"
+      db_user: "hyperswitch"
+    secrets:
+      # Must match postgresql.global.postgresql.auth.password below.
+      db_password: "ZGJwYXNzd29yZDEx"
+      # Must match server.configs.superposition.token.
+      superposition_token: "123456"
   initDB:
     enable: true
   loadBalancer:
     targetSecurityGroup: *lb_security_group
+  # Image versions are deliberately not pinned here: they must match the router config files
+  # (configs/router-*.toml) that ship inside the hyperswitch-app chart, so they follow that
+  # chart's appVersion. Pinning them separately silently breaks the router when the
+  # hyperswitch-app dependency above is bumped.
   services:
     router:
-      version: v1.121.0
       imageRegistry: docker.juspay.io
       image: juspaydotin/hyperswitch-router
       host: *router_host
     consumer:
-      version: v1.121.0
       imageRegistry: docker.juspay.io
       image: juspaydotin/hyperswitch-consumer
     producer:
-      version: v1.121.0
       imageRegistry: docker.juspay.io
       image: juspaydotin/hyperswitch-producer
     drainer:
       imageRegistry: docker.juspay.io
       image: juspaydotin/hyperswitch-drainer
-      version: v1.121.0
     sdk:
       host: *web_sdk_host
       version: 0.129.0
@@ -153,6 +188,11 @@ hyperswitch-app:
   #
   # olap:                        # read/analytics traffic under /olap, write handle on the replica
   #   enabled: true
+  #                              # OLAP points both database pools at the read replica as a write
+  #                              # guardrail, so give the release one:
+  #                              #   postgresql.readReplicas.replicaCount: 1
+  #                              # With no replica the chart falls back to the primary and writes
+  #                              # are no longer blocked.
   #   istio:
   #     enabled: true
   #     virtualService:
@@ -238,7 +278,7 @@ hyperswitch-monitoring:
 
 # @ignored
 hyperswitch-ucs:
-  enabled: false
+  enabled: true
   fullnameOverride: "hyperswitch-ucs"
   image:
     imageRegistry: ghcr.io
