@@ -1,15 +1,6 @@
 {{- if .Values.services.drainer.enabled }}
-{{- $ar := .Values.argoRollouts -}}
-{{- if .Values.drainer.argoRollouts -}}
-{{- $ar = mergeOverwrite (deepCopy .Values.argoRollouts) (deepCopy .Values.drainer.argoRollouts) -}}
-{{- end -}}
-{{- if $ar.enabled }}
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-{{- else }}
 apiVersion: apps/v1
 kind: Deployment
-{{- end }}
 metadata:
   name: {{ include "hyperswitch-drainer.name" . }}
   namespace: {{ include "drainer.namespace" . }}
@@ -22,39 +13,8 @@ metadata:
 spec:
   replicas: {{ .Values.drainer.replicas }}
   progressDeadlineSeconds: {{ .Values.drainer.progressDeadlineSeconds | default .Values.global.progressDeadlineSeconds }}
-  {{- if $ar.enabled }}
-  revisionHistoryLimit: {{ $ar.revisionHistoryLimit }}
-  # Argo Rollouts strategy configuration.
-  # The drainer has no Service, VirtualService or DestinationRule and exposes no request
-  # metrics, so the inherited `argoRollouts.canary.trafficRouting` and `.canary.analysis` are
-  # deliberately not rendered here. The canary is replica-based: `setWeight: N` sizes the
-  # canary ReplicaSet to N% of `drainer.replicas`.
-  strategy:
-    canary:
-      {{- with $ar.canary.steps }}
-      steps:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $ar.canary.dynamicStableScale }}
-      dynamicStableScale: {{ . }}
-      {{- end }}
-      {{- with $ar.canary.abortScaleDownDelaySeconds }}
-      abortScaleDownDelaySeconds: {{ . }}
-      {{- end }}
-      {{- with $ar.canary.antiAffinity }}
-      antiAffinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $ar.canary.maxSurge }}
-      maxSurge: {{ . }}
-      {{- end }}
-      {{- with $ar.canary.maxUnavailable }}
-      maxUnavailable: {{ . }}
-      {{- end }}
-  {{- else }}
   strategy:
     {{- toYaml (.Values.drainer.strategy | default .Values.global.strategy) | nindent 4 }}
-  {{- end }}
   selector:
     matchLabels:
       app: {{ include "hyperswitch-drainer.name" . }}
