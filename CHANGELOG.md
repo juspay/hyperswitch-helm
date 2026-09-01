@@ -98,7 +98,9 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - *(sdk-demo)* Fix hyperloader js url in demo app (#88)
 
+<!-- markdownlint-disable MD024 -->
 ## [0.1.2] - 2024-04-04
+<!-- markdownlint-enable MD024 -->
 
 ### 🚜 Refactor
 
@@ -106,7 +108,7 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 ### Helm
 
-- Create and package new version v0.1.1 
+- Create and package new version v0.1.1
 - Create and package new version v0.1.1 (#77)
 - Update version for helm-stack (#82)
 - Add support to configure secrets manager at runtime (#84)
