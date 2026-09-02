@@ -9,6 +9,17 @@ metadata:
     app.kubernetes.io/component: istio-destination-rule
 spec:
   host: {{ include "hyperswitch-encryption-service.fullname" . }}
+  {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+  # Argo Rollouts subset configuration for canary deployments.
+  # Argo Rollouts injects the rollouts-pod-template-hash label into these subsets at runtime.
+  subsets:
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+    labels:
+      {{- include "hyperswitch-encryption-service.selectorLabels" . | nindent 6 }}
+  - name: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+    labels:
+      {{- include "hyperswitch-encryption-service.selectorLabels" . | nindent 6 }}
+  {{- end }}
   {{- if .Values.istio.destinationRule.trafficPolicy }}
   trafficPolicy:
     {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}

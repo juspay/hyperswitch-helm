@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.7](https://img.shields.io/badge/AppVersion-v1.38.7-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.7](https://img.shields.io/badge/AppVersion-v1.38.7-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -125,6 +125,21 @@ After deployment, verify the Control Center is working:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| argoRollouts | object | `{"canary":{"maxSurge":"","maxUnavailable":"","steps":[],"trafficRouting":{"headerRouting":{"enabled":false,"match":[],"routeName":"header-canary"},"istio":{"destinationRule":{"canarySubsetName":"canary","stableSubsetName":"stable"},"enabled":false,"virtualService":{"routeNames":["control-center-routes"]}}}},"enabled":false,"revisionHistoryLimit":10}` | Argo Rollouts configuration |
+| argoRollouts.canary.maxSurge | string | `""` | Maximum number of pods that can be created above the desired count during a rollout |
+| argoRollouts.canary.maxUnavailable | string | `""` | Maximum number of pods that can be unavailable during a rollout |
+| argoRollouts.canary.steps | list | `[]` | Canary deployment steps (see Argo Rollouts docs) |
+| argoRollouts.canary.trafficRouting.headerRouting | object | `{"enabled":false,"match":[],"routeName":"header-canary"}` | Header-based routing configuration |
+| argoRollouts.canary.trafficRouting.headerRouting.enabled | bool | `false` | Enable header-based canary routing |
+| argoRollouts.canary.trafficRouting.headerRouting.match | list | `[]` | Header match conditions |
+| argoRollouts.canary.trafficRouting.headerRouting.routeName | string | `"header-canary"` | Route name for header-based routing |
+| argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName | string | `"canary"` | Name of the canary subset in Istio DestinationRule |
+| argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName | string | `"stable"` | Name of the stable subset in Istio DestinationRule |
+| argoRollouts.canary.trafficRouting.istio.enabled | bool | `false` | Enable Istio traffic routing for canary. Requires istio.enabled, istio.virtualService.enabled and istio.destinationRule.enabled. |
+| argoRollouts.canary.trafficRouting.istio.virtualService | object | `{"routeNames":["control-center-routes"]}` | VirtualService configuration for Argo Rollouts |
+| argoRollouts.canary.trafficRouting.istio.virtualService.routeNames | list | `["control-center-routes"]` | Route names (from istio.virtualService.http[].name) to be managed by Argo Rollouts |
+| argoRollouts.enabled | bool | `false` | Enable Argo Rollouts instead of standard Deployment |
+| argoRollouts.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback |
 | config.default.connector_clone.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.payoutProcessors | list | `[]` |  |

@@ -1,5 +1,10 @@
+{{- if .Values.argoRollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+{{- else }}
 apiVersion: apps/v1
 kind: Deployment
+{{- end }}
 metadata:
   name: {{ include "hyperswitch-encryption-service.fullname" . }}
   namespace: {{ .Release.Namespace }}
@@ -14,10 +19,47 @@ spec:
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds}}
+  {{- if .Values.argoRollouts.enabled }}
+  revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
+  {{- else }}
   revisionHistoryLimit: 10
+  {{- end }}
+  {{- if .Values.argoRollouts.enabled }}
+  # Argo Rollouts strategy configuration
+  strategy:
+    canary:
+      {{- with .Values.argoRollouts.canary.steps }}
+      steps:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxSurge }}
+      maxSurge: {{ . }}
+      {{- end }}
+      {{- with .Values.argoRollouts.canary.maxUnavailable }}
+      maxUnavailable: {{ . }}
+      {{- end }}
+      {{- if .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
+      {{- if not (and .Values.istio.enabled .Values.istio.virtualService.enabled .Values.istio.destinationRule.enabled) }}
+      {{- fail "istio.enabled, istio.virtualService.enabled and istio.destinationRule.enabled must all be true when argoRollouts.canary.trafficRouting.istio.enabled is set" }}
+      {{- end }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ include "hyperswitch-encryption-service.fullname" . }}-vs
+            {{- with .Values.argoRollouts.canary.trafficRouting.istio.virtualService.routeNames }}
+            routes:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+          destinationRule:
+            name: {{ include "hyperswitch-encryption-service.fullname" . }}-dr
+            canarySubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.canarySubsetName }}
+            stableSubsetName: {{ .Values.argoRollouts.canary.trafficRouting.istio.destinationRule.stableSubsetName }}
+      {{- end }}
+  {{- else }}
   {{- with .Values.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- end }}
   selector:
     matchLabels:
