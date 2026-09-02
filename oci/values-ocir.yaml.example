@@ -107,6 +107,11 @@ hyperswitch-app:
       repository: "<region>.ocir.io/<tenancy-namespace>/timberio/vector"
       tag: "0.42.0-distroless-libc"
 
+  # hyperswitch-ucs ships as a dependency of hyperswitch-app.
+  hyperswitch-ucs:
+    global:
+      imageRegistry: *ocir
+
 # ── hyperswitch-control-center ────────────────────────────────────────────────
 hyperswitch-control-center:
   global:
@@ -182,8 +187,3 @@ hyperswitch-monitoring:
         image:
           registry: *ocir
           repository: kiwigrid/k8s-sidecar
-
-# ── hyperswitch-ucs ───────────────────────────────────────────────────────────
-hyperswitch-ucs:
-  global:
-    imageRegistry: *ocir
