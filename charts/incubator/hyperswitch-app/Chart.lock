@@ -8,6 +8,9 @@ dependencies:
 - name: hyperswitch-card-vault
   repository: https://juspay.github.io/hyperswitch-helm
   version: 0.1.4
+- name: hyperswitch-ucs
+  repository: https://juspay.github.io/hyperswitch-helm
+  version: 0.1.2
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
   version: 31.0.0
@@ -23,5 +26,5 @@ dependencies:
 - name: superposition
   repository: oci://ghcr.io/juspay/helm-charts
   version: 0.112.0
-digest: sha256:3ad813bb5f2a05fb083d0cadafe4a51830c718793f2473d61ee654508bcb21a5
-generated: "2026-06-17T09:48:39.3277531Z"
+digest: sha256:93a80420d1b8754e716d77a68b5d71e2ccbb34d0eea18210c0cf660a071db7b0
+generated: "2026-09-03T02:26:58.52818358Z"
