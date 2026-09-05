@@ -125,6 +125,11 @@ After deployment, verify the Control Center is working:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| autoscaling.enabled | bool | `false` |  |
+| autoscaling.maxReplicas | int | `3` |  |
+| autoscaling.minReplicas | int | `1` |  |
+| autoscaling.targetCPUUtilizationPercentage | int | `70` |  |
+| autoscaling.targetMemoryUtilizationPercentage | string | `""` |  |
 | config.default.connector_clone.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.payoutProcessors | list | `[]` |  |

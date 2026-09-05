@@ -6,7 +6,9 @@ metadata:
   labels:
     {{- include "hyperswitch-control-center.labels" . | nindent 4 }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   revisionHistoryLimit: 10
   progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
   {{- with .Values.strategy }}

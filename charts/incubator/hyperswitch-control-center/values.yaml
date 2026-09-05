@@ -22,7 +22,16 @@ dependencies:
   clickhouse:
     enabled: false
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+# Ignored when autoscaling.enabled is true.
 replicaCount: 1
+# Horizontal Pod Autoscaler. When enabled, the Deployment's replicas field is
+# omitted and replica count is managed by the HPA instead.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: ""
 # Deployment strategy
 strategy:
   type: RollingUpdate
