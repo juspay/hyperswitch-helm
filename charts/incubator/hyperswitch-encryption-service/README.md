@@ -146,168 +146,663 @@ secrets:
 ```
 
 ## Values
+<h3>Encryption Service Secrets</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="./values.yaml#L53">configs.certs</a></div></td>
+    <td><div><code>{
+  "root_ca": "sample_cert",
+  "tls_cert": "sample_cert",
+  "tls_key": "sample_cert"
+}</code></div></td>
+    <td>TLS root CA, server certificate and private key used by the encryption service (see TLS/mTLS Configuration)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L66">configs.database.root_ca</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td>Root CA for the PostgreSQL SSL/TLS connection (see Database Configuration with SSL/TLS)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L92">configs.secrets</a></div></td>
+    <td><div><code>{
+  "master_key": {
+    "_secret": "6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"
+  }
+}</code></div></td>
+    <td>Master key used for local (non-KMS/Vault) secrets encryption, 32-byte hex (see Backend Selection)</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L134">externalPostgresql.config.password</a></div></td>
+    <td><div><code>"db_pass"</code></div></td>
+    <td>Password for the external PostgreSQL used by the encryption service</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L116">postgresql.auth.password</a></div></td>
+    <td><div><code>"db_pass"</code></div></td>
+    <td>Password for the internal (Bitnami) PostgreSQL used by the encryption service</td>
+  </tr></tbody>
+</table>
+<h3>Other Values</h3>
+<table>
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| affinity | object | `{}` |  |
-| annotations | object | `{}` |  |
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `3` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| configs.cache.max_capacity | int | `10000` |  |
-| configs.cache.time_to_idle_secs | int | `30` |  |
-| configs.cache.time_to_live_secs | int | `30` |  |
-| configs.certs.root_ca | string | `"sample_cert"` |  |
-| configs.certs.tls_cert | string | `"sample_cert"` |  |
-| configs.certs.tls_key | string | `"sample_cert"` |  |
-| configs.database.connect_timeout_secs | int | `5` |  |
-| configs.database.connection_acquire_timeout_secs | int | `30` |  |
-| configs.database.idle_timeout_secs | int | `600` |  |
-| configs.database.max_lifetime_secs | int | `1800` |  |
-| configs.database.min_idle | int | `2` |  |
-| configs.database.pool_size | int | `5` |  |
-| configs.database.root_ca | string | `""` |  |
-| configs.log.enabled | bool | `true` |  |
-| configs.log.log_format | string | `"json"` |  |
-| configs.log.log_level | string | `"debug"` |  |
-| configs.metrics.host | string | `"0.0.0.0"` |  |
-| configs.metrics.mode | string | `"prometheus"` |  |
-| configs.metrics.port | int | `6128` |  |
-| configs.multitenancy.tenants.global.schema | string | `"global"` |  |
-| configs.multitenancy.tenants.public.schema | string | `"public"` |  |
-| configs.pool_config.pool | int | `2` |  |
-| configs.secrets.master_key._secret | string | `"6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e"` |  |
-| configs.server.host | string | `"0.0.0.0"` |  |
-| configs.server.port | int | `5000` |  |
-| disableInternalSecrets | bool | `false` |  |
-| externalPostgresql.config.database | string | `"encryption_db"` |  |
-| externalPostgresql.config.host | string | `"localhost"` |  |
-| externalPostgresql.config.password | string | `"db_pass"` |  |
-| externalPostgresql.config.plainpassword | string | `"db_pass"` |  |
-| externalPostgresql.config.port | int | `5432` |  |
-| externalPostgresql.config.username | string | `"db_user"` |  |
-| externalPostgresql.enable_ssl | bool | `false` |  |
-| externalPostgresql.enabled | bool | `false` |  |
-| externalSecretsOperator.enabled | bool | `false` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].creationPolicy | string | `"Owner"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.conversionStrategy | string | `"Default"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.decodingStrategy | string | `"None"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.key | string | `"hyperswitch/encryption-service/secrets"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.metadataPolicy | string | `"None"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].name | string | `"encryption-service-secrets"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].refreshInterval | string | `"1h"` |  |
-| externalSecretsOperator.externalSecrets.secrets[0].targetName | string | `"encryption-service-secrets"` |  |
-| externalSecretsOperator.secretStore.name | string | `"encryption-service-secret-store"` |  |
-| externalSecretsOperator.secretStore.provider.aws.auth.jwt.serviceAccountRef.name | string | `"encryption-service-eso-sa"` |  |
-| externalSecretsOperator.secretStore.provider.aws.region | string | `"us-west-2"` |  |
-| externalSecretsOperator.secretStore.provider.aws.service | string | `"SecretsManager"` |  |
-| externalSecretsOperator.serviceAccount.annotations | object | `{}` |  |
-| externalSecretsOperator.serviceAccount.create | bool | `true` |  |
-| externalSecretsOperator.serviceAccount.extraLabels | object | `{}` |  |
-| externalSecretsOperator.serviceAccount.name | string | `""` |  |
-| fullnameOverride | string | `""` |  |
-| global.affinity | object | `{}` |  |
-| global.annotations | object | `{}` |  |
-| global.imageRegistry | string | `nil` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.registry | string | `"docker.juspay.io"` |  |
-| image.repository | string | `"juspaydotin/hyperswitch-encryption-service"` |  |
-| image.tag | string | `"v0.1.14"` |  |
-| imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"hyperswitch-encryption-service.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.tls | list | `[]` |  |
-| initDB.checkPGisUp.image | string | `"postgres:16-alpine3.19"` |  |
-| initDB.checkPGisUp.imageRegistry | string | `"docker.io"` |  |
-| initDB.checkPGisUp.maxAttempt | int | `30` |  |
-| initDB.enable | bool | `true` |  |
-| initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
-| initDB.migration.imageRegistry | string | `"docker.io"` |  |
-| istio.destinationRule.enabled | bool | `false` |  |
-| istio.destinationRule.trafficPolicy | object | `{}` |  |
-| istio.enabled | bool | `false` |  |
-| istio.virtualService.enabled | bool | `false` |  |
-| istio.virtualService.gateways | list | `[]` |  |
-| istio.virtualService.hosts | list | `[]` |  |
-| istio.virtualService.http | list | `[]` |  |
-| livenessProbe.failureThreshold | int | `3` |  |
-| livenessProbe.httpGet.path | string | `"/"` |  |
-| livenessProbe.httpGet.port | string | `"http"` |  |
-| livenessProbe.initialDelaySeconds | int | `30` |  |
-| livenessProbe.periodSeconds | int | `10` |  |
-| livenessProbe.successThreshold | int | `1` |  |
-| livenessProbe.timeoutSeconds | int | `5` |  |
-| nameOverride | string | `""` |  |
-| nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` |  |
-| podLabels | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
-| postgresql.architecture | string | `"standalone"` |  |
-| postgresql.auth.database | string | `"encryption_db"` |  |
-| postgresql.auth.password | string | `"db_pass"` |  |
-| postgresql.auth.username | string | `"db_user"` |  |
-| postgresql.enabled | bool | `true` |  |
-| postgresql.image.repository | string | `"bitnamilegacy/postgresql"` |  |
-| postgresql.nameOverride | string | `"encryption-service-db"` |  |
-| postgresql.primary.name | string | `""` |  |
-| postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
-| progressDeadlineSeconds | int | `600` |  |
-| readinessProbe.failureThreshold | int | `3` |  |
-| readinessProbe.httpGet.path | string | `"/"` |  |
-| readinessProbe.httpGet.port | string | `"http"` |  |
-| readinessProbe.initialDelaySeconds | int | `10` |  |
-| readinessProbe.periodSeconds | int | `5` |  |
-| readinessProbe.successThreshold | int | `1` |  |
-| readinessProbe.timeoutSeconds | int | `3` |  |
-| replicaCount | int | `1` |  |
-| resources.limits.cpu | string | `"1000m"` |  |
-| resources.limits.memory | string | `"1Gi"` |  |
-| resources.requests.cpu | string | `"400m"` |  |
-| resources.requests.memory | string | `"400Mi"` |  |
-| securityContext | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| service.externalTrafficPolicy | string | `""` |  |
-| service.internalTrafficPolicy | string | `"Cluster"` |  |
-| service.loadBalancerClass | string | `""` |  |
-| service.ports[0].name | string | `"https"` |  |
-| service.ports[0].port | int | `443` |  |
-| service.ports[0].protocol | string | `"TCP"` |  |
-| service.ports[0].targetPort | int | `5000` |  |
-| service.ports[1].name | string | `"metrics"` |  |
-| service.ports[1].port | int | `6128` |  |
-| service.ports[1].protocol | string | `"TCP"` |  |
-| service.ports[1].targetPort | int | `6128` |  |
-| service.sessionAffinity | string | `"None"` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automount | bool | `true` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `"encryption-service-role"` |  |
-| serviceMonitor.basicAuth | object | `{}` |  |
-| serviceMonitor.enabled | bool | `false` |  |
-| serviceMonitor.interval | string | `"15s"` |  |
-| serviceMonitor.labels | object | `{}` |  |
-| serviceMonitor.metricRelabelings | list | `[]` |  |
-| serviceMonitor.namespace | string | `""` |  |
-| serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.portName | string | `"metrics"` |  |
-| serviceMonitor.relabelings | list | `[]` |  |
-| serviceMonitor.scheme | string | `"http"` |  |
-| serviceMonitor.scrapeTimeout | string | `"30s"` |  |
-| serviceMonitor.targetLabels | list | `[]` |  |
-| serviceMonitor.tlsConfig | object | `{}` |  |
-| strategy.rollingUpdate.maxSurge | int | `1` |  |
-| strategy.rollingUpdate.maxUnavailable | int | `0` |  |
-| strategy.type | string | `"RollingUpdate"` |  |
-| terminationGracePeriodSeconds | int | `30` |  |
-| tolerations | list | `[]` |  |
-| volumeMounts | list | `[]` |  |
-| volumes | list | `[]` |  |
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+
+<tbody><tr>
+    <td><div><a href="./values.yaml#L314">affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L40">annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L291">autoscaling.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L293">autoscaling.maxReplicas</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L292">autoscaling.minReplicas</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L294">autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><code>80</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L68">configs.cache.max_capacity</a></div></td>
+    <td><div><code>10000</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L69">configs.cache.time_to_idle_secs</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L70">configs.cache.time_to_live_secs</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L58">configs.database.connect_timeout_secs</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L59">configs.database.connection_acquire_timeout_secs</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L60">configs.database.idle_timeout_secs</a></div></td>
+    <td><div><code>600</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L61">configs.database.max_lifetime_secs</a></div></td>
+    <td><div><code>1800</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L62">configs.database.min_idle</a></div></td>
+    <td><div><code>2</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L63">configs.database.pool_size</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L72">configs.log.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L73">configs.log.log_format</a></div></td>
+    <td><div><code>"json"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L74">configs.log.log_level</a></div></td>
+    <td><div><code>"debug"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L76">configs.metrics.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L80">configs.metrics.mode</a></div></td>
+    <td><div><code>"prometheus"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L81">configs.metrics.port</a></div></td>
+    <td><div><code>6128</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L85">configs.multitenancy.tenants.global.schema</a></div></td>
+    <td><div><code>"global"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L87">configs.multitenancy.tenants.public.schema</a></div></td>
+    <td><div><code>"public"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L89">configs.pool_config.pool</a></div></td>
+    <td><div><code>2</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L104">configs.server.host</a></div></td>
+    <td><div><code>"0.0.0.0"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L103">configs.server.port</a></div></td>
+    <td><div><code>5000</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L350">disableInternalSecrets</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L136">externalPostgresql.config.database</a></div></td>
+    <td><div><code>"encryption_db"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L129">externalPostgresql.config.host</a></div></td>
+    <td><div><code>"localhost"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L135">externalPostgresql.config.plainpassword</a></div></td>
+    <td><div><code>"db_pass"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L130">externalPostgresql.config.port</a></div></td>
+    <td><div><code>5432</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L131">externalPostgresql.config.username</a></div></td>
+    <td><div><code>"db_user"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L137">externalPostgresql.enable_ssl</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L127">externalPostgresql.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L354">externalSecretsOperator.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L381">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
+    <td><div><code>"Owner"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L385">externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.conversionStrategy</a></div></td>
+    <td><div><code>"Default"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L386">externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.decodingStrategy</a></div></td>
+    <td><div><code>"None"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L384">externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.key</a></div></td>
+    <td><div><code>"hyperswitch/encryption-service/secrets"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L387">externalSecretsOperator.externalSecrets.secrets[0].dataFrom[0].extract.metadataPolicy</a></div></td>
+    <td><div><code>"None"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L378">externalSecretsOperator.externalSecrets.secrets[0].name</a></div></td>
+    <td><div><code>"encryption-service-secrets"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L380">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
+    <td><div><code>"1h"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L379">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
+    <td><div><code>"encryption-service-secrets"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L365">externalSecretsOperator.secretStore.name</a></div></td>
+    <td><div><code>"encryption-service-secret-store"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L373">externalSecretsOperator.secretStore.provider.aws.auth.jwt.serviceAccountRef.name</a></div></td>
+    <td><div><code>"encryption-service-eso-sa"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L369">externalSecretsOperator.secretStore.provider.aws.region</a></div></td>
+    <td><div><code>"us-west-2"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L368">externalSecretsOperator.secretStore.provider.aws.service</a></div></td>
+    <td><div><code>"SecretsManager"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L359">externalSecretsOperator.serviceAccount.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L358">externalSecretsOperator.serviceAccount.create</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L360">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L361">externalSecretsOperator.serviceAccount.name</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L39">fullnameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L10">global.affinity</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L9">global.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L8">global.imageRegistry</a></div></td>
+    <td><div><code>null</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L33">image.pullPolicy</a></div></td>
+    <td><div><code>"IfNotPresent"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L28">image.registry</a></div></td>
+    <td><div><code>"docker.juspay.io"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L29">image.repository</a></div></td>
+    <td><div><code>"juspaydotin/hyperswitch-encryption-service"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L31">image.tag</a></div></td>
+    <td><div><code>"v0.1.14"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L36">imagePullSecrets</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L212">ingress.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L211">ingress.className</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L210">ingress.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L216">ingress.hosts[0].host</a></div></td>
+    <td><div><code>"hyperswitch-encryption-service.local"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L218">ingress.hosts[0].paths[0].path</a></div></td>
+    <td><div><code>"/"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L219">ingress.hosts[0].paths[0].pathType</a></div></td>
+    <td><div><code>"ImplementationSpecific"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L220">ingress.tls</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L144">initDB.checkPGisUp.image</a></div></td>
+    <td><div><code>"postgres:16-alpine3.19"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L143">initDB.checkPGisUp.imageRegistry</a></div></td>
+    <td><div><code>"docker.io"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L145">initDB.checkPGisUp.maxAttempt</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L141">initDB.enable</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L148">initDB.migration.image</a></div></td>
+    <td><div><code>"christophwurst/diesel-cli:latest"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L147">initDB.migration.imageRegistry</a></div></td>
+    <td><div><code>"docker.io"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L336">istio.destinationRule.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L337">istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L318">istio.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L320">istio.virtualService.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L322">istio.virtualService.gateways</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L321">istio.virtualService.hosts</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L324">istio.virtualService.http</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L277">livenessProbe.failureThreshold</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L272">livenessProbe.httpGet.path</a></div></td>
+    <td><div><code>"/"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L273">livenessProbe.httpGet.port</a></div></td>
+    <td><div><code>"http"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L274">livenessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L275">livenessProbe.periodSeconds</a></div></td>
+    <td><div><code>10</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L278">livenessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L276">livenessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L38">nameOverride</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L310">nodeSelector</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L164">podAnnotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L167">podLabels</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L169">podSecurityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L118">postgresql.architecture</a></div></td>
+    <td><div><code>"standalone"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L117">postgresql.auth.database</a></div></td>
+    <td><div><code>"encryption_db"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L113">postgresql.auth.username</a></div></td>
+    <td><div><code>"db_user"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L108">postgresql.enabled</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L110">postgresql.image.repository</a></div></td>
+    <td><div><code>"bitnamilegacy/postgresql"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L111">postgresql.nameOverride</a></div></td>
+    <td><div><code>"encryption-service-db"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L120">postgresql.primary.name</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L123">postgresql.primary.resources.requests.cpu</a></div></td>
+    <td><div><code>"100m"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L23">progressDeadlineSeconds</a></div></td>
+    <td><div><code>600</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L286">readinessProbe.failureThreshold</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L281">readinessProbe.httpGet.path</a></div></td>
+    <td><div><code>"/"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L282">readinessProbe.httpGet.port</a></div></td>
+    <td><div><code>"http"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L283">readinessProbe.initialDelaySeconds</a></div></td>
+    <td><div><code>10</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L284">readinessProbe.periodSeconds</a></div></td>
+    <td><div><code>5</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L287">readinessProbe.successThreshold</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L285">readinessProbe.timeoutSeconds</a></div></td>
+    <td><div><code>3</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L13">replicaCount</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L263">resources.limits.cpu</a></div></td>
+    <td><div><code>"1000m"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L264">resources.limits.memory</a></div></td>
+    <td><div><code>"1Gi"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L266">resources.requests.cpu</a></div></td>
+    <td><div><code>"400m"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L267">resources.requests.memory</a></div></td>
+    <td><div><code>"400Mi"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L172">securityContext</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L185">service.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L192">service.externalTrafficPolicy</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L194">service.internalTrafficPolicy</a></div></td>
+    <td><div><code>"Cluster"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L190">service.loadBalancerClass</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L199">service.ports[0].name</a></div></td>
+    <td><div><code>"https"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L200">service.ports[0].port</a></div></td>
+    <td><div><code>443</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L202">service.ports[0].protocol</a></div></td>
+    <td><div><code>"TCP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L201">service.ports[0].targetPort</a></div></td>
+    <td><div><code>5000</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L203">service.ports[1].name</a></div></td>
+    <td><div><code>"metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L204">service.ports[1].port</a></div></td>
+    <td><div><code>6128</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L206">service.ports[1].protocol</a></div></td>
+    <td><div><code>"TCP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L205">service.ports[1].targetPort</a></div></td>
+    <td><div><code>6128</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L196">service.sessionAffinity</a></div></td>
+    <td><div><code>"None"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L183">service.type</a></div></td>
+    <td><div><code>"ClusterIP"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L157">serviceAccount.annotations</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L155">serviceAccount.automount</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L153">serviceAccount.create</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L160">serviceAccount.name</a></div></td>
+    <td><div><code>"encryption-service-role"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L257">serviceMonitor.basicAuth</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L232">serviceMonitor.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L243">serviceMonitor.interval</a></div></td>
+    <td><div><code>"15s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L241">serviceMonitor.labels</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L255">serviceMonitor.metricRelabelings</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L238">serviceMonitor.namespace</a></div></td>
+    <td><div><code>""</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L247">serviceMonitor.path</a></div></td>
+    <td><div><code>"/metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L235">serviceMonitor.portName</a></div></td>
+    <td><div><code>"metrics"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L253">serviceMonitor.relabelings</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L249">serviceMonitor.scheme</a></div></td>
+    <td><div><code>"http"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L245">serviceMonitor.scrapeTimeout</a></div></td>
+    <td><div><code>"30s"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L259">serviceMonitor.targetLabels</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L251">serviceMonitor.tlsConfig</a></div></td>
+    <td><div><code>{}</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L19">strategy.rollingUpdate.maxSurge</a></div></td>
+    <td><div><code>1</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L20">strategy.rollingUpdate.maxUnavailable</a></div></td>
+    <td><div><code>0</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L17">strategy.type</a></div></td>
+    <td><div><code>"RollingUpdate"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L24">terminationGracePeriodSeconds</a></div></td>
+    <td><div><code>30</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L312">tolerations</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L305">volumeMounts</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L298">volumes</a></div></td>
+    <td><div><code>[]</code></div></td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
 
 ## Examples
 
