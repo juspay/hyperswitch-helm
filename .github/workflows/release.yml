@@ -43,15 +43,30 @@ jobs:
 
       - name: Build Helm Dependencies
         run: |
-          # Build dependencies for all charts
-          for chart in charts/incubator/*; do
+          # Build dependencies for all charts (graduated charts under charts/,
+          # remaining incubating charts under charts/incubator/)
+          for chart in charts/* charts/incubator/*; do
             if [ -f "$chart/Chart.yaml" ]; then
               echo "Updating dependencies for $chart"
               helm dependency update "$chart"
             fi
           done
 
-      - name: Run chart-releaser
+      - name: Run chart-releaser (graduated charts)
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts
+          config: cr.yaml
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: "true"
+
+      - name: Collect release packages
+        run: |
+          mkdir -p .cr-all-packages
+          cp .cr-release-packages/*.tgz .cr-all-packages/ 2>/dev/null || true
+
+      - name: Run chart-releaser (incubator charts)
         uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts/incubator
@@ -59,6 +74,11 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_SKIP_EXISTING: "true"
+
+      - name: Collect release packages (incubator)
+        run: |
+          mkdir -p .cr-all-packages
+          cp .cr-release-packages/*.tgz .cr-all-packages/ 2>/dev/null || true
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -70,7 +90,7 @@ jobs:
       - name: Push charts to GHCR
         run: |
           shopt -s nullglob
-          for pkg in .cr-release-packages/*.tgz; do
+          for pkg in .cr-all-packages/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
