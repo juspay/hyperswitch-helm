@@ -1,0 +1,26 @@
+apiVersion: v2
+name: hyperswitch-stack
+description: Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
+type: application
+version: 0.2.28
+appVersion: "1.16.0"
+dependencies:
+  # Pins must point at versions already published to the Helm repo below: both
+  # CI lint and the release workflow run `helm dependency update` against it,
+  # so a not-yet-released sibling version fails the build. After a release
+  # publishes a new sibling chart, bump its pin here in a follow-up.
+  - name: hyperswitch-app
+    version: 1.3.1
+    repository: "https://juspay.github.io/hyperswitch-helm"
+  - name: hyperswitch-web
+    version: 0.2.16
+    repository: "https://juspay.github.io/hyperswitch-helm"
+    condition: hyperswitch-web.enabled
+  - name: hyperswitch-monitoring
+    version: 0.1.8
+    repository: "https://juspay.github.io/hyperswitch-helm"
+    condition: hyperswitch-monitoring.enabled
+  - name: hyperswitch-control-center
+    version: 1.1.2
+    repository: "https://juspay.github.io/hyperswitch-helm"
+    condition: hyperswitch-control-center.enabled

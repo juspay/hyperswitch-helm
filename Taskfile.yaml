@@ -13,7 +13,7 @@ tasks:
     #language=sh
     cmds:
       - >
-        STACK=charts/incubator/hyperswitch-stack &&
+        STACK=charts/hyperswitch-stack &&
         APP=charts/hyperswitch-app &&
         version=$(grep '^version:' $STACK/Chart.yaml | awk '{print $2}') &&
         echo "Packaging local hyperswitch-app chart (preserves local template changes)..." &&
