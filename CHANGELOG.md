@@ -4,6 +4,21 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-app-1.3.1] - 2026-09-09
+
+### 🚜 Refactor
+
+- Graduate `hyperswitch-app` out of `charts/incubator` to `charts/` (incubator graduation,
+  phase 2). Only `hyperswitch-stack` remains in the incubator, moving in phase 3 once this
+  version is released.
+- Refresh dependency pins to the phase-1 graduated versions: `hyperswitch-card-vault` 0.1.7
+  (was 0.1.4) and `hyperswitch-ucs` 0.1.8 (was 0.1.2).
+- Drop the stale `hyperswitch-ucs.config.connectors` override, which was a verbatim copy of the
+  UCS 0.1.2 chart defaults (including live Adyen endpoints). Newer UCS charts ship connector URLs
+  in per-environment config files selected by `config.server.run_env`, and this leftover override
+  would have injected the old URLs as `CS__CONNECTORS__*` environment variables on top of them.
+  Only affects releases that enable `hyperswitch-ucs` (disabled by default).
+
 ## Incubator graduation, phase 1 - 2026-09-09
 
 Charts are moving out of `charts/incubator` in dependency order (leaves first), with a release
