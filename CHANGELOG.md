@@ -4,6 +4,41 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-stack-0.2.28] - 2026-09-09
+
+### 🚜 Refactor
+
+- Graduate `hyperswitch-stack` out of `charts/incubator` to `charts/` (incubator graduation,
+  phase 3). The incubator is now empty; `ct.yaml`, the release workflow and the docs/scripts that
+  referenced `charts/incubator` are simplified back to a single `charts/` location.
+- Refresh dependency pins to the graduated chart versions: `hyperswitch-app` 1.3.1 (was 1.2.1),
+  `hyperswitch-web` 0.2.16 (was 0.2.12), `hyperswitch-monitoring` 0.1.8 (was 0.1.6),
+  `hyperswitch-control-center` 1.1.2 (was 1.1.0).
+- Align default values with the versions the pinned subcharts ship: SDK version 0.133.0
+  (was 0.129.0, set in `hyperswitch-web` autoBuild, `hyperswitch-app.services.sdk` and
+  `hyperswitch-control-center.dependencies.sdk`), control center image tag v1.38.7 (was v1.38.2),
+  and card vault image v0.7.0 (was the dev build v0.6.5-dev).
+- Remove dead overrides that no chart version ever read (rendered manifests are unchanged):
+  `hyperswitch-web.image.pullPolicy` (the web chart has no top-level `image` key; the live
+  `autoBuild.pullPolicy` already defaults to `IfNotPresent`) and
+  `hyperswitch-app.hyperswitch-card-vault.server.tenant_secrets.hyperswitch` (the card vault chart
+  reads top-level `tenant_secrets.public.*`, and its default carries the same master key).
+
+## [hyperswitch-app-1.3.1] - 2026-09-09
+
+### 🚜 Refactor
+
+- Graduate `hyperswitch-app` out of `charts/incubator` to `charts/` (incubator graduation,
+  phase 2). Only `hyperswitch-stack` remains in the incubator, moving in phase 3 once this
+  version is released.
+- Refresh dependency pins to the phase-1 graduated versions: `hyperswitch-card-vault` 0.1.7
+  (was 0.1.4) and `hyperswitch-ucs` 0.1.8 (was 0.1.2).
+- Drop the stale `hyperswitch-ucs.config.connectors` override, which was a verbatim copy of the
+  UCS 0.1.2 chart defaults (including live Adyen endpoints). Newer UCS charts ship connector URLs
+  in per-environment config files selected by `config.server.run_env`, and this leftover override
+  would have injected the old URLs as `CS__CONNECTORS__*` environment variables on top of them.
+  Only affects releases that enable `hyperswitch-ucs` (disabled by default).
+
 ## Incubator graduation, phase 1 - 2026-09-09
 
 Charts are moving out of `charts/incubator` in dependency order (leaves first), with a release

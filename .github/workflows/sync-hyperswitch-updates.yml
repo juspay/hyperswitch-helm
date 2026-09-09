@@ -104,26 +104,26 @@ jobs:
           echo "Downloading configuration files from hyperswitch ref: $SOURCE_REF"
 
           # Create target directory
-          mkdir -p charts/incubator/hyperswitch-app/configs
+          mkdir -p charts/hyperswitch-app/configs
 
           # Download specific configuration files with error handling
           echo "Downloading integration_test.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/integration_test.toml" \
-               -o charts/incubator/hyperswitch-app/configs/router-integ.toml
+               -o charts/hyperswitch-app/configs/router-integ.toml
 
           echo "Downloading sandbox.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/sandbox.toml" \
-               -o charts/incubator/hyperswitch-app/configs/router-sandbox.toml
+               -o charts/hyperswitch-app/configs/router-sandbox.toml
 
           echo "Downloading production.toml..."
           curl -fsSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3.raw" \
                "${BASE_URL}/production.toml" \
-               -o charts/incubator/hyperswitch-app/configs/router-production.toml
+               -o charts/hyperswitch-app/configs/router-production.toml
 
           echo "✅ Configuration files downloaded successfully"
 
@@ -131,8 +131,8 @@ jobs:
         id: update_versions
         run: |
           SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
-          VALUES_FILE="charts/incubator/hyperswitch-app/values.yaml"
-          CHART_FILE="charts/incubator/hyperswitch-app/Chart.yaml"
+          VALUES_FILE="charts/hyperswitch-app/values.yaml"
+          CHART_FILE="charts/hyperswitch-app/Chart.yaml"
           UPDATE_ALL="${{ steps.config.outputs.update_all_services }}"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
@@ -177,7 +177,7 @@ jobs:
 
       - name: Helm dependency update
         run: |
-          CHART_DIR="charts/incubator/hyperswitch-app"
+          CHART_DIR="charts/hyperswitch-app"
 
           echo "Updating chart dependencies..."
           cd $CHART_DIR
@@ -242,8 +242,8 @@ jobs:
           # Check if there are uncommitted changes to commit
           if [ -n "$(git status --porcelain)" ]; then
             echo "Committing file changes..."
-            git add charts/incubator/hyperswitch-app/configs/ charts/incubator/hyperswitch-app/values.yaml charts/incubator/hyperswitch-app/Chart.yaml
-            git add -f charts/incubator/hyperswitch-app/charts/ charts/incubator/hyperswitch-app/Chart.lock
+            git add charts/hyperswitch-app/configs/ charts/hyperswitch-app/values.yaml charts/hyperswitch-app/Chart.yaml
+            git add -f charts/hyperswitch-app/charts/ charts/hyperswitch-app/Chart.lock
             git commit -m "$COMMIT_MSG"
           else
             echo "No file changes to commit (changes may have come from merge)"
@@ -271,9 +271,9 @@ jobs:
           echo "Tag: $TAG"
           echo ""
           echo "Configuration files updated:"
-          echo "   - charts/incubator/hyperswitch-app/configs/router-integ.toml"
-          echo "   - charts/incubator/hyperswitch-app/configs/router-sandbox.toml"
-          echo "   - charts/incubator/hyperswitch-app/configs/router-production.toml"
+          echo "   - charts/hyperswitch-app/configs/router-integ.toml"
+          echo "   - charts/hyperswitch-app/configs/router-sandbox.toml"
+          echo "   - charts/hyperswitch-app/configs/router-production.toml"
 
           if [ "$SYNC_TYPE" = "full" ]; then
             echo "All service versions updated:"
@@ -284,10 +284,10 @@ jobs:
           fi
 
           echo "Chart updates:"
-          echo "   - charts/incubator/hyperswitch-app/Chart.yaml"
+          echo "   - charts/hyperswitch-app/Chart.yaml"
           echo "Dependencies updated for air-gapped deployments:"
-          echo "   - charts/incubator/hyperswitch-app/charts/"
-          echo "   - charts/incubator/hyperswitch-app/Chart.lock"
+          echo "   - charts/hyperswitch-app/charts/"
+          echo "   - charts/hyperswitch-app/Chart.lock"
 
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'

@@ -44,8 +44,6 @@ hyperswitch-web:
   enabled: true
   sdkDemo:
     enabled: false
-  image:
-    pullPolicy: IfNotPresent
   podAnnotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
@@ -54,7 +52,7 @@ hyperswitch-web:
     enable: true
     forceBuild: true
     gitCloneParam:
-      gitVersion: 0.129.0
+      gitVersion: 0.133.0
     nginxConfig:
       extraPath: v1
     buildParam:
@@ -152,7 +150,7 @@ hyperswitch-app:
       image: juspaydotin/hyperswitch-drainer
     sdk:
       host: *web_sdk_host
-      version: 0.129.0
+      version: 0.133.0
       subversion: v1
   server:
     replicas: 1
@@ -183,7 +181,7 @@ hyperswitch-app:
 
   # Extra routers that run inside this release, sharing its PostgreSQL, Redis, Kafka and
   # ClickHouse. Both ship disabled - flip `enabled` to run them. Each one differs from the main
-  # router by configuration alone; see charts/incubator/hyperswitch-app/values.yaml for the full
+  # router by configuration alone; see charts/hyperswitch-app/values.yaml for the full
   # set of options.
   #
   # olap:                        # read/analytics traffic under /olap, write handle on the replica
@@ -215,13 +213,7 @@ hyperswitch-app:
     enabled: true
     server:
       imageRegistry: docker.juspay.io
-      image: juspaydotin/hyperswitch-card-vault:v0.6.5-dev
-      tenant_secrets:
-        hyperswitch:
-          master_key: "8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"
-          public_key: ""
-          schema: "public"
-
+      image: juspaydotin/hyperswitch-card-vault:v0.7.0
     initDB:
       enable: true
     postgresql:
@@ -289,7 +281,7 @@ hyperswitch-control-center:
       host: *router_host
     sdk:
       host: *web_sdk_host
-      version: 0.129.0
+      version: 0.133.0
       subversion: v1
     clickhouse:
       enabled: true
@@ -298,7 +290,7 @@ hyperswitch-control-center:
     registry: docker.juspay.io
     repository: juspaydotin/hyperswitch-control-center
     pullPolicy: IfNotPresent
-    tag: v1.38.2
+    tag: v1.38.7
   # Service configuration
   service:
     type: ClusterIP

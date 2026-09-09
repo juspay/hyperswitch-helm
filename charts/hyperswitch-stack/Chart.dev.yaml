@@ -26,11 +26,11 @@ dependencies:
   - name: hyperswitch-app
     repository: "file://../hyperswitch-app"
   - name: hyperswitch-web
-    repository: "file://../../hyperswitch-web"
+    repository: "file://../hyperswitch-web"
     condition: hyperswitch-web.enabled
   - name: hyperswitch-monitoring
-    repository: "file://../../hyperswitch-monitoring"
+    repository: "file://../hyperswitch-monitoring"
     condition: hyperswitch-monitoring.enabled
   - name: hyperswitch-control-center
-    repository: "file://../../hyperswitch-control-center"
+    repository: "file://../hyperswitch-control-center"
     condition: hyperswitch-control-center.enabled

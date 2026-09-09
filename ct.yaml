@@ -2,10 +2,7 @@
 remote: origin
 target-branch: main
 chart-dirs:
-  # Graduated charts live directly under charts/; the remaining incubating
-  # charts stay under charts/incubator until their phase of the move completes.
   - charts
-  - charts/incubator
 chart-repos:
   - hyperswitch=https://juspay.github.io/hyperswitch-helm
   - bitnami=https://charts.bitnami.com/bitnami
