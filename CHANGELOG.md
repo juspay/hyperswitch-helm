@@ -4,6 +4,25 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## Incubator graduation, phase 1 - 2026-09-09
+
+Charts are moving out of `charts/incubator` in dependency order (leaves first), with a release
+between phases so each dependent chart can pin versions already published from the new location.
+Phase 1 graduates the six leaf charts to `charts/`; phase 2 is `hyperswitch-app` (after these
+release), phase 3 is `hyperswitch-stack` (after `hyperswitch-app` releases). No template or values
+changes - version bumps mark the first release cut from the new location:
+
+- `hyperswitch-card-vault` 0.1.7
+- `hyperswitch-ucs` 0.1.8
+- `hyperswitch-web` 0.2.16
+- `hyperswitch-monitoring` 0.1.8
+- `hyperswitch-control-center` 1.1.2
+- `hyperswitch-encryption-service` 0.1.11
+
+Tooling now covers both locations while the move is in progress: `ct.yaml` lists both chart dirs,
+helm-docs searches from `charts/`, and the release workflow packages `charts/*` and
+`charts/incubator/*`.
+
 ## [hyperswitch-stack-0.2.27] - 2026-09-01
 
 ### 🚜 Refactor
