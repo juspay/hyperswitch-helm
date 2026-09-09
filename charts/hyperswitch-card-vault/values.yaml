@@ -81,6 +81,7 @@ secrets:
 
   # The private key for the locker from locker-private-key.pem
   # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
+  # @section -- Card Vault Secrets
   locker_private_key: |
     -----BEGIN PRIVATE KEY-----
     MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyfiCWauKEAbtW
@@ -111,39 +112,48 @@ secrets:
     4tidgA0ErmcnysggrNg2W3De
     -----END PRIVATE KEY-----
 
-  # Database secrets
+  # -- Database password for the card vault's PostgreSQL connection
+  # @section -- Card Vault Secrets
   database:
     password: "dummyPassword"
 
   # Backend-specific secrets
-  # AWS KMS configuration (required when backend: aws)
+  # -- AWS KMS key id used to encrypt/decrypt secrets (required when backend: aws)
+  # @section -- Card Vault Secrets
   aws:
     key_id: ""
     region: "us-east-1"
 
-  # HashiCorp Vault (required when backend: vault)
+  # -- HashiCorp Vault authentication token (required when backend: vault)
+  # @section -- Card Vault Secrets
   vault:
     token: ""  # Vault authentication token
 
-  # TLS/mTLS certificates (optional)
+  # -- TLS/mTLS certificate and private key for the card vault server (optional)
+  # @section -- Card Vault Secrets
   tls:
     certificate: ""  # TLS certificate content
     private_key: ""  # TLS private key content
 
-  # External key manager mTLS certificates (required when server.externalKeyManager.mode is "enabled_with_mtls")
+  # -- External key manager mTLS CA certificate (required when server.externalKeyManager.mode is "enabled_with_mtls")
+  # @section -- Card Vault Secrets
   external_key_manager:
     caCert: ""
 
-  # API client mTLS identity (required when server.externalKeyManager.mode is "enabled_with_mtls")
+  # -- API client mTLS identity (required when server.externalKeyManager.mode is "enabled_with_mtls")
+  # @section -- Card Vault Secrets
   api_client:
     identity: ""
 
 # Tenant configuration
 tenant_secrets:
   public:
+    # -- Master key used to unlock/derive the tenant's encryption keys
+    # @section -- Card Vault Secrets
     master_key: 8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df
     # -- The public key for the tenant from tenant_secrets-public-public_key.pem
     # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+    # @section -- Card Vault Secrets
     public_key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJtfZxG6ohl/Mvk0DOiU
@@ -165,6 +175,8 @@ postgresql:
   nameOverride: locker-db
   auth:
     username: db_user
+    # -- Password for the internal (Bitnami) PostgreSQL used by the card vault
+    # @section -- Card Vault Secrets
     password: dummyPassword
     database: locker-db
   architecture: standalone
@@ -205,6 +217,8 @@ vaultKeysJob:
     maxAttempt: 30
     host: ""
     port: 80
+  # -- Two custodian keys used to unlock the locker after deployment (see Post-Deployment steps)
+  # @section -- Card Vault Secrets
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"
     key2: "7de95dbbd5d020e6b2a44847b8942bf5"

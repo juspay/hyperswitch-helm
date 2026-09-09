@@ -14,7 +14,8 @@ The single API to access payment ecosystems across 130+ countries</div>
   <a href="https://api-reference.hyperswitch.io/introduction"> API Docs </a> 
    <br>
   <a href="./charts/hyperswitch-stack/README.md#community-contributions">Community and Contributions</a> •
-  <a href="./charts/hyperswitch-stack/README.md#copyright-and-license">Copyright and License</a>
+  <a href="./charts/hyperswitch-stack/README.md#copyright-and-license">Copyright and License</a> •
+  <a href="./SECRETS.md">Secrets Reference</a>
 </p>
 
 <p align="center">

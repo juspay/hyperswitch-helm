@@ -48,6 +48,8 @@ annotations: {}
 #       name: <name_of_configmap_or_secret>
 #       key: <key_in_configmap_or_secret>
 configs:
+  # -- TLS root CA, server certificate and private key used by the encryption service (see TLS/mTLS Configuration)
+  # @section -- Encryption Service Secrets
   certs:
     root_ca: sample_cert
     tls_cert: sample_cert
@@ -59,6 +61,8 @@ configs:
     max_lifetime_secs: 1800
     min_idle: 2
     pool_size: 5
+    # -- Root CA for the PostgreSQL SSL/TLS connection (see Database Configuration with SSL/TLS)
+    # @section -- Encryption Service Secrets
     root_ca: ""
   cache:
     max_capacity: 10000
@@ -83,6 +87,8 @@ configs:
         schema: public
   pool_config:
     pool: 2
+  # -- Master key used for local (non-KMS/Vault) secrets encryption, 32-byte hex (see Backend Selection)
+  # @section -- Encryption Service Secrets
   secrets:
     master_key:
       _secret: 6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e
@@ -105,6 +111,8 @@ postgresql:
   nameOverride: encryption-service-db
   auth:
     username: db_user
+    # -- Password for the internal (Bitnami) PostgreSQL used by the encryption service
+    # @section -- Encryption Service Secrets
     password: db_pass
     database: encryption_db
   architecture: standalone
@@ -121,6 +129,8 @@ externalPostgresql:
     host: localhost
     port: 5432
     username: db_user
+    # -- Password for the external PostgreSQL used by the encryption service
+    # @section -- Encryption Service Secrets
     password: db_pass
     plainpassword: db_pass
     database: encryption_db

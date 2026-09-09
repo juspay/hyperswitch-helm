@@ -4,6 +4,26 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-encryption-service-0.1.12] - 2026-09-09
+
+### 📚 Documentation
+
+- Add `# --` descriptions and `@section -- Encryption Service Secrets` annotations to every
+  secret-bearing field in `values.yaml` (TLS certs, Postgres SSL root CA, local master key,
+  internal/external Postgres passwords), and switch `README.md.gotmpl` to the HTML-table values
+  renderer already used by `hyperswitch-app` so those fields render under a dedicated
+  "Encryption Service Secrets" section instead of the flat default table.
+
+## [hyperswitch-card-vault-0.1.8] - 2026-09-09
+
+### 📚 Documentation
+
+- Add `# --` descriptions and `@section -- Card Vault Secrets` annotations to every secret-bearing
+  field in `values.yaml` (locker/tenant keys, database password, AWS/Vault/TLS backend secrets,
+  custodian unlock keys), and switch `README.md.gotmpl` to the HTML-table values renderer already
+  used by `hyperswitch-app` so those fields render under a dedicated "Card Vault Secrets" section
+  instead of the flat default table.
+
 ## [hyperswitch-stack-0.2.28] - 2026-09-09
 
 ### 🚜 Refactor
