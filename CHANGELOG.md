@@ -8,7 +8,7 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 ### 📚 Documentation
 
-- Add `# -- ` descriptions and `@section -- Encryption Service Secrets` annotations to every
+- Add `# --` descriptions and `@section -- Encryption Service Secrets` annotations to every
   secret-bearing field in `values.yaml` (TLS certs, Postgres SSL root CA, local master key,
   internal/external Postgres passwords), and switch `README.md.gotmpl` to the HTML-table values
   renderer already used by `hyperswitch-app` so those fields render under a dedicated
@@ -18,7 +18,7 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 ### 📚 Documentation
 
-- Add `# -- ` descriptions and `@section -- Card Vault Secrets` annotations to every secret-bearing
+- Add `# --` descriptions and `@section -- Card Vault Secrets` annotations to every secret-bearing
   field in `values.yaml` (locker/tenant keys, database password, AWS/Vault/TLS backend secrets,
   custodian unlock keys), and switch `README.md.gotmpl` to the HTML-table values renderer already
   used by `hyperswitch-app` so those fields render under a dedicated "Card Vault Secrets" section
