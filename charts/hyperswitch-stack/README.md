@@ -215,7 +215,7 @@ task ur
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-app | 1.2.1 |
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-control-center | 1.1.0 |
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-monitoring | 0.1.6 |
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-web | 0.2.12 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-app | 1.3.1 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-control-center | 1.1.2 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-monitoring | 0.1.8 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-web | 0.2.16 |

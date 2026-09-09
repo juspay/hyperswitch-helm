@@ -2,7 +2,6 @@
 *.tgz
 charts/*/charts/
 charts/*/Chart.lock
-charts/incubator/*/charts/
 *.lock
 requirements.lock
 index.yaml
