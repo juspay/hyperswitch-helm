@@ -212,6 +212,41 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# AWS Load Balancer Controller TargetGroupBinding configuration
+# Binds the service directly to existing AWS target groups without creating an Ingress/Service of type LoadBalancer
+# Requires the AWS Load Balancer Controller to be installed in the cluster
+# https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/targetgroupbinding/targetgroupbinding/
+targetGroupBinding:
+  enabled: false
+  # One TargetGroupBinding is created per entry
+  bindings: []
+    # - # Name of the TargetGroupBinding resource
+    #   # Defaults to "<fullname>-<port>" if not set
+    #   name: ""
+    #   # ARN of the AWS target group to bind the service to (required)
+    #   targetGroupARN: "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/encryption-service/1234567890123456"
+    #   # Service port (name or number) to route traffic to (required)
+    #   port: https
+    #   # Target type of the target group: ip or instance
+    #   targetType: ip
+    #   # IP address type of the target group: ipv4 or ipv6
+    #   ipAddressType: ipv4
+    #   # VPC ID of the target group (only needed when it differs from the cluster VPC)
+    #   vpcID: ""
+    #   # Annotations to add to the TargetGroupBinding resource
+    #   annotations: {}
+    #   # Node selector for instance target type
+    #   nodeSelector: {}
+    #   # Networking rules controlling traffic to the targets
+    #   networking: {}
+    #     # ingress:
+    #     #   - from:
+    #     #       - securityGroup:
+    #     #           groupID: sg-0123456789abcdef0
+    #     #     ports:
+    #     #       - protocol: TCP
+    #     #         port: 5000
+
 serviceMonitor:
   ## If true, a ServiceMonitor CR is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
