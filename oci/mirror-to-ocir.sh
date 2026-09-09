@@ -35,7 +35,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CHART_DIR="${SCRIPT_DIR}/../charts/incubator/hyperswitch-stack"
+CHART_DIR="${SCRIPT_DIR}/../charts/hyperswitch-stack"
 OUTPUT_VALUES="${SCRIPT_DIR}/values-ocir.yaml"
 DRY_RUN="${DRY_RUN:-0}"
 MAX_PARALLEL="${MAX_PARALLEL:-6}"
@@ -349,7 +349,7 @@ echo "         --docker-password='<oci-auth-token>' \\"
 echo "         --dry-run=client -o yaml | kubectl apply -f -"
 echo ""
 echo "  2. Install:"
-echo "       helm install hyperswitch charts/incubator/hyperswitch-stack \\"
+echo "       helm install hyperswitch charts/hyperswitch-stack \\"
 echo "         --namespace hyperswitch \\"
 echo "         -f oci/values-ocir.yaml \\"
 echo "         --set 'hyperswitch-app.server.ingress.className=nginx' \\"

@@ -6,9 +6,9 @@ Every value in this repo's `values.yaml` files that is fed into a Kubernetes `Se
 
 | Application | Secrets table |
 | --- | --- |
-| App server (`hyperswitch-app`) — admin API key, JWT secret, master encryption key, KMS/JWE keys, Apple Pay/Paze decrypt keys, forex API keys, key-manager mTLS certs, recon admin key | [App Server Secrets](./charts/incubator/hyperswitch-app/README.md#app-server-secrets) |
-| Card vault (`hyperswitch-card-vault`) — locker/tenant key pairs, master key, custodian unlock keys, DB password, AWS KMS/Vault/TLS backend secrets | [Card Vault Secrets](./charts/incubator/hyperswitch-card-vault/README.md#card-vault-secrets) |
-| Encryption service (`hyperswitch-encryption-service`) — local/AWS/Vault master key, TLS certs, DB passwords | [Encryption Service Secrets](./charts/incubator/hyperswitch-encryption-service/README.md#encryption-service-secrets) |
+| App server (`hyperswitch-app`) — admin API key, JWT secret, master encryption key, KMS/JWE keys, Apple Pay/Paze decrypt keys, forex API keys, key-manager mTLS certs, recon admin key | [App Server Secrets](./charts/hyperswitch-app/README.md#app-server-secrets) |
+| Card vault (`hyperswitch-card-vault`) — locker/tenant key pairs, master key, custodian unlock keys, DB password, AWS KMS/Vault/TLS backend secrets | [Card Vault Secrets](./charts/hyperswitch-card-vault/README.md#card-vault-secrets) |
+| Encryption service (`hyperswitch-encryption-service`) — local/AWS/Vault master key, TLS certs, DB passwords | [Encryption Service Secrets](./charts/hyperswitch-encryption-service/README.md#encryption-service-secrets) |
 
 `hyperswitch-control-center`, `hyperswitch-web`, and `hyperswitch-ucs` currently have no secret-tagged config fields.
 
@@ -16,8 +16,8 @@ Every value in this repo's `values.yaml` files that is fed into a Kubernetes `Se
 
 Rather than hand-editing plaintext values into `values.yaml`, production deployments should populate the above keys through the [External Secrets Operator](https://external-secrets.io/), which every app chart supports via `externalSecretsOperator.*`:
 
-- `hyperswitch-app`: `charts/incubator/hyperswitch-app/templates/external-secrets/`
-- `hyperswitch-encryption-service`: `charts/incubator/hyperswitch-encryption-service/templates/external-secrets/`
+- `hyperswitch-app`: `charts/hyperswitch-app/templates/external-secrets/`
+- `hyperswitch-encryption-service`: `charts/hyperswitch-encryption-service/templates/external-secrets/`
 
 Set `externalSecretsOperator.enabled: true`, point `externalSecretsOperator.secretStore.provider` at your backend (AWS Secrets Manager, GCP Secret Manager, Vault, etc.), and map each secret listed above under `externalSecretsOperator.externalSecrets.secrets[].data`/`dataFrom` to the corresponding key in your secrets manager.
 
@@ -28,5 +28,5 @@ These tables are generated, not hand-written. After changing a secret-bearing fi
 ```bash
 task update-readme
 # or directly:
-helm-docs --document-dependency-values=true --chart-search-root=charts/incubator
+helm-docs --document-dependency-values=true --chart-search-root=charts
 ```

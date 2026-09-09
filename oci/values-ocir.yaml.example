@@ -14,7 +14,7 @@
 #        kubectl get svc -n ingress-nginx ingress-nginx-controller
 #
 #   3. Install:
-#        helm install hyperswitch charts/incubator/hyperswitch-stack \
+#        helm install hyperswitch charts/hyperswitch-stack \
 #          --namespace hyperswitch \
 #          -f oci/values-ocir.yaml \
 #          --wait --timeout 15m
