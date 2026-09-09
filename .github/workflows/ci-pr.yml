@@ -67,7 +67,7 @@ jobs:
           -w /helm-docs \
           jnorwood/helm-docs:latest \
           --document-dependency-values=true \
-          --chart-search-root=charts/incubator
+          --chart-search-root=charts
 
           # Check for uncommitted changes after helm-docs
           if ! git diff --exit-code; then
