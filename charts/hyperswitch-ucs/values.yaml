@@ -312,6 +312,76 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
+  # Any key under `config` may also be written as a secret or a reference instead of a
+  # plain value (same conventions as the hyperswitch-app chart):
+  #   token: { _secret: "value" }                     -> chart-managed Secret, key CS__…__TOKEN
+  #   token: { _secretRef: { name: s, key: k } }       -> env CS__…__TOKEN from an existing Secret
+  #   token: { _configRef: { name: c, key: k } }       -> env CS__…__TOKEN from an existing ConfigMap
+  # `_secretRef` also accepts `optional: true` so the pod can start before the Secret exists.
+
+# -- Disable the chart-managed Secret built from `_secret` values under `config` (set true when every secret arrives through `_secretRef` or the External Secrets Operator)
+# @section -- Secrets
+disableInternalSecrets: false
+
+# External Secrets Operator resources, mirroring the hyperswitch-app chart: a SecretStore that
+# authenticates as a service account, and one ExternalSecret per entry that materialises a
+# Secrets Manager secret as a Kubernetes Secret for `config.*._secretRef` to point at.
+# NOTE: the External Secrets Operator must already be installed in the cluster.
+externalSecretsOperator:
+  # -- Enable External Secrets Operator resources
+  # @section -- Secrets
+  enabled: false
+  serviceAccount:
+    # -- Create a dedicated service account for the SecretStore (leave false to authenticate as the application's service account)
+    # @section -- Secrets
+    create: false
+    # -- Annotations for the service account (e.g. the IRSA role ARN)
+    # @section -- Secrets
+    annotations: {}
+    # -- Extra labels for the service account
+    # @section -- Secrets
+    extraLabels: {}
+    # -- Name of the service account (default: hyperswitch-ucs-eso-sa)
+    # @section -- Secrets
+    name: ""
+  secretStore:
+    # -- Create the SecretStore (set false to reference one that already exists)
+    # @section -- Secrets
+    create: true
+    # -- Kind the ExternalSecrets reference: `SecretStore` (namespaced, created by this chart) or `ClusterSecretStore` (platform-owned, referenced only)
+    # @section -- Secrets
+    kind: SecretStore
+    # -- Name of the SecretStore
+    # @section -- Secrets
+    name: "hyperswitch-ucs-secret-store"
+    # -- Provider configuration in External Secrets Operator format (see https://external-secrets.io/latest/)
+    # @section -- Secrets
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-ucs
+  externalSecrets:
+    # -- ExternalSecrets to create; each entry takes `name`, `targetName`, `refreshInterval`, `creationPolicy`, an optional `template`, and `data` (single keys) or `dataFrom` (whole secret)
+    # @section -- Secrets
+    secrets: []
+    # - name: hyperswitch-ucs-secrets
+    #   targetName: hyperswitch-ucs-secrets
+    #   refreshInterval: 1h
+    #   creationPolicy: Owner
+    #   dataFrom:
+    #     - extract:
+    #         key: sandbox/hyperswitch-ucs
+    # - name: hyperswitch-ucs-superposition
+    #   targetName: hyperswitch-ucs-superposition
+    #   data:
+    #     - secretKey: CS__SUPERPOSITION__TOKEN
+    #       remoteRef:
+    #         key: sandbox/hyperswitch-ucs
+    #         property: CS__SUPERPOSITION__TOKEN
 
 # -- Istio configuration
 # @section -- Istio
