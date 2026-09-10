@@ -85,6 +85,63 @@ autoscaling:
   targetCPUUtilizationPercentage: 70
 ```
 
+#### Delivering secrets
+
+Every key under `config` becomes a `CS__*` environment variable. A key can be written as a
+secret or a reference instead of a plain value, using the same conventions as the
+hyperswitch-app chart; such keys never land in the ConfigMap.
+
+```yaml
+config:
+  superposition:
+    enabled: true
+    endpoint: http://superposition.superposition.svc.cluster.local:80
+    org_id: hyperswitch
+    workspace_id: ucs
+    # chart-managed Secret <release>-hyperswitch-ucs-secrets, key CS__SUPERPOSITION__TOKEN
+    token:
+      _secret: "sp_…"
+```
+
+```yaml
+config:
+  superposition:
+    # env CS__SUPERPOSITION__TOKEN from an existing Secret; `optional: true` lets the pod
+    # start (and fall back to the baked file) before the Secret is materialised
+    token:
+      _secretRef:
+        name: hyperswitch-ucs-secrets
+        key: CS__SUPERPOSITION__TOKEN
+        optional: true
+
+# Materialise that Secret from AWS Secrets Manager with the External Secrets Operator.
+# The SecretStore authenticates as the application's service account, which carries the
+# IRSA role with read access to the secret.
+disableInternalSecrets: true
+externalSecretsOperator:
+  enabled: true
+  secretStore:
+    provider:
+      aws:
+        service: SecretsManager
+        region: ap-south-1
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-ucs
+  externalSecrets:
+    secrets:
+      - name: hyperswitch-ucs-secrets
+        targetName: hyperswitch-ucs-secrets
+        dataFrom:
+          - extract:
+              key: sandbox/hyperswitch-ucs
+```
+
+To reference a platform-owned `ClusterSecretStore` instead of creating a namespaced
+`SecretStore`, set `externalSecretsOperator.secretStore.kind: ClusterSecretStore`,
+`create: false`, and `name` to the store's name.
+
 ## Service Details
 
 The chart deploys two services:

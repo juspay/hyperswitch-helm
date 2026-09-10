@@ -53,6 +53,9 @@ spec:
       annotations:
         checksum/ucs-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/hyperswitch-ucs-configs: {{ include (print $.Template.BasePath "/misc/configmap.yaml") . | sha256sum }}
+        {{- if not .Values.disableInternalSecrets }}
+        checksum/hyperswitch-ucs-secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -100,9 +103,11 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.env }}
+          {{- /* `_secretRef` / `_configRef` entries from config, rendered as valueFrom env vars */}}
+          {{- $envRefs := include "hyperswitch-ucs.configToEnvRefs" (dict "config" .Values.config "prefix" "CS" "context" $) | trim }}
+          {{- if or .Values.env $envRefs }}
           env:
-            {{- range . }}
+            {{- range .Values.env }}
             - name: {{ .name }}
               {{- with .valueFrom }}
               valueFrom:
@@ -111,10 +116,17 @@ spec:
               value: {{ if kindIs "invalid" .value }}""{{ else }}{{ .value | quote }}{{ end }}
               {{- end }}
             {{- end }}
+            {{- with $envRefs }}
+            {{- . | nindent 12 }}
+            {{- end }}
           {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-hyperswitch-ucs-configs
+            {{- if not .Values.disableInternalSecrets }}
+            - secretRef:
+                name: {{ .Release.Name }}-hyperswitch-ucs-secrets
+            {{- end }}
           volumeMounts:
             {{- if eq .Values.config.server.run_env "production" }}
             - mountPath: /app/config/production.toml

@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -137,6 +137,22 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | config.server.port | int | `8000` | Server port |
 | config.server.type | string | `"grpc"` | Server type |
 
+### Secrets
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| disableInternalSecrets | bool | `false` | Disable the chart-managed Secret built from `_secret` values under `config` (set true when every secret arrives through `_secretRef` or the External Secrets Operator) |
+| externalSecretsOperator.enabled | bool | `false` | Enable External Secrets Operator resources |
+| externalSecretsOperator.externalSecrets.secrets | list | `[]` | ExternalSecrets to create; each entry takes `name`, `targetName`, `refreshInterval`, `creationPolicy`, an optional `template`, and `data` (single keys) or `dataFrom` (whole secret) |
+| externalSecretsOperator.secretStore.create | bool | `true` | Create the SecretStore (set false to reference one that already exists) |
+| externalSecretsOperator.secretStore.kind | string | `"SecretStore"` | Kind the ExternalSecrets reference: `SecretStore` (namespaced, created by this chart) or `ClusterSecretStore` (platform-owned, referenced only) |
+| externalSecretsOperator.secretStore.name | string | `"hyperswitch-ucs-secret-store"` | Name of the SecretStore |
+| externalSecretsOperator.secretStore.provider | object | `{"aws":{"auth":{"jwt":{"serviceAccountRef":{"name":"hyperswitch-ucs"}}},"region":"us-west-2","service":"SecretsManager"}}` | Provider configuration in External Secrets Operator format (see https://external-secrets.io/latest/) |
+| externalSecretsOperator.serviceAccount.annotations | object | `{}` | Annotations for the service account (e.g. the IRSA role ARN) |
+| externalSecretsOperator.serviceAccount.create | bool | `false` | Create a dedicated service account for the SecretStore (leave false to authenticate as the application's service account) |
+| externalSecretsOperator.serviceAccount.extraLabels | object | `{}` | Extra labels for the service account |
+| externalSecretsOperator.serviceAccount.name | string | `""` | Name of the service account (default: hyperswitch-ucs-eso-sa) |
+
 ### Istio
 
 | Key | Type | Default | Description |
@@ -213,6 +229,63 @@ autoscaling:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
 ```
+
+#### Delivering secrets
+
+Every key under `config` becomes a `CS__*` environment variable. A key can be written as a
+secret or a reference instead of a plain value, using the same conventions as the
+hyperswitch-app chart; such keys never land in the ConfigMap.
+
+```yaml
+config:
+  superposition:
+    enabled: true
+    endpoint: http://superposition.superposition.svc.cluster.local:80
+    org_id: hyperswitch
+    workspace_id: ucs
+    # chart-managed Secret <release>-hyperswitch-ucs-secrets, key CS__SUPERPOSITION__TOKEN
+    token:
+      _secret: "sp_…"
+```
+
+```yaml
+config:
+  superposition:
+    # env CS__SUPERPOSITION__TOKEN from an existing Secret; `optional: true` lets the pod
+    # start (and fall back to the baked file) before the Secret is materialised
+    token:
+      _secretRef:
+        name: hyperswitch-ucs-secrets
+        key: CS__SUPERPOSITION__TOKEN
+        optional: true
+
+# Materialise that Secret from AWS Secrets Manager with the External Secrets Operator.
+# The SecretStore authenticates as the application's service account, which carries the
+# IRSA role with read access to the secret.
+disableInternalSecrets: true
+externalSecretsOperator:
+  enabled: true
+  secretStore:
+    provider:
+      aws:
+        service: SecretsManager
+        region: ap-south-1
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-ucs
+  externalSecrets:
+    secrets:
+      - name: hyperswitch-ucs-secrets
+        targetName: hyperswitch-ucs-secrets
+        dataFrom:
+          - extract:
+              key: sandbox/hyperswitch-ucs
+```
+
+To reference a platform-owned `ClusterSecretStore` instead of creating a namespaced
+`SecretStore`, set `externalSecretsOperator.secretStore.kind: ClusterSecretStore`,
+`create: false`, and `name` to the store's name.
 
 ## Service Details
 
