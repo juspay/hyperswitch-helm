@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "7256a1bacf"
+  tag: "1106f6ea49"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
@@ -299,11 +299,9 @@ config:
   #   token: { _secretRef: { name: s, key: k } }       -> env CS__…__TOKEN from an existing Secret
   #   token: { _configRef: { name: c, key: k } }       -> env CS__…__TOKEN from an existing ConfigMap
   # `_secretRef` also accepts `optional: true` so the pod can start before the Secret exists.
-
 # -- Disable the chart-managed Secret built from `_secret` values under `config` (set true when every secret arrives through `_secretRef` or the External Secrets Operator)
 # @section -- Secrets
 disableInternalSecrets: false
-
 # External Secrets Operator resources, mirroring the hyperswitch-app chart: a SecretStore that
 # authenticates as a service account, and one ExternalSecret per entry that materialises a
 # Secrets Manager secret as a Kubernetes Secret for `config.*._secretRef` to point at.
@@ -363,7 +361,6 @@ externalSecretsOperator:
     #       remoteRef:
     #         key: sandbox/hyperswitch-ucs
     #         property: CS__SUPERPOSITION__TOKEN
-
 # -- Istio configuration
 # @section -- Istio
 istio:
