@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "1106f6ea49"
+  tag: "2026.09.10.1"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
@@ -293,12 +293,12 @@ config:
     # -- HTTP proxy URL
     # @section -- Connector Service Configurations
     http_url: "http_proxy"
-  # Any key under `config` may also be written as a secret or a reference instead of a
-  # plain value (same conventions as the hyperswitch-app chart):
-  #   token: { _secret: "value" }                     -> chart-managed Secret, key CS__…__TOKEN
-  #   token: { _secretRef: { name: s, key: k } }       -> env CS__…__TOKEN from an existing Secret
-  #   token: { _configRef: { name: c, key: k } }       -> env CS__…__TOKEN from an existing ConfigMap
-  # `_secretRef` also accepts `optional: true` so the pod can start before the Secret exists.
+    # Any key under `config` may also be written as a secret or a reference instead of a
+    # plain value (same conventions as the hyperswitch-app chart):
+    #   token: { _secret: "value" }                     -> chart-managed Secret, key CS__…__TOKEN
+    #   token: { _secretRef: { name: s, key: k } }       -> env CS__…__TOKEN from an existing Secret
+    #   token: { _configRef: { name: c, key: k } }       -> env CS__…__TOKEN from an existing ConfigMap
+    # `_secretRef` also accepts `optional: true` so the pod can start before the Secret exists.
 # -- Disable the chart-managed Secret built from `_secret` values under `config` (set true when every secret arrives through `_secretRef` or the External Secrets Operator)
 # @section -- Secrets
 disableInternalSecrets: false
