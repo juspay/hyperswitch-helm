@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "2026.09.09.1-hotfix1"
+    version: "dc7ef2abbf"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "2026.09.09.1-hotfix1"
+    version: "dc7ef2abbf"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "2026.09.09.1-hotfix1"
+    version: "dc7ef2abbf"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
