@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "2026.09.14.0"
+    version: "5cfe103fce-release-fast"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "2026.09.14.0"
+    version: "5cfe103fce-release-fast"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "2026.09.14.0"
+    version: "5cfe103fce-release-fast"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
