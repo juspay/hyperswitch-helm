@@ -332,6 +332,9 @@ volumeMounts: []
 #   mountPath: "/etc/foo"
 #   readOnly: true
 
+# Additional sidecar containers on the output Deployment definition.
+extraContainers: []
+
 nodeSelector: {}
 
 tolerations: []

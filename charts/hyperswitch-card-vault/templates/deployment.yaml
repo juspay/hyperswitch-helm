@@ -8,7 +8,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  replicas: 1
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount | default 1 }}
+  {{- end }}
   selector:
     matchLabels:
       app: hyperswitch-card-vault
@@ -39,7 +41,64 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      
+      {{- if .Values.vaultKeysJob.enabled }}
+      initContainers:
+        # restartPolicy: Always makes this a sidecar-style init container (Kubernetes 1.29+):
+        # it starts alongside the main container rather than before it, which is required here
+        # since it unlocks that same container over localhost. Retries the unlock with a bounded
+        # attempt count, then idles rather than polling indefinitely once unlocked.
+        - name: custodian-unlock
+          restartPolicy: Always
+          {{- $keysRegistry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
+          {{- $api := .Values.vaultKeysJob.checkVaultService.api }}
+          image: "{{ $keysRegistry }}/{{ .Values.vaultKeysJob.checkVaultService.image }}"
+          env:
+            - name: CUSTODIAN_KEY1
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: CUSTODIAN__KEY1
+            - name: CUSTODIAN_KEY2
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: CUSTODIAN__KEY2
+          command: ["/bin/sh", "-c"]
+          args:
+            - |-
+              MAX_ATTEMPTS={{ .Values.vaultKeysJob.checkVaultService.maxAttempt | default 30 }}
+              SLEEP_SECONDS=5
+              attempt=0
+              while true; do
+                STATUS=$(curl -s -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.healthPath }} 2>/dev/null || echo "")
+                echo "$STATUS" | grep -q '"key_custodian_locked":false' && break
+                if [ $attempt -ge $MAX_ATTEMPTS ]; then
+                  echo "Vault did not unlock in time"
+                  exit 1
+                fi
+                curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.key1Path }} \
+                  -d "{\"key\": \"$CUSTODIAN_KEY1\"}"
+                curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.key2Path }} \
+                  -d "{\"key\": \"$CUSTODIAN_KEY2\"}"
+                curl -s -o /dev/null -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.decryptPath }}
+                attempt=$((attempt+1))
+                sleep $SLEEP_SECONDS
+              done
+              sleep infinity
+          # A running sidecar's requests are reserved for the pod's whole lifetime, not just
+          # its brief unlock phase, so this stays small - curl's actual load here is trivial
+          # and post-unlock it's just `sleep infinity`.
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 50m
+              memory: 32Mi
+      {{- end }}
       containers:
         - env:
             - name: LOCKER__LOG__CONSOLE__ENABLED
@@ -65,6 +124,8 @@ spec:
               value: {{ include "locker-psql.port" . }}
             - name: LOCKER__DATABASE__DBNAME
               value: {{ include "locker-psql.name" . }}
+            - name: LOCKER__DATABASE__POOL_SIZE
+              value: {{ .Values.server.database.pool_size | default 5 | quote }}
             - name: LOCKER__LIMIT__REQUEST_COUNT
               value: "100"
             - name: LOCKER__LIMIT__DURATION
@@ -88,7 +149,7 @@ spec:
                   key: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__SCHEMA
               value: {{ .Values.tenant_secrets.public.schema | quote }}
-            {{- if eq .Values.backend "aws" }}
+            {{- if eq .Values.backend "aws_kms" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
               value: "aws_kms"
             - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
@@ -101,7 +162,7 @@ spec:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
-            {{- else if eq .Values.backend "vault" }}
+            {{- else if eq .Values.backend "hashi_corp_vault" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
               value: "hashi_corp_vault"
             - name: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__URL

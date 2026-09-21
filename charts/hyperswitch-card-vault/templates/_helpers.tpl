@@ -173,23 +173,33 @@ LOCKER server port
 Validate backend configuration
 */}}
 {{- define "validate.backend" -}}
-{{- $validBackends := list "aws" "vault" "local" -}}
+{{- $validBackends := list "aws_kms" "gcp_kms" "hashi_corp_vault" "local" -}}
 {{- if not (has .Values.backend $validBackends) -}}
 {{- fail (printf "Invalid backend: %s. Must be one of: %s" .Values.backend (join ", " $validBackends)) -}}
 {{- end -}}
-{{- if eq .Values.backend "aws" -}}
+{{- if eq .Values.backend "aws_kms" -}}
   {{- if not .Values.secrets.aws.key_id -}}
-    {{- fail "AWS KMS key_id is required when backend is 'aws'" -}}
+    {{- fail "AWS KMS key_id is required when backend is 'aws_kms'" -}}
   {{- end -}}
   {{- if not .Values.secrets.aws.region -}}
-    {{- fail "AWS KMS region is required when backend is 'aws'" -}}
+    {{- fail "AWS KMS region is required when backend is 'aws_kms'" -}}
   {{- end -}}
-{{- else if eq .Values.backend "vault" -}}
+{{- else if eq .Values.backend "gcp_kms" -}}
+  {{- if not .Values.secrets.gcp.project_id -}}
+    {{- fail "GCP KMS project_id is required when backend is 'gcp_kms'" -}}
+  {{- end -}}
+  {{- if not .Values.secrets.gcp.key_ring_id -}}
+    {{- fail "GCP KMS key_ring_id is required when backend is 'gcp_kms'" -}}
+  {{- end -}}
+  {{- if not .Values.secrets.gcp.key_id -}}
+    {{- fail "GCP KMS key_id is required when backend is 'gcp_kms'" -}}
+  {{- end -}}
+{{- else if eq .Values.backend "hashi_corp_vault" -}}
   {{- if not .Values.secrets.vault.token -}}
-    {{- fail "HashiCorp Vault token is required when backend is 'vault'" -}}
+    {{- fail "HashiCorp Vault token is required when backend is 'hashi_corp_vault'" -}}
   {{- end -}}
   {{- if not .Values.server.vault.url -}}
-    {{- fail "HashiCorp Vault URL is required when backend is 'vault'" -}}
+    {{- fail "HashiCorp Vault URL is required when backend is 'hashi_corp_vault'" -}}
   {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -199,13 +209,21 @@ Get secrets management configuration
 */}}
 {{- define "locker.secretsManagement" -}}
 {{- include "validate.backend" . -}}
-{{- if eq .Values.backend "aws" -}}
+{{- if eq .Values.backend "aws_kms" -}}
 secrets_manager = "aws_kms"
 
 [secrets_management.aws_kms]
 key_id = "{{ .Values.secrets.aws.key_id }}"
 region = "{{ .Values.secrets.aws.region }}"
-{{- else if eq .Values.backend "vault" -}}
+{{- else if eq .Values.backend "gcp_kms" -}}
+secrets_manager = "gcp_kms"
+
+[secrets_management.gcp_kms]
+project_id = "{{ .Values.secrets.gcp.project_id }}"
+location_id = "{{ .Values.secrets.gcp.location_id }}"
+key_ring_id = "{{ .Values.secrets.gcp.key_ring_id }}"
+key_id = "{{ .Values.secrets.gcp.key_id }}"
+{{- else if eq .Values.backend "hashi_corp_vault" -}}
 secrets_manager = "hashi_corp_vault"
 
 [secrets_management.hashi_corp_vault]
