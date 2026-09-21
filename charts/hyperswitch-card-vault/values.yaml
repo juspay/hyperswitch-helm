@@ -11,8 +11,19 @@ global:
   # Node affinity to be added to all resources
   affinity: {}
 
-# Backend selection: aws, vault, or local
+# Backend selection: aws, gcp, vault, or local
 backend: local
+
+# -- Number of replicas, ignored when autoscaling.enabled is true
+replicaCount: 1
+
+autoscaling:
+  # -- Enable a HorizontalPodAutoscaler for hyperswitch-card-vault
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: ""
 
 # Values for hyperswitch-card-vault.
 server:
@@ -64,6 +75,10 @@ server:
 
   vault:
     url: "http://127.0.0.1:8200"
+
+  database:
+    # -- Locker database connection pool size
+    pool_size: 5
 
 # Secrets configuration
 secrets:
@@ -120,6 +135,13 @@ secrets:
   aws:
     key_id: ""
     region: "us-east-1"
+
+  # GCP KMS configuration (required when backend: gcp)
+  gcp:
+    project_id: ""
+    location_id: ""
+    key_ring_id: ""
+    key_id: ""
 
   # HashiCorp Vault (required when backend: vault)
   vault:
@@ -197,13 +219,14 @@ initDB:
     imageRegistry: docker.io
     image: christophwurst/diesel-cli:latest
 
+# Unlocks the vault's custodian keys via an init container in every
+# hyperswitch-card-vault pod - see templates/deployment.yaml.
 vaultKeysJob:
   enabled: true
   checkVaultService:
     imageRegistry: docker.io
     image: curlimages/curl:8.7.1
     maxAttempt: 30
-    host: ""
     port: 80
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"

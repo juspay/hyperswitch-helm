@@ -27,32 +27,3 @@
     done;
     echo "PostgreSQL is ready.";
 {{- end -}}
-
----
-
-{{/* Ensure CardVault service is up and healthy */}}
-{{- define "locker-vault.initContainer.check.ready" -}}
-- name: check-vault-service-ready
-  {{- $registry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
-  image: "{{ $registry }}/{{ .Values.vaultKeysJob.checkVaultService.image }}"
-  command: [ "/bin/sh", "-c" ]
-  args:
-    - |
-      MAX_ATTEMPTS={{ .Values.vaultKeysJob.checkVaultService.maxAttempt | default 30 }};
-      SLEEP_SECONDS=5;
-      attempt=0;
-      while true; do
-        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://{{ .Values.vaultKeysJob.checkVaultService.host | default (printf "hyperswitch-vault.%s.svc.cluster.local" .Release.Namespace) }}/health)
-        if [ "$HTTP_STATUS" = "200" ]; then
-          echo " Vault service is healthy.";
-          break;
-        fi
-        if [ $attempt -ge $MAX_ATTEMPTS ]; then
-          echo "Vault service did not become healthy in time (last HTTP status: $HTTP_STATUS)";
-          exit 1;
-        fi;
-        attempt=$((attempt+1));
-        echo "Waiting for Vault service to be healthy... Attempt: $attempt";
-        sleep $SLEEP_SECONDS;
-      done;
-{{- end -}}
