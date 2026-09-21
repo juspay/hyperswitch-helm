@@ -1,6 +1,6 @@
 # hyperswitch-encryption-service
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.14](https://img.shields.io/badge/AppVersion-v0.1.14-informational?style=flat-square)
+![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.1.14](https://img.shields.io/badge/AppVersion-v0.1.14-informational?style=flat-square)
 
 "application"
 A Helm chart for deploying Hyperswitch encryption-service
@@ -206,6 +206,7 @@ secrets:
 | externalSecretsOperator.serviceAccount.create | bool | `true` |  |
 | externalSecretsOperator.serviceAccount.extraLabels | object | `{}` |  |
 | externalSecretsOperator.serviceAccount.name | string | `""` |  |
+| extraContainers | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |

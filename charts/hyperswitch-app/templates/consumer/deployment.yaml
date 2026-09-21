@@ -132,6 +132,13 @@ spec:
             {{- with (.Values.consumer.extraVolumeMounts | default .Values.server.extraVolumeMounts) }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+        {{- with (.Values.consumer.extraContainers | default .Values.server.extraContainers) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
+![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -127,6 +127,11 @@ external:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| autoscaling.enabled | bool | `false` | Enable a HorizontalPodAutoscaler for hyperswitch-card-vault |
+| autoscaling.maxReplicas | int | `4` |  |
+| autoscaling.minReplicas | int | `1` |  |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| autoscaling.targetMemoryUtilizationPercentage | string | `""` |  |
 | backend | string | `"local"` |  |
 | external.postgresql.config.database | string | `nil` |  |
 | external.postgresql.config.host | string | `nil` |  |
@@ -134,6 +139,14 @@ external:
 | external.postgresql.config.port | string | `nil` |  |
 | external.postgresql.config.username | string | `nil` |  |
 | external.postgresql.enabled | bool | `false` |  |
+| externalSecretsOperator.enabled | bool | `false` | Enable External Secrets Operator resources |
+| externalSecretsOperator.externalSecrets.secrets | list | `[{"creationPolicy":"Owner","dataFrom":[{"extract":{"key":"HyperswitchLockerSecret"}}],"name":"locker-secrets","refreshInterval":"1h","targetName":"locker-secrets"}]` | List of external secrets to create. targetName should match locker-secrets-<release-name> so it replaces templates/secrets.yaml's output. |
+| externalSecretsOperator.secretStore.name | string | `"hyperswitch-vault-secret-store"` | Name of the SecretStore |
+| externalSecretsOperator.secretStore.provider | object | `{"aws":{"auth":{"jwt":{"serviceAccountRef":{"name":"hyperswitch-vault-eso-sa"}}},"region":"us-west-2","service":"SecretsManager"}}` | Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/ |
+| externalSecretsOperator.serviceAccount.annotations | object | `{}` | Annotations for the service account (e.g., IRSA role) |
+| externalSecretsOperator.serviceAccount.create | bool | `true` | Create service account |
+| externalSecretsOperator.serviceAccount.extraLabels | object | `{}` | Extra labels for the service account |
+| externalSecretsOperator.serviceAccount.name | string | `""` | Name of the service account (default: hyperswitch-vault-eso-sa) |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
 | global.imageRegistry | string | `nil` |  |
@@ -155,11 +168,16 @@ external:
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
 | postgresql.primary.tolerations | list | `[]` |  |
+| replicaCount | int | `1` | Number of replicas, ignored when autoscaling.enabled is true |
 | secrets.api_client.identity | string | `""` |  |
 | secrets.aws.key_id | string | `""` |  |
 | secrets.aws.region | string | `"us-east-1"` |  |
 | secrets.database.password | string | `"dummyPassword"` |  |
 | secrets.external_key_manager.caCert | string | `""` |  |
+| secrets.gcp.key_id | string | `""` |  |
+| secrets.gcp.key_ring_id | string | `""` |  |
+| secrets.gcp.location_id | string | `""` |  |
+| secrets.gcp.project_id | string | `""` |  |
 | secrets.locker_private_key | string | "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----" | To create this key pairs, follow the instructions provided here: </br> # Generating the private keys <pre>openssl genrsa -out locker-private-key.pem 2048</pre> <pre>openssl genrsa -out tenant-private-key.pem 2048</pre> # Generating the public keys </br> <pre>openssl rsa -in locker-private-key.pem -pubout -out locker-public-key.pem</pre> <pre>openssl rsa -in tenant-private-key.pem -pubout -out tenant-public-key.pem</pre> The private key for the locker from locker-private-key.pem |
 | secrets.tls.certificate | string | `""` |  |
 | secrets.tls.private_key | string | `""` |  |
@@ -168,6 +186,7 @@ external:
 | server.annotations | object | `{}` |  |
 | server.awsKms.keyId | string | `""` |  |
 | server.awsKms.region | string | `""` |  |
+| server.database.pool_size | int | `5` | Locker database connection pool size |
 | server.external_key_manager.mode | string | `"disabled"` |  |
 | server.external_key_manager.url | string | `"http://localhost:5000"` |  |
 | server.extra.env | object | `{}` |  |
@@ -181,7 +200,12 @@ external:
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
 | tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
 | tenant_secrets.public.schema | string | `"public"` |  |
-| vaultKeysJob.checkVaultService.host | string | `""` |  |
+| vaultKeysJob.checkVaultService.api.decryptPath | string | `"/custodian/decrypt"` |  |
+| vaultKeysJob.checkVaultService.api.healthPath | string | `"/health/diagnostics"` |  |
+| vaultKeysJob.checkVaultService.api.key1Path | string | `"/custodian/key1"` |  |
+| vaultKeysJob.checkVaultService.api.key2Path | string | `"/custodian/key2"` |  |
+| vaultKeysJob.checkVaultService.api.tenantHeader | string | `"x-tenant-id"` |  |
+| vaultKeysJob.checkVaultService.api.tenantId | string | `"public"` |  |
 | vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
 | vaultKeysJob.checkVaultService.imageRegistry | string | `"docker.io"` |  |
 | vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |

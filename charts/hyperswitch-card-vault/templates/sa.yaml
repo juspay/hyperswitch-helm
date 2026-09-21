@@ -1,4 +1,4 @@
-{{- if eq .Values.backend "aws" }}
+{{- if eq .Values.backend "aws_kms" }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:

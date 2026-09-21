@@ -87,6 +87,9 @@ global:
     managedBy: hyperswitch
   # -- Environmant variables that are to be used by the hyperswitch application services
   env: []
+# -- Extra /etc/hosts entries for the router, consumer and producer pods
+# @section -- Global configuration
+hostAliases: []
 # -- Common references for templated resource names
 _references:
   # -- Hyperswitch secrets reference with release name prefix
@@ -169,6 +172,8 @@ server:
   extraVolumes: []
   # -- Extra volume mounts for the router container
   extraVolumeMounts: []
+  # -- Extra sidecar containers to add to the router pod spec
+  extraContainers: []
   serviceAccount:
     # -- Service account creation for the application
     create: true
@@ -1198,6 +1203,9 @@ externalRedis:
   # -- External redis host
   # @section -- Dependencies configuration
   host: redis-ext-master
+  # -- External redis port, falls back to 6379 when unset
+  # @section -- Dependencies configuration
+  port: ""
   auth:
     # -- auth enabled or disabled
     # @section -- Dependencies configuration
@@ -2389,6 +2397,7 @@ olap:
   strategy: {}
   extraVolumes: []
   extraVolumeMounts: []
+  extraContainers: []
   progressDeadlineSeconds: ""
   terminationGracePeriodSeconds: ""
   autoscaling:
@@ -2489,6 +2498,7 @@ paymentMethodModular:
   strategy: {}
   extraVolumes: []
   extraVolumeMounts: []
+  extraContainers: []
   progressDeadlineSeconds: ""
   terminationGracePeriodSeconds: ""
   autoscaling:
