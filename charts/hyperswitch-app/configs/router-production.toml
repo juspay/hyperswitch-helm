@@ -79,6 +79,7 @@ dwolla.base_url = "https://api.dwolla.com"
 ebanx.base_url = "https://api.ebanxpay.com/"
 elavon.base_url = "https://api.convergepay.com/VirtualMerchant/"
 envoy.base_url = "https://envoytx.com/"
+etisalat.base_url = "https://ipg.comtrust.ae:2443"
 facilitapay.base_url = "https://api.facilitapay.com/api/v1"
 finix.base_url = "https://finix.live-payments-api.com"
 fiserv.base_url = "https://cert.api.fiservapps.com/"
@@ -115,6 +116,7 @@ katapult.base_url = "https://www.katapult.com/api/v3"
 jpmorgan.secondary_base_url="https://id.payments.jpmorgan.com"
 klarna.base_url = "https://api{{klarna_region}}.klarna.com/"
 loonio.base_url = "https://loonio.ca/"
+merchante.base_url = "https://cert.merchante-solutions.com/mes-api/tridentApi" # TODO: replace with real Merchante production hostname once provided.
 mifinity.base_url = "https://secure.mifinity.com/"
 mollie.base_url = "https://api.mollie.com/v2/"
 mollie.secondary_base_url = "https://api.cc.mollie.com/v1/"
@@ -158,6 +160,7 @@ recurly.base_url = "https://v3.recurly.com"
 redsys.base_url = "https://sis.redsys.es"
 revolv3.base_url = "https://api.revolv3.com"
 riskified.base_url = "https://wh.riskified.com/api/"
+sanlam_payshield.base_url = "live"
 santander.base_url = "https://trust-pix.santander.com.br/"
 santander.secondary_base_url = "https://trust-open.api.santander.com.br/"
 shift4.base_url = "https://api.shift4.com/"
@@ -912,6 +915,18 @@ boleto = { country = "BR", currency = "BRL" }
 pix_automatico_qr = { country = "BR", currency = "BRL" }
 pix_automatico_push = { country = "BR", currency = "BRL" }
 
+[pm_filters.worldpayraft]
+credit = { country = "US", currency = "USD" }
+debit = { country = "US", currency = "USD" }
+
+[pm_filters.etisalat]
+credit = { country = "AE,BH,KW,OM,QA,SA,EG", currency = "AED,BHD,KWD,OMR,QAR,SAR,EGP,USD,EUR" }
+debit = { country = "AE,BH,KW,OM,QA,SA,EG", currency = "AED,BHD,KWD,OMR,QAR,SAR,EGP,USD,EUR" }
+
+[pm_filters.merchante]
+credit = { country = "US", currency = "USD" }
+debit = { country = "US", currency = "USD" }
+
 [pm_filters.calida]
 bluecode = { country = "AT,BE,BG,HR,CY,CZ,DK,EE,FI,FR,DE,GR,HU,IE,IT,LV,LT,LU,MT,NL,PL,PT,RO,SK,SI,ES,SE,IS,LI,NO", currency = "EUR" }
 
@@ -1058,7 +1073,7 @@ click_to_pay = {connector_list = "adyen, cybersource, trustpay"}
 connector_list = "juspaythreedsserver, ctp_mastercard, ctp_visa"
 
 [grpc_client.unified_connector_service]
-ucs_only_connectors = "imerchantsolutions, paytm, phonepe, hyperpg, revolv3, fiservcommercehub, absa_sanlam, interpayments, payconex, dlocal, barclaycard, jpmorgan, datatrans, tsys_transit, givepayments, citigate, ilixium, moneris, elavon, worldpayraft"    # Comma-separated list of connectors that use UCS only
+ucs_only_connectors = "imerchantsolutions, paytm, phonepe, hyperpg, revolv3, fiservcommercehub, absa_sanlam, interpayments, payconex, dlocal, barclaycard, jpmorgan, datatrans, tsys_transit, givepayments, citigate, ilixium, moneris, elavon, worldpayraft, globalpay, rapyd, etisalat, merchante"    # Comma-separated list of connectors that use UCS only
 ucs_psync_disabled_connectors = "cashtocode, trustly"    # Comma-separated list of connectors to disable UCS PSync call
 
 # Merchant Advice Code Configuration
