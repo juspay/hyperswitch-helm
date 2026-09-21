@@ -406,6 +406,13 @@ spec:
             {{- with ($svc.extraVolumeMounts | default $server.extraVolumeMounts) }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+        {{- with ($svc.extraContainers | default $server.extraContainers) }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with $root.Values.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

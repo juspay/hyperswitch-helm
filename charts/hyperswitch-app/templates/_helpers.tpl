@@ -158,7 +158,11 @@ Allow the release namespace to be overridden for multi-namespace deployments
 
 {{/* Select Redis port Internal or External depends on configuration */}}
 {{- define "redis.port" -}}
-    {{- printf "6379" -}}
+    {{- if and .Values.externalRedis.enabled .Values.externalRedis.port -}}
+        {{- printf "%v" .Values.externalRedis.port -}}
+    {{- else -}}
+        {{- printf "6379" -}}
+    {{- end -}}
 {{- end -}}
 
 {{/* Postgresql configuration validation template */}}
