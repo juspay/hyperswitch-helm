@@ -139,6 +139,14 @@ external:
 | external.postgresql.config.port | string | `nil` |  |
 | external.postgresql.config.username | string | `nil` |  |
 | external.postgresql.enabled | bool | `false` |  |
+| externalSecretsOperator.enabled | bool | `false` | Enable External Secrets Operator resources |
+| externalSecretsOperator.externalSecrets.secrets | list | `[{"creationPolicy":"Owner","dataFrom":[{"extract":{"key":"HyperswitchLockerSecret"}}],"name":"locker-secrets","refreshInterval":"1h","targetName":"locker-secrets"}]` | List of external secrets to create. targetName should match locker-secrets-<release-name> so it replaces templates/secrets.yaml's output. |
+| externalSecretsOperator.secretStore.name | string | `"hyperswitch-vault-secret-store"` | Name of the SecretStore |
+| externalSecretsOperator.secretStore.provider | object | `{"aws":{"auth":{"jwt":{"serviceAccountRef":{"name":"hyperswitch-vault-eso-sa"}}},"region":"us-west-2","service":"SecretsManager"}}` | Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/ |
+| externalSecretsOperator.serviceAccount.annotations | object | `{}` | Annotations for the service account (e.g., IRSA role) |
+| externalSecretsOperator.serviceAccount.create | bool | `true` | Create service account |
+| externalSecretsOperator.serviceAccount.extraLabels | object | `{}` | Extra labels for the service account |
+| externalSecretsOperator.serviceAccount.name | string | `""` | Name of the service account (default: hyperswitch-vault-eso-sa) |
 | global.affinity | object | `{}` |  |
 | global.annotations | object | `{}` |  |
 | global.imageRegistry | string | `nil` |  |
@@ -192,6 +200,12 @@ external:
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
 | tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
 | tenant_secrets.public.schema | string | `"public"` |  |
+| vaultKeysJob.checkVaultService.api.decryptPath | string | `"/custodian/decrypt"` |  |
+| vaultKeysJob.checkVaultService.api.healthPath | string | `"/health/diagnostics"` |  |
+| vaultKeysJob.checkVaultService.api.key1Path | string | `"/custodian/key1"` |  |
+| vaultKeysJob.checkVaultService.api.key2Path | string | `"/custodian/key2"` |  |
+| vaultKeysJob.checkVaultService.api.tenantHeader | string | `"x-tenant-id"` |  |
+| vaultKeysJob.checkVaultService.api.tenantId | string | `"public"` |  |
 | vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
 | vaultKeysJob.checkVaultService.imageRegistry | string | `"docker.io"` |  |
 | vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |

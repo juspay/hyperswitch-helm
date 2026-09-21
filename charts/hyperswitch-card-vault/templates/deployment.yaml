@@ -50,7 +50,19 @@ spec:
         - name: custodian-unlock
           restartPolicy: Always
           {{- $keysRegistry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
+          {{- $api := .Values.vaultKeysJob.checkVaultService.api }}
           image: "{{ $keysRegistry }}/{{ .Values.vaultKeysJob.checkVaultService.image }}"
+          env:
+            - name: CUSTODIAN_KEY1
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: CUSTODIAN__KEY1
+            - name: CUSTODIAN_KEY2
+              valueFrom:
+                secretKeyRef:
+                  name: locker-secrets-{{ .Release.Name }}
+                  key: CUSTODIAN__KEY2
           command: ["/bin/sh", "-c"]
           args:
             - |-
@@ -58,20 +70,20 @@ spec:
               SLEEP_SECONDS=5
               attempt=0
               while true; do
-                STATUS=$(curl -s -H "x-tenant-id: public" http://localhost:{{ .Values.server.port }}/health/diagnostics 2>/dev/null || echo "")
+                STATUS=$(curl -s -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.healthPath }} 2>/dev/null || echo "")
                 echo "$STATUS" | grep -q '"key_custodian_locked":false' && break
                 if [ $attempt -ge $MAX_ATTEMPTS ]; then
                   echo "Vault did not unlock in time"
                   exit 1
                 fi
-                curl -s -o /dev/null -H "Content-Type: application/json" -H "x-tenant-id: public" \
-                  -X POST http://localhost:{{ .Values.server.port }}/custodian/key1 \
-                  -d '{"key": "{{ .Values.vaultKeysJob.keys.key1 }}"}'
-                curl -s -o /dev/null -H "Content-Type: application/json" -H "x-tenant-id: public" \
-                  -X POST http://localhost:{{ .Values.server.port }}/custodian/key2 \
-                  -d '{"key": "{{ .Values.vaultKeysJob.keys.key2 }}"}'
-                curl -s -o /dev/null -H "x-tenant-id: public" \
-                  -X POST http://localhost:{{ .Values.server.port }}/custodian/decrypt
+                curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.key1Path }} \
+                  -d "{\"key\": \"$CUSTODIAN_KEY1\"}"
+                curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.key2Path }} \
+                  -d "{\"key\": \"$CUSTODIAN_KEY2\"}"
+                curl -s -o /dev/null -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
+                  -X POST http://localhost:{{ .Values.server.port }}{{ $api.decryptPath }}
                 attempt=$((attempt+1))
                 sleep $SLEEP_SECONDS
               done

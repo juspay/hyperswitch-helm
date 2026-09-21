@@ -220,7 +220,11 @@ initDB:
     image: christophwurst/diesel-cli:latest
 
 # Unlocks the vault's custodian keys via an init container in every
-# hyperswitch-card-vault pod - see templates/deployment.yaml.
+# hyperswitch-card-vault pod - see templates/deployment.yaml. Reads key1/key2 from the
+# CUSTODIAN__KEY1/CUSTODIAN__KEY2 keys of the locker-secrets-<release> Secret (templates/
+# secrets.yaml), same as every other locker secret - not interpolated directly into the pod
+# spec. Populate that Secret via externalSecretsOperator below instead of vaultKeysJob.keys
+# to keep the real values out of values.yaml/Helm release history entirely.
 vaultKeysJob:
   enabled: true
   checkVaultService:
@@ -228,6 +232,56 @@ vaultKeysJob:
     image: curlimages/curl:8.7.1
     maxAttempt: 30
     port: 80
+    # API paths/headers the unlock flow calls - split out since they're a live API
+    # surface, not fixed chart behavior.
+    api:
+      tenantHeader: "x-tenant-id"
+      tenantId: "public"
+      healthPath: "/health/diagnostics"
+      key1Path: "/custodian/key1"
+      key2Path: "/custodian/key2"
+      decryptPath: "/custodian/decrypt"
   keys:
     key1: "3c82773a6621feee3d5e0ce96654bf1f"
     key2: "7de95dbbd5d020e6b2a44847b8942bf5"
+
+# See charts/hyperswitch-app's externalSecretsOperator for the full pattern this mirrors.
+externalSecretsOperator:
+  # -- Enable External Secrets Operator resources
+  enabled: false
+  # ServiceAccount configuration for IRSA/Workload Identity
+  serviceAccount:
+    # -- Create service account
+    create: true
+    # -- Annotations for the service account (e.g., IRSA role)
+    annotations: {}
+    # -- Extra labels for the service account
+    extraLabels: {}
+    # -- Name of the service account (default: hyperswitch-vault-eso-sa)
+    name: ""
+  # SecretStore configuration
+  secretStore:
+    # -- Name of the SecretStore
+    name: "hyperswitch-vault-secret-store"
+    # -- Provider configuration (matches External Secrets Operator format)
+    # You can use any supported provider here see: https://external-secrets.io/latest/
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-vault-eso-sa
+  # ExternalSecret configuration
+  externalSecrets:
+    # -- List of external secrets to create. targetName should match
+    # locker-secrets-<release-name> so it replaces templates/secrets.yaml's output.
+    secrets:
+      - name: "locker-secrets"
+        targetName: "locker-secrets"
+        refreshInterval: "1h"
+        creationPolicy: "Owner"
+        dataFrom:
+          - extract:
+              key: "HyperswitchLockerSecret"
