@@ -149,7 +149,7 @@ spec:
                   key: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__SCHEMA
               value: {{ .Values.tenant_secrets.public.schema | quote }}
-            {{- if eq .Values.backend "aws" }}
+            {{- if eq .Values.backend "aws_kms" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
               value: "aws_kms"
             - name: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
@@ -162,7 +162,7 @@ spec:
                 secretKeyRef:
                   name: locker-secrets-{{ .Release.Name }}
                   key: LOCKER__SECRETS_MANAGEMENT__AWS_KMS__REGION
-            {{- else if eq .Values.backend "vault" }}
+            {{- else if eq .Values.backend "hashi_corp_vault" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
               value: "hashi_corp_vault"
             - name: LOCKER__SECRETS_MANAGEMENT__HASHI_CORP_VAULT__URL

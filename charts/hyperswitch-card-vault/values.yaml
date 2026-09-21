@@ -11,7 +11,8 @@ global:
   # Node affinity to be added to all resources
   affinity: {}
 
-# Backend selection: aws, gcp, vault, or local
+# Backend selection: aws_kms, gcp_kms, hashi_corp_vault, or local - matches the
+# secrets_manager values the locker binary's own config accepts, not an abbreviated alias.
 backend: local
 
 # -- Number of replicas, ignored when autoscaling.enabled is true
