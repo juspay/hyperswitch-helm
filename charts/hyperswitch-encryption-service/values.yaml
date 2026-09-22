@@ -1,0 +1,415 @@
+# Default values for hyperswitch-encryption-service.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global configurations
+global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+  annotations: {}
+  affinity: {}
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# Deployment strategy
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# Deployment configuration
+progressDeadlineSeconds: 600
+terminationGracePeriodSeconds: 30
+
+# Image settings for Hyperswitch Encryption Service
+image:
+  registry: docker.juspay.io
+  repository: juspaydotin/hyperswitch-encryption-service
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: v0.1.14
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+annotations: {}
+
+# Config Settings (for ConfigMap creation)
+# Everything under this section will be added to the configmap in ENV format
+# Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+# You can also use some special references to create them as envRefs or secrets:
+#   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+#   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+#       name: <name_of_configmap_or_secret>
+#       key: <key_in_configmap_or_secret>
+configs:
+  certs:
+    root_ca: sample_cert
+    tls_cert: sample_cert
+    tls_key: sample_cert
+  database:
+    connect_timeout_secs: 5
+    connection_acquire_timeout_secs: 30
+    idle_timeout_secs: 600
+    max_lifetime_secs: 1800
+    min_idle: 2
+    pool_size: 5
+    root_ca: ""
+  cache:
+    max_capacity: 10000
+    time_to_idle_secs: 30
+    time_to_live_secs: 30
+  log:
+    enabled: true
+    log_format: json
+    log_level: debug
+  metrics:
+    host: 0.0.0.0
+    # Set to "prometheus" to expose the metrics port on the service.
+    # ServiceMonitor would only be created when Prometheus metrics are enabled,
+    # so serviceMonitor.enabled has no effect with any other mode.
+    mode: prometheus
+    port: 6128
+  multitenancy:
+    tenants:
+      global:
+        schema: global
+      public:
+        schema: public
+  pool_config:
+    pool: 2
+  secrets:
+    master_key:
+      _secret: 6d761d32f1b14ef34cf016d726b29b02b5cfce92a8959f1bfb65995c8100925e
+    # For AWS KMS integration
+    # kms_config:
+    #   key_id: sample_key_id
+    #   region: us-east-1
+    # For HashiCorp Vault integration
+    # vault_config:
+    #   vault_token: ""
+  server:
+    port: 5000
+    host: 0.0.0.0
+
+# Values for database (postgresql).
+postgresql:
+  enabled: true
+  image:
+    repository: bitnamilegacy/postgresql
+  nameOverride: encryption-service-db
+  auth:
+    username: db_user
+    password: db_pass
+    database: encryption_db
+  architecture: standalone
+  primary:
+    name: ""
+    resources:
+      requests:
+        cpu: 100m
+
+# External PostgreSQL configuration
+externalPostgresql:
+  enabled: false
+  config:
+    host: localhost
+    port: 5432
+    username: db_user
+    password: db_pass
+    plainpassword: db_pass
+    database: encryption_db
+  enable_ssl: false
+
+# Values for the database migration job
+initDB:
+  enable: true
+  checkPGisUp:
+    imageRegistry: docker.io
+    image: postgres:16-alpine3.19
+    maxAttempt: 30
+  migration:
+    imageRegistry: docker.io
+    image: christophwurst/diesel-cli:latest
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: encryption-service-role
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # Service annotations (useful for AWS Load Balancer Controller)
+  annotations: {}
+    # For AWS NLB:
+    # service.beta.kubernetes.io/aws-load-balancer-type: external
+    # service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+  # Load balancer class (e.g., service.k8s.aws/nlb for AWS)
+  loadBalancerClass: ""
+  # External traffic policy for LoadBalancer/NodePort services
+  externalTrafficPolicy: ""
+  # Internal traffic policy
+  internalTrafficPolicy: Cluster
+  # Session affinity
+  sessionAffinity: None
+  # Service ports configuration
+  ports:
+    - name: https
+      port: 443
+      targetPort: 5000
+      protocol: TCP
+    - name: metrics
+      port: 6128
+      targetPort: 6128
+      protocol: TCP
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: hyperswitch-encryption-service.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# AWS Load Balancer Controller TargetGroupBinding configuration
+# Binds the service directly to existing AWS target groups without creating an Ingress/Service of type LoadBalancer
+# Requires the AWS Load Balancer Controller to be installed in the cluster
+# https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/targetgroupbinding/targetgroupbinding/
+targetGroupBinding:
+  enabled: false
+  # One TargetGroupBinding is created per entry
+  bindings: []
+    # - # Name of the TargetGroupBinding resource
+    #   # Defaults to "<fullname>-<port>" if not set
+    #   name: ""
+    #   # ARN of the AWS target group to bind the service to (required)
+    #   targetGroupARN: "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/encryption-service/1234567890123456"
+    #   # Service port (name or number) to route traffic to (required)
+    #   port: https
+    #   # Target type of the target group: ip or instance
+    #   targetType: ip
+    #   # IP address type of the target group: ipv4 or ipv6
+    #   ipAddressType: ipv4
+    #   # VPC ID of the target group (only needed when it differs from the cluster VPC)
+    #   vpcID: ""
+    #   # Annotations to add to the TargetGroupBinding resource
+    #   annotations: {}
+    #   # Node selector for instance target type
+    #   nodeSelector: {}
+    #   # Networking rules controlling traffic to the targets
+    #   networking: {}
+    #     # ingress:
+    #     #   - from:
+    #     #       - securityGroup:
+    #     #           groupID: sg-0123456789abcdef0
+    #     #     ports:
+    #     #       - protocol: TCP
+    #     #         port: 5000
+
+serviceMonitor:
+  ## If true, a ServiceMonitor CR is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ## NOTE: ServiceMonitor would only be created when Prometheus metrics are enabled,
+  ## i.e. when configs.metrics.mode is set to "prometheus". With any other metrics mode
+  ## the metrics port is not exposed on the service, so no ServiceMonitor is created
+  ## even if this is set to true.
+  enabled: false
+  # Name of the service port to scrape metrics from
+  # Defaults to "metrics" which matches the service.ports[].name for metrics
+  portName: "metrics"
+  # Namespace where the ServiceMonitor should be created
+  # If empty, defaults to the release namespace
+  namespace: ""
+  # Additional labels to add to the ServiceMonitor
+  # Useful for Prometheus discovery via label selectors
+  labels: {}
+  # Interval at which metrics should be scraped
+  interval: 15s
+  # Timeout after which the scrape is ended
+  scrapeTimeout: 30s
+  # HTTP path to scrape metrics from
+  path: /metrics
+  # Scheme to use for scraping (http or https)
+  scheme: http
+  # TLS configuration for secure endpoints
+  tlsConfig: {}
+  # Relabel configs to apply to samples before ingestion
+  relabelings: []
+  # MetricRelabelConfigs to apply to samples before ingestion
+  metricRelabelings: []
+  # BasicAuth configuration for authenticated endpoints
+  basicAuth: {}
+  # TargetLabels transfers labels from the ServiceMonitor to the target
+  targetLabels: []
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 400m
+    memory: 400Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+# Additional sidecar containers on the output Deployment definition.
+extraContainers: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Istio configuration
+istio:
+  enabled: false
+  virtualService:
+    enabled: false
+    hosts: []
+    gateways: []
+    # HTTP routing rules - route destination will be automatically set to encryption-service service
+    http: []
+    # Example configuration:
+    # http:
+    #   - name: "encryption-service-routes"
+    #     match:
+    #       - uri:
+    #           prefix: /
+    #     timeout: 30s
+    #     retries:
+    #       attempts: 3
+    #       perTryTimeout: 10s
+  destinationRule:
+    enabled: false
+    trafficPolicy: {}
+    # Example traffic policy:
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: ROUND_ROBIN
+    #   connectionPool:
+    #     tcp:
+    #       maxConnections: 100
+    #     http:
+    #       http1MaxPendingRequests: 50
+    #       http2MaxRequests: 100
+
+# Disable internal secret creation (use when managing secrets externally)
+disableInternalSecrets: false
+
+# External Secrets Operator configuration
+externalSecretsOperator:
+  enabled: false
+
+  # ServiceAccount configuration for IRSA
+  serviceAccount:
+    create: true
+    annotations: {}
+    extraLabels: {}
+    name: ""
+
+  # SecretStore configuration
+  secretStore:
+    name: "encryption-service-secret-store"
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: encryption-service-eso-sa
+
+  # ExternalSecret configuration
+  externalSecrets:
+    secrets:
+      - name: "encryption-service-secrets"
+        targetName: "encryption-service-secrets"
+        refreshInterval: "1h"
+        creationPolicy: "Owner"
+        dataFrom:
+          - extract:
+              key: "hyperswitch/encryption-service/secrets"
+              conversionStrategy: "Default"
+              decodingStrategy: "None"
+              metadataPolicy: "None"

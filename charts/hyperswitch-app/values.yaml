@@ -1,0 +1,2569 @@
+services:
+  router:
+    enabled: true
+    # -- Router version
+    # @section -- Services
+    version: "v1.126.0"
+    # -- Router image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
+    # -- Router image
+    # @section -- Services
+    image: juspaydotin/hyperswitch-router
+    # -- Router host
+    # @section -- Services
+    host: &router_host http://localhost:8080
+  consumer:
+    enabled: true
+    # -- Consumer version
+    # @section -- Services
+    version: "v1.126.0"
+    # -- Consumer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
+    # -- Consumer image
+    # @section -- Services
+    image: juspaydotin/hyperswitch-consumer
+  producer:
+    enabled: true
+    # -- Producer version
+    # @section -- Services
+    version: "v1.126.0"
+    # -- Producer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
+    # -- Producer image
+    # @section -- Services
+    image: juspaydotin/hyperswitch-producer
+  drainer:
+    enabled: true
+    # -- Drainer version
+    # @section -- Services
+    version: "v1.126.0"
+    # -- Drainer image registry
+    # @section -- Services
+    imageRegistry: docker.juspay.io
+    # -- Drainer image
+    # @section -- Services
+    image: juspaydotin/hyperswitch-drainer
+  sdk:
+    # -- SDK host
+    # @section -- Services
+    host: http://localhost:9050
+    # -- SDK version
+    # @section -- Services
+    version: 0.126.0
+    # -- SDK subversion
+    # @section -- Services
+    subversion: v1
+# @ignored
+global:
+  # Global image registry that can override all imageRegistry fields
+  imageRegistry: null
+  # Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # The strategy that can be used to replace the old pods by new ones
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # tolerations to be used by the application
+  tolerations: []
+  # Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # nodeSelector to be used by the application
+  nodeSelector: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods
+  podAnnotations: {}
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments
+  annotations: {}
+  # -- Labels to be added to the all the deployments and their pods
+  labels:
+    managedBy: hyperswitch
+  # -- Environmant variables that are to be used by the hyperswitch application services
+  env: []
+# Multi-AZ scheduling configuration for the Hyperswitch app workloads.
+# Currently applied to the router only.
+# @section -- Multi-AZ
+multiAz:
+  # -- Enable multi-AZ scheduling (topology spread constraints and PDBs)
+  enabled: false
+  # -- Topology key used to spread pods across failure domains
+  topologyKey: topology.kubernetes.io/zone
+  # -- Maximum difference in number of pods between zones
+  maxSkew: 1
+  # -- Scheduling policy when the spread constraint cannot be satisfied.
+  # Allowed values: DoNotSchedule | ScheduleAnyway. Defaults to ScheduleAnyway
+  # so a real zone outage can't leave replacement replicas stuck Pending
+  # forever - see the deployment NOTES for the full tradeoff, and set to
+  # DoNotSchedule instead if strict even spread matters more than availability.
+  whenUnsatisfiable: ScheduleAnyway
+  # PodDisruptionBudget configuration
+  podDisruptionBudget:
+    # -- Create PDBs for the app components. Defaults to false: a PDB is a
+    # real safety net against over-aggressive voluntary disruption (e.g. a
+    # node drain evicting too many replicas at once), but it's an opt-in
+    # extra resource, not something every multiAz install necessarily wants
+    # by default. Set to true if you want that protection.
+    enabled: false
+    # -- Minimum available pods (mutually exclusive with maxUnavailable)
+    minAvailable: "50%"
+    # -- Maximum unavailable pods (mutually exclusive with minAvailable)
+    maxUnavailable: ""
+# -- Extra /etc/hosts entries for the router, consumer and producer pods
+# @section -- Global configuration
+hostAliases: []
+# -- Common references for templated resource names
+_references:
+  # -- Hyperswitch secrets reference with release name prefix
+  secrets: &hyperswitch_secrets "{{ .Release.Name }}-hyperswitch-secrets"
+  # -- Hyperswitch configs reference with release name prefix
+  configs: &hyperswitch_configs "{{ .Release.Name }}-hyperswitch-configs"
+server:
+  # -- Number of replicas to be used for the application
+  replicas: 1
+  # Ingress Configurations for hyperswitch router
+  ingress:
+    enabled: false
+    # -- Ingress class name
+    className: ""
+    # -- Custom annotations for the ingress
+    annotations: {}
+    # -- Hostname for the ingress
+    hostname: ""
+    # -- Path for the ingress
+    path: /
+    # -- Path type for the ingress
+    pathType: Prefix
+    # -- TLS configuration for the ingress
+    tls: []
+  # Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # The strategy that can be used to replace the old pods by new ones
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # -- The liveness probe configuration for the pods
+  # @ignored
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: 8080
+      scheme: HTTP
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  # -- The readiness probe configuration for the pods
+  # @ignored
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: 8080
+      scheme: HTTP
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  # -- Resource requests and limits for the router/server
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  # Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods (extends global configuration)
+  podAnnotations: {}
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments (extends global configuration)
+  annotations: {}
+  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  labels: {}
+  # Service Account configuration for Hyperswitch Router
+  # -- Extra volumes for the router pods, e.g. a ConfigMap holding a Superposition fallback seed.
+  # Inherited by the olap and paymentMethodModular services unless they set their own.
+  extraVolumes: []
+  # -- Extra volume mounts for the router container
+  extraVolumeMounts: []
+  # -- Extra sidecar containers to add to the router pod spec
+  extraContainers: []
+  serviceAccount:
+    # -- Service account creation for the application
+    create: true
+    # -- Service account name for the application ( default: <release-name>-hyperswitch-router-role)
+    name: ""
+    # -- Annotations to be added to the service account
+    annotations:
+      eks.amazonaws.com/role-arn: my-role-arn
+    # -- Labels to be added to the service account
+    labels: {}
+  # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+  env: []
+  # -- Binary to be used for the hyperswitch Router
+  binary: router
+  # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
+  run_env: sandbox
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    infra_values:
+      version: IMAGE_VERSION_VALUE
+    chat:
+      # Enable or disable chat features
+      enabled: false
+      # Hyperswitch ai workflow host
+      hyperswitch_ai_host: "http://0.0.0.0:8000"
+    analytics:
+      clickhouse:
+        # -- Clickhouse database name
+        # @section -- App Server Secrets
+        database_name: default
+        # -- Clickhouse host in http(s)://<URL>:<PORT> format
+        # @section -- App Server Secrets
+        host: http://clickhouse:8123
+        # -- Clickhouse username
+        # @section -- App Server Secrets
+        username: default
+        # -- Clickhouse password (optional)
+        # @section -- App Server Secrets
+        password:
+          _secretRef:
+            name: clickhouse
+            key: admin-password
+      # -- The Analytics source/strategy to be used
+      source: sqlx
+      sqlx:
+        # -- Database name
+        dbname:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__MASTER_DATABASE__DBNAME
+        # -- Database host
+        host:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__MASTER_DATABASE__HOST
+        # -- Database port
+        port:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__MASTER_DATABASE__PORT
+        # -- Database username
+        username:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__MASTER_DATABASE__USERNAME
+        # -- Database password
+        # When commented out, will use the same password as master database
+        # password: ''
+        # -- Timeout for database connection in seconds
+        connection_timeout: 10
+        # -- Number of connections to keep open
+        pool_size: 5
+        # -- Add the queue strategy used by the database bb8 client
+        queue_strategy: Fifo
+      forex_enabled: false
+    applepay_merchant_configs:
+      # -- Apple pay gateway merchant endpoint
+      applepay_endpoint: https://apple-pay-gateway.apple.com/paymentservices/registerMerchant
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
+      # @section -- App Server Secrets
+      merchant_cert:
+        _secret: dummy_val
+      # -- Private key generate by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
+      # @section -- App Server Secrets
+      merchant_cert_key:
+        _secret: dummy_val
+      # -- Refer to config.example.toml to learn how you can generate this value
+      # @section -- App Server Secrets
+      common_merchant_identifier:
+        _secret: dummy_val
+    applepay_decrypt_keys:
+      # -- Merchant Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Merchant Identity Certificate
+      # @section -- App Server Secrets
+      apple_pay_merchant_cert:
+        _secret: dummy_val
+      # -- Private key generated by RSA:2048 algorithm. Refer Hyperswitch Docs (https://docs.hyperswitch.io/hyperswitch-cloud/payment-methods-setup/wallets/apple-pay/ios-application/) to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_merchant_cert_key:
+        _secret: dummy_val
+      # -- Payment Processing Certificate provided by Apple Pay (https://developer.apple.com/) Certificates, Identifiers & Profiles > Apple Pay Payment Processing Certificate
+      # @section -- App Server Secrets
+      apple_pay_ppc:
+        _secret: dummy_val
+      # -- Private key generated by Elliptic-curve prime256v1 curve. You can use `openssl ecparam -out private.key -name prime256v1 -genkey` to generate the private key
+      # @section -- App Server Secrets
+      apple_pay_ppc_key:
+        _secret: dummy_val
+    cell_information:
+      # -- Default CellID for Global Cell Information (max 2 characters)
+      id: '0a'
+    clone_connector_allowlist:
+      # Comma-separated list of allowed merchant IDs
+      merchant_ids: "merchant_ids"
+      # Comma-separated list of allowed connector names
+      connector_names: "stripe,adyen,paypal,checkout,braintree,cybersource,square,worldpay,klarna,noon,archipel"
+    connector_onboarding:
+      paypal:
+        enabled: true
+        # @section -- App Server Secrets
+        client_id:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        client_secret:
+          _secret: dummy_val
+        # @section -- App Server Secrets
+        partner_id:
+          _secret: dummy_val
+    connector_request_reference_id_config:
+      # server.connector_request_reference_id_config.merchant_ids_send_payment_id_as_connector_request_id -- List of merchant ids for which the payment id should be sent as connector request id
+      merchant_ids_send_payment_id_as_connector_request_id: ['merchant_id_1', 'merchant_id_2']
+    connectors:
+      # Hyperswitch Vault Configuration
+      hyperswitch_vault:
+        # base url to call hyperswitch vault service
+        base_url: "http://localhost:8080"
+      # -- Unified Authentication Service Configuration
+      unified_authentication_service:
+        # -- base url to call unified authentication service
+        base_url: "http://localhost:8080"
+      # -- citigate and ilixium have no base_url in configs/router-*.toml on
+      # this tag either - the router hard-fails validation on any connector
+      # with an empty base_url.
+      citigate:
+        base_url: "https://gw-test.cgate.tech"
+      ilixium:
+        base_url: "https://prprocessing.ilixium.com/platform/ili"
+    network_tokenization_service:
+      # base url to generate token
+      generate_token_url: "https://example.com/generate"
+      # base url to fetch token
+      fetch_token_url: "https://example.com/fetch"
+      # api key for token service
+      token_service_api_key: "api_key"
+      # public key to encrypt data for token service
+      public_key: "public_key"
+      # private key to decrypt response payload from token service
+      private_key: "private_key"
+      # key id to encrypt data for token service
+      key_id: "key_id"
+      # base url to delete token from token service
+      delete_token_url: "https://example.com/delete"
+      # base url to check token status from token service
+      check_token_status_url: "https://example.com/status"
+      # base url to check network tokenization eligibility
+      check_tokenize_eligibility_url: "https://example.com/cardbins"
+      # base url to fetch Alt-ID and cryptogram for guest checkout tokenization
+      fetch_altid_url: "https://example.com/altid"
+      # webhook source verification key to verify the webhook payload from token service
+      webhook_source_verification_key: "placeholder_webhook_key"
+    cors:
+      # -- List of methods that are allowed
+      allowed_methods: GET,POST,PUT,DELETE
+      origin: "https://hyperswti"
+      # -- Maximum time (in seconds) for which this CORS request may be cached.
+      max_age: 30
+      # -- If true, allows any origin to make requests
+      wildcard_origin: true
+    crm:
+      # Crm manager client to be used
+      crm_manager: "hubspot_proxy"
+      hubspot_proxy:
+        # Form ID for Hubspot integration
+        form_id: "form_id"
+        # Request URL for Hubspot API
+        request_url: "request_url"
+    email:
+      # -- The currently active email client
+      active_email_client: SMTP
+      # -- Number of days the api calls ( with jwt token ) can be made without verifying the email
+      allowed_unverified_days: 1
+      # -- AWS region used by AWS SES
+      # @section -- App Server Secrets
+      aws_region: us-east-1
+      aws_ses:
+        # -- The amazon resource name ( arn ) of the role which has permission to send emails
+        # @section -- App Server Secrets
+        email_role_arn: arn:aws:iam::123456789012:role/SendEmailRole
+        # -- An identifier for the assumed role session, used to uniquely identify a session.
+        # @section -- App Server Secrets
+        sts_role_session_name: SendEmailRole
+      # -- Recipient email for prod intent email
+      # @section -- App Server Secrets
+      prod_intent_recipient_email: business@example.com
+      # -- Recipient email for recon request email
+      # @section -- App Server Secrets
+      recon_recipient_email: recon@example.com
+      # -- Sender email
+      # @section -- App Server Secrets
+      sender_email: example@example.com
+      smtp:
+        # -- connection type to be used for the smtp server
+        connection: plaintext
+        # -- Host of the smtp server
+        # @section -- App Server Secrets
+        host: mailhog
+        # -- Username for the SMTP server.
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # username: ''
+        # -- Password for the smtp server
+        # @section -- App Server Secrets
+        # This field is optional; however, when uncommented, an empty value is not allowed.
+        # password:
+        #   _secret: ''
+        # -- Port of the smtp server
+        port: '1025'
+        # -- timeout for the smtp server connection
+        timeout: 10
+    encryption_management:
+      # -- Encryption manager client to be used
+      encryption_manager: no_encryption
+      # encryption_manager: aws_kms
+      # aws_kms:
+      #   key_id: "kms_key_id"
+      #   region: "kms_region"
+    events:
+      # -- The event sink to push events supports kafka or logs (stdout)
+      source: kafka
+      kafka:
+        # -- Kafka topic to be used for incoming api events
+        api_logs_topic: hyperswitch-api-log-events
+        # -- Kafka topic to be used for PaymentAttempt events
+        attempt_analytics_topic: hyperswitch-payment-attempt-events
+        # -- Kafka topic to be used for Payment Audit events
+        audit_events_topic: hyperswitch-audit-events
+        # -- Kafka topic to be used for Authentication events
+        authentication_analytics_topic: hyperswitch-authentication-events
+        brokers: ['kafka0:29092']
+        # -- Kafka topic to be used for connector api events
+        connector_logs_topic: hyperswitch-outgoing-connector-events
+        # -- Kafka topic to be used for Consolidated events
+        consolidated_events_topic: hyperswitch-consolidated-events
+        # -- Kafka topic to be used for Dispute events
+        dispute_analytics_topic: hyperswitch-dispute-events
+        # -- Kafka topic to be used for Fraud Check events
+        fraud_check_analytics_topic: hyperswitch-fraud-check-events
+        # -- Kafka topic to be used for PaymentIntent events
+        intent_analytics_topic: hyperswitch-payment-intent-events
+        # -- Kafka topic to be used for outgoing webhook events
+        outgoing_webhook_logs_topic: hyperswitch-outgoing-webhook-events
+        # -- Kafka topic to be used for Payouts and PayoutAttempt events
+        payout_analytics_topic: hyperswitch-payout-events
+        # -- Kafka topic to be used for Refund events
+        refund_analytics_topic: hyperswitch-refund-events
+        # Kafka topic to be used for Routing events
+        routing_logs_topic: topic
+        # Kafka topic to be used for Revenue Recovery Events
+        revenue_recovery_topic: topic
+    forex_api:
+      # -- Api key for making request to foreign exchange Api, Follow https://github.com/juspay/hyperswitch/tree/main/crates/analytics#setting-up-forex-apis to get the forex api key
+      # @section -- App Server Secrets
+      api_key:
+        _secret: dummy_val
+      # -- Forex Api key for the fallback service
+      # @section -- App Server Secrets
+      fallback_api_key:
+        _secret: dummy_val
+      # Expiration time for data in cache as well as redis in seconds
+      data_expiration_delay_in_seconds: 21600
+      # Redis remains write locked for 100 s once the acquire_redis_lock is called
+      redis_lock_timeout_in_seconds: 100
+      # Time to expire for forex data stored in Redis
+      redis_ttl_in_seconds: 172800
+    generic_link:
+      payment_method_collect:
+        # -- Auto-generated from services.sdk. Override with custom URL if needed.
+        sdk_url: ''
+        expiry: "900"
+        ui_config:
+          logo: https://app.hyperswitch.io/HyperswitchFavicon.png
+          merchant_name: HyperSwitch
+          theme: '#4285F4'
+        enabled_payment_methods:
+          card: credit,debit
+          bank_transfer: ach,bacs,sepa
+          wallet: paypal,pix,venmo
+      payout_link:
+        # -- Auto-generated from services.sdk. Override with custom URL if needed.
+        sdk_url: ''
+        expiry: "900"
+        enabled_payment_methods:
+          card: credit,debit
+        ui_config:
+          logo: https://app.hyperswitch.io/HyperswitchFavicon.png
+          merchant_name: HyperSwitch
+          theme: '#4285F4'
+    payment_link:
+      # -- Auto-generated from services.sdk. Override with custom URL if needed.
+      sdk_url: ''
+    grpc_client:
+      # Dynamic Routing Client Configuration
+      dynamic_routing_client:
+        # -- Client Host
+        host: localhost
+        # -- Client Port
+        port: 7000
+        # -- Client Service Name
+        service: "dynamo"
+      unified_connector_service:
+        # Unified Connector Service Base URL
+        base_url: "http://localhost:8000"
+        # Connection Timeout Duration in Seconds
+        connection_timeout: "10"
+      # Revenue recovery client base url
+      recovery_decider_client:
+        # Base URL
+        base_url: "http://127.0.0.1:8080"
+    theme:
+      storage:
+        # -- Theme storage backend to be used
+        file_storage_backend: "aws_s3"
+        aws_s3:
+          # -- AWS region where the S3 bucket for theme storage is located
+          region: "bucket_region"
+          # -- AWS S3 bucket name for theme storage
+          bucket_name: "bucket"
+      email_config:
+        # -- Name of the entity to be showed in emails
+        entity_name: "HyperSwitch"
+        # -- Logo URL of the entity to be used in emails
+        entity_logo_url: "https://example.com/logo.png"
+        # -- Foreground color of email text
+        foreground_color: "#000000"
+        # -- Primary color of email body
+        primary_color: "#006DF9"
+        # -- Background color of email body
+        background_color: "#FFFFFF"
+    kv_config:
+      ttl: 900
+      soft_kill: false
+    lock_settings:
+      # -- Delay between retries in milliseconds
+      delay_between_retries_in_milliseconds: 500
+      # -- Seconds before the redis lock expires
+      redis_lock_expiry_seconds: 180
+    # Locker settings contain details for accessing a card locker, a
+    # PCI Compliant storage entity which stores payment method information
+    # like card details
+    locker:
+      # -- Locker host
+      host: http://hyperswitch-vault
+      # -- Rust Locker host
+      host_rs: null
+      # -- Boolean to enable or disable saving cards in locker
+      locker_enabled: true
+      # -- Key_id to sign basilisk hs locker
+      locker_signing_key_id: '1'
+      # -- Emulate a locker locally using Postgres
+      mock_locker: false
+      # -- Time to live for storage entries in locker
+      ttl_for_storage_in_secs: 220752000
+      # -- Encryption key for redis temp locker
+      # @section -- App Server Secrets
+      redis_temp_locker_encryption_key:
+        _secret: dummy_val
+    log:
+      console:
+        enabled: true
+        # -- Log level for console logs, ERROR, WARN, INFO, DEBUG
+        level: DEBUG
+        log_format: json
+      file:
+        enabled: false
+        level: DEBUG
+        log_format: json
+      # Telemetry configuration for metrics and traces
+      telemetry:
+        # -- Interval for collecting the metrics in background thread
+        bg_metrics_collection_interval_in_secs: 15
+        # -- boolean [true or false], whether to ignore errors during traces or metrics pipeline setup
+        ignore_errors: false
+        # -- boolean [true or false], whether metrics are enabled
+        metrics_enabled: false
+        # -- URL for external OpenTelemetry Collector endpoint to send metrics and traces to.
+        # The OpenTelemetry Collector must have a gRPC OTLP receiver listening at this endpoint.
+        # If left empty, the endpoint will be auto-configured as: <release-name>-opentelemetry-collector.<namespace>.svc.cluster.local:4317
+        # when using hyperswitch-stack with monitoring enabled. Leave empty for auto-configuration or specify custom endpoint.
+        otel_exporter_otlp_endpoint: ''
+        # -- timeout (in milliseconds) for sending metrics and traces
+        otel_exporter_otlp_timeout: 5000
+        route_to_trace: ['*/confirm']
+        sampling_rate: 0.1
+        # -- boolean [true or false], whether traces are enabled
+        traces_enabled: false
+        # -- Set this to true for AWS X-ray compatible traces
+        use_xray_generator: false
+    # Controls whether merchant ID authentication is enabled.
+    # When enabled, payment endpoints will accept and require a x-merchant-id header in the request.
+    merchant_id_auth:
+      merchant_id_auth_enabled: false
+    # Main SQL data store credentials
+    master_database:
+      # -- Timeout for database connection in seconds
+      connection_timeout: 10
+      # -- Number of connections to keep open
+      pool_size: '20'
+      # -- Add the queue strategy used by the database bb8 client
+      queue_strategy: Fifo
+    multitenancy:
+      enabled: false
+      global_tenant:
+        clickhouse_database: default
+        redis_key_prefix: ""
+        schema: public
+        tenant_id: "global"
+      tenants:
+        public:
+          base_url: "http://localhost:8080"
+          schema: public
+          accounts_schema: "public"
+          redis_key_prefix: ""
+          clickhouse_database: "default"
+          user:
+            control_center_url: "http://localhost:9000"
+    opensearch:
+      auth:
+        auth: basic
+        username: admin
+        password: admin
+        region: eu-central-1
+      host: https://localhost:9200
+      enabled: false
+      indexes:
+        disputes: hyperswitch-dispute-events
+        payment_attempts: hyperswitch-payment-attempt-events
+        payment_intents: hyperswitch-payment-intent-events
+        refunds: hyperswitch-refund-events
+        sessionizer_disputes: sessionizer-dispute-events
+        sessionizer_payment_attempts: sessionizer-payment-attempt-events
+        sessionizer_payment_intents: sessionizer-payment-intent-events
+        sessionizer_refunds: sessionizer-refund-events
+        payouts: hyperswitch-payout-events
+    payment_method_auth:
+      # -- # Payment method auth key used for authorization
+      # @section -- App Server Secrets
+      pm_auth_key:
+        _secret: dummy_val
+      # -- Redis expiry time in milliseconds
+      redis_expiry: 900
+    paze_decrypt_keys:
+      # -- Base 64 Encoded Private Key File cakey.pem generated for Paze -> Command to create private key: openssl req -newkey rsa:2048 -x509 -keyout cakey.pem -out cacert.pem -days 365
+      # @section -- App Server Secrets
+      paze_private_key: PAZE_PRIVATE_KEY
+      # -- PEM Passphrase used for generating Private Key File cakey.pem
+      # @section -- App Server Secrets
+      paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
+    google_pay_decrypt_keys:
+      google_pay_root_signing_keys: GOOGLE_PAY_ROOT_SIGNING_KEYS
+    proxy:
+      # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
+      bypass_proxy_hosts: "localhost, cluster.local"
+      enabled: true
+      # -- Outgoing proxy http URL to proxy the HTTP traffic
+      http_url: http://proxy_http_url
+      # -- Outgoing proxy https URL to proxy the HTTPS traffic
+      https_url: https://proxy_https_url
+    proxy_status_mapping:
+      # If enabled, the http status code of the connector will be proxied in the response
+      proxy_connector_http_status_code: false
+    # Redis credentials
+    redis:
+      # -- Whether or not the client should automatically pipeline commands across tasks when possible.
+      auto_pipeline: true
+      # -- boolean
+      cluster_enabled: false
+      # -- List of redis cluster urls
+      cluster_urls: ['redis.cluster.uri-1:8080', 'redis.cluster.uri-2:4115']
+      # -- An optional timeout to apply to all commands. In seconds
+      default_command_timeout: 30
+      # -- Default TTL for hashes entries, in seconds
+      default_hash_ttl: 900
+      # -- Default TTL for entries, in seconds
+      default_ttl: 300
+      # -- Whether or not to disable the automatic backpressure features when pipelining is enabled.
+      disable_auto_backpressure: false
+      # -- The maximum number of frames that will be fed to a socket before flushing.
+      max_feed_count: 200
+      # -- The maximum number of in-flight commands (per connection) before backpressure will be applied.
+      max_in_flight_commands: 5000
+      # -- Number of connections to keep open
+      pool_size: 5
+      # -- Delay between reconnection attempts, in milliseconds
+      reconnect_delay: 5
+      # -- Maximum number of reconnection attempts to make before failing. Set to 0 to retry forever.
+      reconnect_max_attempts: 5
+      # -- Default number of entries to read from stream if not provided in stream read options
+      stream_read_count: 1
+      # -- An optional timeout for Unresponsive commands in seconds. This should be less than default_command_timeout.
+      unresponsive_timeout: 10
+      # -- RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
+      use_legacy_version: false
+    # Replica SQL data store credentials
+    replica_database:
+      # -- Timeout for database connection in seconds
+      connection_timeout: 10
+      # -- Number of connections to keep open
+      pool_size: '20'
+      # -- Add the queue strategy used by the database bb8 client
+      queue_strategy: Fifo
+    report_download_config:
+      # -- Config to download dispute report
+      dispute_function: report_download_config_dispute_function
+      # -- Config to download payment report
+      payment_function: report_download_config_payment_function
+      # -- Config to download refund report
+      refund_function: report_download_config_refund_function
+      # -- Config to download payout report
+      payout_function: report_download_config_payout_function
+      # -- Region of the bucket
+      region: report_download_config_region
+      # -- Config to authentication function
+      authentication_function: report_download_config_authentication_function
+      # -- Config to download relay report
+      relay_function: report_download_config_relay_function
+    revenue_recovery:
+      # monitoring threshold -  120 days
+      monitoring_threshold_in_seconds: 10368000
+      retry_algorithm_type: "cascading"
+      redis_ttl_in_seconds: 3888000
+      # Card specific configuration for Revenue Recovery
+      card_config:
+        amex:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+        mastercard:
+          max_retries_per_day: 10
+          max_retry_count_for_thirty_day: 35
+        visa:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+        discover:
+          max_retries_per_day: 20
+          max_retry_count_for_thirty_day: 20
+      # Timestamp configuration for Revenue Recovery
+      recovery_timestamp:
+        # number of seconds added to start time for Decider service of Revenue Recovery
+        initial_timestamp_in_seconds: 3600
+        job_schedule_buffer_time_in_seconds: 900
+        reopen_workflow_buffer_time_in_seconds: 3600
+        max_random_schedule_delay_in_seconds: 18000
+        redis_ttl_buffer_in_seconds: 300
+        unretried_invoice_schedule_time_offset_seconds: 300
+    secrets_management:
+      # -- Secrets manager client to be used
+      secrets_manager: no_encryption
+      # secrets_manager: aws_kms
+      # aws_kms:
+      #   # The AWS key ID used by the KMS SDK for decrypting data.
+      #   key_id: "kms_key_id"
+      #   # The AWS region used by the KMS SDK for decrypting data.
+      #   region: "kms_region"
+      # hc_vault:
+      #   url: http://vault:8200
+      #   token: vault_token
+    # -- Superposition client config (mandatory at boot as of newer router builds).
+    # Defaults assume the bundled `superposition` subchart under this release name.
+    superposition:
+      # -- Superposition service URL. Left empty it resolves to the Superposition of this release
+      # (`http://<release>-superposition.<namespace>.svc.cluster.local:80`), so it follows the
+      # release name instead of being pinned to one. Set it explicitly to point somewhere else.
+      endpoint: ""
+      # -- Must match the subchart's SUPERPOSITION_TOKEN below (defaults to "123456").
+      token: "123456"
+      org_id: hyperswitch
+      workspace_id: hyperswitch
+      # -- Fallback config file, used if the live endpoint above is unreachable.
+      # backup_file_path: "/superposition/backup-config/superposition_seed.toml"
+    # Server configuration
+    server:
+      host: 0.0.0.0
+      port: 8080
+      # -- HTTP Request body limit. Defaults to 32kB
+      request_body_limit: 32768
+      # -- This is the grace time (in seconds) given to the actix-server to stop the execution
+      # -- For more details: https://actix.rs/docs/server/#graceful-shutdown
+      shutdown_timeout: 30
+      workers: 8
+    file_upload_config:
+      bucket_name: "bucket"
+      region: "us-east-1"
+    # KMS Configuration
+    kms:
+      # -- AWS KMS region
+      key_region: us-east-1
+      # -- KMS key id for encryption and decryption
+      # @section -- App Server Secrets
+      key_id:
+        _secret: kms_key_id
+    # JWE Keys
+    jwekey:
+      # -- The public key for the locker from locker-public-key.pub, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----"
+      vault_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+      # -- The private key for the tenant from tenant-private-key.pem, these are only test keys, please change it when deploying to production or other environments
+      # @section -- App Server Secrets
+      # @default -- "-----BEGIN RSA PRIVATE KEY-----...-----END RSA PRIVATE KEY-----"
+      vault_private_key:
+        _secret: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0m19nEbqiGX8y
+          +TQM6JQq88srVay69393MtYGEoA5tlzwCq8T9GJMvvcc63VLmtfJP9PAN+lwQjyh
+          W5JaKQza3KDG6CGq0D+Yr8WjQZdrNH7l9zNAG9W+VQ+kQDhlpSSkuQOViVMuCMYL
+          PqYE5a14KFzT6IW/ZjPIB0g5oDuziW6SUBLEvlRmrbQQQdcvjAgoq/l9AuhpWIG/
+          dB40Q+FrguhyV1R+SguXQ43XlNasNP+ASCXdqenx/i3JKDJ64E05+yJVViqqeAqo
+          1W1xEdJgZzEGbEFXeZOEgf9ic+dKgz9/54MC2si6C62LkH6gl9VbVZTq/ndpB44u
+          t3b5dHY9AgMBAAECggEABlQBWj+rreokMLmJnAz6kBMdvDJF/83g1S2rURtZ2Dih
+          dgNLa72rqhIkEqSimTHfCLaoHG6SsXPCSX16mcnuOnolI5yjlvQYBMLeTNOYbITl
+          qcVPfubaxoH9e9BVb/GC4K144i1Yt3hOoO5vhVfOcoAOv8zaAg3tl4vyks5TksoZ
+          WF7ZUFfYiQiF+1+Stdiv+DvJnPUIhHBMol44vuh3SjCbX+t6PqPiAkHpr+8Xu9Qx
+          ubKehVOYPs7YY+2s2qqnfgzvx+rHmsyUri+GNH4BoSEYCcY9ErD3sNJajjxchkMv
+          9zZsDBgmKFoIT2ZxM9WYu7RqUhUYWz7UNoBcwetXwQKBgQDpYSGjajt1CuPko6HV
+          yxMG6hDa4YjChUTgC7Lg5j8a3IGsce/DVurN3d3xApeyr0EHJa3KFwTd4kvF1Ad6
+          R9raWgfkaolS4gCK0FywFPDIYzkgg171XOVo1uiiumsgdbbOMgc/3J2mBZPdjhV5
+          3QwpDQCTmCjiYv26Or6zg2vp4QKBgQDGHMqrgtQGHNOyeO07ZS+5jua4/CaPdTzc
+          gJa30nALo4pc/23H1abDelQD+LMEyAor8DWH1EcGYBa92PWwUupzswICi88uf1ik
+          mwKZ+R5+qfGQ4LZEcG9P7Q/Q3j81G7ZJo2hdts+vrQ4ycuw64XIUfMJ0/9Jg0ojY
+          kKdXJUNv3QKBgFAzmxXHmis81NhsC1+nbCCCK8ysmQ0QM30zSAPV3HXktYOHnDfr
+          FMIuruj2VR+I7rYAEttSUc/WxudzWCaDrwg+zFuI6Sxckoch19iDOcQDpUwxGV8E
+          z6nZwRS7L7l1+p6dvrQJovu9CvWmsGayuk0ZNMuEDPjPwBZRvdt/HITBAoGAek3O
+          BMIYuMlVG+oxsqhOJUUGRQ9NkuTytMIhycv9ZgIJak46bNMGR8meUnFXu0zvkp6R
+          vZAcZOAvSfbF/pvBp7nMNNwxBGiTxdL4cSvtWo751dIUU/4Bihs012JNLTE1gRKD
+          XM9+OdshV53BHryNW/6FYguIykNPPjtXQ6J6lnUCgYBbuji9BmsTNCNFdeHdUC9b
+          KFMoRFgTomZzgU5sdjNhElizpyQ+B2c8GGaXw/poeevUnW2LPGkIcYiwyvMcEqD0
+          3qYrLcDIIEk/uPWvbCH/nNwBL/2zzFoGdreefsPyYacIE0XT8dEqeNNryCunbaEo
+          49IwF6OHTk+8yjEF1c5ngQ==
+          -----END PRIVATE KEY-----
+      # @section -- App Server Secrets
+      tunnel_private_key:
+        _secret: dummy_val
+      # @section -- App Server Secrets
+      rust_locker_encryption_key:
+        _secret: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn4glmrihAG7Vppqd3Hm
+          RXZiGmuZW0J+NQt72453oSnGc6Sw1Fk/vY0WhQIn6/Ip1Xt6dnMyorI3b9RtfQNP
+          DFND3/g7n2I9uMqEr6aYxg0pKw9UW3uBlzR5JzvMVnzEjIRfdtuqSlphdpAVuZPE
+          FEN9kE/VasBIeaKmbYFZxmz4AN2IBBvqWCaqIQZOrTRzfGNhVBlX/O+Sv59cy6n6
+          QEoYJ/Ww3R7cUlSrueQNlSubkoa8ihBcm9VA7Bdklrps7B17yzMTAgqhZPkLMIQQ
+          DBI1vFDlSKrWHNXfm4WyAXJ8MXOl+ThNJdAoDw2wNJmfOrgaPQFiMfPZYgKl/2Gu
+          YQIDAQAB
+          -----END PUBLIC KEY-----
+    api_keys:
+      # -- API key hashing key.
+      # @section -- App Server Secrets
+      hash_key:
+        _secret: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    # -- Encryption key used for encrypting data in user_authentication_methods table
+    key_manager:
+      # -- Enable or disable keymanager
+      enabled: false
+      # -- KeyManager service URL
+      url: ""
+      # -- CA certificate for the keymanager service
+      # @section -- App Server Secrets
+      ca:
+        _secret: "sample_ca"
+      # -- Client certificate for the keymanager service
+      # @section -- App Server Secrets
+      cert:
+        _secret: "sample_cert"
+    # -- Encryption key used for user_auth_methods table
+    # @section -- App Server Secrets
+    user_auth_methods:
+      encryption_key:
+        _secret: "A8EF32E029BC3342E54BF2E172A4D7AA43E8EF9D2C3A624A9F04E2EF79DC698F"
+    # Application Secrets
+    secrets:
+      # -- admin API key for admin authentication.
+      # @section -- App Server Secrets
+      admin_api_key:
+        _secret: test_admin
+      # -- JWT secret used for user authentication.
+      # @section -- App Server Secrets
+      jwt_secret:
+        _secret: test_admin
+      # -- Master Encryption key used to encrypt merchant wise encryption key. Should be 32-byte long.
+      # @section -- App Server Secrets
+      master_enc_key:
+        _secret: 471f22516724347bcca9c20c5fa88d9821c4604e63a6aceffd24605809c9237c
+      # -- Recon Admin API key for recon admin authentication.
+      # @section -- App Server Secrets
+      recon_admin_api_key:
+        _secret: test_admin
+      migration_encryption_timestamp:
+        _secret: "1685510751"
+# @ignored
+consumer:
+  # -- Number of replicas to be used for the application
+  replicas: 1
+  # -- Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # -- The strategy that can be used to replace the old pods by new ones
+  # @ignored
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # -- Resource requests and limits for the consumer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  # Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  # @ignored
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods (extends global configuration)
+  # @ignored
+  podAnnotations: {}
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments (extends global configuration)
+  # @ignored
+  annotations: {}
+  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  # @ignored
+  labels: {}
+  # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+  env: []
+  # -- Binary to be used by the consumer
+  binary: scheduler
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    scheduler:
+      consumer_group: "scheduler_group"
+      # Specifies how much time to wait while re-attempting shutdown for a service (in milliseconds)
+      graceful_shutdown_interval: 60000
+      # Specifies how much time to wait before starting the defined behaviour of producer or consumer (in milliseconds)0
+      loop_interval: 3000
+      stream: "scheduler_stream"
+      consumer:
+        consumer_group: "scheduler_group"
+        # This flag decides if the consumer should actively consume task
+        disabled: false
+      server:
+        # Port on which the server will listen for incoming requests
+        port: 3000
+        # Host IP address to bind the server to
+        host: "0.0.0.0"
+        # Number of actix workers to handle incoming requests concurrently
+        workers: 1
+# @ignored
+producer:
+  # -- Number of replicas to be used for the application
+  replicas: 1
+  # -- Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # -- The strategy that can be used to replace the old pods by new ones
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # -- Resource requests and limits for the producer
+  resources:
+    requests:
+      memory: "100Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  # -- Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods (extends global configuration)
+  podAnnotations: {}
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments (extends global configuration)
+  annotations: {}
+  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  labels: {}
+  # -- Environmant variables that are to be used by the hyperswitch application service this will extend the existing global configuration
+  env: []
+  # -- Binary to be used by the producer
+  binary: scheduler
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    scheduler:
+      consumer_group: "scheduler_group"
+      # Specifies how much time to wait while re-attempting shutdown for a service (in milliseconds)
+      graceful_shutdown_interval: 60000
+      # Specifies how much time to wait before starting the defined behaviour of producer or consumer (in milliseconds)
+      loop_interval: 30000
+      stream: "scheduler_stream"
+      producer:
+        # Specifies the batch size the producer will push under a single entry in the redis queue
+        batch_size: 50
+        # The following keys defines the producer lock that is created in redis with
+        lock_key: "producer_locking_key"
+        # the ttl being the expiry (in seconds)
+        lock_ttl: 160
+        # Lower limit for fetching entries from redis queue (in seconds)
+        lower_fetch_limit: 900
+        # Upper limit for fetching entries from the redis queue (in seconds)0
+        upper_fetch_limit: 0
+      server:
+        # Port on which the server will listen for incoming requests
+        port: 3000
+        # Host IP address to bind the server to
+        host: "0.0.0.0"
+        # Number of actix workers to handle incoming requests concurrently
+        workers: 1
+# @ignored
+drainer:
+  # -- Number of replicas to be used for the drainer
+  replicas: 0
+  # -- Wait time allowed for the deployment before the deployment is marked as failed
+  progressDeadlineSeconds: 600
+  # -- The strategy that can be used to replace the old pods by new ones
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  # -- Resource requests and limits for the drainer
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  # -- Specify affinity for nodes to which the pods should start on
+  # @ignored
+  affinity: {}
+  # -- The time kubernetes will wait after sending the termination signal to the pods
+  terminationGracePeriodSeconds: 30
+  # -- Annotations that are to be added to the pods (extends global configuration)
+  podAnnotations: {}
+  # traffic.sidecar.istio.io/excludeOutboundIPRanges: 10.23.6.12/32
+  # -- Annotations that are to be added the the deployments (extends global configuration)
+  annotations: {}
+  # -- Labels to be added to the deployment's (match labels) and their pods (extends global configuration)
+  labels: {}
+  # -- Namespace override for the drainer
+  namespaceOverride: ""
+  # -- Environment variables that are to be used by the hyperswitch drainer service
+  env: []
+  # -- Binary to be used by the drainer
+  binary: drainer
+  # Config Settings (for ConfigMap creation)
+  # Everything under this section will be added to the configmap in ENV format
+  # Eg: configs.drainer.loop_interval -> CONFIGS_DRAINER_LOOP_INTERVAL
+  # You can also use some special references to create them as envRefs or secrets:
+  #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
+  #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
+  #       name: <name_of_configmap_or_secret>
+  #       key: <key_in_configmap_or_secret>
+  configs:
+    drainer:
+      loop_interval: 500
+      max_read_count: 100
+      num_partitions: 64
+      shutdown_interval: 1000
+      stream_name: "drainer_stream"
+    secrets_management:
+      secrets_manager:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__SECRETS_MANAGEMENT__SECRETS_MANAGER
+      aws_kms:
+        key_id:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__KEY_ID
+        region:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__SECRETS_MANAGEMENT__AWS_KMS__REGION
+    encryption_management:
+      encryption_manager:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__ENCRYPTION_MANAGEMENT__ENCRYPTION_MANAGER
+      aws_kms:
+        key_id:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__KEY_ID
+        region:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__ENCRYPTION_MANAGEMENT__AWS_KMS__REGION
+    log:
+      console:
+        enabled:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__LOG__CONSOLE__ENABLED
+        level:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__LOG__CONSOLE__LEVEL
+        log_format:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__LOG__CONSOLE__LOG_FORMAT
+      telemetry:
+        metrics_enabled:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__LOG__TELEMETRY__METRICS_ENABLED
+        otel_exporter_otlp_endpoint:
+          _configRef:
+            name: *hyperswitch_configs
+            key: ROUTER__LOG__TELEMETRY__OTEL_EXPORTER_OTLP_ENDPOINT
+    master_database:
+      dbname:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__MASTER_DATABASE__DBNAME
+      host:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__MASTER_DATABASE__HOST
+      pool_size: 3
+      port:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__MASTER_DATABASE__PORT
+      username:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__MASTER_DATABASE__USERNAME
+    redis:
+      cluster_enabled: false
+      cluster_urls: ["redis.cluster.uri-1:8080", "redis.cluster.uri-2:4115"]
+      default_ttl: 300
+      host:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__REDIS__HOST
+      pool_size: 5
+      port:
+        _configRef:
+          name: *hyperswitch_configs
+          key: ROUTER__REDIS__PORT
+      reconnect_delay: 5
+      reconnect_max_attempts: 5
+      stream_read_count: 1
+      use_legacy_version: false
+# https://artifacthub.io/packages/helm/bitnami/redis
+redis:
+  # -- - enable Bitnami redis sub-chart helm installation
+  # @section -- Dependencies configuration
+  enabled: true
+  image:
+    repository: bitnamilegacy/redis
+    tag: 7.2.3-debian-11-r2
+  master:
+    # -- Number of replicas to be used for master
+    # @section -- Dependencies configuration
+    count: 1
+  replica:
+    # -- Number of replicas to be used for replica
+    # @section -- Dependencies configuration
+    replicaCount: 0
+  auth:
+    # -- enable or disable redis auth
+    # @section -- Dependencies configuration
+    enabled: false
+    # -- enable or disable sentinel
+    # @section -- Dependencies configuration
+    sentinel: false
+externalRedis:
+  # -- Link this service to an external Redis server
+  # @section -- Dependencies configuration
+  enabled: false
+  # -- External redis host
+  # @section -- Dependencies configuration
+  host: redis-ext-master
+  # -- External redis port, falls back to 6379 when unset
+  # @section -- Dependencies configuration
+  port: ""
+  auth:
+    # -- auth enabled or disabled
+    # @section -- Dependencies configuration
+    enabled: true
+    # -- redis username
+    # @section -- Dependencies configuration
+    username: ""
+    # -- redis password
+    # @section -- Dependencies configuration
+    password: ""
+redisMiscConfig:
+  checkRedisIsUp:
+    initContainer:
+      enable: true
+      imageRegistry: docker.io
+      image: bitnamilegacy/redis:7.2.3-debian-11-r2
+      maxAttempt: 60
+# https://artifacthub.io/packages/helm/bitnami/postgresql
+postgresql:
+  # -- enable Bitnami postgresql sub-chart helm installation
+  # @section -- Dependencies configuration
+  enabled: true
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 16.1.0-debian-11-r18
+  global:
+    postgresql:
+      auth:
+        # -- Postgresql username
+        # @section -- Dependencies configuration
+        username: "hyperswitch"
+        # -- Postgresql password
+        # @section -- Dependencies configuration
+        password: "ZGJwYXNzd29yZDEx"
+        # -- Postgresql database
+        # @section -- Dependencies configuration
+        database: "hyperswitch"
+  # -- Postgresql architecture: replication or standalone
+  # @section -- Dependencies configuration
+  architecture: replication
+  replication:
+    # -- synchronous_commit parameter
+    # @section -- Dependencies configuration
+    synchronousCommit: "off"
+    # -- Number of synchronous replicas
+    # @section -- Dependencies configuration
+    numSynchronousReplicas: 1
+  primary:
+    # -- postgres primary name
+    # @section -- Dependencies configuration
+    name: ""
+    resources:
+      requests:
+        # -- CPU resource requests
+        # @section -- Dependencies configuration
+        cpu: 150m
+  readReplicas:
+    # -- Number of read replicas
+    # @section -- Dependencies configuration
+    replicaCount: 0
+    resources:
+      requests:
+        # -- CPU resource requests
+        # @section -- Dependencies configuration
+        cpu: 100m
+externalPostgresql:
+  # -- Link this service to an external Postgres server
+  # @section -- Dependencies configuration
+  enabled: false
+  primary:
+    # -- External postgres host
+    # @section -- Dependencies configuration
+    host: "postgresql-ext"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password and plainpassword fields.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
+    auth:
+      # -- master DB username
+      # @section -- Dependencies configuration
+      username: "hyperswitch"
+      # -- master DB password
+      # @section -- Dependencies configuration
+      password: "hyperswitch"
+      # -- master DB plainpassword
+      # @section -- Dependencies configuration
+      plainpassword:
+      # -- master DB name
+      # @section -- Dependencies configuration
+      database: "hyperswitch"
+  readOnly:
+    # -- External postgres read only host enabled or disabled
+    # @section -- Dependencies configuration
+    enabled: false
+    # -- External postgres read only host
+    # @section -- Dependencies configuration
+    host: "postgres-service"
+    # You can optionally use _secretRef to reference a secret key from a secret
+    # instead of adding direct values here for password field.
+    # Eg: password:
+    #        _secretRef:
+    #          name: my-secret
+    #          key: password-key
+    auth:
+      # -- replica DB username
+      # @section -- Dependencies configuration
+      username: "hyperswitch"
+      # -- replica DB password
+      # @section -- Dependencies configuration
+      password: "hyperswitch"
+      # -- replica DB name
+      # @section -- Dependencies configuration
+      database: "hyperswitch"
+initDB:
+  enable: true
+  checkPGisUp:
+    imageRegistry: docker.io
+    image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+    maxAttempt: 60
+  refs: tags  # tags or heads
+  migration:
+    imageRegistry: docker.io
+    # -- Base image for the migration Job. It needs `bash`, `apt-get` and network access: the Job
+    # installs diesel_cli into it, mirroring hyperswitch's own migration runner. The previous
+    # default (christophwurst/diesel-cli) pinned diesel 1.4.1, which ignores the
+    # `run_in_transaction = false` marker on the `CREATE INDEX CONCURRENTLY` migrations and so
+    # silently stopped part-way through the schema.
+    image: debian:trixie-slim
+    # -- Installer used to place diesel_cli in the migration Job. Pin a release tag instead of
+    # `latest` if you need the CLI version to be reproducible.
+    dieselInstaller: https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.sh
+# -- Istio configuration
+# @section -- Istio
+istio:
+  # -- Enable Istio resources
+  enabled: false
+  # -- VirtualService configuration
+  virtualService:
+    # -- Create VirtualService
+    create: true
+    # -- Hosts for the VirtualService
+    hosts: []
+    # -- Gateways for the VirtualService
+    gateways: []
+    # -- HTTP routing rules (ordered list)
+    # Note: Rules are processed in the order they appear in this list.
+    # Ensure specific routes (like /api/) come before catch-all routes (like /).
+    http:
+      - name: &istio_route "primary"
+        match: []
+        weight: 100
+        timeout: 50s
+        retries: {}
+        # Example:
+        # hosts:
+        #   - hyperswitch.example.com
+        # gateways:
+        #   - istio-system/gateway
+        # http:
+        #   - name: "api-routes"
+        #     match:
+        #       - uri:
+        #           prefix: /api/
+        #     rewrite:
+        #       uri: /
+        #     weight: 100
+        #     timeout: 30s
+        #     retries:
+        #       attempts: 3
+        #       perTryTimeout: 10s
+        #   - name: "health-routes"
+        #     match:
+        #       - uri:
+        #           exact: /health
+        #     weight: 100
+        #     timeout: 10s
+        #     retries: {}
+  # -- DestinationRule configuration
+  destinationRule:
+    # -- Traffic policy configuration for router - rendered directly as YAML
+    trafficPolicy: {}
+    # Example:
+    # trafficPolicy:
+    #   loadBalancer:
+    #     simple: LEAST_CONN
+    #   connectionPool:
+    #     tcp:
+    #       maxConnections: 100
+    #       connectTimeout: 30s
+    #     http:
+    #       http1MaxPendingRequests: 64
+    #       http2MaxRequests: 1000
+    #   outlierDetection:
+    #     consecutiveGatewayErrors: 5
+    #     interval: 30s
+# Argo Rollouts Configuration (Phase 1)
+# @section -- Argo Rollouts
+argoRollouts:
+  # -- Enable Argo Rollouts for canary deployments (uses Rollout resource instead of Deployment)
+  # When disabled, standard Kubernetes Deployment is used
+  enabled: false
+  # Basic canary deployment configuration
+  canary:
+    # -- Canary deployment steps with traffic percentage and pause duration
+    steps:
+      - setCanaryScale:
+          replicas: 2
+      - setWeight: 0
+      - pause: {}
+      - setWeight: 50
+      - pause:
+          duration: 1m
+      - setWeight: 75
+      - pause:
+          duration: 1m
+      - setWeight: 100
+    # -- Optional Canary Configuration Settings
+    # antiAffinity: object
+    # canaryService: string
+    # stableService: string
+    # maxSurge: stringOrInt
+    # maxUnavailable: stringOrInt
+    # trafficRouting: object
+
+    # Canary metric analysis — queries the router's OpenMetrics series via
+    # VictoriaMetrics PromQL to gate canary promotion on 4xx/5xx latency.
+    analysis:
+      # -- Render the AnalysisTemplate
+      enabled: false
+      # -- dryRun all metrics when false; hard-abort when true
+      enforce: false
+      # -- Canary step index to start analysis at (used in Rollout spec, not here)
+      startingStep: 2
+      # -- Prometheus-compatible read API (vmselect serves /select/<tenant>/prometheus)
+      interval: "30s"
+      # -- Per-query timeout (s)
+      timeout: 30
+      args:
+        - name: canary-hash
+          valueFrom:
+            podTemplateHashValue: Latest
+        - name: stable-hash
+          valueFrom:
+            podTemplateHashValue: Stable
+      # -- Metrics list; shared interval/address/timeout auto-injected via mergeOverwrite.
+      # Override per-metric (e.g. interval: 60s). Add/remove entries to customize.
+      metrics:
+        - name: canary-min-traffic
+          interval: 30s
+          count: 20
+          successCondition: len(result) > 0 && result[0] >= 100
+          inconclusiveLimit: 20
+          failureLimit: 20
+          provider:
+            prometheus:
+              query: |
+                sum(increase(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+        - name: http-5xx-global
+          failureCondition: len(result) > 0 && result[0] > 1.0
+          failureLimit: 1
+          provider:
+            prometheus:
+              query: |
+                (100 * sum(rate(REQUEST_TIME_count{status_code=~"5.."}[5m]))
+                    / clamp_min(sum(rate(REQUEST_TIME_count[5m])), 0.001)) or vector(0)
+        - name: canary-5xx-pct-delta
+          interval: 60s
+          count: 10
+          failureCondition: len(result) > 0 && result[0] > 1.0
+          failureLimit: 3
+          inconclusiveLimit: 5
+          provider:
+            prometheus:
+              query: |
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"5..", pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                -
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"5..", pod=~".*-{{args.stable-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+        - name: canary-p90-ratio
+          interval: 60s
+          count: 10
+          failureCondition: len(result) > 0 && result[0] > 1.5
+          failureLimit: 3
+          inconclusiveLimit: 5
+          provider:
+            prometheus:
+              query: |
+                histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{pod=~".*-{{args.canary-hash}}-.*"}[5m])))
+                /
+                clamp_min(
+                  histogram_quantile(0.90, sum by (le)(rate(REQUEST_TIME_bucket{pod=~".*-{{args.stable-hash}}-.*"}[5m]))),
+                  0.001
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+        - name: canary-4xx-pct-delta
+          interval: 60s
+          count: 10
+          failureCondition: len(result) > 0 && result[0] > 5.0
+          failureLimit: 3
+          inconclusiveLimit: 5
+          provider:
+            prometheus:
+              query: |
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"4..", pod=~".*-{{args.canary-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                -
+                (
+                  (100 * sum(rate(REQUEST_TIME_count{status_code=~"4..", pod=~".*-{{args.stable-hash}}-.*"}[5m]))
+                      / clamp_min(sum(rate(REQUEST_TIME_count{pod=~".*-{{args.stable-hash}}-.*"}[5m])), 0.001)) or vector(0)
+                )
+                and on() (sum(rate(REQUEST_TIME_count{pod=~".*-{{args.canary-hash}}-.*"}[5m])) > 0.5)
+    # Traffic routing via Istio (requires istio.enabled: true)
+    trafficRouting:
+      # -- Enable Istio traffic management for canary deployments
+      istio:
+        enabled: true
+        # -- VirtualService route name to manage canary routing
+        virtualService:
+          routeNames:
+            - *istio_route
+        # -- DestinationRule subset names
+        destinationRule:
+          canarySubsetName: "canary"
+          stableSubsetName: "stable"
+      # Header-based routing for canary testing
+      # When enabled, requests with specific header route to canary, others to stable
+      headerRouting:
+        # -- Enable header-based canary routing
+        enabled: false
+        # -- Route name for managed header routing
+        # This route will be auto added to the VirtualService when headerRouting is enabled
+        routeName: "header-canary-route"
+        # -- Header matching rules
+        match:
+          - headerName: "X-Canary-Test"
+            headerValue:
+              exact: "true"
+              # Example: curl -H "X-Canary-Test: true" http://hyperswitch.local/api/health
+  # -- Revision history limit for rollouts
+  revisionHistoryLimit: 3
+loadBalancer:
+  targetSecurityGroup: "loadBalancer-sg"
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+hyperswitch-card-vault:
+  enabled: true
+  initDB:
+    checkPGisUp:
+      imageRegistry: docker.io
+      image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+# @ignored
+hyperswitch-ucs:
+  enabled: false
+  fullnameOverride: "hyperswitch-ucs"
+  image:
+    imageRegistry: ghcr.io
+    repository: juspay/connector-service
+    pullPolicy: IfNotPresent
+    tag: "main-b1487cb"
+  imagePullSecrets: []
+  nameOverride: ""
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    grpc:
+      port: 8000
+      targetPort: 8000
+    metrics:
+      port: 8080
+      targetPort: 8080
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: hyperswitch-ucs.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage:
+      80
+      # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Configuration via ConfigMap
+  config:
+    log:
+      console:
+        enabled: true
+        level: "DEBUG"
+        log_format: "json"
+    server:
+      host: "0.0.0.0"
+      port: 8000
+      type: "grpc"
+    metrics:
+      host: "0.0.0.0"
+      port: 8080
+    proxy:
+      https_url: ""
+      http_url: ""
+      idle_pool_connection_timeout: 90
+      bypass_proxy_urls: ["localhost", "local"]
+# Superposition fallback seed.
+#
+# The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
+# and only falls back to this file when that call fails, so the fallback is what keeps the release
+# bootable while Superposition is starting, empty, or not deployed at all.
+#
+# Two ways to supply the file, chosen with `source`:
+#
+#   source: fetch      (default) an init container downloads
+#                      config/superposition_seed.toml from the hyperswitch repo at
+#                      `services.router.version`, so the file always matches the running router
+#                      and there is no manual step. Needs egress to raw.githubusercontent.com
+#                      from the pod - the same assumption `initDB` already makes.
+#   source: configMap  mount a ConfigMap you created yourself, for clusters without that egress:
+#
+#                        curl -sfLO https://raw.githubusercontent.com/juspay/hyperswitch/<version>/config/superposition_seed.toml
+#                        kubectl create configmap superposition-seed -n <namespace> \
+#                          --from-file=superposition_seed.toml=superposition_seed.toml
+#
+#                      (use `kubectl create`, not `kubectl apply` - the file is ~450 kB and the
+#                      last-applied annotation `apply` writes would exceed the annotation limit)
+#
+# The file is mounted into every workload that runs the router binary (router, consumer, producer,
+# and the olap / paymentMethodModular services), and the chart points
+# `ROUTER__SUPERPOSITION__BACKUP_FILE_PATH` at it.
+superpositionFallback:
+  # -- Mount a Superposition seed file as the fallback config source
+  enabled: false
+  # -- Where the seed file comes from: `fetch` (init container) or `configMap` (bring your own)
+  source: fetch
+  # -- Settings for `source: fetch`
+  fetch:
+    # -- Registry for the image that performs the download
+    imageRegistry: docker.io
+    # -- Image that performs the download; needs `curl` and `sh`
+    image: curlimages/curl:8.11.1
+    # -- Base URL of the hyperswitch source repository
+    baseUrl: https://raw.githubusercontent.com/juspay/hyperswitch
+    # -- Path of the seed file inside that repository
+    path: config/superposition_seed.toml
+    # -- Ref to download from. Empty means `services.router.version`, so the seed matches the router.
+    version: ""
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 25m
+      limits:
+        memory: 128Mi
+        cpu: 200m
+  # -- Name of the ConfigMap holding the seed file, for `source: configMap`. Create it yourself;
+  # it is not part of the chart.
+  configMap: superposition-seed
+  # -- Key inside that ConfigMap
+  key: superposition_seed.toml
+  # -- Path the file is mounted at, and the value of ROUTER__SUPERPOSITION__BACKUP_FILE_PATH.
+  # Under `source: fetch` the parent directory is the mount point, so keep it in a directory of
+  # its own rather than directly in /local/config.
+  mountPath: /local/config/superposition/superposition_seed.toml
+# Disable internal secret creation (use when managing secrets externally)
+disableInternalSecrets: false
+# External Secrets Operator Configuration (recommend setting disableInternalSecrets to true)
+# NOTE: Ensure that the External Secrets Operator is installed in your cluster before enabling this section.
+externalSecretsOperator:
+  # -- Enable External Secrets Operator resources
+  enabled: false
+  # ServiceAccount configuration for IRSA
+  serviceAccount:
+    # -- Create service account
+    create: true
+    # -- Annotations for the service account (e.g., IRSA role)
+    annotations: {}
+    # -- Extra labels for the service account
+    extraLabels: {}
+    # -- Name of the service account (default: hyperswitch-eso-sa)
+    name: ""
+  # SecretStore configuration
+  secretStore:
+    # -- Name of the SecretStore
+    name: "hyperswitch-secret-store"
+    # -- Provider configuration (matches External Secrets Operator format)
+    # You can use any supported provider here see: https://external-secrets.io/latest/
+    provider:
+      aws:
+        service: SecretsManager
+        region: us-west-2
+        auth:
+          jwt:
+            serviceAccountRef:
+              name: hyperswitch-eso-sa
+              # gcpsm:
+              #   auth:
+              #     secretRef:
+              #       secretAccessKeySecretRef:
+              #         name: gcpsm-secret
+              #         key: secret-access-credentials
+              #   projectID: myproject
+  # ExternalSecret configuration
+  externalSecrets:
+    # -- List of external secrets to create
+    # You can define multiple secrets here
+    secrets:
+      - name: "hyperswitch-secrets"
+        # -- Target secret name in Kubernetes
+        targetName: "hyperswitch-secrets"
+        # -- Refresh interval
+        refreshInterval: "1h"
+        # -- Creation policy
+        creationPolicy: "Owner"
+        # -- Extract configuration (use dataFrom.extract for full secret)
+        dataFrom:
+          - extract:
+              key: "HyperswitchKmsDataSecret"
+              # -- Individual data mappings (use data for specific keys)
+              # data:
+              #   - secretKey: "admin_api_key"
+              #     remoteRef:
+              #       key: "hyperswitch/admin"
+              #       property: "api_key"
+    # - name: "database-secrets"
+    #   targetName: "database-secrets"
+    #   dataFrom:
+    #     - extract:
+    #         key: "HyperswitchDatabaseSecret"
+# https://artifacthub.io/packages/helm/bitnami/kafka
+kafka:
+  image:
+    repository: bitnamilegacy/kafka
+  # -- Enable Bitnami Kafka sub-chart helm installation
+  # @section -- Dependencies configuration
+  enabled: true
+  # -- Name of the Kafka sub-chart
+  # @section -- Dependencies configuration
+  fullnameOverride: "kafka0"
+  controller:
+    # -- Number of replicas to be used for controller
+    # @section -- Dependencies configuration
+    replicaCount: 1
+    resourcesPreset: "none"
+  broker:
+    # -- Number of replicas to be used for broker
+    # @section -- Dependencies configuration
+    replicaCount: 1
+    resourcesPreset: "none"
+  # broker:
+  # replicaCount: 1
+  zookeeper:
+    image:
+      repository: bitnamilegacy/zookeeper
+    # -- Number of replicas to be used for zookeeper
+    # @section -- Dependencies configuration
+    replicaCount: 1
+  service:
+    ports:
+      # -- Client port for Kafka
+      # @section -- Dependencies configuration
+      client: 29092
+  listeners:
+    client:
+      # -- Listener client protocol
+      # @section -- Dependencies configuration
+      protocol: "PLAINTEXT"
+    interbroker:
+      # -- Listener interbroker protocol
+      # @section -- Dependencies configuration
+      protocol: "PLAINTEXT"
+    external:
+      # -- Listener external protocol
+      # @section -- Dependencies configuration
+      protocol: "PLAINTEXT"
+    controller:
+      # -- Listener controller protocol
+      # @section -- Dependencies configuration
+      protocol: "PLAINTEXT"
+  provisioning:
+    # -- kafka provisioning replicationFactor
+    # @section -- Dependencies configuration
+    replicationFactor: 1
+  # -- (tpl/string) -- Kafka extraConfig
+  # @notationType -- tpl
+  # @section -- Dependencies configuration
+  extraConfig: |
+    offsets.topic.replication.factor=1
+    transaction.state.log.replication.factor=1
+initCH:
+  checkCHisUp:
+    imageRegistry: docker.io
+    image: "bitnamilegacy/clickhouse:24.3"
+    maxAttempt: 30
+# https://github.com/bitnami/charts/blob/main/bitnami/clickhouse/values.yaml
+clickhouse:
+  host: "clickhouse"
+  # -- Enable Bitnami Clickhouse sub-chart helm installation
+  # @section -- Dependencies configuration
+  enabled: true
+  resourcesPreset: "none"
+  # -- Name of the Clickhouse sub-chart
+  # @section -- Dependencies configuration
+  fullnameOverride: "clickhouse"
+  auth:
+    # -- Clickhouse username
+    # @section -- Dependencies configuration
+    username: "default"
+    # -- Clickhouse password
+    # @section -- Dependencies configuration
+    password: "jhdvfvsnbdj"
+  image:
+    repository: bitnamilegacy/clickhouse
+    tag: 24.3
+  config:
+    # -- Clickhouse timezone
+    # @section -- Dependencies configuration
+    TZ: Asia/Kolkata
+  # -- Clickhouse shard count
+  # @section -- Dependencies configuration
+  shards: 1
+  # -- Clickhouse replica count
+  # @section -- Dependencies configuration
+  replicaCount: 1
+  zookeeper:
+    image:
+      repository: bitnamilegacy/zookeeper
+    # -- Zookerper replica count
+    # @section -- Dependencies configuration
+    replicaCount: 1
+  # -- Clickhouse log level
+  # @section -- Dependencies configuration
+  logLevel: "error"
+  # @ignored
+  initContainers:
+  # @ignored
+  extraVolumeMounts:
+    - name: initdb-scripts
+      mountPath: /docker-entrypoint-initdb.d
+  # @ignored
+  extraVolumes:
+    - name: initdb-scripts
+      emptyDir: {}
+# https://artifacthub.io/packages/helm/codecentric/mailhog
+mailhog:
+  # -- Enable Bitnami Mailhog sub-chart helm installation for email testing
+  # @section -- Dependencies configuration
+  enabled: true
+  # -- Name of the Mailhog sub-chart
+  # @section -- Dependencies configuration
+  fullnameOverride: "mailhog"
+# https://artifacthub.io/packages/helm/vector/vector
+vector:
+  # -- Enable Bitnami Vector sub-chart helm installation
+  # @section -- Dependencies configuration
+  enabled: true
+  env:
+    # -- Vector environment variables
+    # @section -- Dependencies configuration
+    - name: KAFKA_HOST
+      value: "kafka0:29092"
+  # @ignored
+  customConfig:
+    acknowledgements:
+      enabled: true
+    # enrichment_tables:
+    #   sdk_map:
+    #     type: file
+    #     file:
+    #       path: /etc/vector/config/sdk_map.csv
+    #       encoding:
+    #         type: csv
+    #     schema:
+    #       publishable_key: string
+    #       merchant_id: string
+
+    api:
+      enabled: true
+      address: 0.0.0.0:8686
+    sources:
+      kafka_tx_events:
+        type: kafka
+        bootstrap_servers: kafka0:29092
+        group_id: sessionizer
+        topics:
+          - hyperswitch-payment-attempt-events
+          - hyperswitch-payment-intent-events
+          - hyperswitch-refund-events
+          - hyperswitch-dispute-events
+        decoding:
+          codec: json
+      sessionized_kafka_tx_events:
+        type: kafka
+        bootstrap_servers: kafka0:29092
+        group_id: sessionizer
+        topics:
+          - ^sessionizer
+        decoding:
+          codec: json
+      app_logs:
+        type: docker_logs
+        include_labels:
+          - "logs=promtail"
+      vector_metrics:
+        type: internal_metrics
+      node_metrics:
+        type: host_metrics
+      sdk_source:
+        type: http_server
+        address: 0.0.0.0:3103
+        encoding: json
+    transforms:
+      events_create_ts:
+        inputs:
+          - kafka_tx_events
+        source: |-
+          .timestamp = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
+          ."@timestamp" = from_unix_timestamp(.created_at, unit: "seconds") ?? now()
+        type: remap
+      plus_1_events:
+        type: filter
+        inputs:
+          - events_create_ts
+          - sessionized_events_create_ts
+        condition: ".sign_flag == 1"
+      hs_server_logs:
+        type: filter
+        inputs:
+          - app_logs
+        condition: '.labels."com.docker.compose.service" == "hyperswitch-server"'
+      parsed_hs_server_logs:
+        type: remap
+        inputs:
+          - app_logs
+        source: |-
+          .message = parse_json!(.message)
+      sessionized_events_create_ts:
+        type: remap
+        inputs:
+          - sessionized_kafka_tx_events
+        source: |-
+          .timestamp = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
+          ."@timestamp" = from_unix_timestamp(.created_at, unit: "milliseconds") ?? now()
+      sdk_transformed:
+        type: throttle
+        inputs:
+          - sdk_source
+        key_field: "{{ .payment_id }}{{ .merchant_id }}"
+        threshold: 1000
+        window_secs: 60
+      amend_sdk_logs:
+        type: remap
+        inputs:
+          - sdk_transformed
+        source: |
+          .before_transform = now()
+
+          merchant_id = .merchant_id
+          # row = get_enrichment_table_record!("sdk_map", { "publishable_key" : merchant_id }, case_sensitive: true)
+          # .merchant_id = row.merchant_id
+
+          .after_transform = now()
+    sinks:
+      opensearch_events_1:
+        type: elasticsearch
+        inputs:
+          - plus_1_events
+        endpoints:
+          - "https://opensearch:9200"
+        id_key: message_key
+        api_version: v7
+        tls:
+          verify_certificate: false
+          verify_hostname: false
+        auth:
+          strategy: basic
+          user: admin
+          password: 0penS3arc#
+        encoding:
+          except_fields:
+            - message_key
+            - offset
+            - partition
+            - topic
+            - clickhouse_database
+            - last_synced
+            - sign_flag
+        bulk:
+          index: "vector-{{ .topic }}"
+      opensearch_events_2:
+        type: elasticsearch
+        inputs:
+          - plus_1_events
+        endpoints:
+          - "https://opensearch:9200"
+        id_key: message_key
+        api_version: v7
+        tls:
+          verify_certificate: false
+          verify_hostname: false
+        auth:
+          strategy: basic
+          user: admin
+          password: 0penS3arc#
+        encoding:
+          except_fields:
+            - message_key
+            - offset
+            - partition
+            - topic
+            - clickhouse_database
+            - last_synced
+            - sign_flag
+        bulk:
+          # Add a date suffixed index for better grouping
+          index: "vector-{{ .topic }}-%Y-%m-%d"
+      opensearch_events_3:
+        type: elasticsearch
+        inputs:
+          - plus_1_events
+        endpoints:
+          - "https://opensearch:9200"
+        id_key: message_key
+        api_version: v7
+        tls:
+          verify_certificate: false
+          verify_hostname: false
+        auth:
+          strategy: basic
+          user: admin
+          password: 0penS3arc#
+        encoding:
+          except_fields:
+            - message_key
+            - offset
+            - partition
+            - topic
+            - clickhouse_database
+            - last_synced
+            - sign_flag
+        bulk:
+          index: "{{ .topic }}"
+      opensearch_logs:
+        type: elasticsearch
+        inputs:
+          - parsed_hs_server_logs
+        endpoints:
+          - "https://opensearch:9200"
+        api_version: v7
+        tls:
+          verify_certificate: false
+          verify_hostname: false
+        auth:
+          strategy: basic
+          user: admin
+          password: 0penS3arc#
+        bulk:
+          # Add a date suffixed index for better grouping
+          # index: "vector-{{ .topic }}-%Y-%m-%d"
+          index: "logs-{{ .container_name }}-%Y-%m-%d"
+      log_events:
+        type: loki
+        inputs:
+          - kafka_tx_events
+          - sessionized_kafka_tx_events
+        endpoint: http://loki:3100
+        labels:
+          source: vector
+          topic: "{{ .topic }}"
+          job: kafka
+        encoding:
+          codec: json
+      log_app_loki:
+        type: loki
+        inputs:
+          - parsed_hs_server_logs
+        endpoint: http://loki:3100
+        labels:
+          source: vector
+          job: app_logs
+          container: "{{ .container_name }}"
+          stream: "{{ .stream }}"
+        encoding:
+          codec: json
+      metrics:
+        type: prometheus_exporter
+        inputs:
+          - vector_metrics
+          - node_metrics
+      sdk_sink:
+        type: kafka
+        encoding:
+          codec: json
+          except_fields:
+            - "path"
+            - "source_type"
+        inputs:
+          - "amend_sdk_logs"
+        bootstrap_servers: kafka0:29092
+        topic: hyper-sdk-logs
+        key_field: ".merchant_id"
+# EFS PersistentVolumeClaim configuration for superposition fallback
+superposition_fallback_efs:
+  # -- Enable creation of an EFS-backed PVC and volumeMounts in all pods
+  enabled: false
+  # -- Name of the PersistentVolumeClaim to create and reference
+  pvcName: "superposition-config-backup"
+  # -- StorageClass to use for the PVC (must have an EFS CSI provisioner)
+  storageClassName: "efs-sc"
+  # -- Storage size for the PVC
+  storage: "1Gi"
+  # -- Mount path inside the containers for the EFS volume
+  mountPath: "/mnt/data"
+# CronJob configuration to sync superposition config into the EFS volume
+superposition_fallback_cronjob:
+  # -- Enable the CronJob that syncs superposition config to EFS
+  enabled: false
+  # -- Name of the CronJob resource
+  name: "superposition-config-backup-cronjob"
+  # -- Cron schedule (minimum Kubernetes CronJob interval is 1 minute)
+  schedule: "* * * * *"
+  # -- Container image for the backup job
+  image: ""
+  # -- Image pull policy
+  imagePullPolicy: IfNotPresent
+  # -- Restart policy for the job pod
+  restartPolicy: OnFailure
+  # -- Number of successful job runs to retain in history
+  successfulJobsHistoryLimit: 3
+  # -- Number of failed job runs to retain in history
+  failedJobsHistoryLimit: 1
+  # -- Number of backup files to retain in EFS
+  retentionCount: "10"
+  # -- AWS KMS configuration used by the config backup job
+  aws_kms:
+    # -- AWS region containing the KMS key
+    region: ""
+    # -- KMS key ID or ARN used for encryption and decryption
+    key_id: ""
+  # -- Superposition service connection details
+  superposition:
+    # -- Superposition API endpoint URL
+    endpoint: "http://localhost:8081"
+    # -- Name of the Kubernetes Secret containing the Superposition API token.
+    #   tokenSecretName: "hyperswitch-secrets"
+    #   tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"
+    tokenSecretName: "hyperswitch-secrets"
+    # -- Key within the secret that holds the token value
+    tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"
+    # -- Superposition organisation ID (must match superposition.org_id)
+    orgId: ""
+    # -- Superposition workspace ID (must match superposition.workspace_id)
+    workspaceId: ""
+  # -- Resource requests and limits for the cronjob container
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "25m"
+    limits:
+      memory: "64Mi"
+      cpu: "100m"
+# Wiring between this release's PostgreSQL and the bundled `superposition` subchart.
+#
+# The subchart reads its database host from a plain value, which cannot reference the release name,
+# and it ships without any migration step - so on its own it crash-loops with
+# `Failed to find a type oid for superposition.org_status`. This chart closes both gaps: an alias
+# Service that gives the static host a release-independent name, and a post-install Job that
+# applies the Superposition global schema (files/superposition.sql, matching the pinned subchart
+# version). Turn it off when Superposition points at a database you manage yourself.
+superpositionDB:
+  # -- Create the alias Service and, if enabled below, run the schema Job.
+  #
+  # Off by default: the alias Service has a fixed, release-independent name (that is the point of
+  # it), so two releases of this chart in one namespace would collide on it. Turn it on when a
+  # single release owns the namespace - `hyperswitch-stack` does exactly that. When you do, set
+  # `superposition.configs.db_host` to `<aliasService>:5432` and `db_name` / `db_user` /
+  # `secrets.db_password` to this release's PostgreSQL credentials.
+  enable: false
+  # -- Name of the ExternalName Service. Must match the host in `superposition.configs.db_host`.
+  # Change both together if two releases share a namespace.
+  aliasService: superposition-db
+  migration:
+    # -- Fetch the Superposition global schema and apply it to `superposition.configs.db_name`
+    enable: true
+    # -- Image that runs `psql`. Needs the PostgreSQL client only; the download happens in a
+    # separate init container because this image ships neither curl nor wget.
+    imageRegistry: docker.io
+    image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+    # -- Superposition ref the schema is fetched from. Keep this in step with the `superposition`
+    # dependency in Chart.yaml - the schema and the binary are released together. This mirrors
+    # `initDB`, which pulls the hyperswitch migrations at `services.router.version`.
+    version: v0.112.0
+    # -- Base URL of the superposition source repository
+    baseUrl: https://raw.githubusercontent.com/juspay/superposition
+    # -- Path of the global schema inside that repository
+    path: superposition.sql
+    # -- Image used to download the schema; needs `curl` and `sh`
+    fetch:
+      imageRegistry: docker.io
+      image: curlimages/curl:8.11.1
+# @ignored
+superposition:
+  # Off by default. The subchart cannot serve configuration until the Superposition global schema
+  # has been applied to its database - upstream expects an operator to run `superposition.sql` out
+  # of band, and its own Helm README does not mention the step. A schema-less Superposition still
+  # answers /health with 200, so it reports Healthy to Kubernetes while every API call fails;
+  # shipping that on by default is a trap rather than a feature.
+  #
+  # `hyperswitch-stack` turns this on together with `superpositionDB`, which applies the schema.
+  # To do the same in a standalone release of this chart, see the `superpositionDB` block above.
+  enabled: false
+  replicaCount: 1
+  image:
+    registry: ghcr.io/juspay
+    repository: superposition
+    pullPolicy: IfNotPresent
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 8080
+  configs:
+    # -- Postgres URL for superposition's own schema. Leave empty: Superposition builds its own
+    # connection string from db_host / db_name / db_user / DB_PASSWORD below.
+    database_url: ""
+    # -- Database host. Helm does not template values, so this cannot carry the release name.
+    # Leave it at the subchart default unless you enable `superpositionDB` above, in which case
+    # set it to `<superpositionDB.aliasService>:5432`.
+    # db_host: "superposition-db:5432"
+    # -- Database Superposition keeps its `superposition` schema in. The schema is namespaced, so
+    # it can live in the same database the router uses.
+    # db_name: "hyperswitch"
+    # -- Database user. Must match the user that owns the database above.
+    # db_user: "hyperswitch"
+    port: 8080
+    rust_log: debug
+    app_env: DEV
+    # -- Required; binary panics if absent or empty.
+    service_prefix: "/"
+    auth_provider: DISABLED
+    # -- Required; binary panics if absent.
+    auth_z_provider: DISABLED
+  secrets:
+    # -- Password for `db_user`. Set it together with `db_host` above when `superpositionDB` is on.
+    db_password: ""
+    # -- Must match `server.configs.superposition.token`.
+    superposition_token: ""
+    oidc_client_secret: ""
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  resources: {}
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+    successThreshold: 1
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts: []
+    tls: []
+  tolerations: []
+  nodeSelector: {}
+  affinity: {}
+  istio:
+    enabled: false
+    virtualService:
+      enabled: false
+    destinationRule:
+      enabled: false
+# -- Name of the Helm release that owns this environment's shared infrastructure.
+# Set it when this release is a *second* release of the chart running a single service (OLAP or
+# payment method modular) against the datastores of a main release. The host and secret-name values
+# are templated, so an overlay can refer to `{{ .Values.baseRelease }}-postgresql`,
+# `{{ .Values.baseRelease }}-redis-master`, `{{ .Values.baseRelease }}-hyperswitch-router-role` and
+# have them follow the base release. Ignored when left empty.
+# @section -- Router services
+baseRelease: ""
+# Extra routers that run inside this release.
+#
+# Each one uses the same image and the same release-wide ConfigMap, Secret and ServiceAccount as
+# the main router, and differs only in configuration - `configs` here is merged over
+# `server.configs` and rendered as inline env on that service's pods, which take precedence over
+# the shared ConfigMap. `_secret` values are not supported in these deltas (they would be
+# plaintext in the pod spec); use `_secretRef`.
+#
+# Set `services.router.enabled: false` to run a release that serves only one of these.
+#
+# OLAP - read and analytics traffic, served under /olap.
+# @section -- Router services
+olap:
+  # -- Enable the OLAP router
+  # @section -- Router services
+  enabled: false
+  # -- Override the generated name `<release>-hyperswitch-olap-server`
+  # @section -- Router services
+  fullnameOverride: ""
+  # -- Image tag, registry and repository. Empty values fall back to `services.router.*`
+  # @section -- Router services
+  version: ""
+  imageRegistry: ""
+  image: ""
+  imagePullPolicy: ""
+  # -- Number of replicas; ignored when this service's autoscaling is enabled
+  # @section -- Router services
+  replicas: 1
+  # -- ServiceAccount to run as. Empty reuses the release's router ServiceAccount, so this
+  # service inherits the same cloud identity instead of needing one of its own.
+  # @section -- Router services
+  serviceAccountName: ""
+  database:
+    # -- Point the master (write) database handle at the read replica. A write attempted against
+    # this service then fails at the replica instead of reaching the writer. When the release has
+    # no read replica the primary is used instead, so the service still runs - `helm install`
+    # prints a warning in that case.
+    # @section -- Router services
+    useReplicaForMaster: true
+    # -- Explicit host overrides. Templated, e.g. `{{ .Release.Name }}-postgresql`
+    # @section -- Router services
+    masterHost: ""
+    replicaHost: ""
+  # -- Config overrides merged over `server.configs`, rendered as inline env
+  # @section -- Router services
+  configs:
+    master_database:
+      # This service only reads, so it does not need the write pool the main router sizes for.
+      pool_size: "5"
+  # -- Workload settings; empty values fall back to `server.*` and then `global.*`
+  # @section -- Router services
+  resources: {}
+  env: []
+  tolerations: []
+  affinity: {}
+  nodeSelector: {}
+  annotations: {}
+  podAnnotations: {}
+  labels: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  strategy: {}
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraContainers: []
+  progressDeadlineSeconds: ""
+  terminationGracePeriodSeconds: ""
+  autoscaling:
+    # -- Enable a HorizontalPodAutoscaler for this service
+    # @section -- Router services
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    # -- Publish this service through an Ingress
+    # @section -- Router services
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: ""
+    path: /olap
+    pathType: Prefix
+    tls: []
+  istio:
+    # -- Render a VirtualService and DestinationRule for this service. Set `hosts` and `gateways`
+    # to the same values as `istio.virtualService` above so Istio merges the two into one route
+    # table for the host. Istio does not guarantee rule ordering across VirtualServices on the
+    # same host, so keep the main router's catch-all from shadowing the paths claimed here.
+    # @section -- Router services
+    enabled: false
+    virtualService:
+      create: true
+      hosts: []
+      gateways: []
+      http:
+        # Everything under /olap/ reaches this service with the prefix stripped, so the router
+        # still sees its usual paths (/olap/health -> /health).
+        - name: primary
+          match:
+            - uri:
+                prefix: /olap/
+          rewrite:
+            uri: /
+          weight: 100
+          timeout: 50s
+          retries: {}
+    destinationRule:
+      trafficPolicy: {}
+  # -- Argo Rollouts settings for this service, merged over the release-level `argoRollouts`
+  # block. Lists (canary steps, analysis metrics) replace rather than extend the inherited value.
+  # Omit to inherit the release's rollout behaviour as-is.
+  # @section -- Router services
+  argoRollouts: {}
+# Payment method modular - the payment method APIs, served from their own router.
+# @section -- Router services
+paymentMethodModular:
+  # -- Enable the payment method modular router
+  # @section -- Router services
+  enabled: false
+  # -- Override the generated name `<release>-hyperswitch-payment-method-modular-server`. Worth
+  # setting for release names longer than 21 characters, where the generated name is truncated at
+  # Kubernetes' 63 character limit.
+  # @section -- Router services
+  fullnameOverride: ""
+  version: ""
+  imageRegistry: ""
+  image: ""
+  imagePullPolicy: ""
+  replicas: 1
+  serviceAccountName: ""
+  database:
+    # This service reads and writes, so it uses the release's normal database endpoints.
+    useReplicaForMaster: false
+    masterHost: ""
+    replicaHost: ""
+  # -- Config overrides merged over `server.configs`, rendered as inline env
+  # @section -- Router services
+  configs:
+    micro_services:
+      payment_methods_prefix: v1
+    trace_header:
+      header_name: x-request-id
+      id_reuse_strategy: use_incoming
+    # Authentication between the main router and this service. The secret referenced here must
+    # already exist in the namespace, and the main router must carry the same key.
+    # internal_merchant_id_profile_id_auth:
+    #   enabled: true
+    #   internal_api_key:
+    #     _secretRef:
+    #       name: hyperswitch-secrets
+    #       key: ROUTER__INTERNAL_MERCHANT_ID_PROFILE_ID_AUTH__INTERNAL_API_KEY
+  resources: {}
+  env: []
+  tolerations: []
+  affinity: {}
+  nodeSelector: {}
+  annotations: {}
+  podAnnotations: {}
+  labels: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  strategy: {}
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraContainers: []
+  progressDeadlineSeconds: ""
+  terminationGracePeriodSeconds: ""
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hostname: ""
+    path: /v1/payment-methods
+    pathType: Prefix
+    tls: []
+  istio:
+    enabled: false
+    virtualService:
+      create: true
+      hosts: []
+      gateways: []
+      http:
+        # The payment method APIs are served by this service; everything else on the host stays
+        # with the main router. Paths are passed through unchanged - no rewrite.
+        - name: primary
+          match:
+            - uri:
+                prefix: /v1/payment-methods
+            - uri:
+                prefix: /v1/payment-method-sessions
+            - uri:
+                prefix: /v1/customers
+            - uri:
+                prefix: /v1/proxy
+          weight: 100
+          timeout: 50s
+          retries: {}
+    destinationRule:
+      trafficPolicy: {}
+  argoRollouts: {}

@@ -2,7 +2,6 @@
 *.tgz
 charts/*/charts/
 charts/*/Chart.lock
-charts/incubator/*/charts/
 *.lock
 requirements.lock
 index.yaml
@@ -112,3 +111,4 @@ kubeconfig
 
 # OCI deployment — generated file contains personal registry/namespace values
 oci/values-ocir.yaml
+.claude/

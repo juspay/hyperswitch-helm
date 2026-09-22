@@ -1,0 +1,38 @@
+{{- if .Values.targetGroupBinding.enabled }}
+{{- range .Values.targetGroupBinding.bindings }}
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: {{ .name | default (printf "%s-%s" (include "hyperswitch-encryption-service.fullname" $) (.port | toString)) | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-encryption-service.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  serviceRef:
+    name: {{ include "hyperswitch-encryption-service.fullname" $ }}
+    port: {{ required "targetGroupBinding.bindings[].port is required" .port }}
+  targetGroupARN: {{ required "targetGroupBinding.bindings[].targetGroupARN is required" .targetGroupARN }}
+  {{- with .targetType }}
+  targetType: {{ . }}
+  {{- end }}
+  {{- with .ipAddressType }}
+  ipAddressType: {{ . }}
+  {{- end }}
+  {{- with .vpcID }}
+  vpcID: {{ . }}
+  {{- end }}
+  {{- with .nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .networking }}
+  networking:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

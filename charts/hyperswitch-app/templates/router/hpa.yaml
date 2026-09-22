@@ -1,0 +1,4 @@
+{{- if and .Values.services.router.enabled .Values.autoscaling.enabled }}
+---
+{{ include "hyperswitch.router.hpa" (dict "root" . "key" "") }}
+{{- end }}

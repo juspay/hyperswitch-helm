@@ -1,0 +1,5 @@
+{{/* The main router. Rendered by the shared define in _router-shared.tpl, which also renders the
+     olap and paymentMethodModular services from the same spec. */}}
+{{- if .Values.services.router.enabled }}
+{{- include "hyperswitch.router.workload" (dict "root" . "key" "") }}
+{{- end }}

@@ -1,0 +1,29 @@
+{{/*
+Payment method modular - the payment method APIs, served from their own router.
+
+A second router in this release, sharing its database, Redis, ConfigMap, Secret and
+ServiceAccount. Its only differences are configuration: see `paymentMethodModular` in values.yaml, and
+templates/router/_router-shared.tpl for how a router service is rendered.
+*/}}
+{{- if .Values.paymentMethodModular.enabled }}
+{{- $ctx := dict "root" . "key" "paymentMethodModular" }}
+{{- include "hyperswitch.router.workload" $ctx }}
+---
+{{ include "hyperswitch.router.service" $ctx }}
+{{- if dig "autoscaling" "enabled" false .Values.paymentMethodModular }}
+---
+{{ include "hyperswitch.router.hpa" $ctx }}
+{{- end }}
+{{- if dig "ingress" "enabled" false .Values.paymentMethodModular }}
+---
+{{ include "hyperswitch.router.ingress" $ctx }}
+{{- end }}
+{{- if include "hyperswitch.router.analysisEnabled" $ctx }}
+---
+{{ include "hyperswitch.router.analysistemplate" $ctx }}
+{{- end }}
+{{- if dig "istio" "enabled" false .Values.paymentMethodModular }}
+---
+{{ include "hyperswitch.router.istio" $ctx }}
+{{- end }}
+{{- end }}

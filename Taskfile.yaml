@@ -13,8 +13,8 @@ tasks:
     #language=sh
     cmds:
       - >
-        STACK=charts/incubator/hyperswitch-stack &&
-        APP=charts/incubator/hyperswitch-app &&
+        STACK=charts/hyperswitch-stack &&
+        APP=charts/hyperswitch-app &&
         version=$(grep '^version:' $STACK/Chart.yaml | awk '{print $2}') &&
         echo "Packaging local hyperswitch-app chart (preserves local template changes)..." &&
         helm package $APP --destination $STACK/charts/ &&
@@ -35,7 +35,7 @@ tasks:
         -w /helm-docs
         jnorwood/helm-docs:latest
         --document-dependency-values=true
-        --chart-search-root=charts/incubator
+        --chart-search-root=charts
     aliases:
       - ur
 

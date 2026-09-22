@@ -1,0 +1,3 @@
+{{- if .Values.services.router.enabled }}
+{{- include "hyperswitch.router.service" (dict "root" . "key" "") }}
+{{- end }}

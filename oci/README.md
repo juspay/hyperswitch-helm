@@ -257,7 +257,7 @@ EOF
 ```bash
 kubectl create namespace hyperswitch --dry-run=client -o yaml | kubectl apply -f -
 
-helm install hyperswitch charts/incubator/hyperswitch-stack \
+helm install hyperswitch charts/hyperswitch-stack \
   --namespace hyperswitch \
   -f oci/values-ocir.yaml \
   --wait --timeout 15m
@@ -287,8 +287,8 @@ After updating the chart version or pulling new upstream changes:
 
 ```bash
 # 1. Update chart dependencies
-helm dependency update charts/incubator/hyperswitch-stack
-rm -rf charts/incubator/hyperswitch-stack/charts/hyperswitch-app/   # remove stale directory
+helm dependency update charts/hyperswitch-stack
+rm -rf charts/hyperswitch-stack/charts/hyperswitch-app/   # remove stale directory
 
 # 2. Repackage (picks up local template changes)
 task pihh
@@ -299,7 +299,7 @@ export OCIR_NAMESPACE=<namespace>
 ./oci/mirror-to-ocir.sh
 
 # 4. Upgrade
-helm upgrade hyperswitch charts/incubator/hyperswitch-stack \
+helm upgrade hyperswitch charts/hyperswitch-stack \
   --namespace hyperswitch \
   -f oci/values-ocir.yaml \
   --wait --timeout 15m
@@ -307,7 +307,7 @@ helm upgrade hyperswitch charts/incubator/hyperswitch-stack \
 
 > **Why remove the stale directory?**
 > `helm dependency update` downloads `hyperswitch-app-<version>.tgz` into
-> `charts/incubator/hyperswitch-stack/charts/`. If both a `hyperswitch-app/` directory
+> `charts/hyperswitch-stack/charts/`. If both a `hyperswitch-app/` directory
 > and a `.tgz` exist, Helm loads values from both, causing type conflicts that corrupt
 > the rendered YAML (e.g. `yaml: line 104: did not find expected '-' indicator`).
 
@@ -366,6 +366,6 @@ kubectl scale statefulset -n hyperswitch \
 kubectl delete pvc -n hyperswitch \
   $(kubectl get pvc -n hyperswitch | grep clickhouse | awk '{print $1}')
 
-helm upgrade hyperswitch charts/incubator/hyperswitch-stack \
+helm upgrade hyperswitch charts/hyperswitch-stack \
   --namespace hyperswitch -f oci/values-ocir.yaml --wait --timeout 15m
 ```

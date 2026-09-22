@@ -1,0 +1,118 @@
+{{- if .Values.multiAz.enabled }}
+
+*******************************************************************************
+NOTICE: multi-AZ scheduling is enabled for the router.
+
+- Worker nodes MUST be labelled with "{{ .Values.multiAz.topologyKey }}".
+- Router replicas (or autoscaling minReplicas) should be at least the number of
+  availability zones, otherwise pods may remain Pending because
+  "whenUnsatisfiable: {{ .Values.multiAz.whenUnsatisfiable }}" is set.
+{{- if eq .Values.multiAz.whenUnsatisfiable "DoNotSchedule" }}
+- whenUnsatisfiable is DoNotSchedule: during a real zone outage, replacement
+  replicas can stay Pending indefinitely rather than being placed on a
+  surviving zone, because the scheduler is forced to prefer the dead zone to
+  keep skew low. Set whenUnsatisfiable to ScheduleAnyway (the chart default)
+  if availability during a zone outage matters more than strict even spread.
+{{- else }}
+- whenUnsatisfiable is ScheduleAnyway: the scheduler still prefers an even
+  spread across zones, but will not block placement when the low-skew zone
+  has no capacity - replicas may pile onto surviving zones during a real
+  outage rather than staying Pending. Set whenUnsatisfiable to DoNotSchedule
+  instead if strict even distribution matters more than availability.
+{{- end }}
+- Consider using external managed PostgreSQL/Redis/Kafka/ClickHouse for full
+  data-plane high availability.
+*******************************************************************************
+
+{{- end }}
+1. Get the Application URL:
+   - If Ingress is not available, use port-forwarding:
+     ```shell
+     export ADDRESS_CREATED=$(kubectl get ingress -n {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+     if [ -z "$ADDRESS_CREATED" ]; then
+       echo "Using port-forwarding to access the services."
+
+       # Port-forwarding commands
+       kubectl port-forward service/{{ .Release.Name }}-hyperswitch-server 8080:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}-grafana 3000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/{{ .Release.Name }}-vector 3103:3103 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/mailhog 8025:8025 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
+
+       echo "======================================================"
+       echo " App server running on: http://localhost:8080      "
+       echo " Grafana running on http://localhost:3000 to view logs "
+       echo " Vector running on http://localhost:3103 to collect logs "
+       echo " Mailhog running on http://localhost:8025 to receive mails "
+       echo "\n Test Payment: https://docs.hyperswitch.io/hyperswitch-open-source/account-setup/test-a-payment"
+       echo "======================================================"
+
+       echo "\nTo close the exposed ports, run the following command:\n"
+       echo "lsof -i:8080,3000,3103,8025 -t | xargs kill"
+       echo "======================================================"
+     else
+       echo "Ingress available. Access the services using the following command:"
+       kubectl get ingress -n {{ .Release.Namespace }}
+     fi
+     ```
+========================================================
+
+{{- $extra := list }}
+{{- range $key := list "olap" "paymentMethodModular" }}
+{{- $svc := default dict (index $.Values $key) }}
+{{- if $svc.enabled }}
+{{- $extra = append $extra $key }}
+{{- end }}
+{{- end }}
+{{- if $extra }}
+
+2. Router services running in this release:
+{{- range $key := $extra }}
+{{- $ctx := dict "root" $ "key" $key }}
+{{- $svc := index $.Values $key }}
+
+   - {{ $key }} -> service/{{ include "hyperswitch.router.name" $ctx }}
+     ```shell
+     kubectl port-forward service/{{ include "hyperswitch.router.name" $ctx }} 8081:80 -n {{ $.Release.Namespace }}
+     ```
+{{- $db := $svc.database | default dict }}
+{{- if and $db.useReplicaForMaster (not (include "hyperswitch.router.replicaAvailable" $ctx)) }}
+
+     WARNING: {{ $key }}.database.useReplicaForMaster is set, but this release has no PostgreSQL
+     read replica (postgresql.readReplicas.replicaCount is 0, or externalPostgresql.readOnly is
+     disabled). This service is talking to the PRIMARY, so writes reaching it are NOT blocked.
+     Configure a read replica, or set {{ $key }}.database.masterHost explicitly.
+{{- end }}
+{{- end }}
+========================================================
+{{- end }}
+{{- if and .Values.superposition.enabled (not .Values.superpositionDB.enable) }}
+
+NOTE: the bundled `superposition` subchart is enabled but `superpositionDB.enable` is false, so
+nothing points it at a database or applies its schema. It will crash-loop on
+`Failed to find a type oid for superposition.org_status`. Either
+
+  - turn the wiring on (only safe when this release owns the namespace - the alias Service has a
+    release-independent name):
+
+      superpositionDB:
+        enable: true
+      superposition:
+        configs:
+          db_host: "superposition-db:5432"
+          db_name: {{ include "postgresql.database" . | quote }}
+          db_user: {{ include "postgresql.username" . | quote }}
+        secrets:
+          db_password: "<the password for that user>"
+          superposition_token: {{ .Values.server.configs.superposition.token | default "123456" | quote }}
+
+    (`hyperswitch-stack` ships exactly this), or
+
+  - turn it off with `superposition.enabled: false` and leave the router on the seed fallback
+    (`superpositionFallback.enabled: true`).
+{{- end }}
+{{- if not .Values.superpositionFallback.enabled }}
+
+NOTE: `superpositionFallback.enabled` is false. The router needs a Superposition config source at
+boot; if the endpoint is unreachable or its workspace is empty it has nothing to fall back on and
+will fail to start. Set `superpositionFallback.enabled: true` unless you run a seeded Superposition.
+{{- end }}
