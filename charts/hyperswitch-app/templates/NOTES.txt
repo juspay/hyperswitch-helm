@@ -7,19 +7,6 @@ NOTICE: multi-AZ scheduling is enabled for the router.
 - Router replicas (or autoscaling minReplicas) should be at least the number of
   availability zones, otherwise pods may remain Pending because
   "whenUnsatisfiable: {{ .Values.multiAz.whenUnsatisfiable }}" is set.
-{{- if eq .Values.multiAz.whenUnsatisfiable "DoNotSchedule" }}
-- whenUnsatisfiable is DoNotSchedule: during a real zone outage, replacement
-  replicas can stay Pending indefinitely rather than being placed on a
-  surviving zone, because the scheduler is forced to prefer the dead zone to
-  keep skew low. Set whenUnsatisfiable to ScheduleAnyway (the chart default)
-  if availability during a zone outage matters more than strict even spread.
-{{- else }}
-- whenUnsatisfiable is ScheduleAnyway: the scheduler still prefers an even
-  spread across zones, but will not block placement when the low-skew zone
-  has no capacity - replicas may pile onto surviving zones during a real
-  outage rather than staying Pending. Set whenUnsatisfiable to DoNotSchedule
-  instead if strict even distribution matters more than availability.
-{{- end }}
 - Consider using external managed PostgreSQL/Redis/Kafka/ClickHouse for full
   data-plane high availability.
 *******************************************************************************

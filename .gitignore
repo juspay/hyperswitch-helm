@@ -111,4 +111,3 @@ kubeconfig
 
 # OCI deployment — generated file contains personal registry/namespace values
 oci/values-ocir.yaml
-.claude/
