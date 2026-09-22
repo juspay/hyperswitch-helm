@@ -1,0 +1,21 @@
+{{- if and .Values.multiAz.enabled .Values.multiAz.podDisruptionBudget.enabled .Values.services.router.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "hyperswitch-server.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "hyperswitch-server.name" . }}
+    app: {{ include "hyperswitch-server.name" . }}
+spec:
+  {{- if .Values.multiAz.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.multiAz.podDisruptionBudget.maxUnavailable }}
+  {{- else }}
+  minAvailable: {{ .Values.multiAz.podDisruptionBudget.minAvailable | default "50%" }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "hyperswitch-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

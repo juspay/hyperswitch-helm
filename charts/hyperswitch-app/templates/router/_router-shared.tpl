@@ -292,6 +292,16 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if and (not $key) $root.Values.multiAz.enabled }}
+      topologySpreadConstraints:
+        - maxSkew: {{ $root.Values.multiAz.maxSkew }}
+          topologyKey: {{ $root.Values.multiAz.topologyKey }}
+          whenUnsatisfiable: {{ $root.Values.multiAz.whenUnsatisfiable }}
+          labelSelector:
+            matchLabels:
+              app: {{ $name }}
+              app.kubernetes.io/instance: {{ $root.Release.Name }}
+      {{- end }}
       {{- with ($svc.nodeSelector | default (default $global.nodeSelector $server.nodeSelector)) }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
