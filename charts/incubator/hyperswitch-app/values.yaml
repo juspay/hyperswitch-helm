@@ -98,8 +98,11 @@ multiAz:
   # -- Maximum difference in number of pods between zones
   maxSkew: 1
   # -- Scheduling policy when the spread constraint cannot be satisfied.
-  # Allowed values: DoNotSchedule | ScheduleAnyway
-  whenUnsatisfiable: DoNotSchedule
+  # Allowed values: DoNotSchedule | ScheduleAnyway. Defaults to ScheduleAnyway
+  # so a real zone outage can't leave replacement replicas stuck Pending
+  # forever - see the deployment NOTES for the full tradeoff, and set to
+  # DoNotSchedule instead if strict even spread matters more than availability.
+  whenUnsatisfiable: ScheduleAnyway
   # PodDisruptionBudget configuration
   podDisruptionBudget:
     # -- Create PDBs for the app components
