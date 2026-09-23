@@ -619,6 +619,18 @@ server:
       pool_size: '20'
       # -- Add the queue strategy used by the database bb8 client
       queue_strategy: Fifo
+    # Modular microservices this router delegates to.
+    micro_services:
+      # -- Base URL of the payment-method modular service. Left empty it resolves to the
+      # `paymentMethodModular` service of this release (whose name follows
+      # `paymentMethodModular.fullnameOverride`), and to the upstream default
+      # `http://localhost:8082` when that service is disabled - so it follows the release
+      # instead of being pinned to one name. Set it explicitly to point somewhere else.
+      # @section -- App Server Configuration
+      payment_methods_base_url: ""
+      # -- Use the legacy (v1) locker for payment methods
+      # @section -- App Server Configuration
+      use_legacy_locker: false
     multitenancy:
       enabled: false
       global_tenant:
@@ -2479,9 +2491,25 @@ paymentMethodModular:
   # Kubernetes' 63 character limit.
   # @section -- Router services
   fullnameOverride: ""
-  version: ""
-  imageRegistry: ""
-  image: ""
+  # This service runs its OWN image - unlike `olap`, it is NOT the router binary and must not be
+  # left to fall back to `services.router.*`. The router image serves the v1 routes
+  # (`/payment_methods`, `/payments`, `/accounts`); this image serves the modular routes
+  # (`/v1/payment-methods`, `/v1/customers`, `/v1/payment-method-sessions`, `/v1/proxy`) that the
+  # istio block below routes here. Pointed at a router tag the pod still starts and passes its
+  # probes, but every modular route 404s - a silent failure, so the image is pinned here.
+  #
+  # Published to Docker Hub only (NOT docker.juspay.io). `latest` and `nightly` also exist but are
+  # mutable; v1.0.26 is the only immutable tag published so far. For production, mirror it into
+  # your own registry - the chart builds `registry/image:tag` and cannot take a digest.
+  # -- Image tag for the payment-method modular service
+  # @section -- Router services
+  version: "v1.0.26"
+  # -- Image registry for the payment-method modular service
+  # @section -- Router services
+  imageRegistry: "docker.io"
+  # -- Image repository for the payment-method modular service
+  # @section -- Router services
+  image: "juspaydotin/hyperswitch-modular-pm"
   imagePullPolicy: ""
   replicas: 1
   serviceAccountName: ""
@@ -2514,8 +2542,34 @@ paymentMethodModular:
   annotations: {}
   podAnnotations: {}
   labels: {}
-  livenessProbe: {}
-  readinessProbe: {}
+  # The modular-pm image serves its health check at /v2/health ONLY; the chart's shared default
+  # probe (server.livenessProbe) calls GET /health, which this image 404s - the liveness probe
+  # then kills the container roughly every 50s forever. The path is independent of
+  # `configs.micro_services.payment_methods_prefix`: the APIs follow the prefix, health does not.
+  # -- Liveness probe for the payment-method modular service
+  # @section -- Router services
+  livenessProbe:
+    httpGet:
+      path: /v2/health
+      port: 8080
+      scheme: HTTP
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 6
+    successThreshold: 1
+  # -- Readiness probe for the payment-method modular service
+  # @section -- Router services
+  readinessProbe:
+    httpGet:
+      path: /v2/health
+      port: 8080
+      scheme: HTTP
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 6
+    successThreshold: 1
   strategy: {}
   extraVolumes: []
   extraVolumeMounts: []

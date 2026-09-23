@@ -444,6 +444,27 @@ Allow the release namespace to be overridden for multi-namespace deployments
 {{- printf "http://%s-superposition.%s.svc.cluster.local:80" .Release.Name .Release.Namespace -}}
 {{- end -}}
 
+{{/*
+Payment-method modular service URL of this release, used when
+`server.configs.micro_services.payment_methods_base_url` is left empty.
+
+The service name follows `paymentMethodModular.fullnameOverride`, or
+`<release>-hyperswitch-payment-method-modular-server` when that is unset, so this cannot be
+written as a plain value - Helm does not template values files. Without it the router keeps the
+binary default `http://localhost:8082` and every call to the payment-method service fails at
+request time with a DNS error, while the router itself stays healthy.
+
+When `paymentMethodModular` is disabled there is no such service, so the upstream default is
+returned unchanged rather than a name that resolves to nothing.
+*/}}
+{{- define "paymentMethodModular.url" -}}
+{{- if .Values.paymentMethodModular.enabled -}}
+{{- printf "http://%s.%s.svc.cluster.local:80" (include "hyperswitch.router.name" (dict "root" . "key" "paymentMethodModular")) .Release.Namespace -}}
+{{- else -}}
+{{- print "http://localhost:8082" -}}
+{{- end -}}
+{{- end -}}
+
 {{/* Superposition fallback seed, mounted into every workload that runs the router binary. */}}
 
 {{/* Is the seed file fetched by an init container, rather than supplied as a ConfigMap? */}}
@@ -528,6 +549,7 @@ generic_link.payout_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 payment_link.sdk_url: "hyperswitchWeb.hyperloaderUrl"
 log.telemetry.otel_exporter_otlp_endpoint: "opentelemetry-collector.url"
 superposition.endpoint: "superposition.url"
+micro_services.payment_methods_base_url: "paymentMethodModular.url"
 {{- end -}}
 
 {{/* Helper: Check if a config value is a secret field (_secret) */}}
