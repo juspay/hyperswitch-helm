@@ -15,7 +15,7 @@ replicaCount: 1
 image:
   # -- Docker image registry
   # @section -- Connector Service
-  imageRegistry: docker.juspay.io
+  imageRegistry: docker.io
   # -- Docker image repository
   # @section -- Connector Service
   repository: juspaydotin/hyperswitch-prism

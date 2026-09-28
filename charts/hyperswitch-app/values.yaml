@@ -1626,7 +1626,7 @@ hyperswitch-ucs:
   enabled: false
   fullnameOverride: "hyperswitch-ucs"
   image:
-    imageRegistry: docker.juspay.io
+    imageRegistry: docker.io
     repository: juspaydotin/hyperswitch-prism
     pullPolicy: IfNotPresent
     tag: "v0.5.0"

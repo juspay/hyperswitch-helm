@@ -53,8 +53,8 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | autoscaling.minReplicas | int | `1` | Minimum number of replicas |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
 | fullnameOverride | string | `""` | Override the full name of the chart |
-| image | object | `{"imageRegistry":"docker.juspay.io","pullPolicy":"IfNotPresent","repository":"juspaydotin/hyperswitch-prism","tag":"v0.5.0"}` | Container image configuration |
-| image.imageRegistry | string | `"docker.juspay.io"` | Docker image registry |
+| image | object | `{"imageRegistry":"docker.io","pullPolicy":"IfNotPresent","repository":"juspaydotin/hyperswitch-prism","tag":"v0.5.0"}` | Container image configuration |
+| image.imageRegistry | string | `"docker.io"` | Docker image registry |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | image.repository | string | `"juspaydotin/hyperswitch-prism"` | Docker image repository |
 | image.tag | string | `"v0.5.0"` | Image tag to use |
