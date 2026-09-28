@@ -15,16 +15,16 @@ replicaCount: 1
 image:
   # -- Docker image registry
   # @section -- Connector Service
-  imageRegistry: ghcr.io
+  imageRegistry: docker.juspay.io
   # -- Docker image repository
   # @section -- Connector Service
-  repository: juspay/connector-service
+  repository: juspaydotin/hyperswitch-prism
   # -- Image pull policy
   # @section -- Connector Service
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "main-b1487cb"
+  tag: "v0.5.0"
 
 # -- Image pull secrets for private registries
 # @section -- Connector Service

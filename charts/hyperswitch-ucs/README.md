@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.5.0](https://img.shields.io/badge/AppVersion-v0.5.0-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -53,11 +53,11 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | autoscaling.minReplicas | int | `1` | Minimum number of replicas |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU utilization percentage |
 | fullnameOverride | string | `""` | Override the full name of the chart |
-| image | object | `{"imageRegistry":"ghcr.io","pullPolicy":"IfNotPresent","repository":"juspay/connector-service","tag":"main-b1487cb"}` | Container image configuration |
-| image.imageRegistry | string | `"ghcr.io"` | Docker image registry |
+| image | object | `{"imageRegistry":"docker.juspay.io","pullPolicy":"IfNotPresent","repository":"juspaydotin/hyperswitch-prism","tag":"v0.5.0"}` | Container image configuration |
+| image.imageRegistry | string | `"docker.juspay.io"` | Docker image registry |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"juspay/connector-service"` | Docker image repository |
-| image.tag | string | `"main-b1487cb"` | Image tag to use |
+| image.repository | string | `"juspaydotin/hyperswitch-prism"` | Docker image repository |
+| image.tag | string | `"v0.5.0"` | Image tag to use |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"hyperswitch-ucs.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | Ingress configuration |
 | ingress.annotations | object | `{}` | Additional annotations for the Ingress resource |
