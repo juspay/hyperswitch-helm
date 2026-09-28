@@ -2,7 +2,7 @@
 
 Hyperswitch is a community-led, open payments switch designed to empower digital businesses by providing fast, reliable, and affordable access to the best payments infrastructure.
 
-![Version: 1.3.3](https://img.shields.io/badge/Version-1.3.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.126.0](https://img.shields.io/badge/AppVersion-v1.126.0-informational?style=flat-square)
+![Version: 1.3.4](https://img.shields.io/badge/Version-1.3.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.126.0](https://img.shields.io/badge/AppVersion-v1.126.0-informational?style=flat-square)
 
 # Deploy on Kubernetes using Helm
 
@@ -150,7 +150,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 | https://codecentric.github.io/helm-charts | mailhog | 4.0.0 |
 | https://helm.vector.dev | vector | 0.37.0 |
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-card-vault | 0.1.7 |
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.8 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.10 |
 | oci://ghcr.io/juspay/helm-charts | superposition | 0.112.0 |
 
 ## Values

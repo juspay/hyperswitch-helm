@@ -1595,10 +1595,10 @@ hyperswitch-ucs:
   enabled: false
   fullnameOverride: "hyperswitch-ucs"
   image:
-    imageRegistry: ghcr.io
-    repository: juspay/connector-service
+    imageRegistry: docker.io
+    repository: juspaydotin/hyperswitch-prism
     pullPolicy: IfNotPresent
-    tag: "main-b1487cb"
+    tag: "v0.5.0"
   imagePullSecrets: []
   nameOverride: ""
 
