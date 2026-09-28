@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "2026.09.28.0"
+    version: "v1.127.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "2026.09.28.0"
+    version: "v1.127.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "2026.09.28.0"
+    version: "v1.127.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "2026.09.28.0"
+    version: "v1.127.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -222,11 +222,6 @@ server:
   configs:
     infra_values:
       version: IMAGE_VERSION_VALUE
-    chat:
-      # Enable or disable chat features
-      enabled: false
-      # Hyperswitch ai workflow host
-      hyperswitch_ai_host: "http://0.0.0.0:8000"
     analytics:
       clickhouse:
         # -- Clickhouse database name
@@ -436,10 +431,18 @@ server:
       # aws_kms:
       #   key_id: "kms_key_id"
       #   region: "kms_region"
+      # encryption_manager: gcp_kms
+      # gcp_kms:
+      #   project_id: "gcp_project_id"
+      #   location_id: "gcp_kms_location_id"
+      #   key_ring_id: "gcp_kms_key_ring_id"
+      #   key_id: "gcp_kms_key_id"
     events:
       # -- The event sink to push events supports kafka or logs (stdout)
       source: kafka
       kafka:
+        # -- Kafka topic to be used for Account Updater Synchronization Events
+        account_updater_topic: hyperswitch-account-updater-events
         # -- Kafka topic to be used for incoming api events
         api_logs_topic: hyperswitch-api-log-events
         # -- Kafka topic to be used for PaymentAttempt events
@@ -570,6 +573,8 @@ server:
       locker_signing_key_id: '1'
       # -- Emulate a locker locally using Postgres
       mock_locker: false
+      # -- Ask the vault for plain (unencrypted) fingerprint responses; honoured only if the vault has opted in (v2)
+      plain_fingerprint_response: true
       # -- Time to live for storage entries in locker
       ttl_for_storage_in_secs: 220752000
       # -- Encryption key for redis temp locker
@@ -669,6 +674,12 @@ server:
       paze_private_key_passphrase: PAZE_PRIVATE_KEY_PASSPHRASE
     google_pay_decrypt_keys:
       google_pay_root_signing_keys: GOOGLE_PAY_ROOT_SIGNING_KEYS
+      # The three keys below describe Hyperswitch's registered Google Pay gateway,
+      # used by the INTERNAL_GATEWAY tokenization flow. Set either all three or
+      # none - the router fails config validation on a partial set.
+      # google_pay_private_key: GOOGLE_PAY_PRIVATE_KEY
+      # google_pay_common_merchant_id: GOOGLE_PAY_COMMON_MERCHANT_ID
+      # google_pay_gateway_id: GOOGLE_PAY_GATEWAY_ID
     proxy:
       # -- A comma-separated list of domains or IP addresses that should not use the proxy. Whitespace between entries would be ignored.
       bypass_proxy_hosts: "localhost, cluster.local"
@@ -712,6 +723,11 @@ server:
       unresponsive_timeout: 10
       # -- RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
       use_legacy_version: false
+      # Optional ACL username for authenticated Redis (Redis 6+ / Redis Cloud); requires `password`.
+      # Leave both unset for unauthenticated Redis.
+      # username: "default"
+      # password:
+      #   _secret: ''
     # Replica SQL data store credentials
     replica_database:
       # -- Timeout for database connection in seconds
@@ -740,6 +756,8 @@ server:
       monitoring_threshold_in_seconds: 10368000
       retry_algorithm_type: "cascading"
       redis_ttl_in_seconds: 3888000
+      # Fallback hour-of-day (UTC, 0-23) the mathmodel retries at when a cluster has no hour-of-day history
+      default_retry_hour_utc: 12
       # Card specific configuration for Revenue Recovery
       card_config:
         amex:
@@ -763,6 +781,12 @@ server:
         max_random_schedule_delay_in_seconds: 18000
         redis_ttl_buffer_in_seconds: 300
         unretried_invoice_schedule_time_offset_seconds: 300
+      # Redis lock configuration guarding the retry-stats read-merge-write
+      retry_stats_lock:
+        # Seconds before redis lock expires
+        redis_lock_expiry_seconds: 10
+        # Wait between attempts to acquire a contended lock
+        delay_between_retries_in_milliseconds: 100
     secrets_management:
       # -- Secrets manager client to be used
       secrets_manager: no_encryption
@@ -775,6 +799,13 @@ server:
       # hc_vault:
       #   url: http://vault:8200
       #   token: vault_token
+      # secrets_manager: gcp_kms
+      # gcp_kms:
+      #   project_id: "gcp_project_id"
+      #   # e.g. "global", "us-east1"
+      #   location_id: "gcp_kms_location_id"
+      #   key_ring_id: "gcp_kms_key_ring_id"
+      #   key_id: "gcp_kms_key_id"
     # -- Superposition client config (mandatory at boot as of newer router builds).
     # Defaults assume the bundled `superposition` subchart under this release name.
     superposition:
@@ -1595,10 +1626,10 @@ hyperswitch-ucs:
   enabled: false
   fullnameOverride: "hyperswitch-ucs"
   image:
-    imageRegistry: ghcr.io
-    repository: juspay/connector-service
+    imageRegistry: docker.io
+    repository: juspaydotin/hyperswitch-prism
     pullPolicy: IfNotPresent
-    tag: "main-b1487cb"
+    tag: "v0.5.0"
   imagePullSecrets: []
   nameOverride: ""
   serviceAccount:

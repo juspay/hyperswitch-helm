@@ -52,6 +52,15 @@ spec:
               curl -fsSL --retry 3 --retry-delay 5 -o hyperswitch.tar.gz https://github.com/juspay/hyperswitch/archive/refs/$REFERENCE/$ROUTER_VERSION.tar.gz
               tar -xzf hyperswitch.tar.gz --transform 's|[^/]*/|hyperswitch/|'
               cd hyperswitch
+              # The repo's diesel.toml carries a [print_schema] section that makes diesel_cli
+              # regenerate crates/diesel_models/src/schema.rs AFTER `migration run` and apply
+              # drop_id.patch on top. At several release tags (v1.126.0, v1.127.0) that patch
+              # no longer applies ("Failed to apply patch: error applying hunk #5"), so diesel
+              # exits non-zero AFTER every migration applied cleanly - failing this hook and
+              # with it the whole install. Schema regeneration is a repo-development concern,
+              # not a migration one: drop the config so only migrations run. The migrations
+              # themselves live at the diesel default ./migrations, so nothing else is lost.
+              rm -f diesel.toml
               diesel migration --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/$DBNAME run
               echo "Completed hyperswitch database migration"
           env:
