@@ -43,10 +43,6 @@ spec:
       {{- end }}
       {{- if .Values.vaultKeysJob.enabled }}
       initContainers:
-        # restartPolicy: Always makes this a sidecar-style init container (Kubernetes 1.29+):
-        # it starts alongside the main container rather than before it, which is required here
-        # since it unlocks that same container over localhost. Retries the unlock with a bounded
-        # attempt count, then idles rather than polling indefinitely once unlocked.
         - name: custodian-unlock
           restartPolicy: Always
           {{- $keysRegistry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
@@ -68,14 +64,11 @@ spec:
             - |-
               MAX_ATTEMPTS={{ .Values.vaultKeysJob.checkVaultService.maxAttempt | default 30 }}
               SLEEP_SECONDS=5
-              attempt=0
-              while true; do
-                STATUS=$(curl -s -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.healthPath }} 2>/dev/null || echo "")
-                echo "$STATUS" | grep -q '"key_custodian_locked":false' && break
-                if [ $attempt -ge $MAX_ATTEMPTS ]; then
-                  echo "Vault did not unlock in time"
-                  exit 1
-                fi
+              is_unlocked() {
+                curl -s -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.healthPath }} 2>/dev/null \
+                  | grep -q '"key_custodian_locked":false'
+              }
+              unlock() {
                 curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
                   -X POST http://localhost:{{ .Values.server.port }}{{ $api.key1Path }} \
                   -d "{\"key\": \"$CUSTODIAN_KEY1\"}"
@@ -84,13 +77,21 @@ spec:
                   -d "{\"key\": \"$CUSTODIAN_KEY2\"}"
                 curl -s -o /dev/null -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
                   -X POST http://localhost:{{ .Values.server.port }}{{ $api.decryptPath }}
+              }
+              attempt=0
+              until is_unlocked; do
+                if [ $attempt -ge $MAX_ATTEMPTS ]; then
+                  echo "Vault did not unlock in time"
+                  exit 1
+                fi
+                unlock
                 attempt=$((attempt+1))
                 sleep $SLEEP_SECONDS
               done
-              sleep infinity
-          # A running sidecar's requests are reserved for the pod's whole lifetime, not just
-          # its brief unlock phase, so this stays small - curl's actual load here is trivial
-          # and post-unlock it's just `sleep infinity`.
+              while true; do
+                sleep $SLEEP_SECONDS
+                is_unlocked || unlock
+              done
           resources:
             requests:
               cpu: 10m
@@ -224,7 +225,7 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - pkill -15 node
+                  - sleep 5 && pkill -15 locker
           livenessProbe:
             failureThreshold: 3
             httpGet:
