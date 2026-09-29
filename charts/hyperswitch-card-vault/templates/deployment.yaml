@@ -240,7 +240,12 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - pkill -15 node
+                  # This container runs the Rust `locker` binary, not node (confirmed live via
+                  # `ps aux`: PID 1 is `./locker`) - `pkill -15 node` matches nothing, so this
+                  # pod has never actually drained in-flight requests on SIGTERM. The sleep gives
+                  # the endpoint controller time to remove the pod from Service routing before
+                  # the process gets the signal, avoiding dropped in-flight requests.
+                  - sleep 5 && pkill -15 locker
           livenessProbe:
             failureThreshold: 3
             httpGet:
