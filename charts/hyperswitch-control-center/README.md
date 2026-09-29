@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.1.2](https://img.shields.io/badge/Version-1.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.7](https://img.shields.io/badge/AppVersion-v1.38.7-informational?style=flat-square)
+![Version: 1.1.3](https://img.shields.io/badge/Version-1.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.9](https://img.shields.io/badge/AppVersion-v1.38.9-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -126,26 +126,35 @@ After deployment, verify the Control Center is working:
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | config.default.connector_clone.paymentProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.billingProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.payoutProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.pmAuthProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.surchargeProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.taxProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.threedsAuthProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.vaultProcessors | list | `[]` |  |
 | config.default.endpoints.agreement_url | string | `"https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"` |  |
 | config.default.endpoints.agreement_version | string | `"1.0.0"` |  |
-| config.default.endpoints.dss_certificate_url | string | `"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"` |  |
+| config.default.endpoints.dss_certificate_eu_url | string | `""` |  |
+| config.default.endpoints.dss_certificate_us_url | string | `"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"` |  |
 | config.default.endpoints.dynamo_simulation_template_url | string | `""` |  |
 | config.default.endpoints.favicon_url | string | `""` |  |
 | config.default.endpoints.hypersense_url | string | `""` |  |
 | config.default.endpoints.logo_url | string | `""` |  |
 | config.default.endpoints.mixpanel_token | string | `"dd4da7f62941557e716fbc0a19f9cc7e"` |  |
+| config.default.endpoints.olap_url | string | `""` |  |
 | config.default.endpoints.recon_iframe_url | string | `""` |  |
 | config.default.features.authentication_analytics | string | `"false"` |  |
 | config.default.features.branding | string | `"false"` |  |
 | config.default.features.compliance_certificate | string | `"true"` |  |
 | config.default.features.configure_pmts | string | `"true"` |  |
 | config.default.features.connector_clone | bool | `true` |  |
+| config.default.features.cug_user | bool | `false` |  |
 | config.default.features.custom_webhook_headers | string | `"false"` |  |
+| config.default.features.dev_advanced_payments_view | bool | `false` |  |
 | config.default.features.dev_alt_payment_methods | bool | `false` |  |
+| config.default.features.dev_blocklist | bool | `false` |  |
 | config.default.features.dev_click_to_pay | string | `"true"` |  |
 | config.default.features.dev_debit_routing | bool | `false` |  |
 | config.default.features.dev_hypersense_v2_product | bool | `false` |  |
@@ -153,6 +162,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.dev_modularity_v2 | bool | `false` |  |
 | config.default.features.dev_recon_v2_product | bool | `false` |  |
 | config.default.features.dev_recovery_v2_product | bool | `false` |  |
+| config.default.features.dev_superposition | bool | `false` |  |
 | config.default.features.dev_vault_v2_product | bool | `false` |  |
 | config.default.features.dev_webhooks | bool | `false` |  |
 | config.default.features.dispute_analytics | string | `"false"` |  |
@@ -166,6 +176,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.global_search | string | `"true"` |  |
 | config.default.features.global_search_filters | bool | `false` |  |
 | config.default.features.granularity | bool | `false` |  |
+| config.default.features.hierarchical_configurations | bool | `false` |  |
 | config.default.features.is_live_mode | string | `"false"` |  |
 | config.default.features.live_users_counter | string | `"false"` |  |
 | config.default.features.maintenance_alert | string | `""` |  |
@@ -174,6 +185,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.new_analytics_filters | string | `"true"` |  |
 | config.default.features.new_analytics_refunds | string | `"true"` |  |
 | config.default.features.new_analytics_smart_retries | string | `"true"` |  |
+| config.default.features.payment_link_operations | bool | `false` |  |
 | config.default.features.payout | string | `"true"` |  |
 | config.default.features.performance_monitor | string | `"true"` |  |
 | config.default.features.pm_authentication_processor | string | `"true"` |  |
@@ -197,6 +209,8 @@ After deployment, verify the Control Center is working:
 | config.default.merchant_config.denylist.new_analytics.merchant_ids | list | `[]` |  |
 | config.default.merchant_config.denylist.new_analytics.org_ids | list | `[]` |  |
 | config.default.merchant_config.denylist.new_analytics.profile_ids | list | `[]` |  |
+| config.default.superposition_configs.organization_id | string | `""` |  |
+| config.default.superposition_configs.workspace | string | `""` |  |
 | config.default.theme.primary_color | string | `"#006DF9"` |  |
 | config.default.theme.primary_hover_color | string | `"#005ED6"` |  |
 | config.default.theme.sidebar_border_color | string | `"#ECEFF3"` |  |
@@ -218,7 +232,7 @@ After deployment, verify the Control Center is working:
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `"v1.38.7"` |  |
+| image.tag | string | `"v1.38.9"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
