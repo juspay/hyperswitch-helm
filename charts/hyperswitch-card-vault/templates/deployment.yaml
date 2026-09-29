@@ -43,11 +43,6 @@ spec:
       {{- end }}
       {{- if .Values.vaultKeysJob.enabled }}
       initContainers:
-        # restartPolicy: Always makes this a sidecar-style init container (Kubernetes 1.29+):
-        # it starts alongside the main container rather than before it, which is required here
-        # since it unlocks that same container over localhost. Retries the unlock with a bounded
-        # attempt count at startup, then keeps polling and re-unlocking for the life of the pod
-        # (see the comment above the second loop below for why).
         - name: custodian-unlock
           restartPolicy: Always
           {{- $keysRegistry := .Values.global.imageRegistry | default .Values.vaultKeysJob.checkVaultService.imageRegistry }}
@@ -93,20 +88,10 @@ spec:
                 attempt=$((attempt+1))
                 sleep $SLEEP_SECONDS
               done
-              # The custodian-lock state lives in the tartarus process's memory, not on disk -
-              # a container-only restart (crash, OOM) re-locks it without the pod being
-              # recreated, and a native sidecar only runs its startup logic once per pod. Keep
-              # polling and re-unlocking for the life of the pod instead of exiting after the
-              # first success, so this self-heals that case instead of requiring a manual
-              # per-pod unlock (observed repeatedly in production: node churn and container
-              # restarts left batches of replicas locked with no automatic recovery).
               while true; do
                 sleep $SLEEP_SECONDS
                 is_unlocked || unlock
               done
-          # A running sidecar's requests are reserved for the pod's whole lifetime, not just
-          # its brief unlock phase, so this stays small - curl's actual load here is trivial
-          # even with the continuous post-unlock health poll.
           resources:
             requests:
               cpu: 10m
@@ -240,11 +225,6 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  # This container runs the Rust `locker` binary, not node (confirmed live via
-                  # `ps aux`: PID 1 is `./locker`) - `pkill -15 node` matches nothing, so this
-                  # pod has never actually drained in-flight requests on SIGTERM. The sleep gives
-                  # the endpoint controller time to remove the pod from Service routing before
-                  # the process gets the signal, avoiding dropped in-flight requests.
                   - sleep 5 && pkill -15 locker
           livenessProbe:
             failureThreshold: 3
