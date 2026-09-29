@@ -39,7 +39,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.38.7
+  tag: v1.38.9
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
@@ -152,6 +152,7 @@ config:
       # Core features
       email: "true"
       branding: "false"
+      cug_user: false
       # Real deployment-configs (sandbox/integ/fnb) all set this to true so the
       # in-app "clone connector" action is available; chart previously omitted it.
       connector_clone: true
@@ -185,6 +186,8 @@ config:
       performance_monitor: "true"
       tenant_user: "true"
       transaction_view: true
+      payment_link_operations: false
+      hierarchical_configurations: false
       pm_authentication_processor: "true"
       # Renamed from "tax_processors" (plural): real deployment-configs (sandbox/
       # integ/fnb) all key this singular "tax_processor" - the plural spelling the
@@ -192,7 +195,9 @@ config:
       tax_processor: "true"
       threeds_authenticator: "true"
       # Development features (typically disabled in production)
+      dev_advanced_payments_view: false
       dev_alt_payment_methods: false
+      dev_blocklist: false
       dev_click_to_pay: "true"
       dev_debit_routing: false
       dev_hypersense_v2_product: false
@@ -200,6 +205,7 @@ config:
       dev_modularity_v2: false
       dev_recon_v2_product: false
       dev_recovery_v2_product: false
+      dev_superposition: false
       dev_vault_v2_product: false
       dev_webhooks: false
       # Other features
@@ -216,7 +222,12 @@ config:
       maintenance_alert: ""
       recon_v2: false
     endpoints:
-      dss_certificate_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
+      # Full base URL for endpoints on the OLAP routing allowlist; empty falls back to api_url.
+      olap_url: ""
+      # Split from the old single "dss_certificate_url" as of v1.38.9: the app now
+      # reads region-specific US/EU certificate URLs instead.
+      dss_certificate_us_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
+      dss_certificate_eu_url: ""
       favicon_url: ""
       logo_url: ""
       agreement_url: "https://app.hyperswitch.io/agreement/tc-hyperswitch-aug-23.pdf"
@@ -264,6 +275,17 @@ config:
       payoutProcessors: []
       threedsAuthProcessors: []
       vaultProcessors: []
+      # New list keys as of v1.38.9 - all empty upstream too.
+      pmAuthProcessors: []
+      billingProcessors: []
+      surchargeProcessors: []
+      taxProcessors: []
+    # Superposition config source for the dashboard (new in v1.38.9); left
+    # empty (the upstream default) the in-app Superposition integration
+    # stays unconfigured.
+    superposition_configs:
+      organization_id: ""
+      workspace: ""
 # Additional environment variables (key-value pairs, no transformation)
 extraEnvVars: []
 # Istio configuration (optional)
