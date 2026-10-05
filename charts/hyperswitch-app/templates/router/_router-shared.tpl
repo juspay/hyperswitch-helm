@@ -328,7 +328,17 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - pkill -15 node
+                  # $server.binary (e.g. "router") is the actual Rust binary
+                  # this container runs - "node" was never correct for any
+                  # service this chart deploys. pkill'ing a process name that
+                  # never matches means the preStop hook always no-ops, so
+                  # the pod never drains gracefully: kubelet just waits out
+                  # terminationGracePeriodSeconds and SIGKILLs, dropping
+                  # in-flight requests instead of finishing them. Sleep
+                  # first so the Service/Endpoint removal (which races this
+                  # hook) has time to propagate before the process stops
+                  # accepting new connections.
+                  - sleep 5 && pkill -15 {{ $server.binary }}
           env:
             - name: BINARY
               value: {{ $server.binary }}

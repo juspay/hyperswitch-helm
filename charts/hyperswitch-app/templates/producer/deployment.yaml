@@ -77,7 +77,13 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - pkill -15 node
+                  # .Values.producer.binary (e.g. "scheduler") is the actual
+                  # Rust binary this container runs - "node" was never
+                  # correct for any service this chart deploys, so this
+                  # preStop hook always no-op'd and pods never drained
+                  # gracefully on SIGTERM. Sleep first so Service/Endpoint
+                  # removal (which races this hook) has time to propagate.
+                  - sleep 5 && pkill -15 {{ .Values.producer.binary }}
           env:
             - name: BINARY
               value: {{ .Values.producer.binary }}
