@@ -728,6 +728,13 @@ server:
       # username: "default"
       # password:
       #   _secret: ''
+            # Optional TLS: connect over TLS (`rediss://`); the server certificate is verified
+      # against the platform's trusted CA roots, or - when `tls_ca_certificate_path` is set -
+      # against the CA certificate(s) in that PEM file (mount it into the pods yourself).
+      # Leave both unset for plaintext Redis.
+      # tls_enabled: true
+      # tls_ca_certificate_path: "/path/to/redis_ca.pem"
+
     # Replica SQL data store credentials
     replica_database:
       # -- Timeout for database connection in seconds
