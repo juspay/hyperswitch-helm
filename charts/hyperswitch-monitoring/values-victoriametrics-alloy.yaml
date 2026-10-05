@@ -1,0 +1,108 @@
+# Example overlay: VictoriaMetrics + Alloy flavor of this chart, instead of
+# the default kube-prometheus-stack + Promtail flavor.
+#
+# Usage: pass this ON TOP OF the chart's own values.yaml (last file wins
+# for any key both set):
+#
+#   helm install hyperswitch-monitoring ./charts/hyperswitch-monitoring \
+#     -f charts/hyperswitch-monitoring/values.yaml \
+#     -f charts/hyperswitch-monitoring/values-victoriametrics-alloy.yaml
+#
+# Every placeholder below (anything marked CHANGE ME) is deliberately not
+# filled in with any real environment's values - this file demonstrates the
+# wiring, not a specific deployment's sizing or endpoints. Re-derive storage
+# sizes, replica counts, and the vmagent Service name from your own cluster
+# after the first install (`kubectl get svc -n <namespace> | grep vmagent`
+# - the exact name depends on the release name this chart is installed
+# under).
+
+kube-prometheus-stack:
+  enabled: false
+promtail:
+  enabled: false
+
+prometheus-operator-crds:
+  enabled: true
+victoria-metrics-k8s-stack:
+  enabled: true
+alloy:
+  enabled: true
+
+# otel-collector: swap the default scrape-based `prometheus` exporter
+# (polled by kube-prometheus-stack's Prometheus via the hs-metrics
+# ServiceMonitor) for a push-based `otlphttp` exporter pointed at
+# vmagent's own OTLP ingestion endpoint. This does NOT disable or remove
+# the base chart's scrape-based exporter config - this key fully replaces
+# `opentelemetry-collector.alternateConfig` only when this overlay file is
+# applied, so installs that don't use this overlay keep the original
+# scrape-based workflow exactly as-is.
+opentelemetry-collector:
+  alternateConfig:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: ${env:MY_POD_IP}:4317
+
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      transform:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - set(attributes["source_namespace"], resource.attributes["k8s.namespace.name"])
+              - set(attributes["source_pod"], resource.attributes["k8s.pod.name"])
+              - set(attributes["source_app"], resource.attributes["app"])
+              - set(attributes["source_version"], resource.attributes["version"])
+
+    exporters:
+      debug:
+        verbosity: detailed
+      otlphttp:
+        # CHANGE ME: vmagent's OTLP metrics endpoint. VictoriaMetrics'
+        # vmagent listens for OTLP metrics on :8429/opentelemetry/v1/metrics
+        # by default - the host part depends on the Service name the
+        # victoria-metrics-k8s-stack dependency renders under this chart's
+        # release name (verify with `kubectl get svc`).
+        metrics_endpoint: http://CHANGE-ME-vmagent-service.CHANGE-ME-namespace.svc.cluster.local:8429/opentelemetry/v1/metrics
+        tls:
+          insecure: true
+
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+
+    service:
+      telemetry:
+        logs:
+          level: DEBUG
+          encoding: json
+        metrics:
+          level: detailed
+          address: ${env:MY_POD_IP}:8888
+      extensions:
+        - health_check
+      pipelines:
+        metrics:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - transform
+            - batch
+          exporters:
+            - otlphttp
+
+  # The scrape port is only needed for the default `prometheus` exporter -
+  # nothing scrapes this collector in push mode, so there's no listener to
+  # keep open.
+  ports:
+    hs-metrics:
+      enabled: false
+
+  serviceMonitor:
+    enabled: false

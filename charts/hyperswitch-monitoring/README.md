@@ -2,17 +2,28 @@
 
 Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail, and Grafana
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Overview
 
-The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. It includes:
+The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. By default it includes:
 
 - **Prometheus**: Metrics collection and storage
 - **Grafana**: Visualization and dashboards
 - **Loki**: Log aggregation system
 - **Promtail**: Log collection agent
 - **OpenTelemetry Collector**: Traces and metrics collection
+
+## Alternate flavors: VictoriaMetrics + Alloy
+
+Two additional, disabled-by-default dependencies offer a different metrics/logs stack within this same chart:
+
+- **VictoriaMetrics** (`victoria-metrics-k8s-stack`), a sharded cluster (vminsert/vmselect/vmstorage), as an alternative to kube-prometheus-stack's bundled single-instance Prometheus. Apache-2.0 licensed, same as every other dependency here.
+- **Grafana Alloy** (`alloy`), as an alternative to Promtail, which upstream Grafana has placed into maintenance mode in favor of Alloy.
+
+Enable **one** metrics backend, not both — `kube-prometheus-stack` and `victoria-metrics-k8s-stack` would otherwise both try to reconcile the same ServiceMonitor/PrometheusRule CRDs. See `values-victoriametrics-alloy.yaml` for a complete, worked example (including the matching `opentelemetry-collector.alternateConfig` override needed to push metrics to vmagent instead of exposing a scrape endpoint — applying it does **not** modify this chart's default scrape-based otel-collector config; it only takes effect when that overlay file is explicitly passed).
+
+Sizing in both is deliberately generic and modest, not tuned for any particular environment's traffic — re-derive storage sizes and replica counts from your own measured cardinality/ingestion rate, and add any cloud-specific plumbing (object storage, cloud-provider service discovery, image-registry mirroring) via your own values overlay rather than expecting it from this chart.
 
 ## Prerequisites
 
