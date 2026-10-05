@@ -182,6 +182,16 @@ spec:
               value: {{ .Values.server.external_key_manager.mode | quote }}
             - name: LOCKER__EXTERNAL_KEY_MANAGER__URL
               value: {{ .Values.server.external_key_manager.url | quote }}
+            {{- if eq (.Values.server.metrics.mode | default "") "prometheus" }}
+            - name: LOCKER__METRICS__MODE
+              value: {{ .Values.server.metrics.mode | quote }}
+            - name: LOCKER__METRICS__HOST
+              value: {{ .Values.server.metrics.host | default "0.0.0.0" | quote }}
+            - name: LOCKER__METRICS__PORT
+              value: {{ .Values.server.metrics.port | default 9101 | quote }}
+            - name: LOCKER__METRICS__BACKGROUND_METRICS_COLLECTION_INTERVAL_SECS
+              value: {{ .Values.server.metrics.background_metrics_collection_interval_secs | default 15 | quote }}
+            {{- end }}
             {{- if .Values.secrets.external_key_manager.caCert }}
             - name: LOCKER__EXTERNAL_KEY_MANAGER__CA_CERT
               valueFrom:
@@ -226,36 +236,28 @@ spec:
                   - /bin/bash
                   - -c
                   - sleep 5 && pkill -15 locker
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 1
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           name: tartarus
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
+            {{- if eq (.Values.server.metrics.mode | default "") "prometheus" }}
+            - containerPort: {{ .Values.server.metrics.port | default 9101 }}
+              name: metrics
+              protocol: TCP
+            {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 50
-            successThreshold: 1
-            timeoutSeconds: 1
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
           resources:
-            requests:
-              cpu: 100m
-              memory: 200Mi
-
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           securityContext:
             privileged: false
           terminationMessagePath: /dev/termination-log
