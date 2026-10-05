@@ -1,0 +1,3 @@
+{{- if or (hasKey .Values "kube-prometheus-stack") (hasKey .Values "promtail") }}
+{{- fail "hyperswitch-monitoring 0.2.0 removed kube-prometheus-stack and promtail in favor of victoria-metrics-k8s-stack and alloy. Remove the kube-prometheus-stack/promtail keys from your values and set the victoria-metrics-k8s-stack/alloy/prometheus-operator-crds equivalents instead. See CHANGELOG.md." }}
+{{- end }}

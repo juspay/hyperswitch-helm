@@ -1,34 +1,20 @@
 # hyperswitch-monitoring
 
-Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail, and Grafana
+Monitoring stack for Hyperswitch including VictoriaMetrics, Loki, Alloy, and Grafana
 
-![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Overview
 
-The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. By default it includes:
+The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. It includes:
 
-- **Prometheus**: Metrics collection and storage
+- **VictoriaMetrics**: Metrics collection and storage (`vmsingle` by default; set `victoria-metrics-k8s-stack.vmcluster.enabled: true` for a sharded cluster instead)
 - **Grafana**: Visualization and dashboards
 - **Loki**: Log aggregation system
-- **Promtail**: Log collection agent
+- **Grafana Alloy**: Log collection agent
 - **OpenTelemetry Collector**: Traces and metrics collection
 
-## Alternate flavors: VictoriaMetrics + Alloy
-
-Two additional dependencies, disabled by default, offer a different metrics/logs stack within this same chart:
-
-- **VictoriaMetrics** (`victoria-metrics-k8s-stack`) instead of kube-prometheus-stack's bundled Prometheus.
-- **Grafana Alloy** (`alloy`) instead of Promtail.
-
-Enable one metrics backend, not both. Example:
-
-```
---set kube-prometheus-stack.enabled=false --set promtail.enabled=false \
---set prometheus-operator-crds.enabled=true --set victoria-metrics-k8s-stack.enabled=true --set alloy.enabled=true
-```
-
-All other values (storage, cloud provider service discovery, image registries, etc.) are set the same way, in this same `values.yaml`.
+As of 0.2.0, this replaced kube-prometheus-stack and Promtail (see CHANGELOG.md).
 
 ## Prerequisites
 
