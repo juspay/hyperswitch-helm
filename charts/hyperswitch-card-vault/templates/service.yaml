@@ -3,6 +3,13 @@ kind: Service
 metadata:
   name: hyperswitch-vault
   namespace: {{ .Release.Namespace }}
+  # Mirrors spec.selector.app below. Needed so the Prometheus-operator
+  # relabel_configs that key off __meta_kubernetes_service_label_app (the
+  # Service's own label, not its pod selector) have something to match -
+  # without this, a ServiceMonitor can be fully configured against this
+  # Service and still scrape zero targets.
+  labels:
+    app: hyperswitch-card-vault
 spec:
   internalTrafficPolicy: Cluster
   ipFamilies:
@@ -17,6 +24,12 @@ spec:
       port: 443
       protocol: TCP
       targetPort: 8080
+    {{- if eq (.Values.server.metrics.mode | default "") "prometheus" }}
+    - name: metrics
+      port: {{ .Values.server.metrics.port | default 9101 }}
+      protocol: TCP
+      targetPort: metrics
+    {{- end }}
   selector:
     app: hyperswitch-card-vault
   sessionAffinity: None
