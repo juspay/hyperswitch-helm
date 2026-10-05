@@ -15,14 +15,19 @@ The Hyperswitch Monitoring stack provides comprehensive observability for your H
 
 ## Alternate flavors: VictoriaMetrics + Alloy
 
-Two additional, disabled-by-default dependencies offer a different metrics/logs stack within this same chart:
+Two additional dependencies, disabled by default, offer a different metrics/logs stack within this same chart:
 
-- **VictoriaMetrics** (`victoria-metrics-k8s-stack`), a sharded cluster (vminsert/vmselect/vmstorage), as an alternative to kube-prometheus-stack's bundled single-instance Prometheus. Apache-2.0 licensed, same as every other dependency here.
-- **Grafana Alloy** (`alloy`), as an alternative to Promtail, which upstream Grafana has placed into maintenance mode in favor of Alloy.
+- **VictoriaMetrics** (`victoria-metrics-k8s-stack`) instead of kube-prometheus-stack's bundled Prometheus.
+- **Grafana Alloy** (`alloy`) instead of Promtail.
 
-Enable **one** metrics backend, not both — `kube-prometheus-stack` and `victoria-metrics-k8s-stack` would otherwise both try to reconcile the same ServiceMonitor/PrometheusRule CRDs. See `values-victoriametrics-alloy.yaml` for a complete, worked example (including the matching `opentelemetry-collector.alternateConfig` override needed to push metrics to vmagent instead of exposing a scrape endpoint — applying it does **not** modify this chart's default scrape-based otel-collector config; it only takes effect when that overlay file is explicitly passed).
+Enable one metrics backend, not both. Example:
 
-Sizing in both is deliberately generic and modest, not tuned for any particular environment's traffic — re-derive storage sizes and replica counts from your own measured cardinality/ingestion rate, and add any cloud-specific plumbing (object storage, cloud-provider service discovery, image-registry mirroring) via your own values overlay rather than expecting it from this chart.
+```
+--set kube-prometheus-stack.enabled=false --set promtail.enabled=false \
+--set prometheus-operator-crds.enabled=true --set victoria-metrics-k8s-stack.enabled=true --set alloy.enabled=true
+```
+
+All other values (storage, cloud provider service discovery, image registries, etc.) are set the same way, in this same `values.yaml`.
 
 ## Prerequisites
 

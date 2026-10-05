@@ -26,31 +26,16 @@ dependencies:
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-collector.enabled
 
-  # Alternate metrics backend to kube-prometheus-stack's bundled Prometheus -
-  # a sharded VictoriaMetrics cluster (vminsert/vmselect/vmstorage) instead
-  # of a single Prometheus instance. Disabled by default: this chart still
-  # ships Prometheus as-is for existing installs. Apache-2.0, same as every
-  # other dependency here - see
-  # https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/LICENSE.
-  # Enable ONE metrics backend, not both at once - see values.yaml and
-  # README.md for why.
   - name: victoria-metrics-k8s-stack
     version: "0.71.1"
     repository: https://victoriametrics.github.io/helm-charts
     condition: victoria-metrics-k8s-stack.enabled
 
-  # CRDs victoria-metrics-k8s-stack needs (VMAgent, VMCluster, etc.) - unlike
-  # kube-prometheus-stack, which bundles its own CRDs subchart, this chart
-  # doesn't self-manage them, so it's pulled in as its own conditional
-  # dependency here for the same one-flag-enables-everything ergonomics.
   - name: prometheus-operator-crds
     version: "25.0.1"
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus-operator-crds.enabled
 
-  # Alternate log-shipping agent to Promtail, which upstream Grafana has
-  # moved to maintenance mode in favor of Alloy. Disabled by default - this
-  # chart still ships Promtail as-is for existing installs.
   - name: alloy
     version: "1.4.0"
     repository: https://grafana.github.io/helm-charts

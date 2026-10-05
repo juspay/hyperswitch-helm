@@ -364,38 +364,12 @@ opentelemetry-collector:
         interval: 15s
         path: /metrics
 
-# -----------------------------------------------------------------------
-# Alternate metrics backend: VictoriaMetrics, instead of kube-prometheus-
-# stack's bundled single-instance Prometheus. Off by default - this chart
-# still ships Prometheus as-is for anyone not opting in.
-#
-# Enable ONE metrics backend, not both: both would reconcile the same
-# ServiceMonitor/PrometheusRule CRDs independently, and VictoriaMetrics'
-# own operator already auto-converts ServiceMonitor -> its own VMServiceScrape
-# (disable_prometheus_converter: false below), so there's nothing to gain
-# from running both. To switch: set kube-prometheus-stack.enabled: false
-# and prometheus-operator-crds.enabled + victoria-metrics-k8s-stack.enabled:
-# true.
-#
-# Sizing below is deliberately generic/modest (not tuned for any particular
-# traffic level) - re-derive storage sizes and replica counts from your own
-# measured cardinality and ingestion rate before relying on these for real
-# load. No cloud-specific plumbing is set here (no object-storage, no
-# cloud-provider service discovery, no image-registry mirroring) - add
-# whatever your environment needs via its own values overlay (see
-# values-victoriametrics-alloy.yaml for a worked example).
 prometheus-operator-crds:
   enabled: false
 
 victoria-metrics-k8s-stack:
   enabled: false
 
-  # Don't also deploy this chart's own Grafana/Alertmanager/vmalert - kube-
-  # prometheus-stack.grafana (or a standalone Grafana) and
-  # kube-prometheus-stack.alertmanager already cover both, and alerting
-  # rules/routing are out of scope for this metrics-backend swap. Enable
-  # vmalert yourself (with a real notifier target) via your own values
-  # overlay if you want VictoriaMetrics-native alerting instead.
   grafana:
     enabled: false
   alertmanager:
@@ -452,11 +426,6 @@ victoria-metrics-k8s-stack:
     enabled: true
     spec:
       replicaCount: 1
-      # Scrapes ServiceMonitor/PodMonitor/VMServiceScrape objects already in
-      # the cluster by default (standard operator behavior) - add your own
-      # environment's service-discovery (cloud-provider SD, extra
-      # scrape_configs, remote_write destinations beyond this cluster's own
-      # vminsert) via your own values overlay, not here.
       resources:
         requests:
           cpu: 50m
@@ -465,23 +434,8 @@ victoria-metrics-k8s-stack:
           cpu: 250m
           memory: 512Mi
 
-# -----------------------------------------------------------------------
-# Alternate log-shipping agent: Grafana Alloy, instead of Promtail (which
-# upstream Grafana has put into maintenance mode in favor of Alloy). Off by
-# default - this chart still ships Promtail as-is for anyone not opting in.
-#
-# The minimal config below just tails pod logs and forwards them to this
-# chart's own bundled `loki` dependency (same endpoint the promtail block
-# above already uses: http://loki:3100). Replace/extend it via your own
-# values overlay for real relabeling, filtering, or a different log
-# backend - this is deliberately not more than a working starting point.
 alloy:
   enabled: false
-  # NOTE: this chart's own internal values schema nests everything Alloy-
-  # process-specific under a SECOND, inner `alloy:` key (confirmed against
-  # the chart's own values.yaml/templates/configmap.yaml) - this is not a
-  # typo. The outer `alloy:` above is the dependency name/condition key;
-  # this inner one is the chart's own namespace for its config.
   alloy:
     configMap:
       content: |
