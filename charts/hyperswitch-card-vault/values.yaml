@@ -81,6 +81,63 @@ server:
     # -- Locker database connection pool size
     pool_size: 5
 
+  metrics:
+    host: 0.0.0.0
+    # Set to "prometheus" to expose the metrics port on the pod/Service.
+    # serviceMonitor.enabled has no effect with any other mode - see
+    # templates/servicemonitor.yaml.
+    mode: ""
+    port: 9101
+    background_metrics_collection_interval_secs: 15
+
+# -- The liveness probe configuration for the tartarus container
+livenessProbe:
+  failureThreshold: 10
+  httpGet:
+    path: /health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 5
+  periodSeconds: 30
+  successThreshold: 1
+  # /health does no I/O, so a short timeout can only be tripped by
+  # worker-thread queueing under real load, not an actual hang - keep this
+  # generous to avoid false-positive restarts under load.
+  timeoutSeconds: 30
+
+# -- The readiness probe configuration for the tartarus container
+readinessProbe:
+  failureThreshold: 10
+  httpGet:
+    path: /health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 5
+  periodSeconds: 50
+  successThreshold: 1
+  timeoutSeconds: 30
+
+# -- Resource requests/limits for the tartarus container
+resources:
+  requests:
+    cpu: 100m
+    memory: 200Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+serviceMonitor:
+  # -- Create a ServiceMonitor (only takes effect when server.metrics.mode is "prometheus")
+  enabled: false
+  namespace: ""
+  labels: {}
+  portName: metrics
+  path: /metrics
+  scheme: http
+  interval: ""
+  scrapeTimeout: ""
+  metricRelabelings: []
+
 # Secrets configuration
 secrets:
   # Core secrets
