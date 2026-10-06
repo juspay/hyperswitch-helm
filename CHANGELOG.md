@@ -13,6 +13,10 @@ All notable changes to HyperSwitch-Helm will be documented here.
 - No data migration: existing Prometheus TSDB data, the kube-prometheus-stack Grafana's PVC/dashboards, and Promtail's read positions are not carried over.
 - Consumers pinning this chart (e.g. `hyperswitch-stack`) need their own values updated before bumping to this version.
 
+### 🐛 Bug Fixes
+
+- Install the Prometheus Operator CRDs the stack needs (ServiceMonitor, PodMonitor, PrometheusRule, Probe) from a `crds/` directory so Helm creates them before the templates. Previously they came from the `prometheus-operator-crds` subchart as templates in the same release, so a fresh install failed with `no matches for kind "ServiceMonitor" ... ensure CRDs are installed first`. `prometheus-operator-crds.enabled` now defaults to `false` (enabling it alongside `crds/` collides on the same CRDs).
+
 - - -
 
 ## [hyperswitch-stack-0.2.28] - 2026-09-09
