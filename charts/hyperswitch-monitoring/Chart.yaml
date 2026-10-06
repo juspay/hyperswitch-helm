@@ -21,11 +21,6 @@ dependencies:
     repository: https://victoriametrics.github.io/helm-charts
     condition: victoria-metrics-k8s-stack.enabled
 
-  - name: prometheus-operator-crds
-    version: "25.0.1"
-    repository: https://prometheus-community.github.io/helm-charts
-    condition: prometheus-operator-crds.enabled
-
   - name: alloy
     version: "1.4.0"
     repository: https://grafana.github.io/helm-charts

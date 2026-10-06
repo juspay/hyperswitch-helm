@@ -207,16 +207,6 @@ opentelemetry-collector:
         interval: 30s
         path: /metrics
 
-# The Prometheus Operator CRDs the stack needs (ServiceMonitor, PodMonitor,
-# PrometheusRule, Probe) ship in this chart's crds/ directory, which Helm
-# installs BEFORE the templates. This subchart renders the same CRDs as
-# templates in the same release, so ServiceMonitors in the stack fail with
-# "no matches for kind ServiceMonitor ... ensure CRDs are installed first".
-# Leave it disabled unless you want the full CRD set (Prometheus, Alertmanager,
-# ...) and are installing the CRDs separately beforehand.
-prometheus-operator-crds:
-  enabled: false
-
 victoria-metrics-k8s-stack:
   enabled: true
   fullnameOverride: "victoria-metrics"

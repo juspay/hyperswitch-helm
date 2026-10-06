@@ -12,10 +12,7 @@ All notable changes to HyperSwitch-Helm will be documented here.
 - Values under `kube-prometheus-stack.*` or `promtail.*` now fail the render with a migration pointer instead of being silently ignored.
 - No data migration: existing Prometheus TSDB data, the kube-prometheus-stack Grafana's PVC/dashboards, and Promtail's read positions are not carried over.
 - Consumers pinning this chart (e.g. `hyperswitch-stack`) need their own values updated before bumping to this version.
-
-### 🐛 Bug Fixes
-
-- Install the Prometheus Operator CRDs the stack needs (ServiceMonitor, PodMonitor, PrometheusRule, Probe) from a `crds/` directory so Helm creates them before the templates. Previously they came from the `prometheus-operator-crds` subchart as templates in the same release, so a fresh install failed with `no matches for kind "ServiceMonitor" ... ensure CRDs are installed first`. `prometheus-operator-crds.enabled` now defaults to `false` (enabling it alongside `crds/` collides on the same CRDs).
+- Removed the `prometheus-operator-crds` dependency. The Prometheus Operator CRDs (ServiceMonitor, PodMonitor, ...) must be installed as their own release before this chart, e.g. `helm upgrade --install prometheus-crds prometheus-community/prometheus-operator-crds --version 25.0.1 -n <ns> --create-namespace` — the same pattern `argo-sandbox` uses. Bundling them as templates in this release fails on a fresh install (`no matches for kind "ServiceMonitor" ... ensure CRDs are installed first`) because Helm builds every object, including the ServiceMonitors, before any of the CRDs exist.
 
 - - -
 
