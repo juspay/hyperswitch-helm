@@ -112,9 +112,9 @@ Prometheus-compatible query URL helper, pointed at VictoriaMetrics.
 */}}
 {{- define "hyperswitch-monitoring.prometheus.url" -}}
 {{- if (index .Values "victoria-metrics-k8s-stack" "vmcluster" "enabled") -}}
-{{- printf "http://vmselect-%s-victoria-metrics-k8s-stack:8481/select/0/prometheus" .Release.Name }}
+{{- print "http://vmselect-victoria-metrics:8481/select/0/prometheus" }}
 {{- else -}}
-{{- printf "http://vmsingle-%s-victoria-metrics-k8s-stack:8428" .Release.Name }}
+{{- print "http://vmsingle-victoria-metrics:8428" }}
 {{- end -}}
 {{- end }}
 

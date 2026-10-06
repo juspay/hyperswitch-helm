@@ -7,9 +7,9 @@
 
        # Port-forwarding commands
        kubectl port-forward service/{{ .Release.Name }}-grafana 3000:80 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
-       kubectl port-forward service/vmsingle-{{ .Release.Name }}-victoria-metrics-k8s-stack 8428:8428 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/vmsingle-victoria-metrics 8428:8428 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/loki 3100:3100 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
-       kubectl port-forward service/vmalertmanager-{{ .Release.Name }}-victoria-metrics-k8s-stack 9093:9093 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
+       kubectl port-forward service/vmalertmanager-victoria-metrics 9093:9093 -n {{ .Release.Namespace }} > /dev/null 2>&1 & \
        kubectl port-forward service/{{ .Release.Name }}-opentelemetry-collector 9898:9898 -n {{ .Release.Namespace }} > /dev/null 2>&1 &
 
        echo "======================================================"

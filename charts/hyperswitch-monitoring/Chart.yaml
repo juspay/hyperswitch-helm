@@ -7,12 +7,12 @@ appVersion: "1.0.0"
 
 dependencies:
   - name: loki
-    version: "6.16.0"
+    version: "6.46.0"
     repository: https://grafana.github.io/helm-charts
     condition: loki.enabled
 
   - name: opentelemetry-collector
-    version: "0.120.0"
+    version: "0.139.0"
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-collector.enabled
 

@@ -124,8 +124,10 @@ opentelemetry-collector:
     exporters:
       debug:
         verbosity: detailed
-      prometheus:
-        endpoint: ${env:MY_POD_IP}:9898
+      otlphttp:
+        metrics_endpoint: http://vmagent-victoria-metrics:8429/opentelemetry/v1/metrics
+        tls:
+          insecure: true
 
     extensions:
       health_check:
@@ -150,11 +152,11 @@ opentelemetry-collector:
             - transform
             - batch
           exporters:
-            - prometheus
+            - otlphttp
 
   image:
     repository: otel/opentelemetry-collector-contrib
-    tag: 0.122.1
+    tag: 0.139.0
 
   nodeSelector: {}
   tolerations: []
@@ -173,10 +175,7 @@ opentelemetry-collector:
       servicePort: 8888
       protocol: TCP
     hs-metrics:
-      enabled: true
-      containerPort: 9898
-      servicePort: 9898
-      protocol: TCP
+      enabled: false
     otlp-http:
       enabled: false
     jaeger-compact:
@@ -207,16 +206,13 @@ opentelemetry-collector:
         honorLabels: true
         interval: 30s
         path: /metrics
-      - port: hs-metrics
-        honorLabels: true
-        interval: 15s
-        path: /metrics
 
 prometheus-operator-crds:
   enabled: true
 
 victoria-metrics-k8s-stack:
   enabled: true
+  fullnameOverride: "victoria-metrics"
 
   grafana:
     enabled: true
