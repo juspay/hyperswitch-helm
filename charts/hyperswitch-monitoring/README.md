@@ -1,18 +1,20 @@
 # hyperswitch-monitoring
 
-Monitoring stack for Hyperswitch including Prometheus, Loki, Promtail, and Grafana
+Monitoring stack for Hyperswitch including VictoriaMetrics, Loki, Alloy, and Grafana
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Overview
 
 The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. It includes:
 
-- **Prometheus**: Metrics collection and storage
+- **VictoriaMetrics**: Metrics collection and storage (`vmsingle` by default; set `victoria-metrics-k8s-stack.vmcluster.enabled: true` for a sharded cluster instead)
 - **Grafana**: Visualization and dashboards
 - **Loki**: Log aggregation system
-- **Promtail**: Log collection agent
+- **Grafana Alloy**: Log collection agent
 - **OpenTelemetry Collector**: Traces and metrics collection
+
+As of 0.2.0, this replaced kube-prometheus-stack and Promtail (see CHANGELOG.md).
 
 ## Prerequisites
 

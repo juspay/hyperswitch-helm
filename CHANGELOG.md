@@ -4,6 +4,18 @@ All notable changes to HyperSwitch-Helm will be documented here.
 
 - - -
 
+## [hyperswitch-monitoring-0.2.0] - 2026-10-06
+
+### 💥 Breaking
+
+- Removed the `kube-prometheus-stack` and `promtail` dependencies. `victoria-metrics-k8s-stack` (default: `vmsingle`, sharded `vmcluster` still available via `vmcluster.enabled: true`) and `alloy` are now the chart's only metrics/logs stack, and are enabled by default. Grafana and Alertmanager now come from `victoria-metrics-k8s-stack.grafana`/`.alertmanager` instead of `kube-prometheus-stack.grafana`/`.alertmanager` — same underlying `grafana/grafana` chart, same `adminPassword`/`image.tag`/`plugins` keys, just under a different parent key.
+- Values under `kube-prometheus-stack.*` or `promtail.*` now fail the render with a migration pointer instead of being silently ignored.
+- No data migration: existing Prometheus TSDB data, the kube-prometheus-stack Grafana's PVC/dashboards, and Promtail's read positions are not carried over.
+- Consumers pinning this chart (e.g. `hyperswitch-stack`) need their own values updated before bumping to this version.
+- Removed the `prometheus-operator-crds` dependency. The Prometheus Operator CRDs (ServiceMonitor, PodMonitor, ...) must be installed as their own release before this chart, e.g. `helm upgrade --install prometheus-crds prometheus-community/prometheus-operator-crds --version 25.0.1 -n <ns> --create-namespace` — the same pattern `argo-sandbox` uses. Bundling them as templates in this release fails on a fresh install (`no matches for kind "ServiceMonitor" ... ensure CRDs are installed first`) because Helm builds every object, including the ServiceMonitors, before any of the CRDs exist.
+
+- - -
+
 ## [hyperswitch-stack-0.2.28] - 2026-09-09
 
 ### 🚜 Refactor

@@ -1,5 +1,5 @@
-{{- if index .Values "kube-prometheus-stack" "enabled" }}
-{{- if index .Values "kube-prometheus-stack" "grafana" "enabled" }}
+{{- if index .Values "victoria-metrics-k8s-stack" "enabled" }}
+{{- if index .Values "victoria-metrics-k8s-stack" "grafana" "enabled" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,7 +11,7 @@ data:
   datasources.yaml: |
     apiVersion: 1
     datasources:
-      - name: Prometheus
+      - name: VictoriaMetrics
         type: prometheus
         access: proxy
         url: {{ include "hyperswitch-monitoring.prometheus.url" . }}
