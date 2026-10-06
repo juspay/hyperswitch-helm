@@ -7,11 +7,13 @@
 
 The Hyperswitch Monitoring stack provides comprehensive observability for your Hyperswitch deployment. It includes:
 
-- **Prometheus**: Metrics collection and storage
+- **VictoriaMetrics**: Metrics collection and storage (`vmsingle` by default; set `victoria-metrics-k8s-stack.vmcluster.enabled: true` for a sharded cluster instead)
 - **Grafana**: Visualization and dashboards
 - **Loki**: Log aggregation system
-- **Promtail**: Log collection agent
+- **Grafana Alloy**: Log collection agent
 - **OpenTelemetry Collector**: Traces and metrics collection
+
+As of 0.2.0, this replaced kube-prometheus-stack and Promtail (see CHANGELOG.md).
 
 ## Prerequisites
 
