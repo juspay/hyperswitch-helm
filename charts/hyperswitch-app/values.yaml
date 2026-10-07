@@ -2526,6 +2526,9 @@ paymentMethodModular:
   configs:
     micro_services:
       payment_methods_prefix: v1
+      use_legacy_locker: false
+    locker:
+      use_batched_fingerprint: true
     trace_header:
       header_name: x-request-id
       id_reuse_strategy: use_incoming
