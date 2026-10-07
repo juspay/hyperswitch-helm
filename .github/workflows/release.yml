@@ -39,6 +39,10 @@ jobs:
           helm repo add codecentric https://codecentric.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add istio https://istio-release.storage.googleapis.com/charts
+          # hyperswitch-monitoring depends on victoria-metrics-k8s-stack from this repo. `helm dependency update`
+          # tolerates an unregistered repo URL, but chart-releaser's packaging step does not ("no repository
+          # definition for https://victoriametrics.github.io/helm-charts"), so it must be registered here.
+          helm repo add victoriametrics https://victoriametrics.github.io/helm-charts
           helm repo update
 
       - name: Build Helm Dependencies
