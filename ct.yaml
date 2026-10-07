@@ -12,6 +12,7 @@ chart-repos:
   - codecentric=https://codecentric.github.io/helm-charts
   - prometheus-community=https://prometheus-community.github.io/helm-charts
   - istio=https://istio-release.storage.googleapis.com/charts
+  - victoriametrics=https://victoriametrics.github.io/helm-charts
 helm-extra-args: --timeout 600s
 validate-maintainers: false
 skip-tests: true
