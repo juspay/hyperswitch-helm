@@ -290,12 +290,19 @@ vaultKeysJob:
     image: curlimages/curl:8.7.1
     maxAttempt: 30
     port: 80
+    # Seconds between lock checks once the vault has unlocked. The sidecar keeps watching so a vault container that restarts in
+    # place (and comes back locked) is unlocked again; the retries before the first unlock stay at 5 s.
+    watchIntervalSeconds: 5
     # API paths/headers the unlock flow calls - split out since they're a live API
     # surface, not fixed chart behavior.
     api:
       tenantHeader: "x-tenant-id"
       tenantId: "public"
       healthPath: "/health/diagnostics"
+      # Optional, needs card-vault >= v0.9.0 (older images have no such route and would never look unlocked). When set, the
+      # lock is read from this path's HTTP status (200 = unlocked, 401 = locked) instead of healthPath's body, which makes each
+      # check free of the database/cache tests /health/diagnostics runs. Typical value: "/health/runtime-config".
+      lockStatusPath: ""
       key1Path: "/custodian/key1"
       key2Path: "/custodian/key2"
       decryptPath: "/custodian/decrypt"

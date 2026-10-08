@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
+![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -204,12 +204,14 @@ external:
 | vaultKeysJob.checkVaultService.api.healthPath | string | `"/health/diagnostics"` |  |
 | vaultKeysJob.checkVaultService.api.key1Path | string | `"/custodian/key1"` |  |
 | vaultKeysJob.checkVaultService.api.key2Path | string | `"/custodian/key2"` |  |
+| vaultKeysJob.checkVaultService.api.lockStatusPath | string | `""` |  |
 | vaultKeysJob.checkVaultService.api.tenantHeader | string | `"x-tenant-id"` |  |
 | vaultKeysJob.checkVaultService.api.tenantId | string | `"public"` |  |
 | vaultKeysJob.checkVaultService.image | string | `"curlimages/curl:8.7.1"` |  |
 | vaultKeysJob.checkVaultService.imageRegistry | string | `"docker.io"` |  |
 | vaultKeysJob.checkVaultService.maxAttempt | int | `30` |  |
 | vaultKeysJob.checkVaultService.port | int | `80` |  |
+| vaultKeysJob.checkVaultService.watchIntervalSeconds | int | `5` |  |
 | vaultKeysJob.enabled | bool | `true` |  |
 | vaultKeysJob.keys.key1 | string | `"3c82773a6621feee3d5e0ce96654bf1f"` |  |
 | vaultKeysJob.keys.key2 | string | `"7de95dbbd5d020e6b2a44847b8942bf5"` |  |

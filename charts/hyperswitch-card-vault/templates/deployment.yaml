@@ -64,10 +64,19 @@ spec:
             - |-
               MAX_ATTEMPTS={{ .Values.vaultKeysJob.checkVaultService.maxAttempt | default 30 }}
               SLEEP_SECONDS=5
+              WATCH_SECONDS={{ .Values.vaultKeysJob.checkVaultService.watchIntervalSeconds | default 5 }}
+              {{- if $api.lockStatusPath }}
+              # The vault reports its lock through the HTTP status of {{ $api.lockStatusPath }}: 200 = unlocked, 401 = locked.
+              # Unlike healthPath this does no database/cache work per call.
+              is_unlocked() {
+                [ "$(curl -s -o /dev/null -w '%{http_code}' -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.lockStatusPath }} 2>/dev/null)" = "200" ]
+              }
+              {{- else }}
               is_unlocked() {
                 curl -s -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" http://localhost:{{ .Values.server.port }}{{ $api.healthPath }} 2>/dev/null \
                   | grep -q '"key_custodian_locked":false'
               }
+              {{- end }}
               unlock() {
                 curl -s -o /dev/null -H "Content-Type: application/json" -H "{{ $api.tenantHeader }}: {{ $api.tenantId }}" \
                   -X POST http://localhost:{{ .Values.server.port }}{{ $api.key1Path }} \
@@ -89,7 +98,7 @@ spec:
                 sleep $SLEEP_SECONDS
               done
               while true; do
-                sleep $SLEEP_SECONDS
+                sleep $WATCH_SECONDS
                 is_unlocked || unlock
               done
           resources:
