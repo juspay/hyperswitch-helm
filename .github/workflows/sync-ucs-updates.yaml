@@ -61,8 +61,15 @@ jobs:
 
           SOURCE_REF="${{ github.event.client_payload.version_tag }}"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
+          # The connector-service ref the config files are read from. Defaults
+          # to version_tag, which is a git tag for a release; a merge image
+          # (`<sha10>-release-fast`) is not a git ref, so its dispatch names
+          # the commit here. The image tag and chart version stay version_tag.
+          CONFIG_REF="${{ github.event.client_payload.config_ref }}"
+          CONFIG_REF="${CONFIG_REF:-$SOURCE_REF}"
 
           echo "Using version_tag from client_payload: $SOURCE_REF"
+          echo "Using config_ref: $CONFIG_REF"
           echo "Using tag prefix: $TAG_PREFIX"
 
           NEW_TAG="$TAG_PREFIX$SOURCE_REF"
@@ -78,6 +85,7 @@ jobs:
           echo "✅ Tag '$NEW_TAG' does not exist, safe to proceed"
           echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
           echo "target_ref=$SOURCE_REF" >> $GITHUB_OUTPUT
+          echo "config_ref=$CONFIG_REF" >> $GITHUB_OUTPUT
 
       - name: Merge latest changes from main
         id: merge_step
@@ -94,10 +102,10 @@ jobs:
 
       - name: Download UCS configuration files
         run: |
-          SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
-          BASE_URL="https://raw.githubusercontent.com/juspay/connector-service/${SOURCE_REF}/config"
+          CONFIG_REF="${{ steps.generate_tag.outputs.config_ref }}"
+          BASE_URL="https://raw.githubusercontent.com/juspay/connector-service/${CONFIG_REF}/config"
 
-          echo "Downloading UCS configs from connector-service ref: $SOURCE_REF"
+          echo "Downloading UCS configs from connector-service ref: $CONFIG_REF"
 
           # Create target directory
           mkdir -p charts/hyperswitch-ucs/configs
@@ -182,6 +190,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
+          CONFIG_REF="${{ steps.generate_tag.outputs.config_ref }}"
           CHART_VERSION="${{ steps.update_versions.outputs.chart_version }}"
           TAG="${{ steps.generate_tag.outputs.tag }}"
 
@@ -201,7 +210,7 @@ jobs:
           Chart version:
           - Updated chart version to $CHART_VERSION
 
-          Source: https://github.com/juspay/connector-service/tree/$SOURCE_REF/config
+          Source: https://github.com/juspay/connector-service/tree/$CONFIG_REF/config
           Tag: $TAG
           "
 
