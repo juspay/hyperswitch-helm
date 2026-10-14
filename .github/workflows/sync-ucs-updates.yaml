@@ -95,9 +95,11 @@ jobs:
       - name: Download UCS configuration files
         run: |
           SOURCE_REF="${{ steps.generate_tag.outputs.target_ref }}"
-          BASE_URL="https://raw.githubusercontent.com/juspay/connector-service/${SOURCE_REF}/config"
+          # A merge image is tagged <sha10>-release-fast, which is not a git ref;
+          # without the suffix it is the commit. A release tag has no suffix.
+          BASE_URL="https://raw.githubusercontent.com/juspay/connector-service/${SOURCE_REF%-release-fast}/config"
 
-          echo "Downloading UCS configs from connector-service ref: $SOURCE_REF"
+          echo "Downloading UCS configs from connector-service ref: ${SOURCE_REF%-release-fast}"
 
           # Create target directory
           mkdir -p charts/hyperswitch-ucs/configs
@@ -201,7 +203,7 @@ jobs:
           Chart version:
           - Updated chart version to $CHART_VERSION
 
-          Source: https://github.com/juspay/connector-service/tree/$SOURCE_REF/config
+          Source: https://github.com/juspay/connector-service/tree/${SOURCE_REF%-release-fast}/config
           Tag: $TAG
           "
 
