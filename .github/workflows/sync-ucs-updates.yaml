@@ -61,15 +61,15 @@ jobs:
 
           SOURCE_REF="${{ github.event.client_payload.version_tag }}"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
-          # The connector-service ref the config files are read from. Defaults
-          # to version_tag, which is a git tag for a release; a merge image
-          # (`<sha10>-release-fast`) is not a git ref, so its dispatch names
-          # the commit here. The image tag and chart version stay version_tag.
-          CONFIG_REF="${{ github.event.client_payload.config_ref }}"
-          CONFIG_REF="${CONFIG_REF:-$SOURCE_REF}"
+          # The connector-service ref the config files are read from: the
+          # version_tag itself, which is a git tag for a release. A merge's
+          # image is tagged `<sha10>-release-fast`, which is not a git ref, so
+          # the suffix is dropped and the configs come from that commit. The
+          # image tag and chart version stay version_tag.
+          CONFIG_REF="${SOURCE_REF%-release-fast}"
 
           echo "Using version_tag from client_payload: $SOURCE_REF"
-          echo "Using config_ref: $CONFIG_REF"
+          echo "Reading config files from ref: $CONFIG_REF"
           echo "Using tag prefix: $TAG_PREFIX"
 
           NEW_TAG="$TAG_PREFIX$SOURCE_REF"
