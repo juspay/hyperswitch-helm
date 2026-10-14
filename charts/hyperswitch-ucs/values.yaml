@@ -29,6 +29,10 @@ image:
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
+
+# -- Init containers added to the UCS pod (rendered with tpl), e.g. to wait for Kafka before
+# the event publisher is created
+initContainers: []
 # -- Override the name of the chart
 # @section -- Connector Service
 nameOverride: ""
