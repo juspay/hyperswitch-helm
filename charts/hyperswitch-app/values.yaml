@@ -1633,21 +1633,6 @@ hyperswitch-card-vault:
 hyperswitch-ucs:
   enabled: false
   fullnameOverride: "hyperswitch-ucs"
-  # UCS creates its Kafka event publisher once at startup and drops events until restarted if
-  # Kafka is unreachable then, so hold the pod until the bundled Kafka accepts connections.
-  initContainers:
-    - name: check-kafka
-      image: docker.io/bitnamilegacy/redis:7.2.3-debian-11-r2
-      imagePullPolicy: IfNotPresent
-      command: [ "/bin/bash", "-c" ]
-      args:
-        - >
-          attempt=0;
-          while ! timeout 2 bash -c "</dev/tcp/kafka0/29092"; do
-            if [ $attempt -ge 60 ]; then echo "Kafka not reachable at kafka0:29092; starting UCS anyway (events disabled until restart)"; exit 0; fi;
-            attempt=$((attempt+1)); echo "Waiting for Kafka... Attempt: $attempt"; sleep 5;
-          done;
-          echo "Kafka is ready.";
   image:
     imageRegistry: docker.io
     repository: juspaydotin/hyperswitch-prism
