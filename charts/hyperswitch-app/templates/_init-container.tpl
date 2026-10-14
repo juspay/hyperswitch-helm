@@ -49,6 +49,34 @@
     echo "Redis is ready.";
 {{- end -}}
 
+{{/* Wait for the hyperswitch-ucs gRPC port: the router builds its UCS client once at startup
+and runs without UCS until restarted if the dial fails. */}}
+{{- define "ucs.initContainer.check.ready" -}}
+- name: check-ucs
+  {{- $ucs := index .Values "hyperswitch-ucs" }}
+  {{- $check := .Values.ucsMiscConfig.checkUcsIsUp.initContainer }}
+  {{- $registry := .Values.global.imageRegistry | default $check.imageRegistry }}
+  image: "{{ $registry }}/{{ $check.image }}"
+  imagePullPolicy: IfNotPresent
+  command: [ "/bin/bash", "-c" ]
+  #language=sh
+  args:
+  - >
+    MAX_ATTEMPTS={{ $check.maxAttempt }};
+    SLEEP_SECONDS=5;
+    attempt=0;
+    while ! timeout 2 bash -c "</dev/tcp/{{ $ucs.fullnameOverride | default "hyperswitch-ucs" }}/{{ $ucs.service.grpc.port | default 8000 }}"; do
+      if [ $attempt -ge $MAX_ATTEMPTS ]; then
+        echo "UCS did not become ready in time";
+        exit 1;
+      fi;
+      attempt=$((attempt+1));
+      echo "Waiting for UCS to be ready... Attempt: $attempt";
+      sleep $SLEEP_SECONDS;
+    done;
+    echo "UCS is ready.";
+{{- end -}}
+
 {{/* Ensure ClickHouse is up and running */}}
 {{- define "clickhouse.initContainer.check.ready" -}}
 - name: check-clickhouse
