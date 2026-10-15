@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
+![Version: 0.1.9](https://img.shields.io/badge/Version-0.1.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.0](https://img.shields.io/badge/AppVersion-0.7.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -157,6 +157,7 @@ external:
 | initDB.enable | bool | `true` |  |
 | initDB.migration.image | string | `"christophwurst/diesel-cli:latest"` |  |
 | initDB.migration.imageRegistry | string | `"docker.io"` |  |
+| livenessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/health","port":8080,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30}` | The liveness probe configuration for the tartarus container |
 | postgresql.architecture | string | `"standalone"` |  |
 | postgresql.auth.database | string | `"locker-db"` |  |
 | postgresql.auth.password | string | `"dummyPassword"` |  |
@@ -168,7 +169,9 @@ external:
 | postgresql.primary.name | string | `""` |  |
 | postgresql.primary.resources.requests.cpu | string | `"100m"` |  |
 | postgresql.primary.tolerations | list | `[]` |  |
+| readinessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/health","port":8080,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":50,"successThreshold":1,"timeoutSeconds":30}` | The readiness probe configuration for the tartarus container |
 | replicaCount | int | `1` | Number of replicas, ignored when autoscaling.enabled is true |
+| resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"200Mi"}}` | Resource requests/limits for the tartarus container |
 | secrets.api_client.identity | string | `""` |  |
 | secrets.aws.key_id | string | `""` |  |
 | secrets.aws.region | string | `"us-east-1"` |  |
@@ -193,10 +196,23 @@ external:
 | server.host | string | `"0.0.0.0"` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.7.0"` |  |
 | server.imageRegistry | string | `"docker.juspay.io"` |  |
+| server.metrics.background_metrics_collection_interval_secs | int | `15` |  |
+| server.metrics.host | string | `"0.0.0.0"` |  |
+| server.metrics.mode | string | `""` |  |
+| server.metrics.port | int | `9101` |  |
 | server.pod.annotations | object | `{}` |  |
 | server.port | string | `"8080"` |  |
 | server.vault.url | string | `"http://127.0.0.1:8200"` |  |
 | server.version | string | `"v0.7.0"` |  |
+| serviceMonitor.enabled | bool | `false` | Create a ServiceMonitor (only takes effect when server.metrics.mode is "prometheus") |
+| serviceMonitor.interval | string | `""` |  |
+| serviceMonitor.labels | object | `{}` |  |
+| serviceMonitor.metricRelabelings | list | `[]` |  |
+| serviceMonitor.namespace | string | `""` |  |
+| serviceMonitor.path | string | `"/metrics"` |  |
+| serviceMonitor.portName | string | `"metrics"` |  |
+| serviceMonitor.scheme | string | `"http"` |  |
+| serviceMonitor.scrapeTimeout | string | `""` |  |
 | tenant_secrets.public.master_key | string | `"8283d68fdbd89a78aef9bed8285ed1cd9310012f660eefbad865f20a3f3dd9498f06147da6a7d9b84677cafca95024990b3d2296fbafc55e10dd76df"` |  |
 | tenant_secrets.public.public_key | string | "-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----" | The public key for the tenant from tenant_secrets-public-public_key.pem |
 | tenant_secrets.public.schema | string | `"public"` |  |

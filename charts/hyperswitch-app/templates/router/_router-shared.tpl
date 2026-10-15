@@ -306,7 +306,8 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if or $root.Values.initDB.enable $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable (eq (include "hyperswitch.superpositionFallback.fetchEnabled" $root) "true") }}
+      {{- $waitForUcs := and (index $root.Values "hyperswitch-ucs" "enabled") $root.Values.ucsMiscConfig.checkUcsIsUp.initContainer.enable }}
+      {{- if or $root.Values.initDB.enable $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable (eq (include "hyperswitch.superpositionFallback.fetchEnabled" $root) "true") $waitForUcs }}
       initContainers:
         {{- if eq (include "hyperswitch.superpositionFallback.fetchEnabled" $root) "true" }}
         {{- include "hyperswitch.superpositionFallback.initContainer" $root | nindent 8 }}
@@ -316,6 +317,9 @@ spec:
         {{- end }}
         {{- if $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
         {{- include "redis.initContainer.check.ready" $root | nindent 8 }}
+        {{- end }}
+        {{- if $waitForUcs }}
+        {{- include "ucs.initContainer.check.ready" $root | nindent 8 }}
         {{- end }}
       {{- end }}
       containers:

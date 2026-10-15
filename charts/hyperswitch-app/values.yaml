@@ -523,8 +523,8 @@ server:
         # -- Client Service Name
         service: "dynamo"
       unified_connector_service:
-        # Unified Connector Service Base URL
-        base_url: "http://localhost:8000"
+        # Unified Connector Service Base URL (the hyperswitch-ucs subchart's service)
+        base_url: "http://hyperswitch-ucs:8000"
         # Connection Timeout Duration in Seconds
         connection_timeout: "10"
       # Revenue recovery client base url
@@ -1275,6 +1275,14 @@ redisMiscConfig:
       imageRegistry: docker.io
       image: bitnamilegacy/redis:7.2.3-debian-11-r2
       maxAttempt: 60
+ucsMiscConfig:
+  checkUcsIsUp:
+    initContainer:
+      # -- Hold router pods until the hyperswitch-ucs gRPC port accepts connections (only when hyperswitch-ucs.enabled)
+      enable: true
+      imageRegistry: docker.io
+      image: bitnamilegacy/redis:7.2.3-debian-11-r2
+      maxAttempt: 60
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
@@ -1689,10 +1697,23 @@ hyperswitch-ucs:
       host: "0.0.0.0"
       port: 8080
     proxy:
-      https_url: ""
-      http_url: ""
+      # null removes the key (and the subchart's placeholder default): UCS reads these as
+      # Option<String>, so an empty string would be an invalid proxy URL on every connector call.
+      https_url: null
+      http_url: null
       idle_pool_connection_timeout: 90
-      bypass_proxy_urls: ["localhost", "local"]
+      bypass_urls: ["localhost", "local"]
+    # Publish connector-call events to the bundled Kafka; vector's UCS normaliser
+    # turns them into rows of the prism_connector_events_* ClickHouse tables.
+    events:
+      enabled: true
+      brokers: ["kafka0:29092"]
+    # Copy the router's x-lineage-ids header (merchant_id, ...) onto every event,
+    # so connector events can be attributed to a merchant.
+    lineage:
+      enabled: true
+      header_name: "x-lineage-ids"
+      field_prefix: ""
 # Superposition fallback seed.
 #
 # The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
@@ -1998,6 +2019,16 @@ vector:
         type: http_server
         address: 0.0.0.0:3103
         encoding: json
+      # UCS (Prism) connector events, published by hyperswitch-ucs when
+      # hyperswitch-ucs.config.events.enabled is true.
+      ucs_connector_events:
+        type: kafka
+        bootstrap_servers: kafka0:29092
+        group_id: ucs-connector-events-normalizer
+        topics:
+          - unified-connector-service-connector-events
+        decoding:
+          codec: json
     transforms:
       events_create_ts:
         inputs:
@@ -2049,6 +2080,95 @@ vector:
           # .merchant_id = row.merchant_id
 
           .after_transform = now()
+      # Keep only UCS's outbound connector calls (not shadow), reshaped to the
+      # connector-event schema of the prism_connector_events_* ClickHouse tables.
+      ucs_connector_call_events:
+        type: filter
+        inputs:
+          - ucs_connector_events
+        condition: .stage == "ConnectorCall" && (string(.execution_mode) ?? "primary") != "shadow"
+      ucs_normalize_connector_events:
+        type: remap
+        inputs:
+          - ucs_connector_call_events
+        source: |-
+          flow = string(.flow_type) ?? ""
+          service_name = string(.service_name) ?? ""
+          is_payout = service_name == "PayoutService" || starts_with(flow, "Payout")
+          is_dispute = service_name == "DisputeService" || includes(["AcceptDispute", "SubmitEvidence", "DefendDispute", "Dsync"], flow)
+          is_refund = flow == "Refund" || flow == "Rsync"
+
+          reference_id = string(.reference_id) ?? null
+          resource_id = string(.resource_id) ?? null
+          connector_name = string(.connector) ?? ""
+          request_id = string(.request_id) ?? ""
+          url = string(.url) ?? ""
+          status_code = if exists(.status_code) && !is_null(.status_code) { to_int(.status_code) ?? 0 } else { 0 }
+          created_at = if is_timestamp(.timestamp) {
+            to_unix_timestamp!(.timestamp, unit: "milliseconds")
+          } else {
+            to_int(.timestamp) ?? 0
+          }
+          latency = if exists(.latency_ms) && !is_null(.latency_ms) { to_int(.latency_ms) ?? 0 } else { 0 }
+          method = string(.method) ?? ""
+          execution_mode = string(.execution_mode) ?? "primary"
+
+          request_data = if exists(.request_data) && !is_null(.request_data) {
+            string(.request_data) ?? encode_json(.request_data)
+          } else {
+            ""
+          }
+          response_data = if exists(.response_data) && !is_null(.response_data) {
+            string(.response_data) ?? encode_json(.response_data)
+          } else {
+            null
+          }
+          error_data = if exists(.error) && !is_null(.error) {
+            string(.error) ?? encode_json(.error)
+          } else {
+            null
+          }
+
+          merchant_id = string(.merchant_id) ?? string(.lineage_merchant_id) ?? ""
+          tenant_id = string(.tenant_id) ?? null
+          payment_id = null
+          payout_id = null
+          refund_id = null
+          dispute_id = null
+
+          if is_payout {
+            payout_id = reference_id
+          } else {
+            payment_id = reference_id
+            if is_refund {
+              refund_id = resource_id
+            }
+            if is_dispute {
+              dispute_id = resource_id
+            }
+          }
+
+          . = {}
+          .tenant_id = tenant_id
+          .execution_mode = execution_mode
+          .service_name = service_name
+          .merchant_id = merchant_id
+          .payment_id = payment_id
+          .connector_name = connector_name
+          .destination = "connector"
+          .request_id = request_id
+          .url = url
+          .flow = flow
+          .request = request_data
+          .masked_response = response_data
+          .error = error_data
+          .status_code = status_code
+          .created_at = created_at
+          .latency = latency
+          .method = method
+          .dispute_id = dispute_id
+          .refund_id = refund_id
+          .payout_id = payout_id
     sinks:
       opensearch_events_1:
         type: elasticsearch
@@ -2188,6 +2308,14 @@ vector:
         bootstrap_servers: kafka0:29092
         topic: hyper-sdk-logs
         key_field: ".merchant_id"
+      ucs_normalized_connector_events_kafka:
+        type: kafka
+        inputs:
+          - ucs_normalize_connector_events
+        bootstrap_servers: kafka0:29092
+        topic: prism-outgoing-connector-events
+        encoding:
+          codec: json
 # EFS PersistentVolumeClaim configuration for superposition fallback
 superposition_fallback_efs:
   # -- Enable creation of an EFS-backed PVC and volumeMounts in all pods
