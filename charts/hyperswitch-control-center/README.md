@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.1.3](https://img.shields.io/badge/Version-1.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.9](https://img.shields.io/badge/AppVersion-v1.38.9-informational?style=flat-square)
+![Version: 1.1.4](https://img.shields.io/badge/Version-1.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.38.10](https://img.shields.io/badge/AppVersion-v1.38.10-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -127,6 +127,7 @@ After deployment, verify the Control Center is working:
 | affinity | object | `{}` |  |
 | config.default.connector_clone.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.billingProcessors | list | `[]` |  |
+| config.default.connector_list_for_live.frmProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.paymentProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.payoutProcessors | list | `[]` |  |
 | config.default.connector_list_for_live.pmAuthProcessors | list | `[]` |  |
@@ -139,6 +140,7 @@ After deployment, verify the Control Center is working:
 | config.default.endpoints.dss_certificate_eu_url | string | `""` |  |
 | config.default.endpoints.dss_certificate_us_url | string | `"https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"` |  |
 | config.default.endpoints.dynamo_simulation_template_url | string | `""` |  |
+| config.default.endpoints.euler_url | string | `""` |  |
 | config.default.endpoints.favicon_url | string | `""` |  |
 | config.default.endpoints.hypersense_url | string | `""` |  |
 | config.default.endpoints.logo_url | string | `""` |  |
@@ -153,13 +155,16 @@ After deployment, verify the Control Center is working:
 | config.default.features.cug_user | bool | `false` |  |
 | config.default.features.custom_webhook_headers | string | `"false"` |  |
 | config.default.features.dev_advanced_payments_view | bool | `false` |  |
+| config.default.features.dev_alerts | bool | `false` |  |
 | config.default.features.dev_alt_payment_methods | bool | `false` |  |
 | config.default.features.dev_blocklist | bool | `false` |  |
 | config.default.features.dev_click_to_pay | string | `"true"` |  |
 | config.default.features.dev_debit_routing | bool | `false` |  |
+| config.default.features.dev_embed_decision_engine | bool | `false` |  |
 | config.default.features.dev_hypersense_v2_product | bool | `false` |  |
 | config.default.features.dev_intelligent_routing_v2 | bool | `false` |  |
 | config.default.features.dev_modularity_v2 | bool | `false` |  |
+| config.default.features.dev_offers | bool | `false` |  |
 | config.default.features.dev_recon_v2_product | bool | `false` |  |
 | config.default.features.dev_recovery_v2_product | bool | `false` |  |
 | config.default.features.dev_superposition | bool | `false` |  |
@@ -209,6 +214,7 @@ After deployment, verify the Control Center is working:
 | config.default.merchant_config.denylist.new_analytics.merchant_ids | list | `[]` |  |
 | config.default.merchant_config.denylist.new_analytics.org_ids | list | `[]` |  |
 | config.default.merchant_config.denylist.new_analytics.profile_ids | list | `[]` |  |
+| config.default.superposition_configs.display_configs | string | `""` |  |
 | config.default.superposition_configs.organization_id | string | `""` |  |
 | config.default.superposition_configs.workspace | string | `""` |  |
 | config.default.theme.primary_color | string | `"#006DF9"` |  |
@@ -225,14 +231,14 @@ After deployment, verify the Control Center is working:
 | dependencies.sdk.fullUrlOverride | string | `""` |  |
 | dependencies.sdk.host | string | `"http://localhost:9050"` |  |
 | dependencies.sdk.subversion | string | `"v1"` |  |
-| dependencies.sdk.version | string | `"0.126.0"` |  |
+| dependencies.sdk.version | string | `"0.134.0"` |  |
 | extraEnvVars | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | global.imageRegistry | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `"v1.38.9"` |  |
+| image.tag | string | `"v1.38.10"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |

@@ -35,10 +35,10 @@ server:
   #   eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
   host: "0.0.0.0"
   port: "8080"
-  version: v0.7.0
+  version: v0.9.0
   # Image registry and name for hyperswitch-card-vault.
   imageRegistry: docker.juspay.io
-  image: juspaydotin/hyperswitch-card-vault:v0.7.0
+  image: juspaydotin/hyperswitch-card-vault:v0.9.0
 
   # values to be used in pod template.
   pod:
@@ -235,6 +235,8 @@ tenant_secrets:
       PQIDAQAB
       -----END PUBLIC KEY-----
     schema: public
+    # -- Unique Redis namespace for this tenant, required by the v0.9.0 release binary even when KV storage is disabled
+    redis_key_prefix: public
 
 # Values for database (postgresql).
 postgresql:
@@ -275,7 +277,10 @@ initDB:
     maxAttempt: 30
   migration:
     imageRegistry: docker.io
-    image: christophwurst/diesel-cli:latest
+    # -- Base image with bash and apt-get; the migration Job installs diesel_cli 2.x to support non-transactional index migrations
+    image: debian:trixie-slim
+    # -- Installer for diesel_cli; pin a release URL for reproducible migration tooling
+    dieselInstaller: https://github.com/diesel-rs/diesel/releases/latest/download/diesel_cli-installer.sh
 
 # Unlocks the vault's custodian keys via an init container in every
 # hyperswitch-card-vault pod - see templates/deployment.yaml. Reads key1/key2 from the
