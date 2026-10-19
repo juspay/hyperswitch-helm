@@ -1,0 +1,459 @@
+hyperswitch-app:
+ disableInternalSecrets: true
+
+ services:
+   router:
+     # Pinned to Juspay's hotfix build — the latest official release
+     # predates Redis AUTH support. Revert to the next official release
+     # once it ships this fix.
+     version: "2026.09.09.1-hotfix5"
+     host: https://REDACTED-PLACEHOLDER-HOSTNAME/api  # TODO: replace once real ingress hostname is decided
+   consumer:
+     version: "2026.09.09.1-hotfix5"
+   producer:
+     version: "2026.09.09.1-hotfix5"
+   drainer:
+     enabled: false
+   sdk:
+     # Not self-hosting any SDK asset — same public sandbox CDN as the
+     # control-center dashboard's test-payment widget. This key isn't
+     # actually consumed by the chart (its only helper is never included
+     # by any template), kept here for consistency with that decision.
+     host: https://beta.hyperswitch.io
+
+ global:
+   replicas: 2
+   tolerations:   
+     - effect: NoSchedule
+       key: hyperswitch-only
+       operator: Equal
+       value: "true"
+   nodeSelector:
+     hyperswitch-only: "true"
+   podAnnotations:
+     traffic_sidecar_istio_io_excludeOutboundIPRanges: REDACTED/32
+   annotations:
+     deployment.kubernetes.io/revision: "1"
+   serviceAccountAnnotations:
+     eks.amazonaws.com/role-arn:
+
+ server:
+   replicas: 2
+   resources:
+     limits:
+       cpu: 1500m
+       memory: 3Gi
+     requests:
+       cpu: 400m
+       memory: 400Mi
+   livenessProbe:
+     failureThreshold: 3
+     httpGet:
+       path: /health
+       port: 8080
+       scheme: HTTP
+     initialDelaySeconds: 5
+     periodSeconds: 60
+     successThreshold: 1
+     timeoutSeconds: 1
+   readinessProbe:
+     failureThreshold: 3
+     httpGet:
+       path: /health
+       port: 8080
+       scheme: HTTP
+     initialDelaySeconds: 5
+     periodSeconds: 60
+     successThreshold: 1
+     timeoutSeconds: 1
+   podAnnotations:
+     traffic_sidecar_istio_io_excludeOutboundIPRanges: REDACTED/32
+   annotations:
+     deployment.kubernetes.io/revision: "1"
+   labels:
+     app: hyperswitch-server
+   serviceAccountAnnotations:
+     # No IRSA role — file_storage (S3-backed dispute-evidence/webhook-archival)
+     # isn't in use; observability goes through Datadog/Humio/Vector instead.
+     # staging's fake "my-role-arn" placeholder was never real; left blank
+     # here rather than carrying forward a misleading value.
+     eks.amazonaws.com/role-arn:
+   configs:
+     analytics:
+       clickhouse:
+         database_name: hyperswitch_pp
+         host: https://REDACTED-CLICKHOUSE-CLOUD-HOST:8443
+         username: REDACTED
+         password:
+           _secretRef:
+             name: hyperswitch-sealed-secrets
+             key: ROUTER__ANALYTICS__CLICKHOUSE__PASSWORD
+     api_keys:
+       hash_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__API_KEYS__HASH_KEY
+     # applepay_decrypt_keys, applepay_merchant_configs intentionally omitted —
+     # no Hosted Payment Page/Web SDK checkout integration point for pp
+     # connector_onboarding.paypal intentionally omitted — not needed for pp yet,
+     # trivial to add back via a new sealed secret when a merchant needs it
+     cors:
+       origin: "https://REDACTED-PLACEHOLDER-HOSTNAME"  # TODO: replace once real ingress hostname is decided
+     events:
+       kafka:
+         api_logs_topic: hyperswitch-pp-api-log-events
+         attempt_analytics_topic: hyperswitch-pp-payment-attempt-events
+         audit_events_topic: hyperswitch-pp-audit-events
+         authentication_analytics_topic: hyperswitch-pp-authentication-events
+         brokers:
+           - b-1.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092
+           - b-2.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092
+           - b-3.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092
+         connector_logs_topic: hyperswitch-pp-outgoing-connector-events
+         consolidated_events_topic: hyperswitch-pp-consolidated-events
+         dispute_analytics_topic: hyperswitch-pp-dispute-events
+         fraud_check_analytics_topic: hyperswitch-pp-fraud-check-events
+         intent_analytics_topic: hyperswitch-pp-payment-intent-events
+         outgoing_webhook_logs_topic: hyperswitch-pp-outgoing-webhook-events
+         payout_analytics_topic: hyperswitch-pp-payout-events
+         refund_analytics_topic: hyperswitch-pp-refund-events
+         routing_logs_topic: hyperswitch-pp-routing-api-events
+     # forex_api, jwekey, key_manager, kms, locker, netcetera intentionally
+     # omitted — none of these features are in use for pp
+     grpc_client:
+       unified_connector_service:
+         # In-cluster service name from the hyperswitch-ucs subchart's
+         # fullnameOverride — same for both pp/prod, not release-templated.
+         base_url: "http://hyperswitch-ucs:8000"
+         connection_timeout: "10"
+     # Shared secret between the main router and the forked payment-method
+     # chart (hyperswitch-payment-method/) — both sides must carry the same
+     # key value.
+     internal_merchant_id_profile_id_auth:
+       enabled: true
+       internal_api_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__INTERNAL_MERCHANT_ID_PROFILE_ID_AUTH__INTERNAL_API_KEY
+     log:
+       telemetry:
+         metrics_enabled: true
+         traces_enabled: false
+         otel_exporter_otlp_endpoint: "http://hyperswitch-metrics-collector.hyperswitch-pp.svc.cluster.local:4317"
+         route_to_trace: ['*/confirm']
+     multitenancy:
+       global_tenant:
+         clickhouse_database: hyperswitch_pp
+       tenants:
+         public:
+           base_url: "https://REDACTED-PLACEHOLDER-HOSTNAME"  # TODO: pending real ingress hostname
+           clickhouse_database: "hyperswitch_pp"
+           user:
+             control_center_url: "https://REDACTED-PLACEHOLDER-HOSTNAME"  # TODO: pending real ingress hostname
+     payment_method_auth:
+       pm_auth_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__PAYMENT_METHOD_AUTH__PM_AUTH_KEY
+     proxy:
+       http_url: null
+       https_url: null
+     # configs.redis.cluster_urls intentionally omitted — only read when
+     # cluster_enabled=true (default false, never set here); connection
+     # details come entirely from externalRedis.* above.
+     secrets:
+       admin_api_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__SECRETS__ADMIN_API_KEY
+       jwt_secret:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__SECRETS__JWT_SECRET
+       master_enc_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__SECRETS__MASTER_ENC_KEY
+     # recon_admin_api_key, migration_encryption_timestamp intentionally
+     # omitted — not real fields on the current app's Secrets struct
+     superposition:
+       # In-cluster service name — matches the `superposition` subchart's
+       # generated service name for this release.
+       endpoint: "http://hyperswitch-app-superposition:8080"
+       tokenSecretName: "hyperswitch-sealed-secrets"
+       tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"
+       # PENDING: Superposition must be deployed and healthy first — these
+       # are generated by calling its own API (POST /organisations, then
+       # POST /organisations/{org_id}/workspaces), not chosen ahead of time.
+       orgId: "PENDING_RUN_setup-superposition.sh"
+       workspaceId: "PENDING_RUN_setup-superposition.sh"
+     user:
+       base_url: https://REDACTED-PLACEHOLDER-HOSTNAME  # TODO: pending real ingress hostname
+       totp_issuer_name: Hyperswitch
+     user_auth_methods:
+       encryption_key:
+         _secretRef:
+           name: hyperswitch-sealed-secrets
+           key: ROUTER__USER_AUTH_METHODS__ENCRYPTION_KEY
+
+ consumer:
+   replicas: 3
+   resources:
+     limits:
+       cpu: 300m
+       memory: 300Mi
+     requests:
+       cpu: 100m
+       memory: 100Mi
+   podAnnotations:
+     traffic_sidecar_istio_io_excludeOutboundIPRanges: REDACTED/32
+   annotations:
+     deployment.kubernetes.io/revision: "1"
+   labels:
+     app: hyperswitch-consumer
+   serviceAccountAnnotations:
+     eks.amazonaws.com/role-arn:
+
+ producer:
+   resources:
+     limits:
+       cpu: 300m
+       memory: 300Mi
+     requests:
+       cpu: 100m
+       memory: 100Mi
+   podAnnotations:
+     traffic_sidecar_istio_io_excludeOutboundIPRanges: REDACTED/32
+   annotations:
+     deployment.kubernetes.io/revision: "1"
+   labels:
+     app: hyperswitch-producer
+   serviceAccountAnnotations:
+     eks.amazonaws.com/role-arn:
+
+ # OLAP — read/analytics traffic under /olap, sharing DB/Redis/ConfigMap/
+ # Secret/ServiceAccount with the main router. Routing (/olap HTTPRoute) is
+ # separate ingress/routing work — not yet live.
+ olap:
+   enabled: true
+   replicas: 1
+   database:
+     # We have a real reader endpoint, so this correctly routes to it
+     # rather than falling back to primary.
+     useReplicaForMaster: true
+
+ # UCS / Prism — contractually mandatory per the Juspay–Arrive SLA.
+ hyperswitch-ucs:
+   enabled: true
+   # Public-Docker-Hub-only policy — override the chart's ghcr.io default.
+   image:
+     imageRegistry: docker.io
+     repository: juspaydotin/hyperswitch-prism
+     tag: "2026.09.07.2"
+   nodeSelector:
+     hyperswitch-only: "true"
+   tolerations:
+     - effect: NoSchedule
+       key: hyperswitch-only
+       operator: Equal
+       value: "true"
+   # Sandbox connector config + real sizing both deferred until after the
+   # base deployment is confirmed stable.
+
+ # Superposition — contractually mandatory per the Juspay–Arrive SLA.
+ # Schema prerequisite (global schema, organisations/workspaces tables)
+ # already applied.
+ superposition:
+   enabled: true
+   configs:
+     db_host: "REDACTED-RDS-CLUSTER-ENDPOINT:5432"
+     db_name: "hyperswitch-pp-superposition"
+     db_user: "hyperswitch-pp-superposition"
+   secrets:
+     # Sourced from AWS Secrets Manager via CI, same mechanism as the main
+     # app's DB password — not something we seal ourselves.
+     db_password:
+       _secretRef:
+         name: usa-mobile-payments-db-hyperswitch-pp-superposition
+         key: DB_PASSWORD
+     superposition_token:
+       _secretRef:
+         name: hyperswitch-sealed-secrets
+         key: ROUTER__SUPERPOSITION__TOKEN
+
+ # superpositionDB (alias-service + auto-migration helper) intentionally
+ # left disabled — designed for hyperswitch-stack's single-release-per-
+ # namespace model; we already migrated the schema by hand and use our own
+ # real Aurora endpoint directly above.
+
+ redis:
+   enabled: false
+
+ externalRedis:
+   enabled: true
+   # Redis Cloud (not ElastiCache) — private endpoint, port stripped per chart
+   # convention (chart adds it back via `port` below).
+   host: "REDACTED-REDIS-CLOUD-ENDPOINT"
+   port: 15457
+   auth:
+     # Redis Cloud mandates AUTH (unlike staging's ElastiCache, which never
+     # enabled client-side auth) — deliberate deviation, not an oversight.
+     enabled: true
+     username: "default"
+     password:
+       _secretRef:
+         name: hyperswitch-pp-conn
+         key: password
+
+ redisMiscConfig:
+   checkRedisIsUp:
+     initContainer:
+       enable: false
+
+ postgresql:
+   enabled: false
+
+ externalPostgresql:
+   enabled: true
+   primary:
+     host: "REDACTED-RDS-CLUSTER-ENDPOINT"
+     auth:
+       username: "hyperswitch-pp"
+       password:
+         _secretRef:
+           name: usa-mobile-payments-db-hyperswitch-pp
+           key: DB_PASSWORD
+       plainpassword:
+         _secretRef:
+           name: usa-mobile-payments-db-hyperswitch-pp
+           key: DB_PASSWORD
+       database: "hyperswitch-pp"
+   readOnly:
+     enabled: true
+     host: "REDACTED-RDS-CLUSTER-READER-ENDPOINT"
+     auth:
+       username: "hyperswitch-pp"
+       password:
+         _secretRef:
+           name: usa-mobile-payments-db-hyperswitch-pp
+           key: DB_PASSWORD
+       plainpassword:
+         _secretRef:
+           name: usa-mobile-payments-db-hyperswitch-pp
+           key: DB_PASSWORD
+       database: "hyperswitch-pp"
+
+ initDB:
+   enable: false
+
+ autoscaling:
+   minReplicas: 2
+   maxReplicas: 50
+   targetCPUUtilizationPercentage: 75
+
+ hyperswitch-card-vault:
+   enabled: false
+
+ kafka:
+   enabled: false
+
+ initCH:
+   checkCHisUp:
+     image: "clickhouse:24.3"
+
+ clickhouse:
+   enabled: false
+
+ mailhog:
+   enabled: false
+
+ vector:
+   role: "Stateless-Aggregator"
+   replicas: 1
+   podDisruptionBudget:
+     enabled: true
+     minAvailable: 0
+     maxUnavailable: 1
+   resources:
+     requests:
+       cpu: 100m
+       memory: 512Mi
+     limits:
+       cpu: 200m
+       memory: 512Mi
+   nodeSelector:
+     hyperswitch-only: "true"
+   tolerations:
+     - effect: NoSchedule
+       key: hyperswitch-only
+       operator: Equal
+       value: "true"
+   env:
+     - name: KAFKA_HOST
+       value: "b-1.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092,b-2.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092,b-3.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092"
+   customConfig:
+
+     acknowledgements:
+       enabled: true
+
+     api:
+       enabled: true
+       address: 0.0.0.0:8686
+       playground: false
+
+     sources:
+       kafka_tx_events:
+         bootstrap_servers: "${KAFKA_HOST}"
+
+       sessionized_kafka_tx_events:
+         bootstrap_servers: "${KAFKA_HOST}"
+
+       vector_metrics:
+         type: internal_metrics
+
+       node_metrics:
+         type: host_metrics
+
+       sdk_source:
+         type: http_server
+         address: 0.0.0.0:3103
+
+     transforms:
+
+       sdk_transformed:
+         type: throttle
+         inputs:
+           - sdk_source
+         key_field: "{{ .payment_id }}{{ .merchant_id }}"
+         threshold: 1000
+         window_secs: 60
+
+       amend_sdk_logs:
+         type: remap
+         inputs:
+           - sdk_transformed
+         source: |
+          .before_transform = now()
+          .after_transform = now()
+
+     sinks:
+
+       metrics:
+         type: prometheus_exporter
+         inputs:
+           - vector_metrics
+           - node_metrics
+
+       sdk_sink:
+         type: kafka
+         encoding:
+           codec: json
+           except_fields:
+             - "path"
+             - "source_type"
+         inputs:
+           - "amend_sdk_logs"
+         bootstrap_servers: b-1.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092,b-2.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092,b-3.REDACTED-MSK-BROKER.kafka.us-east-1.amazonaws.com:9092
+         topic: hyper-pp-sdk-logs
+         key_field: ".merchant_id"
+

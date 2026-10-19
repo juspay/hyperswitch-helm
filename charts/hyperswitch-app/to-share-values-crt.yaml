@@ -1,0 +1,180 @@
+# =============================================================================
+# to-share-values-crt.yaml — corrections overlay for to-share-values.yaml
+# =============================================================================
+# Apply ON TOP of to-share-values.yaml (later -f wins):
+#   helm upgrade <release> . -f to-share-values.yaml -f to-share-values-crt.yaml
+#
+# Contains ONLY the deltas found missing/wrong in to-share-values.yaml:
+#   1. paymentMethodModular (PMM) enablement — the V2 payment-method service.
+#   2. server.serviceAccount.annotations — clears the chart's fake
+#      "my-role-arn" default that to-share-values.yaml leaves rendering today.
+#   3. server.configs.redis.{username,password} — the Redis AUTH credentials
+#      the router binaries actually read. The externalRedis.auth.* block in
+#      to-share-values.yaml does NOT deliver them (see the redis note below).
+#
+# NOTE on serviceAccountAnnotations: the `serviceAccountAnnotations` keys in
+# to-share-values.yaml (under global, server, consumer and producer) are read
+# by NOTHING in this chart — they are inert and should eventually be deleted
+# from that file. The only consumed knob is server.serviceAccount.annotations
+# below, which annotates the ONE shared ServiceAccount
+# (<release>-hyperswitch-router-role) used by the router, consumer, producer,
+# drainer, olap, PMM and the cronjob.
+
+hyperswitch-app:
+
+  server:
+    serviceAccount:
+      annotations:
+        # null DELETES the chart-default fake "my-role-arn" annotation.
+        # (`annotations: {}` would NOT clear it — Helm merges maps, and an
+        # empty map overrides nothing.) Without this, the EKS pod-identity
+        # webhook injects AWS_ROLE_ARN=my-role-arn into every pod on the
+        # shared ServiceAccount. If IRSA is ever needed (S3 file storage,
+        # KMS), replace null with the real role ARN — remember it is one
+        # role for ALL app workloads sharing this ServiceAccount.
+        eks.amazonaws.com/role-arn: null
+
+    # =========================================================================
+    # Redis AUTH (username + password) — upstream [redis] section of
+    # config/deployments/env_specific.toml takes optional `username` and
+    # `password` keys (Redis 6+/ACL). The chart needs NO code changes: every
+    # key under server.configs renders as a ROUTER__* env for the router,
+    # consumer, producer, olap and PMM pods, so these become
+    # ROUTER__REDIS__USERNAME / ROUTER__REDIS__PASSWORD.
+    #
+    # ►► WHY HERE and not externalRedis.auth: in this chart,
+    #    externalRedis.auth.* feeds ONLY templates/external-redis/secret.yaml
+    #    (an "ext-redis-<release>" Secret that no workload consumes, and which
+    #    is skipped entirely under disableInternalSecrets: true). Verified by
+    #    rendering: with to-share-values.yaml alone, NO pod receives a Redis
+    #    username or password — only ROUTER__REDIS__HOST/PORT. The
+    #    externalRedis.auth block in to-share-values.yaml is therefore
+    #    documentation, not wiring; this block is the wiring.
+    #
+    # Requirements / caveats:
+    #   * The image must support Redis AUTH — the very reason services.*.version
+    #     is pinned to 2026.09.09.1-hotfix5 (official releases before it
+    #     predate the fix). Verify the PMM image too (see PMM note below).
+    #   * Unauthenticated Redis instead? Delete both keys (upstream treats
+    #     them as optional; setting an empty password sends an AUTH command
+    #     that plain Redis rejects).
+    #   * Point the _secretRef at YOUR OWN pre-created Secret in the release
+    #     namespace. A plain string value would also work but renders into the
+    #     shared ConfigMap in cleartext — keep it a _secretRef.
+    #   * The drainer does NOT read server.configs — it has its own
+    #     drainer.configs with a DRAINER__ prefix. Disabled in this stack
+    #     (services.drainer.enabled: false); if you enable it against
+    #     authenticated Redis, mirror these under drainer.configs.redis.
+    # =========================================================================
+    configs:
+      redis:
+        username: "default"
+        password:
+          _secretRef:
+            name: hyperswitch-pp-conn   # matches externalRedis.auth in to-share-values.yaml — replace with your own Secret
+            key: password
+
+  # ===========================================================================
+  # paymentMethodModular (PMM) — V2 payment-method service. A SECOND router in
+  # this release, sharing its database, Redis, ConfigMap, Secret and
+  # ServiceAccount with the main router; it differs only in configuration.
+  # `configs` below merges OVER server.configs and renders as inline env,
+  # which takes precedence over the shared ConfigMap.
+  #
+  # Inherited correctly from to-share-values.yaml — deliberately NOT repeated:
+  #   * externalPostgresql (PMM reads+writes the primary), externalRedis,
+  #     Kafka topics, Superposition, UCS grpc_client, log/telemetry
+  #   * internal_merchant_id_profile_id_auth — already set on server.configs
+  #     with a _secretRef; the configs merge gives PMM the SAME key
+  #     automatically, so the "both sides must carry the same key"
+  #     requirement is satisfied in-chart with no extra values.
+  #   * global tolerations/nodeSelector (hyperswitch-only) and the
+  #     istio-exclude podAnnotations
+  #   * ServiceAccount (serviceAccountName "" reuses
+  #     <release>-hyperswitch-router-role)
+  #
+  # Still OPEN, outside this file:
+  #   * Routing — ingress/istio stay disabled below, so PMM is in-cluster
+  #     only. /v1/payment-methods, /v1/payment-method-sessions, /v1/customers
+  #     and /v1/proxy must reach the PMM Service at the routing layer (same
+  #     bucket as the /olap HTTPRoute work).
+  #   * VERIFY the modular-pm image supports Redis AUTH before rollout — the
+  #     main router had to be pinned to hotfix5 exactly for that fix, Redis
+  #     Cloud mandates AUTH, and the PMM image is versioned independently.
+  # ===========================================================================
+  paymentMethodModular:
+    # Chart default is false, and nothing else implies enablement — unlike
+    # services.consumer.enabled (default true), this MUST be set explicitly.
+    enabled: true
+
+    # Generated name would be
+    # <release>-hyperswitch-payment-method-modular-server; pinned short so
+    # routing targets stay stable and release names longer than 21 characters
+    # don't truncate at Kubernetes' 63-character limit.
+    fullnameOverride: hyperswitch-pm-modular
+
+    # PMM is its OWN image — without these three keys it inherits the router
+    # image/tag (docker.juspay.io/juspaydotin/hyperswitch-router:
+    # 2026.09.09.1-hotfix5) and would just run a second ordinary router.
+    # docker.io also matches the public-Docker-Hub-only policy. v1.0.26 is
+    # multi-arch; `latest`/`nightly` exist but are mutable — for production
+    # mirror a fixed tag into your own registry (the chart builds
+    # registry/image:tag and cannot take a digest).
+    imageRegistry: docker.io
+    image: juspaydotin/hyperswitch-modular-pm
+    version: v1.0.26
+
+    configs:
+      micro_services:
+        use_legacy_locker: false
+      # No card vault in this stack (hyperswitch-card-vault is disabled) —
+      # the chart default locker_enabled=true would point PMM at the
+      # non-existent http://hyperswitch-vault.
+      locker:
+        locker_enabled: false
+        mock_locker: false
+      internal_services:
+        # ►► RELEASE-NAME COUPLED — the main router Service on port 80.
+        # Helm does not template values files: replace RELEASE-NAME with the
+        # actual release name or PMM points at nothing. (The superposition
+        # endpoint in to-share-values.yaml implies the release is named
+        # "hyperswitch-app" in this environment.)
+        payments_base_url: http://RELEASE-NAME-hyperswitch-server
+
+    # modular-pm serves health ONLY at /v2/health and /v2/health/ready — the
+    # inherited probe (server's /health) 404s and liveness kills the
+    # container repeatedly (exit 137). The health path is independent of
+    # micro_services.payment_methods_prefix (APIs follow the prefix v1,
+    # health is fixed at /v2). /v2/health is used for both probes to match
+    # the verified reference in external-values.yaml; /v2/health/ready also
+    # exists if a deep readiness check is preferred.
+    livenessProbe:
+      httpGet:
+        path: /v2/health
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      httpGet:
+        path: /v2/health
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 6
+      successThreshold: 1
+
+    # Without this PMM inherits the main router's sizing (limits 1500m/3Gi)
+    # via the paymentMethodModular -> server -> global fallback — oversized
+    # for a single-purpose service. Tune freely.
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
