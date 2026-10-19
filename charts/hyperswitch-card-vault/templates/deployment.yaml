@@ -150,6 +150,8 @@ spec:
                   key: LOCKER__TENANT_SECRETS__PUBLIC__PUBLIC_KEY
             - name: LOCKER__TENANT_SECRETS__PUBLIC__SCHEMA
               value: {{ .Values.tenant_secrets.public.schema | quote }}
+            - name: LOCKER__TENANT_SECRETS__PUBLIC__REDIS_KEY_PREFIX
+              value: {{ .Values.tenant_secrets.public.redis_key_prefix | quote }}
             {{- if eq .Values.backend "aws_kms" }}
             - name: LOCKER__SECRETS_MANAGEMENT__SECRETS_MANAGER
               value: "aws_kms"
