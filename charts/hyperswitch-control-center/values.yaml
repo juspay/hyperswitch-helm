@@ -14,9 +14,9 @@ dependencies:
   # Hyperswitch SDK configuration for Hyperloader.js
   sdk:
     host: http://localhost:9050
-    version: 0.126.0
+    version: 0.134.0
     subversion: v1
-    # Full URL override for the HyperLoader.js | Eg: https://sdk.hyperswitch.io/web/0.126.0/v1/HyperLoader.js
+    # Full URL override for the HyperLoader.js | Eg: https://sdk.hyperswitch.io/web/0.134.0/v1/HyperLoader.js
     fullUrlOverride: ""
   # For Audit Trail feature
   clickhouse:
@@ -39,7 +39,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2026.10.19.0
+  tag: v1.38.10
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
@@ -196,13 +196,16 @@ config:
       threeds_authenticator: "true"
       # Development features (typically disabled in production)
       dev_advanced_payments_view: false
+      dev_alerts: false
       dev_alt_payment_methods: false
       dev_blocklist: false
       dev_click_to_pay: "true"
       dev_debit_routing: false
+      dev_embed_decision_engine: false
       dev_hypersense_v2_product: false
       dev_intelligent_routing_v2: false
       dev_modularity_v2: false
+      dev_offers: false
       dev_recon_v2_product: false
       dev_recovery_v2_product: false
       dev_superposition: false
@@ -224,6 +227,8 @@ config:
     endpoints:
       # Full base URL for endpoints on the OLAP routing allowlist; empty falls back to api_url.
       olap_url: ""
+      # Full base URL for euler-hosted services (offer-engine); empty falls back to api_url.
+      euler_url: ""
       # Split from the old single "dss_certificate_url" as of v1.38.9: the app now
       # reads region-specific US/EU certificate URLs instead.
       dss_certificate_us_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"
@@ -280,12 +285,14 @@ config:
       billingProcessors: []
       surchargeProcessors: []
       taxProcessors: []
+      frmProcessors: []
     # Superposition config source for the dashboard (new in v1.38.9); left
     # empty (the upstream default) the in-app Superposition integration
     # stays unconfigured.
     superposition_configs:
       organization_id: ""
       workspace: ""
+      display_configs: ""
 # Additional environment variables (key-value pairs, no transformation)
 extraEnvVars: []
 # Istio configuration (optional)
