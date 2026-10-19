@@ -24,7 +24,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "v0.5.0"
+  tag: "v0.6.0"
 
 # -- Image pull secrets for private registries
 # @section -- Connector Service
@@ -306,12 +306,12 @@ config:
     port: 8080
   # Proxy configuration
   proxy:
-    # -- HTTPS proxy URL
+    # -- Optional HTTPS proxy URL; leave null for direct connections
     # @section -- Connector Service Configurations
-    https_url: "https_proxy"
-    # -- HTTP proxy URL
+    https_url: null
+    # -- Optional HTTP proxy URL; leave null for direct connections
     # @section -- Connector Service Configurations
-    http_url: "http_proxy"
+    http_url: null
   # Any key under `config` may also be written as a secret or a reference instead of a
   # plain value (same conventions as the hyperswitch-app chart):
   #   token: { _secret: "value" }                     -> chart-managed Secret, key CS__…__TOKEN
