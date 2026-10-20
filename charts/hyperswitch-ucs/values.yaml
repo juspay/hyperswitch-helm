@@ -22,8 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "v0.6.0"
-
+  tag: "2026.10.20.0"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
@@ -300,7 +299,6 @@ config:
   #   token: { _secretRef: { name: s, key: k } }       -> env CS__…__TOKEN from an existing Secret
   #   token: { _configRef: { name: c, key: k } }       -> env CS__…__TOKEN from an existing ConfigMap
   # `_secretRef` also accepts `optional: true` so the pod can start before the Secret exists.
-
 # -- Disable the chart-managed Secret built from `_secret` values under `config` (set true when every secret arrives through `_secretRef` or the External Secrets Operator)
 # @section -- Secrets
 disableInternalSecrets: false
