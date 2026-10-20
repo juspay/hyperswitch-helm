@@ -110,7 +110,7 @@ ConfigMap, so a secret can only reach the pod through a Secret or a reference.
       {{- /* Convert arrays to comma-separated */ -}}
       {{- printf "%s: %q\n" $envKey ($value | join ",") -}}
 
-    {{- else -}}
+    {{- else if not (kindIs "invalid" $value) -}}
       {{- /* Handle primitive values */ -}}
       {{- printf "%s: %q\n" $envKey ($value | toString) -}}
     {{- end -}}
