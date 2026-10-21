@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "v1.127.0"
+    version: "v1.128.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "v1.127.0"
+    version: "v1.128.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "v1.127.0"
+    version: "v1.128.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "v1.127.0"
+    version: "v1.128.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -52,7 +52,7 @@ services:
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.126.0
+    version: 0.134.0
     # -- SDK subversion
     # @section -- Services
     subversion: v1
@@ -527,6 +527,14 @@ server:
         base_url: "http://hyperswitch-ucs:8000"
         # Connection Timeout Duration in Seconds
         connection_timeout: "10"
+        # -- Per-RPC request timeout in seconds
+        request_timeout: 35
+        # -- HTTP/2 PING keepalive interval in seconds on the shared UCS channel
+        keep_alive_interval: 30
+        # -- Seconds to wait for a keepalive PING acknowledgement
+        keep_alive_timeout: 20
+        # -- TCP keepalive idle time in seconds on the shared UCS channel
+        tcp_keepalive: 60
       # Revenue recovery client base url
       recovery_decider_client:
         # Base URL
@@ -728,6 +736,10 @@ server:
       # username: "default"
       # password:
       #   _secret: ''
+      # Optional Redis TLS. Mount a custom CA file with server.extraVolumes and
+      # server.extraVolumeMounts, or omit the path to use the system CA roots.
+      # tls_enabled: true
+      # tls_ca_certificate_path: /path/to/redis_ca.pem
     # Replica SQL data store credentials
     replica_database:
       # -- Timeout for database connection in seconds
@@ -1637,7 +1649,7 @@ hyperswitch-ucs:
     imageRegistry: docker.io
     repository: juspaydotin/hyperswitch-prism
     pullPolicy: IfNotPresent
-    tag: "v0.5.0"
+    tag: "v0.6.0"
   imagePullSecrets: []
   nameOverride: ""
 
