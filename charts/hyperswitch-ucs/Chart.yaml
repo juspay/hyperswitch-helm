@@ -2,7 +2,7 @@ apiVersion: v2
 name: hyperswitch-ucs
 description: A Helm chart for Hyperswitch UCS Service
 type: application
-version: 0.1.11-ucs-f1b0c22bf7-release-fast
+version: 0.1.11-ucs-c8624d711b-release-fast
 appVersion: "v0.6.0"
 keywords:
   - ucs
