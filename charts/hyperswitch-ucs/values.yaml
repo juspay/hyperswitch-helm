@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Image tag to use
   # @section -- Connector Service
-  tag: "c5058cb1d9-release-fast"
+  tag: "2026.10.21.0"
 # -- Image pull secrets for private registries
 # @section -- Connector Service
 imagePullSecrets: []
