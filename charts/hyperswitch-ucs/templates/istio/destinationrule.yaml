@@ -9,7 +9,11 @@ metadata:
     {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
     app.kubernetes.io/component: istio-destination-rule
 spec:
-  host: {{ include "hyperswitch-ucs.fullname" . }}
+  host: {{ .Values.istio.destinationRule.host | default (include "hyperswitch-ucs.fullname" .) }}
+  {{- with .Values.istio.destinationRule.exportTo }}
+  exportTo:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if and .Values.argoRollouts.enabled .Values.argoRollouts.canary.trafficRouting.istio.enabled }}
   # Argo Rollouts subset configuration for canary deployments
   subsets:
