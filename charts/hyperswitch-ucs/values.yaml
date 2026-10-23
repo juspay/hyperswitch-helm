@@ -85,6 +85,14 @@ service:
     # -- gRPC container port
     # @section -- Connector Service
     targetPort: 8000
+  # -- Additional ports exposed by the UCS Service
+  # @section -- Connector Service
+  additionalPorts: []
+  # - name: grpc-mtls
+  #   port: 18443
+  #   targetPort: grpc
+  #   protocol: TCP
+  #   appProtocol: grpc
   # -- Metrics service configuration
   # @section -- Connector Service
   metrics:
@@ -423,6 +431,10 @@ istio:
     #     weight: 100
   # -- DestinationRule configuration
   destinationRule:
+    # -- Override the DestinationRule host (defaults to the UCS Service name)
+    host: ""
+    # -- Namespaces to which the DestinationRule is exported
+    exportTo: []
     # -- Traffic policy configuration - rendered directly as YAML
     trafficPolicy: {}
     # Example:
@@ -432,6 +444,26 @@ istio:
     #   connectionPool:
     #     tcp:
     #       maxConnections: 100
+  # -- PeerAuthentication for the UCS workload
+  peerAuthentication:
+    # -- Create a PeerAuthentication resource
+    enabled: false
+    # -- Workload-wide mTLS mode: UNSET, DISABLE, PERMISSIVE, or STRICT
+    mode: PERMISSIVE
+    # -- Per-workload-port mTLS overrides
+    portLevelMtls: {}
+    # Example:
+    # portLevelMtls:
+    #   "8000":
+    #     mode: STRICT
+  # -- AuthorizationPolicy for the UCS workload
+  authorizationPolicy:
+    # -- Create an AuthorizationPolicy resource
+    enabled: false
+    # -- Istio authorization action
+    action: ALLOW
+    # -- Istio authorization rules rendered directly as YAML
+    rules: []
 
 # -- Argo Rollouts configuration
 argoRollouts:

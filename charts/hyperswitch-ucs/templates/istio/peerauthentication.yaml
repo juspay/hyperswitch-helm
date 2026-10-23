@@ -1,0 +1,20 @@
+{{- if and .Values.istio.enabled .Values.istio.peerAuthentication.enabled }}
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: {{ include "hyperswitch-ucs.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-peer-authentication
+spec:
+  selector:
+    matchLabels:
+      {{- include "hyperswitch-ucs.selectorLabels" . | nindent 6 }}
+  mtls:
+    mode: {{ .Values.istio.peerAuthentication.mode }}
+  {{- with .Values.istio.peerAuthentication.portLevelMtls }}
+  portLevelMtls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

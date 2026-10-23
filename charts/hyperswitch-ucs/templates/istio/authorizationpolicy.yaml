@@ -1,0 +1,17 @@
+{{- if and .Values.istio.enabled .Values.istio.authorizationPolicy.enabled }}
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ include "hyperswitch-ucs.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: istio-authorization-policy
+spec:
+  selector:
+    matchLabels:
+      {{- include "hyperswitch-ucs.selectorLabels" . | nindent 6 }}
+  action: {{ .Values.istio.authorizationPolicy.action }}
+  rules:
+    {{- toYaml .Values.istio.authorizationPolicy.rules | nindent 4 }}
+{{- end }}
