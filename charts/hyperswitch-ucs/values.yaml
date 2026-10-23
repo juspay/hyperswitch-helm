@@ -85,14 +85,6 @@ service:
     # -- gRPC container port
     # @section -- Connector Service
     targetPort: 8000
-  # -- Additional ports exposed by the UCS Service
-  # @section -- Connector Service
-  additionalPorts: []
-  # - name: grpc-mtls
-  #   port: 18443
-  #   targetPort: grpc
-  #   protocol: TCP
-  #   appProtocol: grpc
   # -- Metrics service configuration
   # @section -- Connector Service
   metrics:

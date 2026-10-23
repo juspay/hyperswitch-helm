@@ -16,14 +16,5 @@ spec:
       targetPort: metrics
       protocol: TCP
       name: metrics
-    {{- range .Values.service.additionalPorts }}
-    - name: {{ required "service.additionalPorts[].name is required" .name }}
-      port: {{ required "service.additionalPorts[].port is required" .port }}
-      targetPort: {{ required "service.additionalPorts[].targetPort is required" .targetPort }}
-      protocol: {{ .protocol | default "TCP" }}
-      {{- with .appProtocol }}
-      appProtocol: {{ . }}
-      {{- end }}
-    {{- end }}
   selector:
     {{- include "hyperswitch-ucs.selectorLabels" . | nindent 4 }}

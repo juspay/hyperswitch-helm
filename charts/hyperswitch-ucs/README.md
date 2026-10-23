@@ -96,8 +96,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | resources.requests.cpu | string | `"400m"` | CPU request |
 | resources.requests.memory | string | `"400Mi"` | Memory request |
 | securityContext | object | `{}` | Container security context |
-| service | object | `{"additionalPorts":[],"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
-| service.additionalPorts | list | `[]` | Additional ports exposed by the UCS Service |
+| service | object | `{"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
 | service.grpc | object | `{"port":8000,"targetPort":8000}` | gRPC service configuration |
 | service.grpc.port | int | `8000` | gRPC service port |
 | service.grpc.targetPort | int | `8000` | gRPC container port |
