@@ -157,7 +157,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| istio | object | `{"destinationRule":{"trafficPolicy":{}},"enabled":false,"virtualService":{"create":true,"gateways":[],"hosts":[],"http":[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}],"tcp":[]}}` | Istio configuration |
+| istio | object | `{"authorizationPolicy":{"action":"ALLOW","enabled":false,"rules":[]},"destinationRule":{"exportTo":[],"host":"","trafficPolicy":{}},"enabled":false,"peerAuthentication":{"enabled":false,"mode":"PERMISSIVE","portLevelMtls":{}},"virtualService":{"create":true,"gateways":[],"hosts":[],"http":[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}],"tcp":[]}}` | Istio configuration |
 
 ### Other Values
 
@@ -179,9 +179,19 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | config.server.run_env | string | `"sandbox"` | Runtime environment (production, sandbox) |
 | env | list | `[]` |  |
 | global.imageRegistry | string | `nil` |  |
-| istio.destinationRule | object | `{"trafficPolicy":{}}` | DestinationRule configuration |
+| istio.authorizationPolicy | object | `{"action":"ALLOW","enabled":false,"rules":[]}` | AuthorizationPolicy for the UCS workload |
+| istio.authorizationPolicy.action | string | `"ALLOW"` | Istio authorization action |
+| istio.authorizationPolicy.enabled | bool | `false` | Create an AuthorizationPolicy resource |
+| istio.authorizationPolicy.rules | list | `[]` | Istio authorization rules rendered directly as YAML |
+| istio.destinationRule | object | `{"exportTo":[],"host":"","trafficPolicy":{}}` | DestinationRule configuration |
+| istio.destinationRule.exportTo | list | `[]` | Namespaces to which the DestinationRule is exported |
+| istio.destinationRule.host | string | `""` | Override the DestinationRule host (defaults to the UCS Service name) |
 | istio.destinationRule.trafficPolicy | object | `{}` | Traffic policy configuration - rendered directly as YAML |
 | istio.enabled | bool | `false` | Enable Istio resources |
+| istio.peerAuthentication | object | `{"enabled":false,"mode":"PERMISSIVE","portLevelMtls":{}}` | PeerAuthentication for the UCS workload |
+| istio.peerAuthentication.enabled | bool | `false` | Create a PeerAuthentication resource |
+| istio.peerAuthentication.mode | string | `"PERMISSIVE"` | Workload-wide mTLS mode: UNSET, DISABLE, PERMISSIVE, or STRICT |
+| istio.peerAuthentication.portLevelMtls | object | `{}` | Per-workload-port mTLS overrides |
 | istio.virtualService | object | `{"create":true,"gateways":[],"hosts":[],"http":[{"match":[],"name":"primary","retries":{},"timeout":"50s","weight":100}],"tcp":[]}` | VirtualService configuration |
 | istio.virtualService.create | bool | `true` | Create VirtualService |
 | istio.virtualService.gateways | list | `[]` | Gateways for the VirtualService |
