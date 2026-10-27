@@ -1,6 +1,20 @@
 name: Sync Hyperswitch Updates
 
 on:
+  workflow_dispatch:
+    inputs:
+      sync_type:
+        description: Sync all services or only the custom router version
+        required: true
+        type: choice
+        default: sync-hyperswitch-updates
+        options:
+          - sync-hyperswitch-updates
+          - sync-custom-router-version
+      version_tag:
+        description: Hyperswitch version tag to sync
+        required: true
+        type: string
   repository_dispatch:
     types:
       - sync-hyperswitch-updates       # daily-releases
@@ -23,8 +37,9 @@ jobs:
 
       - name: Determine sync configuration
         id: config
+        env:
+          EVENT_TYPE: ${{ github.event_name == 'workflow_dispatch' && inputs.sync_type || github.event.action }}
         run: |
-          EVENT_TYPE="${{ github.event.action }}"
           echo "branch=deployments" >> $GITHUB_OUTPUT
           if [ "$EVENT_TYPE" = "sync-hyperswitch-updates" ]; then
             echo "update_all_services=true" >> $GITHUB_OUTPUT
@@ -55,17 +70,18 @@ jobs:
 
       - name: Generate and validate tag
         id: generate_tag
+        env:
+          SOURCE_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.version_tag || github.event.client_payload.version_tag }}
         run: |
-          # Check if version_tag is provided in client_payload
-          if [ -z "${{ github.event.client_payload.version_tag }}" ]; then
-            echo "❌ version_tag not provided in repository_dispatch client_payload"
+          # Both manual and repository dispatches must provide a version tag.
+          if [ -z "$SOURCE_REF" ]; then
+            echo "❌ version_tag not provided in workflow inputs or repository_dispatch client_payload"
             exit 1
           fi
 
-          SOURCE_REF="${{ github.event.client_payload.version_tag }}"
           TAG_PREFIX="${{ steps.config.outputs.tag_prefix }}"
 
-          echo "Using version_tag from client_payload: $SOURCE_REF"
+          echo "Using version_tag: $SOURCE_REF"
           echo "Using tag prefix: $TAG_PREFIX"
 
           # Generate the new tag
