@@ -656,7 +656,10 @@ data:
       authentication_queue
     WHERE
       length(_error) > 0;
-    CREATE TABLE IF NOT EXISTS connector_events_queue (
+    -- Non-consuming placeholder used while all connector-event materialized
+    -- views are assembled. The init job replaces it with the Kafka table only
+    -- after every view is attached, so no topic offsets advance mid-migration.
+    CREATE TABLE connector_events_queue (
       `merchant_id` String,
       `payment_id` Nullable(String),
       `connector_name` LowCardinality(String),
@@ -669,34 +672,18 @@ data:
       `created_at` DateTime64(3),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       `dispute_id` Nullable(String),
       `refund_id` Nullable(String),
-      `payout_id` Nullable(String)
-    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
-    kafka_topic_list = 'hyperswitch-outgoing-connector-events',
-    kafka_group_name = 'hyper',
-    kafka_format = 'JSONEachRow',
-    kafka_handle_error_mode = 'stream';
-
-    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_parse_errors (
-      `topic` String,
-      `partition` Int64,
-      `offset` Int64,
-      `raw` String,
-      `error` String
-    ) ENGINE = MergeTree
-    ORDER BY
-      (topic, partition, offset) SETTINGS index_granularity = 8192 AS
-    SELECT
-      _topic AS topic,
-      _partition AS partition,
-      _offset AS offset,
-      _raw_message AS raw,
-      _error AS error
-    FROM
-      connector_events_queue
-    WHERE
-      length(_error) > 0;
+      `payout_id` Nullable(String),
+      -- Kafka virtual columns referenced by the materialized-view filters.
+      `_topic` String,
+      `_partition` Int64,
+      `_offset` Int64,
+      `_raw_message` String,
+      `_error` String
+    ) ENGINE = Null;
 
     CREATE TABLE IF NOT EXISTS connector_events (
       `merchant_id` LowCardinality(String),
@@ -713,6 +700,8 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       `dispute_id` Nullable(String),
       `refund_id` Nullable(String),
       `payout_id` Nullable(String),
@@ -729,6 +718,11 @@ data:
           status_code
       ) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
 
+    ALTER TABLE connector_events
+      ADD COLUMN IF NOT EXISTS destination LowCardinality(Nullable(String)) AFTER method;
+    ALTER TABLE connector_events
+      ADD COLUMN IF NOT EXISTS execution_mode LowCardinality(Nullable(String)) AFTER destination;
+
     CREATE TABLE IF NOT EXISTS connector_events_audit (
       `merchant_id` LowCardinality(String),
       `payment_id` String,
@@ -744,6 +738,8 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       `dispute_id` Nullable(String),
       `refund_id` Nullable(String),
       INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
@@ -752,6 +748,11 @@ data:
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payment_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
+
+    ALTER TABLE connector_events_audit
+      ADD COLUMN IF NOT EXISTS destination LowCardinality(Nullable(String)) AFTER method;
+    ALTER TABLE connector_events_audit
+      ADD COLUMN IF NOT EXISTS execution_mode LowCardinality(Nullable(String)) AFTER destination;
 
     CREATE TABLE IF NOT EXISTS connector_events_payout_audit (
       `merchant_id` LowCardinality(String),
@@ -768,14 +769,23 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
       INDEX connectorIndex connector_name TYPE bloom_filter GRANULARITY 1,
       INDEX statusIndex status_code TYPE bloom_filter GRANULARITY 1
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
-    
-    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_audit_mv TO connector_events_audit (
+
+    ALTER TABLE connector_events_payout_audit
+      ADD COLUMN IF NOT EXISTS destination LowCardinality(Nullable(String)) AFTER method;
+    ALTER TABLE connector_events_payout_audit
+      ADD COLUMN IF NOT EXISTS execution_mode LowCardinality(Nullable(String)) AFTER destination;
+
+    -- Recreate only the insert triggers so upgraded views start forwarding the
+    -- new columns into the preserved target tables.
+    CREATE MATERIALIZED VIEW connector_events_audit_mv TO connector_events_audit (
       `merchant_id` String,
       `payment_id` Nullable(String),
       `connector_name` LowCardinality(String),
@@ -790,6 +800,8 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       `refund_id` Nullable(String),
       `dispute_id` Nullable(String)
     ) AS
@@ -808,6 +820,8 @@ data:
       now64() AS inserted_at,
       latency,
       method,
+      destination,
+      execution_mode,
       refund_id,
       dispute_id
     FROM
@@ -816,7 +830,7 @@ data:
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
     
-    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_payout_audit_mv TO connector_events_payout_audit (
+    CREATE MATERIALIZED VIEW connector_events_payout_audit_mv TO connector_events_payout_audit (
       `merchant_id` String,
       `payout_id` Nullable(String),
       `connector_name` LowCardinality(String),
@@ -830,7 +844,9 @@ data:
       `created_at` DateTime64(3),
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
-      `method` LowCardinality(String)
+      `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String))
     ) AS
     SELECT
       merchant_id,
@@ -846,14 +862,16 @@ data:
       created_at,
       now64() AS inserted_at,
       latency,
-      method
+      method,
+      destination,
+      execution_mode
     FROM
       connector_events_queue
     WHERE
       (length(_error) = 0)
       AND (payout_id IS NOT NULL);
 
-    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_mv TO connector_events (
+    CREATE MATERIALIZED VIEW connector_events_mv TO connector_events (
       `merchant_id` String,
       `payment_id` Nullable(String),
       `connector_name` LowCardinality(String),
@@ -868,6 +886,8 @@ data:
       `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
       `latency` UInt128,
       `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
       `refund_id` Nullable(String),
       `dispute_id` Nullable(String),
       `payout_id` Nullable(String)
@@ -887,6 +907,8 @@ data:
       now64() AS inserted_at,
       latency,
       method,
+      destination,
+      execution_mode,
       refund_id,
       dispute_id,
       payout_id
@@ -894,6 +916,211 @@ data:
       connector_events_queue
     WHERE
       length(_error) = 0;
+
+{{ if .Values.ucsConnectorEvents.enabled }}
+    -- Prism (Unified Connector Service) connector events, written to Kafka by
+    -- the optional UCS pipeline loaded into the shared Vector deployment.
+    CREATE TABLE IF NOT EXISTS prism_connector_events_queue
+    (
+        `tenant_id` String,
+        `merchant_id` String,
+        `payment_id` Nullable(String),
+        `connector_name` LowCardinality(String),
+        `request_id` String,
+        `url` Nullable(String),
+        `flow` LowCardinality(String),
+        `request` String,
+        `masked_response` Nullable(String),
+        `error` Nullable(String),
+        `status_code` UInt32,
+        `created_at` DateTime64(3),
+        `latency` UInt128,
+        `method` LowCardinality(String),
+        `refund_id` Nullable(String),
+        `dispute_id` Nullable(String),
+        `payout_id` Nullable(String),
+        `service_name` LowCardinality(Nullable(String)),
+        `execution_mode` LowCardinality(Nullable(String)),
+        `destination` LowCardinality(Nullable(String))
+    )
+    ENGINE = Kafka
+    SETTINGS kafka_broker_list = '{{ join "," .Values.ucsConnectorEvents.normalized.bootstrapServers }}',
+    kafka_topic_list = '{{ .Values.ucsConnectorEvents.normalized.topic }}',
+    kafka_group_name = '{{ .Values.ucsConnectorEvents.clickhouse.consumerGroup }}',
+    kafka_format = 'JSONEachRow',
+    kafka_handle_error_mode = 'stream';
+
+    CREATE MATERIALIZED VIEW IF NOT EXISTS prism_connector_events_parse_errors (
+        `topic` String,
+        `partition` Int64,
+        `offset` Int64,
+        `raw` String,
+        `error` String
+    ) ENGINE = MergeTree
+    ORDER BY
+        (topic, partition, offset) SETTINGS index_granularity = 8192 AS
+    SELECT
+        _topic AS topic,
+        _partition AS partition,
+        _offset AS offset,
+        _raw_message AS raw,
+        _error AS error
+    FROM
+        prism_connector_events_queue
+    WHERE
+        length(_error) > 0;
+
+    CREATE TABLE IF NOT EXISTS prism_connector_events_audit (
+        `merchant_id` String,
+        `payment_id` String,
+        `connector_name` LowCardinality(String),
+        `request_id` String,
+        `url` Nullable(String),
+        `flow` LowCardinality(String),
+        `request` String,
+        `response` Nullable(String),
+        `masked_response` Nullable(String),
+        `error` Nullable(String),
+        `status_code` UInt32,
+        `created_at` DateTime64(3),
+        `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+        `latency` UInt128,
+        `method` LowCardinality(String),
+        `refund_id` Nullable(String),
+        `dispute_id` Nullable(String),
+        `destination` LowCardinality(Nullable(String)),
+        `execution_mode` LowCardinality(Nullable(String)),
+        INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
+        INDEX connectorIndex connector_name TYPE bloom_filter GRANULARITY 1,
+        INDEX statusIndex status_code TYPE bloom_filter GRANULARITY 1
+    ) ENGINE = MergeTree PARTITION BY merchant_id
+    ORDER BY
+        (merchant_id, payment_id) SETTINGS index_granularity = 8192;
+
+    CREATE TABLE IF NOT EXISTS prism_connector_events_payout_audit (
+        `merchant_id` String,
+        `payout_id` String,
+        `connector_name` LowCardinality(String),
+        `request_id` String,
+        `url` Nullable(String),
+        `flow` LowCardinality(String),
+        `request` String,
+        `response` Nullable(String),
+        `masked_response` Nullable(String),
+        `error` Nullable(String),
+        `status_code` UInt32,
+        `created_at` DateTime64(3),
+        `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+        `latency` UInt128,
+        `method` LowCardinality(String),
+        `refund_id` Nullable(String),
+        `dispute_id` Nullable(String),
+        `destination` LowCardinality(Nullable(String)),
+        `execution_mode` LowCardinality(Nullable(String)),
+        INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
+        INDEX connectorIndex connector_name TYPE bloom_filter GRANULARITY 1,
+        INDEX statusIndex status_code TYPE bloom_filter GRANULARITY 1
+    ) ENGINE = MergeTree PARTITION BY merchant_id
+    ORDER BY
+        (merchant_id, payout_id) SETTINGS index_granularity = 8192;
+
+    CREATE MATERIALIZED VIEW IF NOT EXISTS prism_connector_events_audit_mv TO prism_connector_events_audit (
+        `merchant_id` String,
+        `payment_id` Nullable(String),
+        `connector_name` LowCardinality(String),
+        `request_id` String,
+        `url` Nullable(String),
+        `flow` LowCardinality(String),
+        `request` String,
+        `response` Nullable(String),
+        `masked_response` Nullable(String),
+        `error` Nullable(String),
+        `status_code` UInt32,
+        `created_at` DateTime64(3),
+        `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+        `latency` UInt128,
+        `method` LowCardinality(String),
+        `refund_id` Nullable(String),
+        `dispute_id` Nullable(String),
+        `destination` LowCardinality(Nullable(String)),
+        `execution_mode` LowCardinality(Nullable(String))
+    ) AS
+    SELECT
+        merchant_id,
+        assumeNotNull(payment_id) AS payment_id,
+        connector_name,
+        request_id,
+        url,
+        flow,
+        request,
+        masked_response AS response,
+        masked_response,
+        error,
+        status_code,
+        created_at,
+        now64() AS inserted_at,
+        latency,
+        method,
+        refund_id,
+        dispute_id,
+        destination,
+        execution_mode
+    FROM
+        prism_connector_events_queue
+    WHERE
+        (length(_error) = 0)
+        AND (tenant_id = 'public')
+        AND notEmpty(ifNull(payment_id, ''));
+
+    CREATE MATERIALIZED VIEW IF NOT EXISTS prism_connector_events_payout_audit_mv TO prism_connector_events_payout_audit (
+        `merchant_id` String,
+        `payout_id` Nullable(String),
+        `connector_name` LowCardinality(String),
+        `request_id` String,
+        `url` Nullable(String),
+        `flow` LowCardinality(String),
+        `request` String,
+        `response` Nullable(String),
+        `masked_response` Nullable(String),
+        `error` Nullable(String),
+        `status_code` UInt32,
+        `created_at` DateTime64(3),
+        `inserted_at` DateTime DEFAULT now() CODEC(T64, LZ4),
+        `latency` UInt128,
+        `method` LowCardinality(String),
+        `refund_id` Nullable(String),
+        `dispute_id` Nullable(String),
+        `destination` LowCardinality(Nullable(String)),
+        `execution_mode` LowCardinality(Nullable(String))
+    ) AS
+    SELECT
+        merchant_id,
+        assumeNotNull(payout_id) AS payout_id,
+        connector_name,
+        request_id,
+        url,
+        flow,
+        request,
+        masked_response AS response,
+        masked_response,
+        error,
+        status_code,
+        created_at,
+        now64() AS inserted_at,
+        latency,
+        method,
+        refund_id,
+        dispute_id,
+        destination,
+        execution_mode
+    FROM
+        prism_connector_events_queue
+    WHERE
+        (length(_error) = 0)
+        AND (tenant_id = 'public')
+        AND notEmpty(ifNull(payout_id, ''));
+{{ end }}
+
     CREATE TABLE IF NOT EXISTS dispute_queue (
       `dispute_id` String,
       `dispute_amount` UInt32,
@@ -2544,6 +2771,52 @@ data:
       api_events_queue
     WHERE length(_error) = 0;
 
+  connector-events-queue.sql: |-
+    CREATE TABLE connector_events_queue (
+      `merchant_id` String,
+      `payment_id` Nullable(String),
+      `connector_name` LowCardinality(String),
+      `request_id` String,
+      `flow` LowCardinality(String),
+      `request` String,
+      `masked_response` Nullable(String),
+      `error` Nullable(String),
+      `status_code` UInt32,
+      `created_at` DateTime64(3),
+      `latency` UInt128,
+      `method` LowCardinality(String),
+      `destination` LowCardinality(Nullable(String)),
+      `execution_mode` LowCardinality(Nullable(String)),
+      `dispute_id` Nullable(String),
+      `refund_id` Nullable(String),
+      `payout_id` Nullable(String)
+    ) ENGINE = Kafka SETTINGS kafka_broker_list = 'kafka0:29092',
+    kafka_topic_list = 'hyperswitch-outgoing-connector-events',
+    kafka_group_name = 'hyper',
+    kafka_format = 'JSONEachRow',
+    kafka_handle_error_mode = 'stream';
+
+  connector-events-parse-errors.sql: |-
+    CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_parse_errors (
+      `topic` String,
+      `partition` Int64,
+      `offset` Int64,
+      `raw` String,
+      `error` String
+    ) ENGINE = MergeTree
+    ORDER BY
+      (topic, partition, offset) SETTINGS index_granularity = 8192 AS
+    SELECT
+      _topic AS topic,
+      _partition AS partition,
+      _offset AS offset,
+      _raw_message AS raw,
+      _error AS error
+    FROM
+      connector_events_queue
+    WHERE
+      length(_error) > 0;
+
 ---
 
 # 2️ ClickHouse Initialization Job
@@ -2573,6 +2846,7 @@ spec:
           command: ['sh', '-c']
           args:
             - |
+              set -eu
               echo "Fetching ClickHouse admin password from environment..."
               if [ -z "$CLICKHOUSE_ADMIN_PASSWORD" ]; then
                 echo "Failed to retrieve password. Exiting..."
@@ -2584,8 +2858,41 @@ spec:
                 exit 1
               fi
 
-              echo "Executing ClickHouse init scripts..."
-              cat /docker-entrypoint-initdb.d/*.sql | clickhouse-client --host=clickhouse --user default --password "$CLICKHOUSE_ADMIN_PASSWORD" --multiquery
+              ch() {
+                clickhouse-client --host=clickhouse --user default --password "$CLICKHOUSE_ADMIN_PASSWORD" "$@"
+              }
+
+              echo "Pausing the connector-events Kafka consumer for its schema upgrade..."
+              # Detaching the Kafka source first stops every attached materialized
+              # view from consuming and committing offsets during the migration.
+              ch --query "DETACH TABLE IF EXISTS connector_events_queue"
+              ch --multiquery --query "
+                DROP VIEW IF EXISTS connector_events_audit_mv;
+                DROP VIEW IF EXISTS connector_events_payout_audit_mv;
+                DROP VIEW IF EXISTS connector_events_mv;
+                DETACH TABLE IF EXISTS connector_events_parse_errors;
+              "
+
+              # Kafka tables cannot be altered. Reattach a previous queue only so
+              # it can be dropped; a missing queue is the normal fresh-install case.
+              if ch --query "ATTACH TABLE connector_events_queue" >/dev/null 2>&1; then
+                ch --query "DROP TABLE connector_events_queue"
+              fi
+
+              echo "Executing ClickHouse init script..."
+              ch --multiquery < /docker-entrypoint-initdb.d/init.sql
+
+              # Preserve an existing parse-error view and its inner MergeTree data.
+              # If no detached metadata exists, create the view for a fresh install.
+              if ! ch --query "ATTACH TABLE connector_events_parse_errors" >/dev/null 2>&1; then
+                ch --multiquery < /docker-entrypoint-initdb.d/connector-events-parse-errors.sql
+              fi
+
+              # Every materialized view now exists against the non-consuming Null
+              # placeholder. Replace it by name with the real Kafka queue; the
+              # existing views follow that name and begin together.
+              ch --query "DROP TABLE connector_events_queue"
+              ch --multiquery < /docker-entrypoint-initdb.d/connector-events-queue.sql
 
               echo "ClickHouse initialization completed."
           env:

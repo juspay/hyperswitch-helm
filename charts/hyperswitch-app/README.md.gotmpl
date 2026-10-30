@@ -33,6 +33,31 @@ helm install hyperswitch-v1 . -n hyperswitch
 
 That's it! Hyperswitch should be up and running on your AWS account  :tada: :tada:
 
+## UCS connector-event ingestion
+
+UCS connector-event ingestion is disabled by default. Enable it and configure
+the raw and normalized Kafka topics through `ucsConnectorEvents`:
+
+```yaml
+ucsConnectorEvents:
+  enabled: true
+  source:
+    bootstrapServers: ["kafka0:29092"]
+    topic: unified-connector-service-connector-events
+    consumerGroup: ucs-connector-events-normalizer
+  normalized:
+    bootstrapServers: ["kafka0:29092"]
+    topic: prism-outgoing-connector-events
+  clickhouse:
+    consumerGroup: hyperswitch-ucs-connector-events
+```
+
+With the bundled UCS subchart, the matching producer configuration is applied
+automatically when both `ucsConnectorEvents.enabled` and
+`hyperswitch-ucs.enabled` are true. For a separately deployed UCS, keep
+`hyperswitch-ucs.enabled` false and configure that UCS release to publish
+connector events to the same `source.bootstrapServers` and `source.topic`.
+
 ## Post-Deployment Checklist
 
 After deploying the Helm chart, you should verify that everything is working correctly

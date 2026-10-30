@@ -523,8 +523,8 @@ server:
         # -- Client Service Name
         service: "dynamo"
       unified_connector_service:
-        # Unified Connector Service Base URL
-        base_url: "http://localhost:8000"
+        # Unified Connector Service Base URL (the hyperswitch-ucs subchart's service)
+        base_url: "http://hyperswitch-ucs:8000"
         # Connection Timeout Duration in Seconds
         connection_timeout: "10"
         # -- Per-RPC request timeout in seconds
@@ -1287,6 +1287,14 @@ redisMiscConfig:
       imageRegistry: docker.io
       image: bitnamilegacy/redis:7.2.3-debian-11-r2
       maxAttempt: 60
+ucsMiscConfig:
+  checkUcsIsUp:
+    initContainer:
+      # -- Hold router pods until the hyperswitch-ucs gRPC port accepts connections (only when hyperswitch-ucs.enabled)
+      enable: true
+      imageRegistry: docker.io
+      image: bitnamilegacy/redis:7.2.3-debian-11-r2
+      maxAttempt: 60
 # https://artifacthub.io/packages/helm/bitnami/postgresql
 postgresql:
   # -- enable Bitnami postgresql sub-chart helm installation
@@ -1633,6 +1641,35 @@ hyperswitch-card-vault:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+# UCS connector-event ingestion works with either the bundled UCS subchart or a
+# separately deployed UCS publishing to the configured source topic.
+ucsConnectorEvents:
+  # -- Enable UCS connector-event normalization and ClickHouse ingestion
+  # @section -- UCS connector events
+  enabled: false
+  source:
+    # -- Kafka brokers from which raw UCS connector events are consumed
+    # @section -- UCS connector events
+    bootstrapServers:
+      - kafka0:29092
+    # -- Raw UCS connector-event topic
+    # @section -- UCS connector events
+    topic: unified-connector-service-connector-events
+    # -- Consumer group used by the shared Vector normalizer
+    # @section -- UCS connector events
+    consumerGroup: ucs-connector-events-normalizer
+  normalized:
+    # -- Kafka brokers to which normalized connector events are published
+    # @section -- UCS connector events
+    bootstrapServers:
+      - kafka0:29092
+    # -- Normalized connector-event topic consumed by ClickHouse
+    # @section -- UCS connector events
+    topic: prism-outgoing-connector-events
+  clickhouse:
+    # -- Consumer group used by the ClickHouse Kafka engine
+    # @section -- UCS connector events
+    consumerGroup: hyperswitch-ucs-connector-events
 # @ignored
 hyperswitch-ucs:
   enabled: false
@@ -1701,10 +1738,40 @@ hyperswitch-ucs:
       host: "0.0.0.0"
       port: 8080
     proxy:
-      https_url: ""
-      http_url: ""
+      # null removes the key (and the subchart's placeholder default): UCS reads these as
+      # Option<String>, so an empty string would be an invalid proxy URL on every connector call.
+      https_url: null
+      http_url: null
       idle_pool_connection_timeout: 90
-      bypass_proxy_urls: ["localhost", "local"]
+      bypass_urls: ["localhost", "local"]
+    # Publish connector-call events to the bundled Kafka; vector's UCS normaliser
+    # turns them into rows of the prism_connector_events_* ClickHouse tables.
+    events:
+      # The optional references let bundled UCS boot normally while ingestion is
+      # disabled. Enabling ucsConnectorEvents creates the shared ConfigMap.
+      enabled:
+        _configRef:
+          name: ucs-connector-events-vector-config
+          key: events-enabled
+          optional: true
+      brokers:
+        _configRef:
+          name: ucs-connector-events-vector-config
+          key: source-brokers
+          optional: true
+      connector_events:
+        topic:
+          _configRef:
+            name: ucs-connector-events-vector-config
+            key: source-topic
+            optional: true
+        partition_key_field: request_id
+    # Copy the router's x-lineage-ids header (merchant_id, ...) onto every event,
+    # so connector events can be attributed to a merchant.
+    lineage:
+      enabled: true
+      header_name: "x-lineage-ids"
+      field_prefix: ""
 # Superposition fallback seed.
 #
 # The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
@@ -1955,6 +2022,24 @@ vector:
   # -- Enable Bitnami Vector sub-chart helm installation
   # @section -- Dependencies configuration
   enabled: true
+  # Load the optional UCS pipeline alongside the existing shared Vector config.
+  # The ConfigMap volume is optional so disabled installations retain the exact
+  # existing Vector topology.
+  args:
+    - --config-dir
+    - /etc/vector/
+    - --config-dir
+    - /etc/vector-ucs/
+    - --watch-config
+  extraVolumes:
+    - name: ucs-connector-events-config
+      configMap:
+        name: ucs-connector-events-vector-config
+        optional: true
+  extraVolumeMounts:
+    - name: ucs-connector-events-config
+      mountPath: /etc/vector-ucs
+      readOnly: true
   env:
     # -- Vector environment variables
     # @section -- Dependencies configuration
