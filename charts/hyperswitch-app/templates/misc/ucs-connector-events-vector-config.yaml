@@ -1,0 +1,123 @@
+{{- if .Values.ucsConnectorEvents.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ucs-connector-events-vector-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "hyperswitch.labels" . | nindent 4 }}
+    app.kubernetes.io/component: ucs-connector-events-normalizer
+data:
+  # The bundled UCS subchart reads these keys through optional _configRef values.
+  # A separately deployed UCS uses the same values in its own release.
+  events-enabled: "true"
+  source-brokers: {{ join "," .Values.ucsConnectorEvents.source.bootstrapServers | quote }}
+  source-topic: {{ .Values.ucsConnectorEvents.source.topic | quote }}
+  ucs-connector-events.yaml: |-
+    sources:
+      ucs_connector_events:
+        type: kafka
+        bootstrap_servers: {{ join "," .Values.ucsConnectorEvents.source.bootstrapServers | quote }}
+        group_id: {{ .Values.ucsConnectorEvents.source.consumerGroup | quote }}
+        topics:
+          - {{ .Values.ucsConnectorEvents.source.topic | quote }}
+        decoding:
+          codec: json
+    transforms:
+      ucs_connector_call_events:
+        type: filter
+        inputs:
+          - ucs_connector_events
+        condition: '.stage == "ConnectorCall" && (string(.execution_mode) ?? "primary") != "shadow"'
+      ucs_normalize_connector_events:
+        type: remap
+        inputs:
+          - ucs_connector_call_events
+        source: |-
+          flow = string(.flow_type) ?? ""
+          service_name = string(.service_name) ?? ""
+          is_payout = service_name == "PayoutService" || starts_with(flow, "Payout")
+          is_dispute = service_name == "DisputeService" || includes(["AcceptDispute", "SubmitEvidence", "DefendDispute", "Dsync"], flow)
+          is_refund = flow == "Refund" || flow == "Rsync"
+
+          reference_id = string(.reference_id) ?? null
+          resource_id = string(.resource_id) ?? null
+          connector_name = string(.connector) ?? ""
+          request_id = string(.request_id) ?? ""
+          url = string(.url) ?? ""
+          status_code = if exists(.status_code) && !is_null(.status_code) { to_int(.status_code) ?? 0 } else { 0 }
+          created_at = if is_timestamp(.timestamp) {
+            to_unix_timestamp!(.timestamp, unit: "milliseconds")
+          } else {
+            to_int(.timestamp) ?? 0
+          }
+          latency = if exists(.latency_ms) && !is_null(.latency_ms) { to_int(.latency_ms) ?? 0 } else { 0 }
+          method = string(.method) ?? ""
+          execution_mode = string(.execution_mode) ?? "primary"
+
+          request_data = if exists(.request_data) && !is_null(.request_data) {
+            string(.request_data) ?? encode_json(.request_data)
+          } else {
+            ""
+          }
+          response_data = if exists(.response_data) && !is_null(.response_data) {
+            string(.response_data) ?? encode_json(.response_data)
+          } else {
+            null
+          }
+          error_data = if exists(.error) && !is_null(.error) {
+            string(.error) ?? encode_json(.error)
+          } else {
+            null
+          }
+
+          merchant_id = string(.merchant_id) ?? string(.lineage_merchant_id) ?? ""
+          tenant_id = string(.tenant_id) ?? null
+          payment_id = null
+          payout_id = null
+          refund_id = null
+          dispute_id = null
+
+          if is_payout {
+            payout_id = reference_id
+          } else {
+            payment_id = reference_id
+            if is_refund {
+              refund_id = resource_id
+            }
+            if is_dispute {
+              dispute_id = resource_id
+            }
+          }
+
+          . = {}
+          .tenant_id = tenant_id
+          .execution_mode = execution_mode
+          .service_name = service_name
+          .merchant_id = merchant_id
+          .payment_id = payment_id
+          .connector_name = connector_name
+          .destination = "connector"
+          .request_id = request_id
+          .url = url
+          .flow = flow
+          .request = request_data
+          .masked_response = response_data
+          .error = error_data
+          .status_code = status_code
+          .created_at = created_at
+          .latency = latency
+          .method = method
+          .dispute_id = dispute_id
+          .refund_id = refund_id
+          .payout_id = payout_id
+    sinks:
+      ucs_normalized_connector_events_kafka:
+        type: kafka
+        inputs:
+          - ucs_normalize_connector_events
+        bootstrap_servers: {{ join "," .Values.ucsConnectorEvents.normalized.bootstrapServers | quote }}
+        topic: {{ .Values.ucsConnectorEvents.normalized.topic | quote }}
+        encoding:
+          codec: json
+{{- end }}

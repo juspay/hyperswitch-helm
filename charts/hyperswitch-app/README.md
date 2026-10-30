@@ -34,6 +34,31 @@ helm install hyperswitch-v1 . -n hyperswitch
 
 That's it! Hyperswitch should be up and running on your AWS account  :tada: :tada:
 
+## UCS connector-event ingestion
+
+UCS connector-event ingestion is disabled by default. Enable it and configure
+the raw and normalized Kafka topics through `ucsConnectorEvents`:
+
+```yaml
+ucsConnectorEvents:
+  enabled: true
+  source:
+    bootstrapServers: ["kafka0:29092"]
+    topic: unified-connector-service-connector-events
+    consumerGroup: ucs-connector-events-normalizer
+  normalized:
+    bootstrapServers: ["kafka0:29092"]
+    topic: prism-outgoing-connector-events
+  clickhouse:
+    consumerGroup: hyperswitch-ucs-connector-events
+```
+
+With the bundled UCS subchart, the matching producer configuration is applied
+automatically when both `ucsConnectorEvents.enabled` and
+`hyperswitch-ucs.enabled` are true. For a separately deployed UCS, keep
+`hyperswitch-ucs.enabled` false and configure that UCS release to publish
+connector events to the same `source.bootstrapServers` and `source.topic`.
+
 ## Post-Deployment Checklist
 
 After deploying the Helm chart, you should verify that everything is working correctly
@@ -150,7 +175,7 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 | https://codecentric.github.io/helm-charts | mailhog | 4.0.0 |
 | https://helm.vector.dev | vector | 0.37.0 |
 | https://juspay.github.io/hyperswitch-helm | hyperswitch-card-vault | 0.1.7 |
-| https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.10 |
+| https://juspay.github.io/hyperswitch-helm | hyperswitch-ucs | 0.1.11 |
 | oci://ghcr.io/juspay/helm-charts | superposition | 0.112.0 |
 
 ## Values
@@ -162,19 +187,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L2527">baseRelease</a></div></td>
+    <td><div><a href="./values.yaml#L2484">baseRelease</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the Helm release that owns this environment's shared infrastructure. Set it when this release is a *second* release of the chart running a single service (OLAP or payment method modular) against the datastores of a main release. The host and secret-name values are templated, so an overlay can refer to `{{ .Values.baseRelease }}-postgresql`, `{{ .Values.baseRelease }}-redis-master`, `{{ .Values.baseRelease }}-hyperswitch-router-role` and have them follow the base release. Ignored when left empty.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2641">olap.argoRollouts</a></div></td>
+    <td><div><a href="./values.yaml#L2598">olap.argoRollouts</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Argo Rollouts settings for this service, merged over the release-level `argoRollouts` block. Lists (canary steps, analysis metrics) replace rather than extend the inherited value. Omit to inherit the release's rollout behaviour as-is.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2598">olap.autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2555">olap.autoscaling.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable a HorizontalPodAutoscaler for this service</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2573">olap.configs</a></div></td>
+    <td><div><a href="./values.yaml#L2530">olap.configs</a></div></td>
     <td><div><code>{
   "master_database": {
     "pool_size": "5"
@@ -182,47 +207,47 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Config overrides merged over `server.configs`, rendered as inline env</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2569">olap.database.masterHost</a></div></td>
+    <td><div><a href="./values.yaml#L2526">olap.database.masterHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Explicit host overrides. Templated, e.g. `{{ .Release.Name }}-postgresql`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2566">olap.database.useReplicaForMaster</a></div></td>
+    <td><div><a href="./values.yaml#L2523">olap.database.useReplicaForMaster</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Point the master (write) database handle at the read replica. A write attempted against this service then fails at the replica instead of reaching the writer. When the release has no read replica the primary is used instead, so the service still runs - `helm install` prints a warning in that case.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2543">olap.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2500">olap.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the OLAP router</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2546">olap.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L2503">olap.fullnameOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Override the generated name `<release>-hyperswitch-olap-server`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2605">olap.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2562">olap.ingress.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Publish this service through an Ingress</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2618">olap.istio.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2575">olap.istio.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Render a VirtualService and DestinationRule for this service. Set `hosts` and `gateways` to the same values as `istio.virtualService` above so Istio merges the two into one route table for the host. Istio does not guarantee rule ordering across VirtualServices on the same host, so keep the main router's catch-all from shadowing the paths claimed here.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2555">olap.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L2512">olap.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas; ignored when this service's autoscaling is enabled</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2579">olap.resources</a></div></td>
+    <td><div><a href="./values.yaml#L2536">olap.resources</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Workload settings; empty values fall back to `server.*` and then `global.*`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2559">olap.serviceAccountName</a></div></td>
+    <td><div><a href="./values.yaml#L2516">olap.serviceAccountName</a></div></td>
     <td><div><code>""</code></div></td>
     <td>ServiceAccount to run as. Empty reuses the release's router ServiceAccount, so this service inherits the same cloud identity instead of needing one of its own.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2549">olap.version</a></div></td>
+    <td><div><a href="./values.yaml#L2506">olap.version</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Image tag, registry and repository. Empty values fall back to `services.router.*`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2666">paymentMethodModular.configs</a></div></td>
+    <td><div><a href="./values.yaml#L2623">paymentMethodModular.configs</a></div></td>
     <td><div><code>{
   "micro_services": {
     "payment_methods_prefix": "v1"
@@ -234,11 +259,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Config overrides merged over `server.configs`, rendered as inline env</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2647">paymentMethodModular.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2604">paymentMethodModular.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the payment method modular router</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2652">paymentMethodModular.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L2609">paymentMethodModular.fullnameOverride</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Override the generated name `<release>-hyperswitch-payment-method-modular-server`. Worth setting for release names longer than 21 characters, where the generated name is truncated at Kubernetes' 63 character limit.</td>
   </tr></tbody>
@@ -251,39 +276,39 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 	<th >Description</th>
 </thead>
 <tbody><tr>
-    <td><div><a href="./values.yaml#L1933">clickhouse.auth.password</a></div></td>
+    <td><div><a href="./values.yaml#L1979">clickhouse.auth.password</a></div></td>
     <td><div><code>"jhdvfvsnbdj"</code></div></td>
     <td>Clickhouse password</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1930">clickhouse.auth.username</a></div></td>
+    <td><div><a href="./values.yaml#L1976">clickhouse.auth.username</a></div></td>
     <td><div><code>"default"</code></div></td>
     <td>Clickhouse username</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1940">clickhouse.config.TZ</a></div></td>
+    <td><div><a href="./values.yaml#L1986">clickhouse.config.TZ</a></div></td>
     <td><div><code>"Asia/Kolkata"</code></div></td>
     <td>Clickhouse timezone</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1922">clickhouse.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1968">clickhouse.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Clickhouse sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1926">clickhouse.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1972">clickhouse.fullnameOverride</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td>Name of the Clickhouse sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1955">clickhouse.logLevel</a></div></td>
+    <td><div><a href="./values.yaml#L2001">clickhouse.logLevel</a></div></td>
     <td><div><code>"error"</code></div></td>
     <td>Clickhouse log level</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1946">clickhouse.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1992">clickhouse.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse replica count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1943">clickhouse.shards</a></div></td>
+    <td><div><a href="./values.yaml#L1989">clickhouse.shards</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Clickhouse shard count</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1952">clickhouse.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1998">clickhouse.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Zookerper replica count</td>
   </tr><tr>
@@ -355,55 +380,55 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>""</code></div></td>
     <td>External redis port, falls back to 6379 when unset</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1870">kafka.broker.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1916">kafka.broker.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for broker</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1865">kafka.controller.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1911">kafka.controller.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for controller</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1858">kafka.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1904">kafka.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Kafka sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1861">kafka.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L1907">kafka.fullnameOverride</a></div></td>
     <td><div><code>"kafka0"</code></div></td>
     <td>Name of the Kafka sub-chart</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1889">kafka.listeners.client.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1935">kafka.listeners.client.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener client protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1901">kafka.listeners.controller.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1947">kafka.listeners.controller.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener controller protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1897">kafka.listeners.external.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1943">kafka.listeners.external.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener external protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1893">kafka.listeners.interbroker.protocol</a></div></td>
+    <td><div><a href="./values.yaml#L1939">kafka.listeners.interbroker.protocol</a></div></td>
     <td><div><code>"PLAINTEXT"</code></div></td>
     <td>Listener interbroker protocol</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1905">kafka.provisioning.replicationFactor</a></div></td>
+    <td><div><a href="./values.yaml#L1951">kafka.provisioning.replicationFactor</a></div></td>
     <td><div><code>1</code></div></td>
     <td>kafka provisioning replicationFactor</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1884">kafka.service.ports.client</a></div></td>
+    <td><div><a href="./values.yaml#L1930">kafka.service.ports.client</a></div></td>
     <td><div><code>29092</code></div></td>
     <td>Client port for Kafka</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1879">kafka.zookeeper.replicaCount</a></div></td>
+    <td><div><a href="./values.yaml#L1925">kafka.zookeeper.replicaCount</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of replicas to be used for zookeeper</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1970">mailhog.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2016">mailhog.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Mailhog sub-chart helm installation for email testing</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1973">mailhog.fullnameOverride</a></div></td>
+    <td><div><a href="./values.yaml#L2019">mailhog.fullnameOverride</a></div></td>
     <td><div><code>"mailhog"</code></div></td>
     <td>Name of the Mailhog sub-chart</td>
   </tr><tr>
@@ -471,11 +496,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>0</code></div></td>
     <td>Number of replicas to be used for replica</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1978">vector.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2024">vector.enabled</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Enable Bitnami Vector sub-chart helm installation</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1982">vector.env[0]</a></div></td>
+    <td><div><a href="./values.yaml#L2046">vector.env[0]</a></div></td>
     <td><div><code>{
   "name": "KAFKA_HOST",
   "value": "kafka0:29092"
@@ -797,6 +822,47 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td>SDK version</td>
   </tr></tbody>
 </table>
+<h3>UCS connector events</h3>
+<table height="400px">
+<thead>
+	<th >Key</th>
+	<th >Default</th>
+	<th >Description</th>
+</thead>
+<tbody><tr>
+    <td><div><a href="./values.yaml#L1672">ucsConnectorEvents.clickhouse.consumerGroup</a></div></td>
+    <td><div><code>"hyperswitch-ucs-connector-events"</code></div></td>
+    <td>Consumer group used by the ClickHouse Kafka engine</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1649">ucsConnectorEvents.enabled</a></div></td>
+    <td><div><code>false</code></div></td>
+    <td>Enable UCS connector-event normalization and ClickHouse ingestion</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1664">ucsConnectorEvents.normalized.bootstrapServers</a></div></td>
+    <td><div><code>[
+  "kafka0:29092"
+]</code></div></td>
+    <td>Kafka brokers to which normalized connector events are published</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1668">ucsConnectorEvents.normalized.topic</a></div></td>
+    <td><div><code>"prism-outgoing-connector-events"</code></div></td>
+    <td>Normalized connector-event topic consumed by ClickHouse</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1653">ucsConnectorEvents.source.bootstrapServers</a></div></td>
+    <td><div><code>[
+  "kafka0:29092"
+]</code></div></td>
+    <td>Kafka brokers from which raw UCS connector events are consumed</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1660">ucsConnectorEvents.source.consumerGroup</a></div></td>
+    <td><div><code>"ucs-connector-events-normalizer"</code></div></td>
+    <td>Consumer group used by the shared Vector normalizer</td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L1657">ucsConnectorEvents.source.topic</a></div></td>
+    <td><div><code>"unified-connector-service-connector-events"</code></div></td>
+    <td>Raw UCS connector-event topic</td>
+  </tr></tbody>
+</table>
 <h3>Other Values</h3>
 <table>
 
@@ -1033,35 +1099,35 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1919">clickhouse.host</a></div></td>
+    <td><div><a href="./values.yaml#L1965">clickhouse.host</a></div></td>
     <td><div><code>"clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1935">clickhouse.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1981">clickhouse.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1936">clickhouse.image.tag</a></div></td>
+    <td><div><a href="./values.yaml#L1982">clickhouse.image.tag</a></div></td>
     <td><div><code>24.3</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1923">clickhouse.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1969">clickhouse.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1949">clickhouse.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1995">clickhouse.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1788">disableInternalSecrets</a></div></td>
+    <td><div><a href="./values.yaml#L1834">disableInternalSecrets</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1793">externalSecretsOperator.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1839">externalSecretsOperator.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable External Secrets Operator resources</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1829">externalSecretsOperator.externalSecrets.secrets</a></div></td>
+    <td><div><a href="./values.yaml#L1875">externalSecretsOperator.externalSecrets.secrets</a></div></td>
     <td><div><code>[
   {
     "creationPolicy": "Owner",
@@ -1079,11 +1145,11 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>List of external secrets to create You can define multiple secrets here</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1836">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L1882">externalSecretsOperator.externalSecrets.secrets[0].creationPolicy</a></div></td>
     <td><div><code>"Owner"</code></div></td>
     <td>Creation policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1838">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
+    <td><div><a href="./values.yaml#L1884">externalSecretsOperator.externalSecrets.secrets[0].dataFrom</a></div></td>
     <td><div><code>[
   {
     "extract": {
@@ -1093,19 +1159,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>Extract configuration (use dataFrom.extract for full secret)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1834">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
+    <td><div><a href="./values.yaml#L1880">externalSecretsOperator.externalSecrets.secrets[0].refreshInterval</a></div></td>
     <td><div><code>"1h"</code></div></td>
     <td>Refresh interval</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1832">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
+    <td><div><a href="./values.yaml#L1878">externalSecretsOperator.externalSecrets.secrets[0].targetName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Target secret name in Kubernetes</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1807">externalSecretsOperator.secretStore.name</a></div></td>
+    <td><div><a href="./values.yaml#L1853">externalSecretsOperator.secretStore.name</a></div></td>
     <td><div><code>"hyperswitch-secret-store"</code></div></td>
     <td>Name of the SecretStore</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1810">externalSecretsOperator.secretStore.provider</a></div></td>
+    <td><div><a href="./values.yaml#L1856">externalSecretsOperator.secretStore.provider</a></div></td>
     <td><div><code>{
   "aws": {
     "auth": {
@@ -1121,19 +1187,19 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Provider configuration (matches External Secrets Operator format) You can use any supported provider here see: https://external-secrets.io/latest/</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1799">externalSecretsOperator.serviceAccount.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L1845">externalSecretsOperator.serviceAccount.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Annotations for the service account (e.g., IRSA role)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1797">externalSecretsOperator.serviceAccount.create</a></div></td>
+    <td><div><a href="./values.yaml#L1843">externalSecretsOperator.serviceAccount.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Create service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1801">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
+    <td><div><a href="./values.yaml#L1847">externalSecretsOperator.serviceAccount.extraLabels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td>Extra labels for the service account</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1803">externalSecretsOperator.serviceAccount.name</a></div></td>
+    <td><div><a href="./values.yaml#L1849">externalSecretsOperator.serviceAccount.name</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Name of the service account (default: hyperswitch-eso-sa)</td>
   </tr><tr>
@@ -1149,15 +1215,15 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1915">initCH.checkCHisUp.image</a></div></td>
+    <td><div><a href="./values.yaml#L1961">initCH.checkCHisUp.image</a></div></td>
     <td><div><code>"bitnamilegacy/clickhouse:24.3"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1914">initCH.checkCHisUp.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1960">initCH.checkCHisUp.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1916">initCH.checkCHisUp.maxAttempt</a></div></td>
+    <td><div><a href="./values.yaml#L1962">initCH.checkCHisUp.maxAttempt</a></div></td>
     <td><div><code>30</code></div></td>
     <td></td>
   </tr><tr>
@@ -1248,23 +1314,23 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 ]</code></div></td>
     <td>HTTP routing rules (ordered list) Note: Rules are processed in the order they appear in this list. Ensure specific routes (like /api/) come before catch-all routes (like /).</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1871">kafka.broker.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1917">kafka.broker.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1866">kafka.controller.resourcesPreset</a></div></td>
+    <td><div><a href="./values.yaml#L1912">kafka.controller.resourcesPreset</a></div></td>
     <td><div><code>"none"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1909">kafka.extraConfig</a></div></td>
+    <td><div><a href="./values.yaml#L1955">kafka.extraConfig</a></div></td>
     <td><div><code>"offsets.topic.replication.factor=1\ntransaction.state.log.replication.factor=1\n"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1855">kafka.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1901">kafka.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/kafka"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1876">kafka.zookeeper.image.repository</a></div></td>
+    <td><div><a href="./values.yaml#L1922">kafka.zookeeper.image.repository</a></div></td>
     <td><div><code>"bitnamilegacy/zookeeper"</code></div></td>
     <td></td>
   </tr><tr>
@@ -1300,355 +1366,355 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>"ScheduleAnyway"</code></div></td>
     <td>Scheduling policy when the spread constraint cannot be satisfied. Allowed values: DoNotSchedule | ScheduleAnyway</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2582">olap.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L2539">olap.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2584">olap.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2541">olap.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2600">olap.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2557">olap.autoscaling.maxReplicas</a></div></td>
     <td><div><code>4</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2599">olap.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2556">olap.autoscaling.minReplicas</a></div></td>
     <td><div><code>2</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2601">olap.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L2558">olap.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2570">olap.database.replicaHost</a></div></td>
+    <td><div><a href="./values.yaml#L2527">olap.database.replicaHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2580">olap.env</a></div></td>
+    <td><div><a href="./values.yaml#L2537">olap.env</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2592">olap.extraContainers</a></div></td>
+    <td><div><a href="./values.yaml#L2549">olap.extraContainers</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2591">olap.extraVolumeMounts</a></div></td>
+    <td><div><a href="./values.yaml#L2548">olap.extraVolumeMounts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2590">olap.extraVolumes</a></div></td>
+    <td><div><a href="./values.yaml#L2547">olap.extraVolumes</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2551">olap.image</a></div></td>
+    <td><div><a href="./values.yaml#L2508">olap.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2552">olap.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2509">olap.imagePullPolicy</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2550">olap.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2507">olap.imageRegistry</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2607">olap.ingress.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2564">olap.ingress.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2606">olap.ingress.className</a></div></td>
+    <td><div><a href="./values.yaml#L2563">olap.ingress.className</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2608">olap.ingress.hostname</a></div></td>
+    <td><div><a href="./values.yaml#L2565">olap.ingress.hostname</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2609">olap.ingress.path</a></div></td>
+    <td><div><a href="./values.yaml#L2566">olap.ingress.path</a></div></td>
     <td><div><code>"/olap"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2610">olap.ingress.pathType</a></div></td>
+    <td><div><a href="./values.yaml#L2567">olap.ingress.pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2611">olap.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L2568">olap.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2636">olap.istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2593">olap.istio.destinationRule.trafficPolicy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2620">olap.istio.virtualService.create</a></div></td>
+    <td><div><a href="./values.yaml#L2577">olap.istio.virtualService.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2622">olap.istio.virtualService.gateways</a></div></td>
+    <td><div><a href="./values.yaml#L2579">olap.istio.virtualService.gateways</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2621">olap.istio.virtualService.hosts</a></div></td>
+    <td><div><a href="./values.yaml#L2578">olap.istio.virtualService.hosts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2629">olap.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2586">olap.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
     <td><div><code>"/olap/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2626">olap.istio.virtualService.http[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L2583">olap.istio.virtualService.http[0].name</a></div></td>
     <td><div><code>"primary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2634">olap.istio.virtualService.http[0].retries</a></div></td>
+    <td><div><a href="./values.yaml#L2591">olap.istio.virtualService.http[0].retries</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2631">olap.istio.virtualService.http[0].rewrite.uri</a></div></td>
+    <td><div><a href="./values.yaml#L2588">olap.istio.virtualService.http[0].rewrite.uri</a></div></td>
     <td><div><code>"/"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2633">olap.istio.virtualService.http[0].timeout</a></div></td>
+    <td><div><a href="./values.yaml#L2590">olap.istio.virtualService.http[0].timeout</a></div></td>
     <td><div><code>"50s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2632">olap.istio.virtualService.http[0].weight</a></div></td>
+    <td><div><a href="./values.yaml#L2589">olap.istio.virtualService.http[0].weight</a></div></td>
     <td><div><code>100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2586">olap.labels</a></div></td>
+    <td><div><a href="./values.yaml#L2543">olap.labels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2587">olap.livenessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2544">olap.livenessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2583">olap.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L2540">olap.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2585">olap.podAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L2542">olap.podAnnotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2593">olap.progressDeadlineSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2550">olap.progressDeadlineSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2588">olap.readinessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2545">olap.readinessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2589">olap.strategy</a></div></td>
+    <td><div><a href="./values.yaml#L2546">olap.strategy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2594">olap.terminationGracePeriodSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2551">olap.terminationGracePeriodSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2581">olap.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L2538">olap.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2683">paymentMethodModular.affinity</a></div></td>
+    <td><div><a href="./values.yaml#L2640">paymentMethodModular.affinity</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2685">paymentMethodModular.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2642">paymentMethodModular.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2733">paymentMethodModular.argoRollouts</a></div></td>
+    <td><div><a href="./values.yaml#L2690">paymentMethodModular.argoRollouts</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2697">paymentMethodModular.autoscaling.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2654">paymentMethodModular.autoscaling.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2699">paymentMethodModular.autoscaling.maxReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2656">paymentMethodModular.autoscaling.maxReplicas</a></div></td>
     <td><div><code>4</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2698">paymentMethodModular.autoscaling.minReplicas</a></div></td>
+    <td><div><a href="./values.yaml#L2655">paymentMethodModular.autoscaling.minReplicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2700">paymentMethodModular.autoscaling.targetCPUUtilizationPercentage</a></div></td>
+    <td><div><a href="./values.yaml#L2657">paymentMethodModular.autoscaling.targetCPUUtilizationPercentage</a></div></td>
     <td><div><code>80</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2662">paymentMethodModular.database.masterHost</a></div></td>
+    <td><div><a href="./values.yaml#L2619">paymentMethodModular.database.masterHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2663">paymentMethodModular.database.replicaHost</a></div></td>
+    <td><div><a href="./values.yaml#L2620">paymentMethodModular.database.replicaHost</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2661">paymentMethodModular.database.useReplicaForMaster</a></div></td>
+    <td><div><a href="./values.yaml#L2618">paymentMethodModular.database.useReplicaForMaster</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2681">paymentMethodModular.env</a></div></td>
+    <td><div><a href="./values.yaml#L2638">paymentMethodModular.env</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2693">paymentMethodModular.extraContainers</a></div></td>
+    <td><div><a href="./values.yaml#L2650">paymentMethodModular.extraContainers</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2692">paymentMethodModular.extraVolumeMounts</a></div></td>
+    <td><div><a href="./values.yaml#L2649">paymentMethodModular.extraVolumeMounts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2691">paymentMethodModular.extraVolumes</a></div></td>
+    <td><div><a href="./values.yaml#L2648">paymentMethodModular.extraVolumes</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2655">paymentMethodModular.image</a></div></td>
+    <td><div><a href="./values.yaml#L2612">paymentMethodModular.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2656">paymentMethodModular.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2613">paymentMethodModular.imagePullPolicy</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2654">paymentMethodModular.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2611">paymentMethodModular.imageRegistry</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2704">paymentMethodModular.ingress.annotations</a></div></td>
+    <td><div><a href="./values.yaml#L2661">paymentMethodModular.ingress.annotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2703">paymentMethodModular.ingress.className</a></div></td>
+    <td><div><a href="./values.yaml#L2660">paymentMethodModular.ingress.className</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2702">paymentMethodModular.ingress.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2659">paymentMethodModular.ingress.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2705">paymentMethodModular.ingress.hostname</a></div></td>
+    <td><div><a href="./values.yaml#L2662">paymentMethodModular.ingress.hostname</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2706">paymentMethodModular.ingress.path</a></div></td>
+    <td><div><a href="./values.yaml#L2663">paymentMethodModular.ingress.path</a></div></td>
     <td><div><code>"/v1/payment-methods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2707">paymentMethodModular.ingress.pathType</a></div></td>
+    <td><div><a href="./values.yaml#L2664">paymentMethodModular.ingress.pathType</a></div></td>
     <td><div><code>"Prefix"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2708">paymentMethodModular.ingress.tls</a></div></td>
+    <td><div><a href="./values.yaml#L2665">paymentMethodModular.ingress.tls</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2732">paymentMethodModular.istio.destinationRule.trafficPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2689">paymentMethodModular.istio.destinationRule.trafficPolicy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2710">paymentMethodModular.istio.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2667">paymentMethodModular.istio.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2712">paymentMethodModular.istio.virtualService.create</a></div></td>
+    <td><div><a href="./values.yaml#L2669">paymentMethodModular.istio.virtualService.create</a></div></td>
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2714">paymentMethodModular.istio.virtualService.gateways</a></div></td>
+    <td><div><a href="./values.yaml#L2671">paymentMethodModular.istio.virtualService.gateways</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2713">paymentMethodModular.istio.virtualService.hosts</a></div></td>
+    <td><div><a href="./values.yaml#L2670">paymentMethodModular.istio.virtualService.hosts</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2721">paymentMethodModular.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2678">paymentMethodModular.istio.virtualService.http[0].match[0].uri.prefix</a></div></td>
     <td><div><code>"/v1/payment-methods"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2723">paymentMethodModular.istio.virtualService.http[0].match[1].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2680">paymentMethodModular.istio.virtualService.http[0].match[1].uri.prefix</a></div></td>
     <td><div><code>"/v1/payment-method-sessions"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2725">paymentMethodModular.istio.virtualService.http[0].match[2].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2682">paymentMethodModular.istio.virtualService.http[0].match[2].uri.prefix</a></div></td>
     <td><div><code>"/v1/customers"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2727">paymentMethodModular.istio.virtualService.http[0].match[3].uri.prefix</a></div></td>
+    <td><div><a href="./values.yaml#L2684">paymentMethodModular.istio.virtualService.http[0].match[3].uri.prefix</a></div></td>
     <td><div><code>"/v1/proxy"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2718">paymentMethodModular.istio.virtualService.http[0].name</a></div></td>
+    <td><div><a href="./values.yaml#L2675">paymentMethodModular.istio.virtualService.http[0].name</a></div></td>
     <td><div><code>"primary"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2730">paymentMethodModular.istio.virtualService.http[0].retries</a></div></td>
+    <td><div><a href="./values.yaml#L2687">paymentMethodModular.istio.virtualService.http[0].retries</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2729">paymentMethodModular.istio.virtualService.http[0].timeout</a></div></td>
+    <td><div><a href="./values.yaml#L2686">paymentMethodModular.istio.virtualService.http[0].timeout</a></div></td>
     <td><div><code>"50s"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2728">paymentMethodModular.istio.virtualService.http[0].weight</a></div></td>
+    <td><div><a href="./values.yaml#L2685">paymentMethodModular.istio.virtualService.http[0].weight</a></div></td>
     <td><div><code>100</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2687">paymentMethodModular.labels</a></div></td>
+    <td><div><a href="./values.yaml#L2644">paymentMethodModular.labels</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2688">paymentMethodModular.livenessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2645">paymentMethodModular.livenessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2684">paymentMethodModular.nodeSelector</a></div></td>
+    <td><div><a href="./values.yaml#L2641">paymentMethodModular.nodeSelector</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2686">paymentMethodModular.podAnnotations</a></div></td>
+    <td><div><a href="./values.yaml#L2643">paymentMethodModular.podAnnotations</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2694">paymentMethodModular.progressDeadlineSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2651">paymentMethodModular.progressDeadlineSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2689">paymentMethodModular.readinessProbe</a></div></td>
+    <td><div><a href="./values.yaml#L2646">paymentMethodModular.readinessProbe</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2657">paymentMethodModular.replicas</a></div></td>
+    <td><div><a href="./values.yaml#L2614">paymentMethodModular.replicas</a></div></td>
     <td><div><code>1</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2680">paymentMethodModular.resources</a></div></td>
+    <td><div><a href="./values.yaml#L2637">paymentMethodModular.resources</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2658">paymentMethodModular.serviceAccountName</a></div></td>
+    <td><div><a href="./values.yaml#L2615">paymentMethodModular.serviceAccountName</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2690">paymentMethodModular.strategy</a></div></td>
+    <td><div><a href="./values.yaml#L2647">paymentMethodModular.strategy</a></div></td>
     <td><div><code>{}</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2695">paymentMethodModular.terminationGracePeriodSeconds</a></div></td>
+    <td><div><a href="./values.yaml#L2652">paymentMethodModular.terminationGracePeriodSeconds</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2682">paymentMethodModular.tolerations</a></div></td>
+    <td><div><a href="./values.yaml#L2639">paymentMethodModular.tolerations</a></div></td>
     <td><div><code>[]</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2653">paymentMethodModular.version</a></div></td>
+    <td><div><a href="./values.yaml#L2610">paymentMethodModular.version</a></div></td>
     <td><div><code>""</code></div></td>
     <td></td>
   </tr><tr>
@@ -2772,54 +2838,54 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
     <td><div><code>true</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2410">superpositionDB.aliasService</a></div></td>
+    <td><div><a href="./values.yaml#L2367">superpositionDB.aliasService</a></div></td>
     <td><div><code>"superposition-db"</code></div></td>
     <td>Name of the ExternalName Service. Must match the host in `superposition.configs.db_host`. Change both together if two releases share a namespace.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2407">superpositionDB.enable</a></div></td>
+    <td><div><a href="./values.yaml#L2364">superpositionDB.enable</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Create the alias Service and, if enabled below, run the schema Job.  Off by default: the alias Service has a fixed, release-independent name (that is the point of it), so two releases of this chart in one namespace would collide on it. Turn it on when a single release owns the namespace - `hyperswitch-stack` does exactly that. When you do, set `superposition.configs.db_host` to `<aliasService>:5432` and `db_name` / `db_user` / `secrets.db_password` to this release's PostgreSQL credentials.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2423">superpositionDB.migration.baseUrl</a></div></td>
+    <td><div><a href="./values.yaml#L2380">superpositionDB.migration.baseUrl</a></div></td>
     <td><div><code>"https://raw.githubusercontent.com/juspay/superposition"</code></div></td>
     <td>Base URL of the superposition source repository</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2413">superpositionDB.migration.enable</a></div></td>
+    <td><div><a href="./values.yaml#L2370">superpositionDB.migration.enable</a></div></td>
     <td><div><code>true</code></div></td>
     <td>Fetch the Superposition global schema and apply it to `superposition.configs.db_name`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2427">superpositionDB.migration.fetch</a></div></td>
+    <td><div><a href="./values.yaml#L2384">superpositionDB.migration.fetch</a></div></td>
     <td><div><code>{
   "image": "curlimages/curl:8.11.1",
   "imageRegistry": "docker.io"
 }</code></div></td>
     <td>Image used to download the schema; needs `curl` and `sh`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2417">superpositionDB.migration.image</a></div></td>
+    <td><div><a href="./values.yaml#L2374">superpositionDB.migration.image</a></div></td>
     <td><div><code>"bitnamilegacy/postgresql:16.1.0-debian-11-r18"</code></div></td>
     <td></td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2416">superpositionDB.migration.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L2373">superpositionDB.migration.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td>Image that runs `psql`. Needs the PostgreSQL client only; the download happens in a separate init container because this image ships neither curl nor wget.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2425">superpositionDB.migration.path</a></div></td>
+    <td><div><a href="./values.yaml#L2382">superpositionDB.migration.path</a></div></td>
     <td><div><code>"superposition.sql"</code></div></td>
     <td>Path of the global schema inside that repository</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2421">superpositionDB.migration.version</a></div></td>
+    <td><div><a href="./values.yaml#L2378">superpositionDB.migration.version</a></div></td>
     <td><div><code>"v0.112.0"</code></div></td>
     <td>Superposition ref the schema is fetched from. Keep this in step with the `superposition` dependency in Chart.yaml - the schema and the binary are released together. This mirrors `initDB`, which pulls the hyperswitch migrations at `services.router.version`.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1780">superpositionFallback.configMap</a></div></td>
+    <td><div><a href="./values.yaml#L1826">superpositionFallback.configMap</a></div></td>
     <td><div><code>"superposition-seed"</code></div></td>
     <td>Name of the ConfigMap holding the seed file, for `source: configMap`. Create it yourself; it is not part of the chart.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1756">superpositionFallback.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L1802">superpositionFallback.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Mount a Superposition seed file as the fallback config source</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1760">superpositionFallback.fetch</a></div></td>
+    <td><div><a href="./values.yaml#L1806">superpositionFallback.fetch</a></div></td>
     <td><div><code>{
   "baseUrl": "https://raw.githubusercontent.com/juspay/hyperswitch",
   "image": "curlimages/curl:8.11.1",
@@ -2839,74 +2905,74 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Settings for `source: fetch`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1766">superpositionFallback.fetch.baseUrl</a></div></td>
+    <td><div><a href="./values.yaml#L1812">superpositionFallback.fetch.baseUrl</a></div></td>
     <td><div><code>"https://raw.githubusercontent.com/juspay/hyperswitch"</code></div></td>
     <td>Base URL of the hyperswitch source repository</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1764">superpositionFallback.fetch.image</a></div></td>
+    <td><div><a href="./values.yaml#L1810">superpositionFallback.fetch.image</a></div></td>
     <td><div><code>"curlimages/curl:8.11.1"</code></div></td>
     <td>Image that performs the download; needs `curl` and `sh`</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1762">superpositionFallback.fetch.imageRegistry</a></div></td>
+    <td><div><a href="./values.yaml#L1808">superpositionFallback.fetch.imageRegistry</a></div></td>
     <td><div><code>"docker.io"</code></div></td>
     <td>Registry for the image that performs the download</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1768">superpositionFallback.fetch.path</a></div></td>
+    <td><div><a href="./values.yaml#L1814">superpositionFallback.fetch.path</a></div></td>
     <td><div><code>"config/superposition_seed.toml"</code></div></td>
     <td>Path of the seed file inside that repository</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1770">superpositionFallback.fetch.version</a></div></td>
+    <td><div><a href="./values.yaml#L1816">superpositionFallback.fetch.version</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Ref to download from. Empty means `services.router.version`, so the seed matches the router.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1782">superpositionFallback.key</a></div></td>
+    <td><div><a href="./values.yaml#L1828">superpositionFallback.key</a></div></td>
     <td><div><code>"superposition_seed.toml"</code></div></td>
     <td>Key inside that ConfigMap</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1786">superpositionFallback.mountPath</a></div></td>
+    <td><div><a href="./values.yaml#L1832">superpositionFallback.mountPath</a></div></td>
     <td><div><code>"/local/config/superposition/superposition_seed.toml"</code></div></td>
     <td>Path the file is mounted at, and the value of ROUTER__SUPERPOSITION__BACKUP_FILE_PATH. Under `source: fetch` the parent directory is the mount point, so keep it in a directory of its own rather than directly in /local/config.</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L1758">superpositionFallback.source</a></div></td>
+    <td><div><a href="./values.yaml#L1804">superpositionFallback.source</a></div></td>
     <td><div><code>"fetch"</code></div></td>
     <td>Where the seed file comes from: `fetch` (init container) or `configMap` (bring your own)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2364">superposition_fallback_cronjob.aws_kms</a></div></td>
+    <td><div><a href="./values.yaml#L2321">superposition_fallback_cronjob.aws_kms</a></div></td>
     <td><div><code>{
   "key_id": "",
   "region": ""
 }</code></div></td>
     <td>AWS KMS configuration used by the config backup job</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2368">superposition_fallback_cronjob.aws_kms.key_id</a></div></td>
+    <td><div><a href="./values.yaml#L2325">superposition_fallback_cronjob.aws_kms.key_id</a></div></td>
     <td><div><code>""</code></div></td>
     <td>KMS key ID or ARN used for encryption and decryption</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2366">superposition_fallback_cronjob.aws_kms.region</a></div></td>
+    <td><div><a href="./values.yaml#L2323">superposition_fallback_cronjob.aws_kms.region</a></div></td>
     <td><div><code>""</code></div></td>
     <td>AWS region containing the KMS key</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2346">superposition_fallback_cronjob.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2303">superposition_fallback_cronjob.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable the CronJob that syncs superposition config to EFS</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2360">superposition_fallback_cronjob.failedJobsHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L2317">superposition_fallback_cronjob.failedJobsHistoryLimit</a></div></td>
     <td><div><code>1</code></div></td>
     <td>Number of failed job runs to retain in history</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2352">superposition_fallback_cronjob.image</a></div></td>
+    <td><div><a href="./values.yaml#L2309">superposition_fallback_cronjob.image</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Container image for the backup job</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2354">superposition_fallback_cronjob.imagePullPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2311">superposition_fallback_cronjob.imagePullPolicy</a></div></td>
     <td><div><code>"IfNotPresent"</code></div></td>
     <td>Image pull policy</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2348">superposition_fallback_cronjob.name</a></div></td>
+    <td><div><a href="./values.yaml#L2305">superposition_fallback_cronjob.name</a></div></td>
     <td><div><code>"superposition-config-backup-cronjob"</code></div></td>
     <td>Name of the CronJob resource</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2384">superposition_fallback_cronjob.resources</a></div></td>
+    <td><div><a href="./values.yaml#L2341">superposition_fallback_cronjob.resources</a></div></td>
     <td><div><code>{
   "limits": {
     "cpu": "100m",
@@ -2919,23 +2985,23 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Resource requests and limits for the cronjob container</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2356">superposition_fallback_cronjob.restartPolicy</a></div></td>
+    <td><div><a href="./values.yaml#L2313">superposition_fallback_cronjob.restartPolicy</a></div></td>
     <td><div><code>"OnFailure"</code></div></td>
     <td>Restart policy for the job pod</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2362">superposition_fallback_cronjob.retentionCount</a></div></td>
+    <td><div><a href="./values.yaml#L2319">superposition_fallback_cronjob.retentionCount</a></div></td>
     <td><div><code>"10"</code></div></td>
     <td>Number of backup files to retain in EFS</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2350">superposition_fallback_cronjob.schedule</a></div></td>
+    <td><div><a href="./values.yaml#L2307">superposition_fallback_cronjob.schedule</a></div></td>
     <td><div><code>"* * * * *"</code></div></td>
     <td>Cron schedule (minimum Kubernetes CronJob interval is 1 minute)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2358">superposition_fallback_cronjob.successfulJobsHistoryLimit</a></div></td>
+    <td><div><a href="./values.yaml#L2315">superposition_fallback_cronjob.successfulJobsHistoryLimit</a></div></td>
     <td><div><code>3</code></div></td>
     <td>Number of successful job runs to retain in history</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2370">superposition_fallback_cronjob.superposition</a></div></td>
+    <td><div><a href="./values.yaml#L2327">superposition_fallback_cronjob.superposition</a></div></td>
     <td><div><code>{
   "endpoint": "http://localhost:8081",
   "orgId": "",
@@ -2945,43 +3011,43 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
 }</code></div></td>
     <td>Superposition service connection details</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2372">superposition_fallback_cronjob.superposition.endpoint</a></div></td>
+    <td><div><a href="./values.yaml#L2329">superposition_fallback_cronjob.superposition.endpoint</a></div></td>
     <td><div><code>"http://localhost:8081"</code></div></td>
     <td>Superposition API endpoint URL</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2380">superposition_fallback_cronjob.superposition.orgId</a></div></td>
+    <td><div><a href="./values.yaml#L2337">superposition_fallback_cronjob.superposition.orgId</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Superposition organisation ID (must match superposition.org_id)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2378">superposition_fallback_cronjob.superposition.tokenSecretKey</a></div></td>
+    <td><div><a href="./values.yaml#L2335">superposition_fallback_cronjob.superposition.tokenSecretKey</a></div></td>
     <td><div><code>"ROUTER__SUPERPOSITION__TOKEN"</code></div></td>
     <td>Key within the secret that holds the token value</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2376">superposition_fallback_cronjob.superposition.tokenSecretName</a></div></td>
+    <td><div><a href="./values.yaml#L2333">superposition_fallback_cronjob.superposition.tokenSecretName</a></div></td>
     <td><div><code>"hyperswitch-secrets"</code></div></td>
     <td>Name of the Kubernetes Secret containing the Superposition API token.   tokenSecretName: "hyperswitch-secrets"   tokenSecretKey: "ROUTER__SUPERPOSITION__TOKEN"</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2382">superposition_fallback_cronjob.superposition.workspaceId</a></div></td>
+    <td><div><a href="./values.yaml#L2339">superposition_fallback_cronjob.superposition.workspaceId</a></div></td>
     <td><div><code>""</code></div></td>
     <td>Superposition workspace ID (must match superposition.workspace_id)</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2334">superposition_fallback_efs.enabled</a></div></td>
+    <td><div><a href="./values.yaml#L2291">superposition_fallback_efs.enabled</a></div></td>
     <td><div><code>false</code></div></td>
     <td>Enable creation of an EFS-backed PVC and volumeMounts in all pods</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2342">superposition_fallback_efs.mountPath</a></div></td>
+    <td><div><a href="./values.yaml#L2299">superposition_fallback_efs.mountPath</a></div></td>
     <td><div><code>"/mnt/data"</code></div></td>
     <td>Mount path inside the containers for the EFS volume</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2336">superposition_fallback_efs.pvcName</a></div></td>
+    <td><div><a href="./values.yaml#L2293">superposition_fallback_efs.pvcName</a></div></td>
     <td><div><code>"superposition-config-backup"</code></div></td>
     <td>Name of the PersistentVolumeClaim to create and reference</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2340">superposition_fallback_efs.storage</a></div></td>
+    <td><div><a href="./values.yaml#L2297">superposition_fallback_efs.storage</a></div></td>
     <td><div><code>"1Gi"</code></div></td>
     <td>Storage size for the PVC</td>
   </tr><tr>
-    <td><div><a href="./values.yaml#L2338">superposition_fallback_efs.storageClassName</a></div></td>
+    <td><div><a href="./values.yaml#L2295">superposition_fallback_efs.storageClassName</a></div></td>
     <td><div><code>"efs-sc"</code></div></td>
     <td>StorageClass to use for the PVC (must have an EFS CSI provisioner)</td>
   </tr><tr>
@@ -2999,6 +3065,50 @@ Refer our [postman collection](https://www.postman.com/hyperswitch/workspace/hyp
   </tr><tr>
     <td><div><a href="./values.yaml#L1297">ucsMiscConfig.checkUcsIsUp.initContainer.maxAttempt</a></div></td>
     <td><div><code>60</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2029">vector.args[0]</a></div></td>
+    <td><div><code>"--config-dir"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2030">vector.args[1]</a></div></td>
+    <td><div><code>"/etc/vector/"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2031">vector.args[2]</a></div></td>
+    <td><div><code>"--config-dir"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2032">vector.args[3]</a></div></td>
+    <td><div><code>"/etc/vector-ucs/"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2033">vector.args[4]</a></div></td>
+    <td><div><code>"--watch-config"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2041">vector.extraVolumeMounts[0].mountPath</a></div></td>
+    <td><div><code>"/etc/vector-ucs"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2040">vector.extraVolumeMounts[0].name</a></div></td>
+    <td><div><code>"ucs-connector-events-config"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2042">vector.extraVolumeMounts[0].readOnly</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2037">vector.extraVolumes[0].configMap.name</a></div></td>
+    <td><div><code>"ucs-connector-events-vector-config"</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2038">vector.extraVolumes[0].configMap.optional</a></div></td>
+    <td><div><code>true</code></div></td>
+    <td></td>
+  </tr><tr>
+    <td><div><a href="./values.yaml#L2035">vector.extraVolumes[0].name</a></div></td>
+    <td><div><code>"ucs-connector-events-config"</code></div></td>
     <td></td>
   </tr>
 </tbody>
