@@ -150,7 +150,7 @@ data:
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_parse_errors (
       `topic` String,
       `partition` Int64,
@@ -235,7 +235,7 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_payout_audit_mv TO api_events_payout_audit (
       `merchant_id` String,
       `payout_id` String,
@@ -296,7 +296,7 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payout_id IS NOT NULL);
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS api_events_mv TO api_events (
       `merchant_id` String,
       `payment_id` Nullable(String),
@@ -782,7 +782,7 @@ data:
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_audit_mv TO connector_events_audit (
       `merchant_id` String,
       `payment_id` Nullable(String),
@@ -827,7 +827,7 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payment_id IS NOT NULL);
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS connector_events_payout_audit_mv TO connector_events_payout_audit (
       `merchant_id` String,
       `payout_id` Nullable(String),
@@ -915,8 +915,9 @@ data:
     WHERE
       length(_error) = 0;
 
+{{ if .Values.ucsConnectorEvents.enabled }}
     -- Prism (Unified Connector Service) connector events, written to Kafka by the
-    -- UCS connector-event normaliser in vector (see vector.customConfig).
+    -- dedicated UCS connector-event normalizer.
     CREATE TABLE IF NOT EXISTS prism_connector_events_queue
     (
         `tenant_id` String,
@@ -941,9 +942,9 @@ data:
         `destination` LowCardinality(Nullable(String))
     )
     ENGINE = Kafka
-    SETTINGS kafka_broker_list = 'kafka0:29092',
-    kafka_topic_list = 'prism-outgoing-connector-events',
-    kafka_group_name = 'hyper',
+    SETTINGS kafka_broker_list = '{{ join "," .Values.ucsConnectorEvents.normalized.bootstrapServers }}',
+    kafka_topic_list = '{{ .Values.ucsConnectorEvents.normalized.topic }}',
+    kafka_group_name = '{{ default (printf "%s-clickhouse-prism-connector-events" .Release.Name) .Values.ucsConnectorEvents.clickhouse.consumerGroup }}',
     kafka_format = 'JSONEachRow',
     kafka_handle_error_mode = 'stream';
 
@@ -1116,6 +1117,8 @@ data:
         (length(_error) = 0)
         AND (tenant_id = 'public')
         AND notEmpty(ifNull(payout_id, ''));
+
+{{ end }}
 
     CREATE TABLE IF NOT EXISTS dispute_queue (
       `dispute_id` String,
@@ -1508,7 +1511,7 @@ data:
     ) ENGINE = MergeTree PARTITION BY merchant_id
     ORDER BY
       (merchant_id, payout_id) TTL inserted_at + toIntervalMonth(18) SETTINGS index_granularity = 8192;
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS outgoing_webhook_events_mv TO outgoing_webhook_events (
       `merchant_id` String,
       `event_id` String,
@@ -1648,7 +1651,7 @@ data:
     WHERE
       (length(_error) = 0)
       AND (payout_id IS NOT NULL);
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS outgoing_webhook_parse_errors (
       `topic` String,
       `partition` Int64,
@@ -2222,7 +2225,7 @@ data:
     kafka_group_name = 'hyper',
     kafka_format = 'JSONEachRow',
     kafka_handle_error_mode = 'stream';
-    
+
     CREATE TABLE IF NOT EXISTS refunds (
       `internal_reference_id` String,
       `refund_id` String,
@@ -2347,7 +2350,7 @@ data:
     )
     ENGINE = Kafka
     SETTINGS kafka_broker_list = 'kafka0:29092', kafka_topic_list = 'hyperswitch-routing-api-events', kafka_group_name = 'hyper', kafka_format = 'JSONEachRow', kafka_handle_error_mode = 'stream';
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_parse_errors (
       `topic` String,
       `partition` Int64,
@@ -2367,7 +2370,7 @@ data:
       routing_events_queue
     WHERE
       length(_error) > 0;
-    
+
     CREATE TABLE IF NOT EXISTS routing_events (
       `merchant_id` String,
       `profile_id` String,
@@ -2394,7 +2397,7 @@ data:
     PARTITION BY toStartOfDay(created_at)
     ORDER BY ( created_at, merchant_id, profile_id, payment_id )
     SETTINGS index_granularity = 8192;
-    
+
     CREATE TABLE IF NOT EXISTS routing_events_audit (
       `merchant_id` String,
       `profile_id` String,
@@ -2417,12 +2420,12 @@ data:
       `routing_approach` Nullable(String),
       INDEX flowIndex flow TYPE bloom_filter GRANULARITY 1,
       INDEX profileIndex profile_id TYPE bloom_filter GRANULARITY 1
-    ) ENGINE = MergeTree 
+    ) ENGINE = MergeTree
     PARTITION BY (merchant_id)
-    ORDER BY ( merchant_id, payment_id ) 
+    ORDER BY ( merchant_id, payment_id )
     SETTINGS index_granularity = 8192;
-    
-    
+
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_mv TO routing_events (
       `merchant_id` String,
       `profile_id` String,
@@ -2468,7 +2471,7 @@ data:
       routing_events_queue
     WHERE
       length(_error) = 0;
-    
+
     CREATE MATERIALIZED VIEW IF NOT EXISTS routing_events_audit_mv TO routing_events_audit (
       `merchant_id` String,
       `profile_id` String,
@@ -2796,6 +2799,7 @@ spec:
           command: ['sh', '-c']
           args:
             - |
+              set -eu
               echo "Fetching ClickHouse admin password from environment..."
               if [ -z "$CLICKHOUSE_ADMIN_PASSWORD" ]; then
                 echo "Failed to retrieve password. Exiting..."

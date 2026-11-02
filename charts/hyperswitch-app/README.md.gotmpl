@@ -33,6 +33,101 @@ helm install hyperswitch-v1 . -n hyperswitch
 
 That's it! Hyperswitch should be up and running on your AWS account  :tada: :tada:
 
+## UCS connector-event ingestion
+
+For production, install `hyperswitch-app` and `hyperswitch-ucs` as separate Helm
+releases, so UCS can be upgraded, scaled and rolled back independently. The
+optional bundled UCS dependency is intended for quick starts. Both installation
+methods use the same maintained `hyperswitch-ucs` chart.
+
+UCS connector-event ingestion is disabled by default. Enabling it creates a
+dedicated Vector Deployment through the upstream Vector subchart, with its own
+ConfigMap and resources. The existing analytics Vector keeps its current configuration.
+Configure the raw and normalized Kafka topics through `ucsConnectorEvents`:
+
+```yaml
+ucsConnectorEvents:
+  enabled: true
+  source:
+    bootstrapServers: ["kafka0:29092"]
+    topic: unified-connector-service-events
+  normalized:
+    bootstrapServers: ["kafka0:29092"]
+    topic: hyperswitch-prism-outgoing-connector-events
+```
+
+Configure the UCS producer in its own release (or under `hyperswitch-ucs.config`
+for a bundled installation), matching the normalizer's source brokers/topic:
+
+```yaml
+config:
+  events:
+    enabled: true
+    brokers: ["kafka0:29092"]
+    connector_events:
+      topic: unified-connector-service-events
+      partition_key_field: request_id
+  lineage:
+    enabled: true
+    header_name: x-lineage-ids
+    field_prefix: ""
+```
+
+For an independent UCS release, keep `hyperswitch-ucs.enabled: false` in the HS
+release and set `server.configs.grpc_client.unified_connector_service.base_url`
+to its reachable gRPC URL. Configure HS's UCS routing separately; deploying UCS
+or enabling ingestion does not enable payment routing.
+
+For bundled UCS with the default service name, explicitly set that URL to
+`http://hyperswitch-ucs:8000`. The chart preserves the previous `localhost` default;
+it does not assume the operator has chosen a bundled deployment.
+
+The pinned HS version (`v1.128.0`) initializes its UCS channel lazily and retries
+connections on subsequent RPCs. HS startup therefore does not wait for UCS, with
+either installation method. UCS-routed requests still require UCS to be reachable.
+
+Consumer groups default to `<release>-ucs-connector-events-normalizer` for Vector
+and `<release>-clickhouse-prism-connector-events` for ClickHouse. Replicas share
+their application's group; the two applications use different groups. When
+upgrading an existing pipeline, explicitly retain its previous values using
+`source.consumerGroup` and `clickhouse.consumerGroup` to preserve Kafka offsets.
+Keep topics and group names stable after initial installation. Changing existing
+ClickHouse Kafka settings requires an explicit queue migration; `CREATE TABLE IF
+NOT EXISTS` does not update an existing queue. Topics are configurable stream
+names and need not match consumer-group names. These defaults target self-hosted
+installations and do not copy private production configuration.
+
+The supplied connection configuration assumes plaintext Kafka, as the existing
+self-hosted analytics pipeline does; broker/topic overrides alone do not configure
+TLS or SASL. Internal installations with an independently managed normalizer must
+leave `ucsConnectorEvents.enabled: false` to avoid duplicate pipelines.
+
+### Existing and external ClickHouse installations
+
+The existing post-install/post-upgrade Job runs bootstrap `CREATE TABLE IF NOT
+EXISTS` and `CREATE MATERIALIZED VIEW IF NOT EXISTS` statements when bundled
+ClickHouse is enabled. These definitions include `destination` and
+`execution_mode` on HS connector events and the new Prism audit objects when
+ingestion is enabled. They create missing objects but do not alter existing
+tables or replace existing views/queues. This chart does not manage schema upgrades.
+
+Existing installations must have their operator apply the complete connector-event
+schema update before upgrading/enabling this pipeline: update the HS Kafka queue,
+stored tables and materialized-view projections together. Adding columns only to
+stored tables is insufficient. Preserve audit/parse-error data and Kafka topic/group
+offsets during maintenance. Historical rows cannot recover discarded fields.
+
+For externally managed ClickHouse (`clickhouse.enabled: false`), no initialization
+Job runs. Operators may use the rendered `clickhouse-script` ConfigMap's `init.sql`
+as the target schema reference, or their own approved schema source. To inspect
+that reference, render with `clickhouse.enabled=true` and the intended ingestion
+settings without deploying that rendering. Configure the desired database and
+Kafka endpoints/groups before applying schema changes.
+
+Keep producers/consumers paused as appropriate until all required destination
+tables and materialized views are installed. Bootstrap statements run sequentially;
+they are not an atomic migration of a live Kafka ingestion pipeline.
+
 ## Post-Deployment Checklist
 
 After deploying the Helm chart, you should verify that everything is working correctly

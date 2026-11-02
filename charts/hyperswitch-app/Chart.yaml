@@ -18,7 +18,7 @@ dependencies:
     repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-card-vault.enabled
   - name: hyperswitch-ucs
-    version: 0.1.10
+    version: 0.1.11
     repository: "https://juspay.github.io/hyperswitch-helm"
     condition: hyperswitch-ucs.enabled
   - name: kafka
@@ -37,6 +37,11 @@ dependencies:
     version: 0.37.0
     repository: https://helm.vector.dev
     condition: vector.enabled
+  - name: vector
+    alias: ucsConnectorEvents
+    version: 0.37.0
+    repository: https://helm.vector.dev
+    condition: ucsConnectorEvents.enabled
   - name: superposition
     version: 0.112.0
     repository: "oci://ghcr.io/juspay/helm-charts"
