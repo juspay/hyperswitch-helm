@@ -726,3 +726,12 @@ superposition.endpoint: "superposition.url"
 {{- end -}}
 {{- toYaml $metric -}}
 {{- end -}}
+{{/* The drainer needs the same tenant schemas and Redis prefixes as the router.
+An explicit drainer.configs.multitenancy replaces this inherited configuration. */}}
+{{- define "drainer.config" -}}
+{{- $config := deepCopy .Values.drainer.configs -}}
+{{- if not (hasKey $config "multitenancy") -}}
+{{- $_ := set $config "multitenancy" (deepCopy .Values.server.configs.multitenancy) -}}
+{{- end -}}
+{{- toYaml $config -}}
+{{- end -}}
