@@ -25,6 +25,6 @@ dependencies:
   version: 0.37.0
 - name: superposition
   repository: oci://ghcr.io/juspay/helm-charts
-  version: 0.112.0
-digest: sha256:b7e37f4a267d082ed5ff7dd98f23855aeacbfed0fa4183359b53e72cf458c9d7
-generated: "2026-09-09T13:40:09.826168+05:30"
+  version: 0.118.0
+digest: sha256:e8c7b49e050e64583323775fc511d071d3df058f20cffbe6aeb877e627760852
+generated: "2026-11-03T19:04:31.620573874Z"
