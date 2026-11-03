@@ -9,6 +9,35 @@ This section outlines cloud-provider agnostic deployment steps for easy installa
 
 ## Installation
 
+### Upgrading to App Server v1.129.0
+
+Update custom values and external secret references before upgrading:
+
+- Rename `server.configs.redis.password`, `server.configs.analytics.clickhouse.password`,
+  `server.configs.opensearch.auth.password`, and `server.configs.email.smtp.password` to
+  `primary_password` under the same parent. Rename `drainer.configs.redis.password` likewise.
+  Update corresponding `ROUTER__...__PASSWORD` and `DRAINER__REDIS__PASSWORD` environment overrides
+  to `...__PRIMARY_PASSWORD`. Database password fields are unchanged.
+- Internal authentication uses `internal_merchant_id_profile_id_auth.primary_internal_api_key`.
+  Set it on both the router and modular payment-method service when internal authentication is
+  enabled. Legacy key rotation requires the explicit `key_rotation_enabled` and
+  `use_legacy_key_for_outbound` settings described in the upstream release notes.
+- When using a KMS secrets manager, the renamed credentials, internal primary key, SMTP SOCKS5
+  password, and authentication-service API key must contain KMS-encrypted values. Existing
+  plaintext values cannot simply be renamed. The legacy internal key remains plaintext.
+- Administrative API requests now use `Authorization: admin-api-key=<ADMIN_API_KEY>`.
+  Merchant API keys continue to use the `api-key` header.
+- Keep `initDB.enable=true` to run the new main migrations, or apply them through your deployment's
+  migration runner before deploying dependent code. Concurrent indexes and the batched blocklist
+  backfill require the supplied `run_in_transaction=false` metadata. Do not wrap them in an outer
+  transaction. This chart's hook runs the main migrations only; v2-compatible deployments must
+  apply their v2 migration and review the historical unique-index correction separately.
+- Superposition's dependency and schema reference are now v0.118.0. Existing installations must
+  also update their Superposition policies from the App Server release's seed configuration.
+
+See the [App Server v1.129.0 release notes](https://github.com/juspay/hyperswitch/releases/tag/v1.129.0)
+for the recovery API changes, webhook prerequisites, and full migration details.
+
 ### Step 1 - Clone repo and Update Configurations
 
 Clone the [hyperswitch-stack](https://github.com/juspay/hyperswitch-helm) repo and start updating the configs
