@@ -5,10 +5,20 @@
 global:
   # Global image registry that can override all imageRegistry fields
   imageRegistry: null
+  # -- Maximum time Kubernetes allows the pod to terminate gracefully
+  terminationGracePeriodSeconds: 30
 
 # -- Number of replicas for the UCS deployment
 # @section -- Connector Service
 replicaCount: 1
+
+# -- Minimum time a ready pod must remain available before a rollout proceeds
+# @section -- Connector Service
+minReadySeconds: 0
+
+# -- Delay SIGTERM after endpoint removal so clients can observe the terminating endpoint (Kubernetes 1.30+, or 1.29 with PodLifecycleSleepAction enabled)
+# @section -- Connector Service
+preStopSleepSeconds: 0
 
 # -- Container image configuration
 # @section -- Connector Service
