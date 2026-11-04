@@ -1695,6 +1695,34 @@ entries:
   hyperswitch-monitoring:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-11-04T07:07:16.043553489Z"
+    dependencies:
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/helm-charts
+      version: 6.46.0
+    - condition: opentelemetry-collector.enabled
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: 0.139.0
+    - condition: victoria-metrics-k8s-stack.enabled
+      name: victoria-metrics-k8s-stack
+      repository: https://victoriametrics.github.io/helm-charts
+      version: 0.71.1
+    - condition: alloy.enabled
+      name: alloy
+      repository: https://grafana.github.io/helm-charts
+      version: 1.4.0
+    description: Monitoring stack for Hyperswitch including VictoriaMetrics, Loki,
+      Alloy, and Grafana
+    digest: b22b6f852af7a5d4dc95dafb673ae9f070f4d2260a193eed7189ae45dad8aec2
+    name: hyperswitch-monitoring
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-monitoring-0.2.1/hyperswitch-monitoring-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-10-07T09:26:32.239090355Z"
     dependencies:
     - condition: loki.enabled
@@ -2802,6 +2830,20 @@ entries:
     version: 0.1.1
   hyperswitch-ucs:
   - apiVersion: v2
+    appVersion: v0.7.0
+    created: "2026-11-04T07:07:16.223559115Z"
+    description: A Helm chart for Hyperswitch UCS Service
+    digest: 0ccf647adb12342b0658fc9ec0c11d41baec5b157c64002fa9694ef563e52ed2
+    keywords:
+    - ucs
+    - service
+    - grpc
+    name: hyperswitch-ucs
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-ucs-0.1.12/hyperswitch-ucs-0.1.12.tgz
+    version: 0.1.12
+  - apiVersion: v2
     appVersion: v0.6.0
     created: "2026-10-19T13:01:49.210074997Z"
     description: A Helm chart for Hyperswitch UCS Service
@@ -2957,6 +2999,22 @@ entries:
     version: 0.1.1
   hyperswitch-web:
   - apiVersion: v2
+    appVersion: 0.135.0
+    created: "2026-11-04T07:07:16.367562844Z"
+    description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
+      user to deploy standalone [SDK](https://github.com/juspay/hyperswitch-web) with
+      different way:   - prebuilt nginx static server (deployment - required a specific
+      docker build)   - autobuild nginx static server (statefulset and assets saved
+      in PVC)  The prebuilt image is suitable for production, no building time. Autobuild
+      is suitable to quick start, assets are built in initContainer and saved in PVC.
+      Nginx container will serve assets'
+    digest: fbd52a1f992121e1c3de59dfba36255a16cfa4c1d235e9cf58c16ea70830a6ba
+    name: hyperswitch-web
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.18/hyperswitch-web-0.2.18.tgz
+    version: 0.2.18
+  - apiVersion: v2
     appVersion: 0.134.0
     created: "2026-09-29T08:36:56.921923834Z"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
@@ -3100,4 +3158,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-11-03T14:02:31.759741796Z"
+generated: "2026-11-04T07:07:16.367775024Z"
