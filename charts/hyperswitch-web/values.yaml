@@ -58,7 +58,7 @@ autoBuild:
     # -- hyperswitch-web repository
     gitRepo: https://github.com/juspay/hyperswitch-web
     # -- hyperswitch-web repository tag
-    gitVersion: 0.134.0
+    gitVersion: 0.135.0
   buildParam:
     # -- node build parameter, hyperswitch-web sdk host (same as ingress host)
     envSdkUrl: https://hyperswitch-sdk
@@ -177,7 +177,7 @@ autoscaling:
 volumes:
   - name: nginx-config-volume
     configMap:
-      name: hyperswitch-web-nginx
+      name: '{{ include "sdk.fullname" . }}-nginx'
   - name: nginx-html-volume
     emptyDir: {}
 
@@ -208,7 +208,7 @@ env:
 
 envFrom:
   - configMapRef:
-      name: hyperswitch-web-nginx
+      name: '{{ include "sdk.fullname" . }}-nginx'
 
 # -- Node selector
 # @ignored
