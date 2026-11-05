@@ -38,6 +38,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              set -eu
               echo "Building static files..."
               npm run re:build
               npm run build:{{ .Values.env.sdkEnv }}
@@ -101,11 +102,11 @@ spec:
           {{- end }}
           {{- with .Values.envFrom }}
           envFrom:
-            {{- toYaml . | nindent 12 }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

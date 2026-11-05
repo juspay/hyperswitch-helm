@@ -18,6 +18,11 @@ helm install hyperswitch-ucs hyperswitch/hyperswitch-ucs
 
 This chart deploys the Hyperswitch UCS (Unified Connector Service) on a Kubernetes cluster using the Helm package manager.
 
+Prism v0.7.0 is published as `ghcr.io/juspay/hyperswitch-prism:v0.7.0`.
+Update custom `image.imageRegistry`, `image.repository`, or global registry overrides when upgrading
+from the previous Docker Hub image. The chart includes the sandbox and production configuration
+files from the same release tag.
+
 ## Prerequisites
 
 - Kubernetes 1.19+
