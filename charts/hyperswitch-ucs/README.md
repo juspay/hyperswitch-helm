@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
+![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -79,10 +79,12 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | livenessProbe.periodSeconds | int | `30` | How often to perform the probe |
 | livenessProbe.successThreshold | int | `1` | Minimum consecutive successes for the probe to be considered successful |
 | livenessProbe.timeoutSeconds | int | `10` | Number of seconds after which the probe times out |
+| minReadySeconds | int | `0` | Minimum time a ready pod must remain available before a rollout proceeds |
 | nameOverride | string | `""` | Override the name of the chart |
 | nodeSelector | object | `{}` | Node labels for pod assignment |
 | podAnnotations | object | `{}` | Annotations to add to the pod |
 | podSecurityContext | object | `{}` | Pod security context |
+| preStopSleepSeconds | int | `0` | Delay SIGTERM after endpoint removal so clients can observe the terminating endpoint (Kubernetes 1.30+, or 1.29 with PodLifecycleSleepAction enabled) |
 | readinessProbe | object | `{"failureThreshold":5,"grpc":{"port":8000,"service":"grpc.health.v1.Health"},"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":5}` | Readiness probe configuration |
 | readinessProbe.failureThreshold | int | `5` | Number of failures before pod is marked unready |
 | readinessProbe.grpc | object | `{"port":8000,"service":"grpc.health.v1.Health"}` | gRPC health check configuration |
@@ -101,7 +103,8 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | resources.requests.cpu | string | `"400m"` | CPU request |
 | resources.requests.memory | string | `"400Mi"` | Memory request |
 | securityContext | object | `{}` | Container security context |
-| service | object | `{"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
+| service | object | `{"endpointDiscovery":{"enabled":false},"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
+| service.endpointDiscovery | object | `{"enabled":false}` | Create a headless Service for clients that balance ready UCS pod endpoints. |
 | service.grpc | object | `{"port":8000,"targetPort":8000}` | gRPC service configuration |
 | service.grpc.port | int | `8000` | gRPC service port |
 | service.grpc.targetPort | int | `8000` | gRPC container port |
@@ -184,6 +187,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | config.server.run_env | string | `"sandbox"` | Runtime environment (production, sandbox) |
 | env | list | `[]` |  |
 | global.imageRegistry | string | `nil` |  |
+| global.terminationGracePeriodSeconds | int | `30` | Maximum time Kubernetes allows the pod to terminate gracefully |
 | istio.destinationRule | object | `{"trafficPolicy":{}}` | DestinationRule configuration |
 | istio.destinationRule.trafficPolicy | object | `{}` | Traffic policy configuration - rendered directly as YAML |
 | istio.enabled | bool | `false` | Enable Istio resources |
