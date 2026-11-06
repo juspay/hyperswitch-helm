@@ -104,7 +104,7 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | resources.requests.memory | string | `"400Mi"` | Memory request |
 | securityContext | object | `{}` | Container security context |
 | service | object | `{"endpointDiscovery":{"enabled":false},"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
-| service.endpointDiscovery.enabled | bool | `false` | Create a headless Service for clients that balance ready UCS pod endpoints. |
+| service.endpointDiscovery | object | `{"enabled":false}` | Create a headless Service for clients that balance ready UCS pod endpoints. |
 | service.grpc | object | `{"port":8000,"targetPort":8000}` | gRPC service configuration |
 | service.grpc.port | int | `8000` | gRPC service port |
 | service.grpc.targetPort | int | `8000` | gRPC container port |
