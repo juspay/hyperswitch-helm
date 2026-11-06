@@ -1,6 +1,6 @@
 # hyperswitch-ucs
 
-![Version: 0.1.13](https://img.shields.io/badge/Version-0.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
+![Version: 0.1.14](https://img.shields.io/badge/Version-0.1.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.7.0](https://img.shields.io/badge/AppVersion-v0.7.0-informational?style=flat-square)
 
 A Helm chart for Hyperswitch UCS Service
 
@@ -103,7 +103,8 @@ The following table lists the configurable parameters of the hyperswitch-ucs cha
 | resources.requests.cpu | string | `"400m"` | CPU request |
 | resources.requests.memory | string | `"400Mi"` | Memory request |
 | securityContext | object | `{}` | Container security context |
-| service | object | `{"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
+| service | object | `{"endpointDiscovery":{"enabled":false},"grpc":{"port":8000,"targetPort":8000},"metrics":{"port":8080,"targetPort":8080},"type":"ClusterIP"}` | Service configuration |
+| service.endpointDiscovery.enabled | bool | `false` | Create a headless Service for clients that balance ready UCS pod endpoints. |
 | service.grpc | object | `{"port":8000,"targetPort":8000}` | gRPC service configuration |
 | service.grpc.port | int | `8000` | gRPC service port |
 | service.grpc.targetPort | int | `8000` | gRPC container port |

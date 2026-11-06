@@ -86,6 +86,10 @@ service:
   # -- Service type
   # @section -- Connector Service
   type: ClusterIP
+  # -- Create a headless Service for clients that balance ready UCS pod endpoints.
+  # @section -- Connector Service
+  endpointDiscovery:
+    enabled: false
   # -- gRPC service configuration
   # @section -- Connector Service
   grpc:
