@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "v1.128.0"
+    version: "v1.129.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "v1.128.0"
+    version: "v1.129.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "v1.128.0"
+    version: "v1.129.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "v1.128.0"
+    version: "v1.129.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -52,7 +52,7 @@ services:
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.134.0
+    version: 0.135.0
     # -- SDK subversion
     # @section -- Services
     subversion: v1
@@ -235,7 +235,7 @@ server:
         username: default
         # -- Clickhouse password (optional)
         # @section -- App Server Secrets
-        password:
+        primary_password:
           _secretRef:
             name: clickhouse
             key: admin-password
@@ -418,7 +418,7 @@ server:
         # -- Password for the smtp server
         # @section -- App Server Secrets
         # This field is optional; however, when uncommented, an empty value is not allowed.
-        # password:
+        # primary_password:
         #   _secret: ''
         # -- Port of the smtp server
         port: '1025'
@@ -652,7 +652,7 @@ server:
       auth:
         auth: basic
         username: admin
-        password: admin
+        primary_password: admin
         region: eu-central-1
       host: https://localhost:9200
       enabled: false
@@ -731,10 +731,10 @@ server:
       unresponsive_timeout: 10
       # -- RESP protocol for fred crate (set this to true if using RESPv2 or redis version < 6)
       use_legacy_version: false
-      # Optional ACL username for authenticated Redis (Redis 6+ / Redis Cloud); requires `password`.
+      # Optional ACL username for authenticated Redis (Redis 6+ / Redis Cloud); requires `primary_password`.
       # Leave both unset for unauthenticated Redis.
       # username: "default"
-      # password:
+      # primary_password:
       #   _secret: ''
       # Optional Redis TLS. Mount a custom CA file with server.extraVolumes and
       # server.extraVolumeMounts, or omit the path to use the system CA roots.
@@ -1139,6 +1139,7 @@ drainer:
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.drainer.loop_interval -> CONFIGS_DRAINER_LOOP_INTERVAL
+  # multitenancy inherits server.configs.multitenancy unless explicitly set here.
   # You can also use some special references to create them as envRefs or secrets:
   #   - _secret: 'secret_value'           -> This will create this as a kubernetes secret
   #   - _configRef/_secretRef:             -> This will create this as an envRef from the specified configmap/secret
@@ -1193,6 +1194,10 @@ drainer:
           _configRef:
             name: *hyperswitch_configs
             key: ROUTER__LOG__CONSOLE__LOG_FORMAT
+      # The release image runs as a non-root user; use console logging instead of
+      # the binary's default file sink in its unwritable application directory.
+      file:
+        enabled: false
       telemetry:
         metrics_enabled:
           _configRef:
@@ -1801,10 +1806,10 @@ hyperswitch-ucs:
   enabled: false
   fullnameOverride: "hyperswitch-ucs"
   image:
-    imageRegistry: docker.io
-    repository: juspaydotin/hyperswitch-prism
+    imageRegistry: ghcr.io
+    repository: juspay/hyperswitch-prism
     pullPolicy: IfNotPresent
-    tag: "v0.6.0"
+    tag: "v0.7.0"
   imagePullSecrets: []
   nameOverride: ""
 
@@ -2469,7 +2474,7 @@ superpositionDB:
     # -- Superposition ref the schema is fetched from. Keep this in step with the `superposition`
     # dependency in Chart.yaml - the schema and the binary are released together. This mirrors
     # `initDB`, which pulls the hyperswitch migrations at `services.router.version`.
-    version: v0.112.0
+    version: v0.118.0
     # -- Base URL of the superposition source repository
     baseUrl: https://raw.githubusercontent.com/juspay/superposition
     # -- Path of the global schema inside that repository
@@ -2724,10 +2729,10 @@ paymentMethodModular:
     # already exist in the namespace, and the main router must carry the same key.
     # internal_merchant_id_profile_id_auth:
     #   enabled: true
-    #   internal_api_key:
+    #   primary_internal_api_key:
     #     _secretRef:
     #       name: hyperswitch-secrets
-    #       key: ROUTER__INTERNAL_MERCHANT_ID_PROFILE_ID_AUTH__INTERNAL_API_KEY
+    #       key: ROUTER__INTERNAL_MERCHANT_ID_PROFILE_ID_AUTH__PRIMARY_INTERNAL_API_KEY
   resources: {}
   env: []
   tolerations: []

@@ -1,6 +1,6 @@
 # hyperswitch-web
 
-![Version: 0.2.17](https://img.shields.io/badge/Version-0.2.17-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.134.0](https://img.shields.io/badge/AppVersion-0.134.0-informational?style=flat-square)
+![Version: 0.2.18](https://img.shields.io/badge/Version-0.2.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.135.0](https://img.shields.io/badge/AppVersion-0.135.0-informational?style=flat-square)
 
 Helm chart for Hyperswitch SDK static Server. This chart allow end user to deploy standalone
 [SDK](https://github.com/juspay/hyperswitch-web) with different way:
@@ -22,7 +22,7 @@ assets
 | autoBuild.enable | bool | `true` | enable npm auto build |
 | autoBuild.forceBuild | bool | `false` | force rebuild assets even these files exist |
 | autoBuild.gitCloneParam.gitRepo | string | `"https://github.com/juspay/hyperswitch-web"` | hyperswitch-web repository |
-| autoBuild.gitCloneParam.gitVersion | string | `"0.134.0"` | hyperswitch-web repository tag |
+| autoBuild.gitCloneParam.gitVersion | string | `"0.135.0"` | hyperswitch-web repository tag |
 | autoBuild.image | string | `"juspaydotin/hyperswitch-web"` | docker image to use for the build |
 | autoBuild.imageRegistry | string | `"docker.juspay.io"` | docker image registry for the build |
 | autoBuild.nginxConfig.extraPath | string | `"v1"` | nginx static server extra path ( like https://<host>/0.15.8/v0 ) |
@@ -39,7 +39,7 @@ assets
 | env.sentryDsn | string | `""` | Sentry DSN for error tracking |
 | env.visaApiCertificatePem | string | `""` | Visa API certificate PEM |
 | env.visaApiKeyId | string | `""` | Visa API key ID |
-| envFrom[0].configMapRef.name | string | `"hyperswitch-web-nginx"` |  |
+| envFrom[0].configMapRef.name | string | `"{{ include \"sdk.fullname\" . }}-nginx"` |  |
 | global.imageRegistry | string | `nil` |  |
 | ingress.annotations | object | `{}` | ingress annotations |
 | ingress.className | string | `"nginx"` | ingress class name |
