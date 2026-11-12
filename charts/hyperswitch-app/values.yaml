@@ -523,7 +523,7 @@ server:
         # -- Client Service Name
         service: "dynamo"
       unified_connector_service:
-        # Unified Connector Service Base URL
+        # Set this to the reachable UCS gRPC URL when enabling UCS routing.
         base_url: "http://localhost:8000"
         # Connection Timeout Duration in Seconds
         connection_timeout: "10"
@@ -1638,6 +1638,169 @@ hyperswitch-card-vault:
     checkPGisUp:
       imageRegistry: docker.io
       image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
+# UCS connector-event ingestion works with either the bundled UCS subchart or a
+# separately deployed UCS publishing to the configured source topic.
+ucsConnectorEvents:
+  # -- Enable UCS connector-event normalization and ClickHouse ingestion
+  # @section -- UCS connector events
+  enabled: false
+  source:
+    # -- Kafka brokers from which raw UCS connector events are consumed
+    # @section -- UCS connector events
+    bootstrapServers:
+      - kafka0:29092
+    # -- Raw UCS connector-event topic
+    # @section -- UCS connector events
+    topic: unified-connector-service-events
+    # -- Vector consumer group override; empty uses <release>-ucs-connector-events-normalizer. Preserve the existing group on upgrades.
+    # @section -- UCS connector events
+    consumerGroup: ""
+  normalized:
+    # -- Kafka brokers to which normalized connector events are published
+    # @section -- UCS connector events
+    bootstrapServers:
+      - kafka0:29092
+    # -- Normalized connector-event topic consumed by ClickHouse
+    # @section -- UCS connector events
+    topic: hyperswitch-prism-outgoing-connector-events
+  clickhouse:
+    # -- ClickHouse consumer group override; empty uses <release>-clickhouse-prism-connector-events. Preserve the existing group on upgrades.
+    # @section -- UCS connector events
+    consumerGroup: ""
+  # @ignored
+  customConfig:
+    acknowledgements:
+      enabled: true
+    api:
+      enabled: true
+      address: 0.0.0.0:8686
+    sources:
+      ucs_connector_events:
+        type: kafka
+        bootstrap_servers: '{{ join "," .Values.source.bootstrapServers }}'
+        group_id: '{{ default (printf "%s-ucs-connector-events-normalizer" .Release.Name) .Values.source.consumerGroup }}'
+        topics:
+          - '{{ .Values.source.topic }}'
+        decoding:
+          codec: json
+    transforms:
+      ucs_connector_call_events:
+        type: filter
+        inputs:
+          - ucs_connector_events
+        condition: '.stage == "ConnectorCall" && (string(.execution_mode) ?? "primary") != "shadow"'
+      ucs_normalize_connector_events:
+        type: remap
+        inputs:
+          - ucs_connector_call_events
+        source: |-
+          flow = string(.flow_type) ?? ""
+          service_name = string(.service_name) ?? ""
+          is_payout = service_name == "PayoutService" || starts_with(flow, "Payout")
+          is_dispute = service_name == "DisputeService" || includes(["AcceptDispute", "SubmitEvidence", "DefendDispute", "Dsync"], flow)
+          is_refund = flow == "Refund" || flow == "Rsync"
+
+          reference_id = string(.reference_id) ?? null
+          resource_id = string(.resource_id) ?? null
+          connector_name = string(.connector) ?? ""
+          request_id = string(.request_id) ?? ""
+          url = string(.url) ?? ""
+          status_code = if exists(.status_code) && !is_null(.status_code) { to_int(.status_code) ?? 0 } else { 0 }
+          created_at = if is_timestamp(.timestamp) {
+            to_unix_timestamp!(.timestamp, unit: "milliseconds")
+          } else {
+            to_int(.timestamp) ?? 0
+          }
+          latency = if exists(.latency_ms) && !is_null(.latency_ms) { to_int(.latency_ms) ?? 0 } else { 0 }
+          method = string(.method) ?? ""
+          execution_mode = string(.execution_mode) ?? "primary"
+
+          request_data = if exists(.request_data) && !is_null(.request_data) {
+            string(.request_data) ?? encode_json(.request_data)
+          } else {
+            ""
+          }
+          response_data = if exists(.response_data) && !is_null(.response_data) {
+            string(.response_data) ?? encode_json(.response_data)
+          } else {
+            null
+          }
+          error_data = if exists(.error) && !is_null(.error) {
+            string(.error) ?? encode_json(.error)
+          } else {
+            null
+          }
+
+          merchant_id = string(.merchant_id) ?? string(.lineage_merchant_id) ?? ""
+          tenant_id = string(.tenant_id) ?? null
+          payment_id = null
+          payout_id = null
+          refund_id = null
+          dispute_id = null
+
+          if is_payout {
+            payout_id = reference_id
+          } else {
+            payment_id = reference_id
+            if is_refund {
+              refund_id = resource_id
+            }
+            if is_dispute {
+              dispute_id = resource_id
+            }
+          }
+
+          . = {}
+          .tenant_id = tenant_id
+          .execution_mode = execution_mode
+          .service_name = service_name
+          .merchant_id = merchant_id
+          .payment_id = payment_id
+          .connector_name = connector_name
+          .destination = "connector"
+          .request_id = request_id
+          .url = url
+          .flow = flow
+          .request = request_data
+          .masked_response = response_data
+          .error = error_data
+          .status_code = status_code
+          .created_at = created_at
+          .latency = latency
+          .method = method
+          .dispute_id = dispute_id
+          .refund_id = refund_id
+          .payout_id = payout_id
+    sinks:
+      ucs_normalized_connector_events_kafka:
+        type: kafka
+        inputs:
+          - ucs_normalize_connector_events
+        bootstrap_servers: '{{ join "," .Values.normalized.bootstrapServers }}'
+        topic: '{{ .Values.normalized.topic }}'
+        encoding:
+          codec: json
+  nameOverride: ucs-connector-events-normalizer
+  role: Stateless-Aggregator
+  replicas: 1
+  # The normalizer connects out to Kafka and needs no inbound Service.
+  service:
+    enabled: false
+  serviceHeadless:
+    enabled: false
+  containerPorts:
+    - name: api
+      containerPort: 8686
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: api
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
 # @ignored
 hyperswitch-ucs:
   enabled: false
@@ -1706,10 +1869,26 @@ hyperswitch-ucs:
       host: "0.0.0.0"
       port: 8080
     proxy:
-      https_url: ""
-      http_url: ""
+      # null removes the key (and the subchart's placeholder default): UCS reads these as
+      # Option<String>, so an empty string would be an invalid proxy URL on every connector call.
+      https_url: null
+      http_url: null
       idle_pool_connection_timeout: 90
-      bypass_proxy_urls: ["localhost", "local"]
+      bypass_urls: ["localhost", "local"]
+    # Enable explicitly alongside ucsConnectorEvents; match the normalizer's source
+    # brokers/topic when overriding defaults. UCS owns its publisher configuration.
+    events:
+      enabled: false
+      brokers: ["kafka0:29092"]
+      connector_events:
+        topic: unified-connector-service-events
+        partition_key_field: request_id
+    # Copy the router's x-lineage-ids header (merchant_id, ...) onto every event,
+    # so connector events can be attributed to a merchant.
+    lineage:
+      enabled: true
+      header_name: "x-lineage-ids"
+      field_prefix: ""
 # Superposition fallback seed.
 #
 # The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
