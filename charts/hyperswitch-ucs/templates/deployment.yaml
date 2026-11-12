@@ -13,6 +13,7 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   {{- if .Values.argoRollouts.enabled }}
   revisionHistoryLimit: {{ .Values.argoRollouts.revisionHistoryLimit }}
   {{- else }}
@@ -62,6 +63,7 @@ spec:
       labels:
         {{- include "hyperswitch-ucs.selectorLabels" . | nindent 8 }}
     spec:
+      terminationGracePeriodSeconds: {{ .Values.global.terminationGracePeriodSeconds }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -73,6 +75,12 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- if gt (int .Values.preStopSleepSeconds) 0 }}
+          lifecycle:
+            preStop:
+              sleep:
+                seconds: {{ .Values.preStopSleepSeconds }}
+          {{- end }}
           {{- $registry := .Values.global.imageRegistry | default .Values.image.imageRegistry }}
           image: "{{ $registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

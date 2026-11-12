@@ -1,0 +1,19 @@
+{{- if .Values.service.endpointDiscovery.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hyperswitch-ucs.fullname" . }}-pods
+  labels:
+    {{- include "hyperswitch-ucs.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: false
+  ports:
+    - port: {{ .Values.service.grpc.port }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+  selector:
+    {{- include "hyperswitch-ucs.selectorLabels" . | nindent 4 }}
+{{- end }}
