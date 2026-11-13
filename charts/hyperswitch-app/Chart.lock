@@ -10,7 +10,7 @@ dependencies:
   version: 0.1.7
 - name: hyperswitch-ucs
   repository: https://juspay.github.io/hyperswitch-helm
-  version: 0.1.8
+  version: 0.1.11
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
   version: 31.0.0
@@ -23,8 +23,11 @@ dependencies:
 - name: vector
   repository: https://helm.vector.dev
   version: 0.37.0
+- name: vector
+  repository: https://helm.vector.dev
+  version: 0.37.0
 - name: superposition
   repository: oci://ghcr.io/juspay/helm-charts
   version: 0.118.0
-digest: sha256:e8c7b49e050e64583323775fc511d071d3df058f20cffbe6aeb877e627760852
-generated: "2026-11-03T19:04:31.620573874Z"
+digest: sha256:d7566b4b4f71249052a7f8fab65f8a2496c91be683299a306c724001fb584aac
+generated: "2026-11-13T07:01:41.497303019Z"
