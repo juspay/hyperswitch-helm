@@ -211,6 +211,8 @@ server:
   binary: router
   # -- Processor URLs will be decided based on this config, Eg: production, sandbox or integ
   run_env: sandbox
+  # -- Connectors to add to the UCS-only connector set from the selected router TOML. This is an additive deployment override; the defaults in router-*.toml are preserved.
+  additionalUcsOnlyConnectors: []
   # Config Settings (for ConfigMap creation)
   # Everything under this section will be added to the configmap in ENV format
   # Eg: configs.chat.enabled -> CONFIGS_CHAT_ENABLED
