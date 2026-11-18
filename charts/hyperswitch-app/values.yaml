@@ -4,6 +4,8 @@ services:
     # -- Router version
     # @section -- Services
     version: "v1.129.0"
+    # -- Optional immutable OCI digest for the main router; overrides its version tag only.
+    digest: ""
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -2787,3 +2789,24 @@ paymentMethodModular:
     destinationRule:
       trafficPolicy: {}
   argoRollouts: {}
+
+# -- Required-fields deployment definitions. Execution is deliberately unavailable.
+# @section -- Required Fields Sync
+requiredFieldsSync:
+  enabled: false
+  mode: disabled
+  # Render a permanently suspended PostSync definition for local review only.
+  # This is not an apply switch and must stay false in environment values.
+  renderSuspended: false
+  releaseClass: ""
+  authorityRelease: ""
+  targetId: ""
+  coordinatorName: ""
+  writerSecretRef: ""
+  companionImage: ""
+  planHash: ""
+  registrationJson: ""
+  intentJson: ""
+  commandJson: ""
+  inputProfileJson: ""
+  deploymentJson: ""

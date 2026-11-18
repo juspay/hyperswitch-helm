@@ -1,0 +1,174 @@
+{{- include "hyperswitch.requiredFields.validate" . -}}
+{{- $s := .Values.requiredFieldsSync | default dict -}}
+{{- if $s.renderSuspended -}}
+{{- $name := include "hyperswitch.requiredFields.name" . -}}
+{{- $intent := mustFromJson $s.intentJson -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+immutable: true
+data:
+  registration.json: {{ $s.registrationJson | quote }}
+  intent.json: {{ $s.intentJson | quote }}
+  command.json: {{ $s.commandJson | quote }}
+  input-profile.json: {{ $s.inputProfileJson | quote }}
+  deployment.json: {{ $s.deploymentJson | quote }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+rules:
+  # The exact Lease must be preprovisioned/retained independently. No create/delete/patch.
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [{{ $s.coordinatorName | quote }}]
+    verbs: [get, update]
+  # Read discovery in this namespace only. Cross-region access remains unprovisioned.
+  - apiGroups: [""]
+    resources: [pods, services]
+    verbs: [get, list]
+  - apiGroups: [discovery.k8s.io]
+    resources: [endpointslices]
+    verbs: [get, list]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get, list]
+  - apiGroups: [argoproj.io]
+    resources: [rollouts]
+    verbs: [get, list]
+  - apiGroups: [networking.istio.io]
+    resources: [virtualservices, destinationrules]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      hyperswitch.io/required-fields-definition: {{ $name }}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    # No BeforeHookCreation, hook-delete-policy or TTL: review retained evidence first.
+    hyperswitch.io/required-fields-status: suspended-definition-only
+    hyperswitch.io/required-fields-inputs: {{ include "hyperswitch.requiredFields.digest" . | quote }}
+spec:
+  suspend: true
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 1800
+  template:
+    metadata:
+      labels:
+        hyperswitch.io/required-fields-definition: {{ $name }}
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      serviceAccountName: {{ $name }}
+      shareProcessNamespace: false
+      securityContext:
+        runAsNonRoot: true
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: executor
+          image: {{ include "hyperswitch-router.image" . | quote }}
+          command: ["./router"]
+          args:
+            - required-fields
+            - apply
+            - --target
+            - {{ $s.targetId | quote }}
+            - --command-config
+            - /required-fields-inputs/command.json
+            - --intent
+            - {{ $intent.generation | quote }}
+            - --plan-hash
+            - {{ $s.planHash | quote }}
+            - --output
+            - /reports/result.json
+          securityContext:
+            runAsUser: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits: {cpu: "1", memory: 1Gi}
+          volumeMounts:
+            {{- include "hyperswitch.requiredFields.mount" . | nindent 12 }}
+            - {name: executor-credentials, mountPath: /executor-credentials, readOnly: true}
+            - {name: executor-api, mountPath: /executor-api, readOnly: true}
+            - {name: reports, mountPath: /reports}
+        - name: sdk-verifier
+          image: {{ $s.companionImage | quote }}
+          # Packaging of this existing W entry point and the H exchange bridge are pending.
+          command: [node, /verifier/playwright-tests/required-fields-verifier/run.cjs]
+          securityContext:
+            runAsUser: 10002
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi}
+            limits: {cpu: "2", memory: 2Gi}
+          volumeMounts:
+            {{- include "hyperswitch.requiredFields.mount" . | nindent 12 }}
+            - {name: verifier-work, mountPath: /fixture}
+            - {name: verifier-work, mountPath: /tmp}
+      volumes:
+        {{- include "hyperswitch.requiredFields.volume" . | nindent 8 }}
+        - name: executor-credentials
+          secret:
+            secretName: {{ $s.writerSecretRef }}
+            defaultMode: 288
+        - name: executor-api
+          projected:
+            defaultMode: 288
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  expirationSeconds: 600
+        # Scratch is not the durable journal, baseline, report store or recovery image.
+        - {name: reports, emptyDir: {sizeLimit: 32Mi}}
+        - {name: verifier-work, emptyDir: {sizeLimit: 1Gi}}
+{{- end }}

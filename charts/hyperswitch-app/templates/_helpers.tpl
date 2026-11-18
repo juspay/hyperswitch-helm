@@ -78,7 +78,14 @@ Get the full image name
 {{- $registry := .Values.global.imageRegistry | default .Values.services.router.imageRegistry }}
 {{- $repository := .Values.services.router.image }}
 {{- $tag := .Values.services.router.version | default .Chart.AppVersion }}
+{{- if .Values.services.router.digest }}
+{{- if not (regexMatch "^sha256:[a-f0-9]{64}$" .Values.services.router.digest) }}
+{{- fail "services.router.digest must be an exact sha256 OCI digest" }}
+{{- end }}
+{{- printf "%s/%s@%s" $registry $repository .Values.services.router.digest }}
+{{- else }}
 {{- printf "%s/%s:%s" $registry $repository $tag }}
+{{- end }}
 {{- end }}
 
 {{/*

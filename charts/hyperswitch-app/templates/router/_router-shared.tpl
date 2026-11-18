@@ -372,6 +372,12 @@ spec:
               value: {{ $envValue | quote }}
           {{- end }}
           {{- end }}
+          {{- if and (not $key) ($root.Values.requiredFieldsSync | default dict).renderSuspended }}
+            - name: ROUTER__REQUIRED_FIELDS_SYNC__MODE
+              value: disabled
+            - name: ROUTER__REQUIRED_FIELDS_SYNC__ATTESTATION_PROFILE
+              value: /required-fields-inputs/input-profile.json
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ $root.Release.Name }}-hyperswitch-configs
@@ -396,6 +402,9 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
+            {{- if and (not $key) ($root.Values.requiredFieldsSync | default dict).renderSuspended }}
+            {{- include "hyperswitch.requiredFields.mount" $root | nindent 12 }}
+            {{- end }}
             {{- if eq $server.run_env "production" }}
             - mountPath: /local/config/production.toml
               name: router-config
@@ -430,6 +439,9 @@ spec:
       serviceAccountName: {{ include "hyperswitch.router.serviceAccountName" . }}
       terminationGracePeriodSeconds: {{ $svc.terminationGracePeriodSeconds | default (default $global.terminationGracePeriodSeconds $server.terminationGracePeriodSeconds) }}
       volumes:
+        {{- if and (not $key) ($root.Values.requiredFieldsSync | default dict).renderSuspended }}
+        {{- include "hyperswitch.requiredFields.volume" $root | nindent 8 }}
+        {{- end }}
         - configMap:
             defaultMode: 420
             name: router-cm-{{ $root.Release.Name }}
