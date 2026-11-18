@@ -583,6 +583,51 @@ superposition.endpoint: "superposition.url"
   {{- end -}}
 {{- end -}}
 
+{{/*
+Render the router TOML selected by server.run_env and add deployment-specific
+UCS-only connectors without replacing the defaults shipped in that TOML.
+*/}}
+{{- define "hyperswitch.routerConfig" -}}
+  {{- $configPath := "configs/router-integ.toml" -}}
+  {{- if eq .Values.server.run_env "production" -}}
+    {{- $configPath = "configs/router-production.toml" -}}
+  {{- else if eq .Values.server.run_env "sandbox" -}}
+    {{- $configPath = "configs/router-sandbox.toml" -}}
+  {{- end -}}
+
+  {{- $config := .Files.Get $configPath -}}
+  {{- $additional := .Values.server.additionalUcsOnlyConnectors | default (list) -}}
+  {{- if not (kindIs "slice" $additional) -}}
+    {{- fail "server.additionalUcsOnlyConnectors must be a list" -}}
+  {{- end -}}
+
+  {{- if gt (len $additional) 0 -}}
+    {{- $setting := regexFind `(?m)^ucs_only_connectors[[:space:]]*=[[:space:]]*"[^"]*"` $config -}}
+    {{- if not $setting -}}
+      {{- fail (printf "ucs_only_connectors is missing from %s" $configPath) -}}
+    {{- end -}}
+
+    {{- $existing := regexReplaceAll `^[^"]*"` $setting "" | trimSuffix "\"" -}}
+    {{- $seen := dict -}}
+    {{- $merged := list -}}
+    {{- range $connector := concat (splitList "," $existing) $additional -}}
+      {{- $connector = trim $connector -}}
+      {{- if not (regexMatch `^[a-z0-9_]+$` $connector) -}}
+        {{- fail (printf "invalid UCS-only connector name %q" $connector) -}}
+      {{- end -}}
+      {{- if not (hasKey $seen $connector) -}}
+        {{- $_ := set $seen $connector true -}}
+        {{- $merged = append $merged $connector -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $replacement := printf `ucs_only_connectors = "%s"` (join ", " $merged) -}}
+    {{- $config = replace $setting $replacement $config -}}
+  {{- end -}}
+
+  {{- $config -}}
+{{- end -}}
+
 {{/* Convert YAML config to environment variables for ConfigMap (normal fields only) */}}
 {{- define "hyperswitch.configToEnvVars" -}}
   {{- $config := .config -}}
