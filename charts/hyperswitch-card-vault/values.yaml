@@ -62,6 +62,11 @@ server:
     # extra env variables to be added to hyperswitch-card-vault.
     env: {}
 
+  # -- Additional volumes for the card vault pod
+  extraVolumes: []
+  # -- Additional volume mounts for the tartarus container
+  extraVolumeMounts: []
+
   external_key_manager:
     # Mode options: "disabled", "enabled", "enabled_with_mtls"
     # - disabled: External key manager is not used
