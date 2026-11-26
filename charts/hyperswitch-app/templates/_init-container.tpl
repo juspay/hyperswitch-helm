@@ -23,6 +23,42 @@
     echo "PostgreSQL is ready.";
 {{- end -}}
 
+{{/* Wait for callback initialization before the router can cache a missing policy. */}}
+{{- define "postgresql.initContainer.check.callbackPolicy" -}}
+- name: check-payment-callback
+  {{- $registry := .Values.global.imageRegistry | default .Values.initDB.checkPGisUp.imageRegistry }}
+  image: "{{ $registry }}/{{ .Values.initDB.checkPGisUp.image }}"
+  imagePullPolicy: IfNotPresent
+  command: ["/bin/sh", "-c"]
+  args:
+    - |-
+      set -eu
+      attempt=0
+      until [ "$(psql -Atc "SELECT 1 FROM configs WHERE key = 'payment_callback'" 2>/dev/null)" = "1" ]; do
+        if [ "$attempt" -ge "{{ .Values.initDB.checkPGisUp.maxAttempt }}" ]; then
+          echo "Payment callback policy was not initialized in time"
+          exit 1
+        fi
+        attempt=$((attempt+1))
+        echo "Waiting for the database migration hook to initialize payment_callback..."
+        sleep 5
+      done
+  env:
+    - name: PGHOST
+      value: {{ include "postgresql.host" . | quote }}
+    - name: PGDATABASE
+      value: {{ include "postgresql.database" . | quote }}
+    - name: PGUSER
+      value: {{ include "postgresql.username" . | quote }}
+    - name: PGCONNECT_TIMEOUT
+      value: "5"
+    - name: PGPASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "postgresql.master.plainPassword.secret" . }}
+          key: {{ include "postgresql.master.plainPassword.key" . }}
+{{- end -}}
+
 
 {{/*Ensure Redis is up and running */}}
 {{- define "redis.initContainer.check.ready" -}}

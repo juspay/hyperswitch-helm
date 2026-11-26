@@ -313,6 +313,7 @@ spec:
         {{- end }}
         {{- if $root.Values.initDB.enable }}
         {{- include "postgresql.initContainer.check.ready" $root | nindent 8 }}
+        {{- include "postgresql.initContainer.check.callbackPolicy" $root | nindent 8 }}
         {{- end }}
         {{- if $root.Values.redisMiscConfig.checkRedisIsUp.initContainer.enable }}
         {{- include "redis.initContainer.check.ready" $root | nindent 8 }}
