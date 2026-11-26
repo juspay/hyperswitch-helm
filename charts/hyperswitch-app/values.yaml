@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "2026.11.26.0"
+    version: "20ecbdb726"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
