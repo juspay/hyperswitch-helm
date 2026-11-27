@@ -2,6 +2,60 @@ apiVersion: v1
 entries:
   hyperswitch-app:
   - apiVersion: v2
+    appVersion: v1.131.0
+    created: "2026-11-27T11:07:07.725961556Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.6.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.5.38
+    - condition: hyperswitch-card-vault.enabled
+      name: hyperswitch-card-vault
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.10
+    - condition: hyperswitch-ucs.enabled
+      name: hyperswitch-ucs
+      repository: https://juspay.github.io/hyperswitch-helm
+      version: 0.1.12
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 31.0.0
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.3
+    - condition: mailhog.enabled
+      name: mailhog
+      repository: https://codecentric.github.io/helm-charts
+      version: 4.0.0
+    - condition: vector.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.37.0
+    - alias: ucsConnectorEvents
+      condition: ucsConnectorEvents.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.37.0
+    - condition: superposition.enabled
+      name: superposition
+      repository: oci://ghcr.io/juspay/helm-charts
+      version: 0.120.1
+    description: Hyperswitch is a community-led, open payments switch designed to
+      empower digital businesses by providing fast, reliable, and affordable access
+      to the best payments infrastructure.
+    digest: cf0b60f1f0209ceb832dfacbdf63b8172793be93d002a5cff801110cdf35018e
+    name: hyperswitch-app
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-app-1.3.8/hyperswitch-app-1.3.8.tgz
+    version: 1.3.8
+  - apiVersion: v2
     appVersion: v1.129.0
     created: "2026-11-12T17:26:51.389378687Z"
     dependencies:
@@ -1393,6 +1447,16 @@ entries:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-card-vault-0.1.1/hyperswitch-card-vault-0.1.1.tgz
     version: 0.1.1
   hyperswitch-control-center:
+  - apiVersion: v2
+    appVersion: v1.40.0
+    created: "2026-11-27T11:07:07.921085446Z"
+    description: A dashboard for Hyperswitch Service
+    digest: 1b0c3d2f53145e11f5167c1ab4234d44f9a8d9baacf6aec3af0da131e3066cd8
+    name: hyperswitch-control-center
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-control-center-1.1.6/hyperswitch-control-center-1.1.6.tgz
+    version: 1.1.6
   - apiVersion: v2
     appVersion: v1.39.0
     created: "2026-11-03T14:02:31.759278794Z"
@@ -2884,6 +2948,20 @@ entries:
     version: 0.1.1
   hyperswitch-ucs:
   - apiVersion: v2
+    appVersion: v0.8.0
+    created: "2026-11-27T11:07:08.07945691Z"
+    description: A Helm chart for Hyperswitch UCS Service
+    digest: cc565538922ebc39b7770b62d3e7323465d02b7004b4027ff9ea9b74436b5c71
+    keywords:
+    - ucs
+    - service
+    - grpc
+    name: hyperswitch-ucs
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-ucs-0.1.13/hyperswitch-ucs-0.1.13.tgz
+    version: 0.1.13
+  - apiVersion: v2
     appVersion: v0.7.0
     created: "2026-11-04T07:07:16.223559115Z"
     description: A Helm chart for Hyperswitch UCS Service
@@ -3053,6 +3131,22 @@ entries:
     version: 0.1.1
   hyperswitch-web:
   - apiVersion: v2
+    appVersion: 0.136.0
+    created: "2026-11-27T11:07:08.202314787Z"
+    description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
+      user to deploy standalone [SDK](https://github.com/juspay/hyperswitch-web) with
+      different way:   - prebuilt nginx static server (deployment - required a specific
+      docker build)   - autobuild nginx static server (statefulset and assets saved
+      in PVC)  The prebuilt image is suitable for production, no building time. Autobuild
+      is suitable to quick start, assets are built in initContainer and saved in PVC.
+      Nginx container will serve assets'
+    digest: 5d065652a8899b84e2e629fffc1da1049fef0f0300c660c7584ea36a50a2accb
+    name: hyperswitch-web
+    type: application
+    urls:
+    - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.19/hyperswitch-web-0.2.19.tgz
+    version: 0.2.19
+  - apiVersion: v2
     appVersion: 0.135.0
     created: "2026-11-04T07:07:16.367562844Z"
     description: 'Helm chart for Hyperswitch SDK static Server. This chart allow end
@@ -3212,4 +3306,4 @@ entries:
     urls:
     - https://github.com/juspay/hyperswitch-helm/releases/download/hyperswitch-web-0.2.8/hyperswitch-web-0.2.8.tgz
     version: 0.2.8
-generated: "2026-11-12T17:26:51.389747858Z"
+generated: "2026-11-27T11:07:08.202830544Z"
