@@ -1,6 +1,6 @@
 # hyperswitch-control-center
 
-![Version: 1.1.5](https://img.shields.io/badge/Version-1.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.39.0](https://img.shields.io/badge/AppVersion-v1.39.0-informational?style=flat-square)
+![Version: 1.1.6](https://img.shields.io/badge/Version-1.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.40.0](https://img.shields.io/badge/AppVersion-v1.40.0-informational?style=flat-square)
 
 A dashboard for Hyperswitch Service
 
@@ -145,6 +145,7 @@ After deployment, verify the Control Center is working:
 | config.default.endpoints.hypersense_url | string | `""` |  |
 | config.default.endpoints.logo_url | string | `""` |  |
 | config.default.endpoints.mixpanel_token | string | `"dd4da7f62941557e716fbc0a19f9cc7e"` |  |
+| config.default.endpoints.mtls_api_url | string | `""` |  |
 | config.default.endpoints.olap_url | string | `""` |  |
 | config.default.endpoints.recon_iframe_url | string | `""` |  |
 | config.default.features.authentication_analytics | string | `"false"` |  |
@@ -166,7 +167,9 @@ After deployment, verify the Control Center is working:
 | config.default.features.dev_intelligent_routing_v2 | bool | `false` |  |
 | config.default.features.dev_modularity_v2 | bool | `false` |  |
 | config.default.features.dev_payout_blocklist | bool | `false` |  |
+| config.default.features.dev_recon_engine_api_keys | bool | `false` |  |
 | config.default.features.dev_recon_v2_product | bool | `false` |  |
+| config.default.features.dev_recovery_external_trigger | bool | `false` |  |
 | config.default.features.dev_recovery_v2_product | bool | `false` |  |
 | config.default.features.dev_superposition | bool | `false` |  |
 | config.default.features.dev_vault_v2_product | bool | `false` |  |
@@ -177,6 +180,7 @@ After deployment, verify the Control Center is working:
 | config.default.features.email | string | `"true"` |  |
 | config.default.features.feedback | string | `"false"` |  |
 | config.default.features.force_cookies | bool | `false` |  |
+| config.default.features.forgot_password_disabled | bool | `false` |  |
 | config.default.features.frm | string | `"true"` |  |
 | config.default.features.generate_report | string | `"true"` |  |
 | config.default.features.global_search | string | `"true"` |  |
@@ -199,6 +203,8 @@ After deployment, verify the Control Center is working:
 | config.default.features.recon | string | `"true"` |  |
 | config.default.features.recon_v2 | bool | `false` |  |
 | config.default.features.sample_data | string | `"true"` |  |
+| config.default.features.signin_magic_link_fallback | bool | `false` |  |
+| config.default.features.signup_disabled | bool | `true` |  |
 | config.default.features.surcharge | string | `"true"` |  |
 | config.default.features.system_metrics | string | `"false"` |  |
 | config.default.features.tax_processor | string | `"true"` |  |
@@ -232,14 +238,14 @@ After deployment, verify the Control Center is working:
 | dependencies.sdk.fullUrlOverride | string | `""` |  |
 | dependencies.sdk.host | string | `"http://localhost:9050"` |  |
 | dependencies.sdk.subversion | string | `"v1"` |  |
-| dependencies.sdk.version | string | `"0.135.0"` |  |
+| dependencies.sdk.version | string | `"0.136.0"` |  |
 | extraEnvVars | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | global.imageRegistry | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.registry | string | `"docker.juspay.io"` |  |
 | image.repository | string | `"juspaydotin/hyperswitch-control-center"` |  |
-| image.tag | string | `"v1.39.0"` |  |
+| image.tag | string | `"v1.40.0"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
