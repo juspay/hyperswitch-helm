@@ -1,0 +1,131 @@
+suite: extra volumes and volume mounts
+templates:
+  - templates/deployment.yaml
+  - templates/configmap.yaml
+  - templates/secrets.yaml
+tests:
+  - it: keeps only the built-in config volume and mount by default
+    template: templates/deployment.yaml
+    asserts:
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 1
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /local/config/development.toml
+            name: hyperswitch-vault-config
+            subPath: development.toml
+  - it: preserves the default pod spec with explicitly empty lists
+    template: templates/deployment.yaml
+    set:
+      server.extraVolumes: []
+      server.extraVolumeMounts: []
+    asserts:
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 1
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 1
+  - it: appends a read-only ConfigMap CA mount to tartarus
+    template: templates/deployment.yaml
+    set:
+      server.extraVolumes:
+        - name: example-ca
+          configMap:
+            name: example-ca
+            items:
+              - key: ca.pem
+                path: ca.pem
+      server.extraVolumeMounts:
+        - name: example-ca
+          mountPath: /etc/example-ca/ca.pem
+          subPath: ca.pem
+          readOnly: true
+    asserts:
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 2
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: hyperswitch-vault-config
+      - equal:
+          path: spec.template.spec.volumes[1]
+          value:
+            name: example-ca
+            configMap:
+              name: example-ca
+              items:
+                - key: ca.pem
+                  path: ca.pem
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: tartarus
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 2
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0].name
+          value: hyperswitch-vault-config
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1]
+          value:
+            name: example-ca
+            mountPath: /etc/example-ca/ca.pem
+            subPath: ca.pem
+            readOnly: true
+      - notExists:
+          path: spec.template.spec.initContainers[0].volumeMounts
+  - it: supports multiple volumes without requiring tartarus mounts
+    template: templates/deployment.yaml
+    set:
+      server.extraVolumes:
+        - name: example-cache
+          emptyDir: {}
+        - name: example-config
+          configMap:
+            name: example-config
+    asserts:
+      - lengthEqual:
+          path: spec.template.spec.volumes
+          count: 3
+      - equal:
+          path: spec.template.spec.volumes[1]
+          value:
+            name: example-cache
+            emptyDir: {}
+      - equal:
+          path: spec.template.spec.volumes[2].configMap.name
+          value: example-config
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 1
+  - it: supports multiple mounts when the unlock sidecar is disabled
+    template: templates/deployment.yaml
+    set:
+      vaultKeysJob.enabled: false
+      server.extraVolumes:
+        - name: example-cache
+          emptyDir: {}
+      server.extraVolumeMounts:
+        - name: example-cache
+          mountPath: /cache
+        - name: hyperswitch-vault-config
+          mountPath: /etc/example-config
+          readOnly: true
+    asserts:
+      - notExists:
+          path: spec.template.spec.initContainers
+      - lengthEqual:
+          path: spec.template.spec.containers[0].volumeMounts
+          count: 3
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1].mountPath
+          value: /cache
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2].mountPath
+          value: /etc/example-config

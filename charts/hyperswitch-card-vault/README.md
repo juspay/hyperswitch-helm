@@ -1,6 +1,6 @@
 # hyperswitch-card-vault
 
-![Version: 0.1.10](https://img.shields.io/badge/Version-0.1.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
+![Version: 0.1.11](https://img.shields.io/badge/Version-0.1.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
 
 "application"
 A Helm chart for creating Hyperswitch Card Vault
@@ -91,6 +91,43 @@ secrets:
       -----BEGIN CERTIFICATE-----
       ...
       -----END CERTIFICATE-----
+```
+
+### Extra Volumes and Volume Mounts
+
+Use `server.extraVolumes` to append Kubernetes volumes to the pod and
+`server.extraVolumeMounts` to append mounts to the `tartarus` container only.
+Both default to `[]`, preserving the built-in configuration volume and mount.
+Choose unique volume names and mount paths that do not conflict with the
+built-in `hyperswitch-vault-config` volume or `/local/config/development.toml`.
+
+For example, mount the `ca.pem` key from an existing ConfigMap named `example-ca`:
+
+```yaml
+server:
+  extraVolumes:
+    - name: example-ca
+      configMap:
+        name: example-ca
+        items:
+          - key: ca.pem
+            path: ca.pem
+  extraVolumeMounts:
+    - name: example-ca
+      mountPath: /etc/example-ca/ca.pem
+      subPath: ca.pem
+      readOnly: true
+```
+
+Create the ConfigMap separately in the release namespace. This only mounts the
+file; configure the application separately to use it. As with other Kubernetes
+`subPath` mounts, ConfigMap updates require restarting the pod to take effect.
+
+To run the rendering regression tests with the `helm-unittest` plugin installed:
+
+```bash
+helm dependency build charts/hyperswitch-card-vault
+helm unittest charts/hyperswitch-card-vault
 ```
 
 ### Database Configuration
@@ -194,6 +231,8 @@ external:
 | server.external_key_manager.mode | string | `"disabled"` |  |
 | server.external_key_manager.url | string | `"http://localhost:5000"` |  |
 | server.extra.env | object | `{}` |  |
+| server.extraVolumeMounts | list | `[]` | Additional volume mounts for the tartarus container |
+| server.extraVolumes | list | `[]` | Additional volumes for the card vault pod |
 | server.host | string | `"0.0.0.0"` |  |
 | server.image | string | `"juspaydotin/hyperswitch-card-vault:v0.9.0"` |  |
 | server.imageRegistry | string | `"docker.juspay.io"` |  |

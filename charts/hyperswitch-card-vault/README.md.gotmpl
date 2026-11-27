@@ -96,6 +96,43 @@ secrets:
       -----END CERTIFICATE-----
 ```
 
+### Extra Volumes and Volume Mounts
+
+Use `server.extraVolumes` to append Kubernetes volumes to the pod and
+`server.extraVolumeMounts` to append mounts to the `tartarus` container only.
+Both default to `[]`, preserving the built-in configuration volume and mount.
+Choose unique volume names and mount paths that do not conflict with the
+built-in `hyperswitch-vault-config` volume or `/local/config/development.toml`.
+
+For example, mount the `ca.pem` key from an existing ConfigMap named `example-ca`:
+
+```yaml
+server:
+  extraVolumes:
+    - name: example-ca
+      configMap:
+        name: example-ca
+        items:
+          - key: ca.pem
+            path: ca.pem
+  extraVolumeMounts:
+    - name: example-ca
+      mountPath: /etc/example-ca/ca.pem
+      subPath: ca.pem
+      readOnly: true
+```
+
+Create the ConfigMap separately in the release namespace. This only mounts the
+file; configure the application separately to use it. As with other Kubernetes
+`subPath` mounts, ConfigMap updates require restarting the pod to take effect.
+
+To run the rendering regression tests with the `helm-unittest` plugin installed:
+
+```bash
+helm dependency build charts/hyperswitch-card-vault
+helm unittest charts/hyperswitch-card-vault
+```
+
 ### Database Configuration
 
 The chart supports both internal (Bitnami PostgreSQL) and external PostgreSQL:
