@@ -9,6 +9,48 @@ This section outlines cloud-provider agnostic deployment steps for easy installa
 
 ## Installation
 
+### Upgrading to App Server v1.131.0
+
+- Replace custom `server.configs.superposition.polling_interval` and `request_timeout` overrides
+  with `polling_interval_milliseconds` and `request_timeout_milliseconds`, converting seconds to
+  milliseconds. The chart defaults are `15000` and `60000`.
+- The bundled App Server configuration disables signup and password collection during merchant
+  signup. Keep Control Center's `config.default.features.signup_disabled` aligned with
+  `server.configs.user.signup_disabled`, and configure `server.configs.user.signup_contact_email`
+  for your deployment. Set `server.configs.user.accept_password_on_signup_with_merchant_id` only
+  when enabling the corresponding password-based signup flow.
+- Set `server.configs.multitenancy.tenants.<tenant>.mtls_base_url` and Control Center's
+  `config.default.endpoints.mtls_api_url` when using a separate mTLS webhook ingress.
+- The Superposition dependency and schema reference are v0.120.1. Existing workspaces should
+  synchronize policies from the App Server v1.131.0 seed. The removed revenue-recovery
+  `monitoring_threshold_in_seconds` setting is no longer included in the chart defaults.
+- Provision and seed the Superposition organization/workspace, then set
+  `server.configs.superposition.org_id` and `workspace_id` to their actual IDs. App Server
+  v1.131.0 requires a reachable experiments API during startup, even with the file fallback
+  enabled. For a fresh bundled installation, enable `superposition` and `superpositionDB`,
+  configure their database connection, and provision the workspace before expecting the router
+  and workers to become ready. The database hook creates the global schema, not a workspace.
+- The published v1.131.0 fallback seed gives both `flow_name` and `merchant_connector_id`
+  dimension position `21`, which prevents fallback initialization. For the default upstream
+  v1.131.0 download URL, the init container changes `flow_name` to position `22`, matching the
+  upstream correction. If you supply a seed through a ConfigMap or a custom URL, apply the same
+  correction yourself; those files are used as supplied.
+- Keep `initDB.enable=true`, or apply the release's main database migrations through your own
+  migration runner before deploying the application.
+- The router also requires a `payment_callback` entry in each tenant's `configs` table before
+  startup. The migration hook inserts it only when absent, using
+  `initDB.paymentCallback.mode` (default `migration`), and preserves existing policies.
+  `migration` issues tokenized URLs while accepting older callbacks; switch to `enforced`
+  through the configs API after older flows have drained. If `initDB` is disabled or you use
+  additional tenant schemas, initialize this entry in each schema yourself before rollout.
+  Router init containers wait for this entry so startup cannot cache its absence while the
+  post-install migration hook is running. On a fresh installation, do not use Helm's `--wait`
+  before these post-install hooks have run; wait for workload readiness after installation.
+  See the [upstream callback policy](https://github.com/juspay/hyperswitch/blob/v1.131.0/crates/router/src/core/configs/payment_callback.rs).
+
+See the [App Server v1.131.0 release notes](https://github.com/juspay/hyperswitch/releases/tag/v1.131.0)
+for the removed API endpoints and complete migration/configuration changes.
+
 ### Upgrading to App Server v1.129.0
 
 Update custom values and external secret references before upgrading:
@@ -69,6 +111,10 @@ releases, so UCS can be upgraded, scaled and rolled back independently. The
 optional bundled UCS dependency is intended for quick starts. Both installation
 methods use the same maintained `hyperswitch-ucs` chart.
 
+For Suite v1.25, deploy Prism v0.8.0 using the standalone `hyperswitch-ucs` chart
+0.1.13. The optional bundled dependency remains at the already published 0.1.12
+(Prism v0.7.0); bump its dependency and image together after 0.1.13 is published.
+
 UCS connector-event ingestion is disabled by default. Enabling it creates a
 dedicated Vector Deployment through the upstream Vector subchart, with its own
 ConfigMap and resources. The existing analytics Vector keeps its current configuration.
@@ -111,7 +157,7 @@ For bundled UCS with the default service name, explicitly set that URL to
 `http://hyperswitch-ucs:8000`. The chart preserves the previous `localhost` default;
 it does not assume the operator has chosen a bundled deployment.
 
-The pinned HS version (`v1.129.0`) initializes its UCS channel lazily and retries
+The pinned HS version (`v1.131.0`) initializes its UCS channel lazily and retries
 connections on subsequent RPCs. HS startup therefore does not wait for UCS, with
 either installation method. UCS-routed requests still require UCS to be reachable.
 

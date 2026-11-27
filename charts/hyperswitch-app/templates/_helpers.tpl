@@ -508,6 +508,12 @@ Allow the release namespace to be overridden for multi-namespace deployments
       set -eu
       curl -sfL --retry 5 --retry-delay 3 --retry-connrefused \
         -o "{{ .Values.superpositionFallback.mountPath }}" "$SEED_URL"
+      # v1.131.0 assigns position 21 to both flow_name and merchant_connector_id.
+      # Match the upstream correction without importing unrelated changes from main.
+      if [ "$SEED_URL" = "https://raw.githubusercontent.com/juspay/hyperswitch/v1.131.0/config/superposition_seed.toml" ]; then
+        sed -i 's/^flow_name = { position = 21,/flow_name = { position = 22,/' \
+          "{{ .Values.superpositionFallback.mountPath }}"
+      fi
       echo "fetched superposition seed from $SEED_URL"
   env:
     - name: SEED_URL

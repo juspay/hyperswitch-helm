@@ -12,5 +12,5 @@ description: |-
   assets
 
 type: application
-version: 0.2.18
-appVersion: "0.135.0"
+version: 0.2.19
+appVersion: "0.136.0"

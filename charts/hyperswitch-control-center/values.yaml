@@ -14,9 +14,9 @@ dependencies:
   # Hyperswitch SDK configuration for Hyperloader.js
   sdk:
     host: http://localhost:9050
-    version: 0.135.0
+    version: 0.136.0
     subversion: v1
-    # Full URL override for the HyperLoader.js | Eg: https://sdk.hyperswitch.io/web/0.135.0/v1/HyperLoader.js
+    # Full URL override for the HyperLoader.js | Eg: https://sdk.hyperswitch.io/web/0.136.0/v1/HyperLoader.js
     fullUrlOverride: ""
   # For Audit Trail feature
   clickhouse:
@@ -39,7 +39,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.39.0
+  tag: v1.40.0
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
@@ -151,6 +151,10 @@ config:
     features:
       # Core features
       email: "true"
+      # Match the App Server's bundled signup policy. Override both components together.
+      signup_disabled: true
+      forgot_password_disabled: false
+      signin_magic_link_fallback: false
       branding: "false"
       cug_user: false
       # Real deployment-configs (sandbox/integ/fnb) all set this to true so the
@@ -209,6 +213,8 @@ config:
       dev_modularity_v2: false
       dev_recon_v2_product: false
       dev_recovery_v2_product: false
+      dev_recovery_external_trigger: false
+      dev_recon_engine_api_keys: false
       dev_superposition: false
       dev_vault_v2_product: false
       dev_webhooks: false
@@ -230,6 +236,8 @@ config:
       olap_url: ""
       # Full base URL for euler-hosted services (offer-engine); empty falls back to api_url.
       euler_url: ""
+      # Public mTLS webhook URL; empty falls back to api_url.
+      mtls_api_url: ""
       # Split from the old single "dss_certificate_url" as of v1.38.9: the app now
       # reads region-specific US/EU certificate URLs instead.
       dss_certificate_us_url: "https://app.hyperswitch.io/certificates/PCI_DSS_v4-0_AOC_Juspay_2024.pdf"

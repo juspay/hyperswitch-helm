@@ -3,7 +3,7 @@ services:
     enabled: true
     # -- Router version
     # @section -- Services
-    version: "v1.129.0"
+    version: "v1.131.0"
     # -- Router image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -17,7 +17,7 @@ services:
     enabled: true
     # -- Consumer version
     # @section -- Services
-    version: "v1.129.0"
+    version: "v1.131.0"
     # -- Consumer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -28,7 +28,7 @@ services:
     enabled: true
     # -- Producer version
     # @section -- Services
-    version: "v1.129.0"
+    version: "v1.131.0"
     # -- Producer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -39,7 +39,7 @@ services:
     enabled: true
     # -- Drainer version
     # @section -- Services
-    version: "v1.129.0"
+    version: "v1.131.0"
     # -- Drainer image registry
     # @section -- Services
     imageRegistry: docker.juspay.io
@@ -52,7 +52,7 @@ services:
     host: http://localhost:9050
     # -- SDK version
     # @section -- Services
-    version: 0.135.0
+    version: 0.136.0
     # -- SDK subversion
     # @section -- Services
     subversion: v1
@@ -642,6 +642,8 @@ server:
       tenants:
         public:
           base_url: "http://localhost:8080"
+          # -- Public mTLS webhook ingress URL for connectors requiring mTLS verification
+          mtls_base_url: "http://localhost:8080"
           schema: public
           accounts_schema: "public"
           redis_key_prefix: ""
@@ -764,8 +766,6 @@ server:
       # -- Config to download relay report
       relay_function: report_download_config_relay_function
     revenue_recovery:
-      # monitoring threshold -  120 days
-      monitoring_threshold_in_seconds: 10368000
       retry_algorithm_type: "cascading"
       redis_ttl_in_seconds: 3888000
       # Fallback hour-of-day (UTC, 0-23) the mathmodel retries at when a cluster has no hour-of-day history
@@ -829,6 +829,10 @@ server:
       token: "123456"
       org_id: hyperswitch
       workspace_id: hyperswitch
+      # -- Superposition polling interval in milliseconds (renamed from polling_interval)
+      polling_interval_milliseconds: 15000
+      # -- Superposition request timeout in milliseconds (renamed from request_timeout)
+      request_timeout_milliseconds: 60000
       # -- Fallback config file, used if the live endpoint above is unreachable.
       # backup_file_path: "/superposition/backup-config/superposition_seed.toml"
     # Server configuration
@@ -1392,6 +1396,11 @@ externalPostgresql:
       database: "hyperswitch"
 initDB:
   enable: true
+  paymentCallback:
+    # -- Initial payment_callback mode: legacy, migration, or enforced. Inserts only if absent;
+    # existing database policy is preserved. Migration issues tokenized URLs while accepting
+    # callbacks from older flows. Applies to the migration connection's default schema only.
+    mode: migration
   checkPGisUp:
     imageRegistry: docker.io
     image: bitnamilegacy/postgresql:16.1.0-debian-11-r18
@@ -1809,6 +1818,7 @@ hyperswitch-ucs:
     imageRegistry: ghcr.io
     repository: juspay/hyperswitch-prism
     pullPolicy: IfNotPresent
+    # Keep aligned with the published 0.1.12 dependency until chart 0.1.13 is released.
     tag: "v0.7.0"
   imagePullSecrets: []
   nameOverride: ""
@@ -1892,8 +1902,10 @@ hyperswitch-ucs:
 # Superposition fallback seed.
 #
 # The router needs a Superposition config source at boot. It first tries `superposition.endpoint`
-# and only falls back to this file when that call fails, so the fallback is what keeps the release
-# bootable while Superposition is starting, empty, or not deployed at all.
+# and only falls back to this file when that configuration call fails.
+# App Server v1.131.0 still needs a reachable,
+# provisioned Superposition workspace at startup to fetch experiments; this file cannot
+# replace that API. See the upgrade notes in README.md.
 #
 # Two ways to supply the file, chosen with `source`:
 #
@@ -1923,7 +1935,7 @@ superpositionFallback:
   fetch:
     # -- Registry for the image that performs the download
     imageRegistry: docker.io
-    # -- Image that performs the download; needs `curl` and `sh`
+    # -- Image that performs the download; needs `curl`, `sh`, and `sed`
     image: curlimages/curl:8.11.1
     # -- Base URL of the hyperswitch source repository
     baseUrl: https://raw.githubusercontent.com/juspay/hyperswitch
@@ -2474,7 +2486,7 @@ superpositionDB:
     # -- Superposition ref the schema is fetched from. Keep this in step with the `superposition`
     # dependency in Chart.yaml - the schema and the binary are released together. This mirrors
     # `initDB`, which pulls the hyperswitch migrations at `services.router.version`.
-    version: v0.118.0
+    version: v0.120.1
     # -- Base URL of the superposition source repository
     baseUrl: https://raw.githubusercontent.com/juspay/superposition
     # -- Path of the global schema inside that repository
